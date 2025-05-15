@@ -19,7 +19,12 @@
     "enabled": true
   },
   "linter": {
-    "enabled": false
+    "enabled": false,
+    "rules": {
+      "style": {
+        "noNonNullAssertion": "off"
+      }
+    }
   },
   "javascript": {
     "formatter": {
