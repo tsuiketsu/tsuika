@@ -131,7 +131,7 @@ function Register() {
         </Button>
         <span className="text-sm">
           Alreay have an account? go{" "}
-          <Link to="/login" className="text-blue-600">
+          <Link to="/login" className="underline">
             Login
           </Link>
         </span>

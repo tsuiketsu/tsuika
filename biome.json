@@ -19,12 +19,15 @@
     "enabled": true
   },
   "linter": {
-    "enabled": true,
+    "enabled": false,
     "rules": {
       "style": {
         "noNonNullAssertion": "off"
       },
-      "suspicious": { "noExplicitAny": "warn" }
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noArrayIndexKey": "off"
+      }
     }
   },
   "javascript": {

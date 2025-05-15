@@ -1,3 +1,5 @@
+import { AppSidebar } from "@/components/app-sidebar/index";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { fetchUserSession } from "@/queries/user-session";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
@@ -20,8 +22,16 @@ export const Route = createFileRoute("/dashboard/_layout")({
 
 function DashboardLayout() {
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <Outlet />
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <div className="w-full flex flex-col ">
+        <div className="h-[53px] border px-2.5 items-center flex">
+          <SidebarTrigger />
+        </div>
+        <div className="flex h-full p-4">
+          <Outlet />
+        </div>
+      </div>
+    </SidebarProvider>
   );
 }

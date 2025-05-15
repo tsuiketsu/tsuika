@@ -19,12 +19,7 @@ import { Input } from "@/components/ui/input";
 import { signIn } from "@/lib/auth-client";
 import { arktypeResolver } from "@hookform/resolvers/arktype";
 import { useMutation } from "@tanstack/react-query";
-import {
-  Link,
-  createFileRoute,
-  redirect,
-  useNavigate,
-} from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { type } from "arktype";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -119,7 +114,7 @@ function Login() {
         </Button>
         <span className="text-sm">
           Don't have an account yet? here{" "}
-          <Link to="/register" className="text-blue-600">
+          <Link to="/register" className="underline">
             Register
           </Link>
         </span>
