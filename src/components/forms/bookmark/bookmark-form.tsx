@@ -8,32 +8,21 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import type { SuccessResponse } from "@/types";
-import { type Bookmark, BookmarkInsertSchema } from "@/types/bookmark";
+import { type Bookmark, BookmarkFormSchema } from "@/types/bookmark";
 import { arktypeResolver } from "@hookform/resolvers/arktype";
-import type { UseMutationResult } from "@tanstack/react-query";
 import type { type } from "arktype";
-import type { AxiosResponse } from "axios";
 import { useForm } from "react-hook-form";
 
 interface PropsType {
   data?: Bookmark;
-  mutation: UseMutationResult<
-    AxiosResponse<SuccessResponse<Bookmark>>,
-    unknown,
-    type.infer<typeof BookmarkInsertSchema>
-  >;
+  onSubmit: (payload: type.infer<typeof BookmarkFormSchema>) => void;
 }
 
-export default function BookmarkForm({ data, mutation }: PropsType) {
-  const form = useForm<type.infer<typeof BookmarkInsertSchema>>({
-    resolver: arktypeResolver(BookmarkInsertSchema),
+export default function BookmarkForm({ data, onSubmit }: PropsType) {
+  const form = useForm<type.infer<typeof BookmarkFormSchema>>({
+    resolver: arktypeResolver(BookmarkFormSchema),
     defaultValues: data,
   });
-
-  async function onSubmit(values: type.infer<typeof BookmarkInsertSchema>) {
-    mutation.mutate(values);
-  }
 
   return (
     <Form {...form}>
@@ -88,6 +77,22 @@ export default function BookmarkForm({ data, mutation }: PropsType) {
                   placeholder="Keep track of your progress on-the-go with one of many AniList apps across iOS, Android, macOS, and Windows"
                 />
               </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="thumbnail"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Thumbnail</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="e.g., https://placehold.co/800x480"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />

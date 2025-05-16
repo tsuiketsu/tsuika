@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
-import { composeInfQryData } from "@/lib/query.utils";
+import { insertInfQueryData } from "@/lib/query.utils";
 import { addBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark } from "@/types/bookmark";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { BookmarkPlus, LoaderCircle } from "lucide-react";
+import { BookmarkPlus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import BookmarkForm from "./bookmark-form";
@@ -24,7 +24,7 @@ export default function AddBookmark() {
 
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
         ["bookmarks"],
-        (old) => composeInfQryData(old, data),
+        (old) => insertInfQueryData(old, data),
       );
 
       toast.success(message || "Successfully added bookmark");
@@ -35,11 +35,7 @@ export default function AddBookmark() {
   return (
     <>
       <Button variant="ghost" className="ml-auto" onClick={() => setOpen(true)}>
-        {mutation.isPending ? (
-          <LoaderCircle className="animate-spin" />
-        ) : (
-          <BookmarkPlus />
-        )}
+        <BookmarkPlus />
       </Button>
       <Modal
         open={open}
@@ -47,9 +43,10 @@ export default function AddBookmark() {
         form="bookmark-form"
         title="Create bookmark"
         desc="When you're happy with it, just hit the Create button"
+        isPending={mutation.isPending}
         btnTxt="Create"
       >
-        <BookmarkForm mutation={mutation} />
+        <BookmarkForm onSubmit={mutation.mutate} />
       </Modal>
     </>
   );

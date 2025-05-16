@@ -15,9 +15,10 @@ export interface Bookmark {
   updated_at: Date | string;
 }
 
-export const BookmarkInsertSchema = type({
+export const BookmarkFormSchema = type({
   url: "string",
   title: "string<255",
-  description: "string<500?",
+  "description?": "string<500",
   thumbnail: "string?",
 });
+export type BookmarkFormSchemaType = type.infer<typeof BookmarkFormSchema>;

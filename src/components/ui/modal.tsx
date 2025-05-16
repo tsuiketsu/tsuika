@@ -24,6 +24,7 @@ interface ModalProps {
   btnFunc?: () => void;
   btnTxt?: string;
   form?: string;
+  isPending?: boolean;
   successButton?: React.ReactNode;
   triggerButton?: React.ReactNode;
 }
@@ -35,6 +36,7 @@ const Modal = ({ children, open, onOpenChange, ...props }: ModalProps) => {
     btnFunc,
     btnTxt,
     form = undefined,
+    isPending = false,
     successButton,
     triggerButton,
   } = props;
@@ -46,6 +48,7 @@ const Modal = ({ children, open, onOpenChange, ...props }: ModalProps) => {
         type={form ? "submit" : "button"}
         form={form}
         onClick={btnFunc}
+        isLoading={isPending}
         className="capitalize min-w-24"
       >
         {btnTxt ?? "Save"}

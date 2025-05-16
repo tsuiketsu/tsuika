@@ -1,14 +1,44 @@
+import EditBookmark from "@/components/forms/bookmark/bookmark-edit";
 import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { type Alphabet, options } from "@/constants";
 import { cn } from "@/lib/utils";
 import type { Bookmark } from "@/types/bookmark";
 import dayjs from "dayjs";
-import { Dot } from "lucide-react";
+import { Dot, Ellipsis, Trash } from "lucide-react";
 import { parse } from "tldts";
 
 interface PropsType {
   bookmark: Bookmark;
 }
+
+const BookmarkActions = ({ bookmark }: { bookmark: Bookmark }) => {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon" className="size-6">
+          <Ellipsis />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <EditBookmark bookmark={bookmark} />
+        <DropdownMenuItem>
+          <Trash className="text-foreground" />
+          Delete
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 export default function BookmarkCard({ bookmark }: PropsType) {
   const domain = parse(bookmark.url).domain;
@@ -29,15 +59,18 @@ export default function BookmarkCard({ bookmark }: PropsType) {
         </span>
       </div>
       <section className="font-roboto space-y-1">
-        <Button
-          variant="link"
-          className="font-bold capitalize block p-0 h-auto text-base"
-          asChild
-        >
-          <a href={bookmark.url} target="_blank" rel="noreferrer">
-            {bookmark.title}
-          </a>
-        </Button>
+        <div className="inline-flex items-center w-full justify-between">
+          <Button
+            variant="link"
+            className="font-bold capitalize block p-0 h-auto text-base"
+            asChild
+          >
+            <a href={bookmark.url} target="_blank" rel="noreferrer">
+              {bookmark.title}
+            </a>
+          </Button>
+          <BookmarkActions bookmark={bookmark} />
+        </div>
         <div className="text-xs -space-x-1 text-foreground/60 font-medium inline-flex items-center">
           <Button
             variant="info"

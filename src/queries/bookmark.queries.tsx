@@ -4,7 +4,7 @@ import type {
   PaginatedSuccessResponse,
   SuccessResponse,
 } from "@/types";
-import type { Bookmark, BookmarkInsertSchema } from "@/types/bookmark";
+import type { Bookmark, BookmarkFormSchema } from "@/types/bookmark";
 import type { type } from "arktype";
 import axios from "axios";
 
@@ -31,7 +31,7 @@ export const fetchBookmarks = async ({
 };
 
 export const addBookmark = async (
-  payload: type.infer<typeof BookmarkInsertSchema>,
+  payload: type.infer<typeof BookmarkFormSchema>,
 ) => {
   return await axios<SuccessResponse<Bookmark>>({
     method: "post",
@@ -41,5 +41,15 @@ export const addBookmark = async (
   });
 };
 
-export const editBookmark = () => {};
+export const editBookmark = async (
+  id: number,
+  payload: type.infer<typeof BookmarkFormSchema>,
+) => {
+  return await axios<SuccessResponse<Bookmark>>({
+    method: "put",
+    url: `${options.ApiBaseUrl}/api/v1/bookmarks/${id}`,
+    data: payload,
+    withCredentials: true,
+  });
+};
 export const deleteBookmark = () => {};
