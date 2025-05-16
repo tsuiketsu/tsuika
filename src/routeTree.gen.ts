@@ -17,7 +17,6 @@ import { Route as IndexImport } from './routes/index'
 import { Route as DashboardLayoutImport } from './routes/dashboard/_layout'
 import { Route as authAuthImport } from './routes/(auth)/_auth'
 import { Route as DashboardLayoutIndexImport } from './routes/dashboard/_layout/index'
-import { Route as DashboardLayoutProfileImport } from './routes/dashboard/_layout/profile'
 import { Route as authAuthRegisterImport } from './routes/(auth)/_auth/register'
 import { Route as authAuthLoginImport } from './routes/(auth)/_auth/login'
 
@@ -58,12 +57,6 @@ const authAuthRoute = authAuthImport.update({
 const DashboardLayoutIndexRoute = DashboardLayoutIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => DashboardLayoutRoute,
-} as any)
-
-const DashboardLayoutProfileRoute = DashboardLayoutProfileImport.update({
-  id: '/profile',
-  path: '/profile',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
 
@@ -132,13 +125,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authAuthRegisterImport
       parentRoute: typeof authAuthImport
     }
-    '/dashboard/_layout/profile': {
-      id: '/dashboard/_layout/profile'
-      path: '/profile'
-      fullPath: '/dashboard/profile'
-      preLoaderRoute: typeof DashboardLayoutProfileImport
-      parentRoute: typeof DashboardLayoutImport
-    }
     '/dashboard/_layout/': {
       id: '/dashboard/_layout/'
       path: '/'
@@ -176,12 +162,10 @@ const authRouteChildren: authRouteChildren = {
 const authRouteWithChildren = authRoute._addFileChildren(authRouteChildren)
 
 interface DashboardLayoutRouteChildren {
-  DashboardLayoutProfileRoute: typeof DashboardLayoutProfileRoute
   DashboardLayoutIndexRoute: typeof DashboardLayoutIndexRoute
 }
 
 const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
-  DashboardLayoutProfileRoute: DashboardLayoutProfileRoute,
   DashboardLayoutIndexRoute: DashboardLayoutIndexRoute,
 }
 
@@ -206,7 +190,6 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardLayoutRouteWithChildren
   '/login': typeof authAuthLoginRoute
   '/register': typeof authAuthRegisterRoute
-  '/dashboard/profile': typeof DashboardLayoutProfileRoute
   '/dashboard/': typeof DashboardLayoutIndexRoute
 }
 
@@ -215,7 +198,6 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardLayoutIndexRoute
   '/login': typeof authAuthLoginRoute
   '/register': typeof authAuthRegisterRoute
-  '/dashboard/profile': typeof DashboardLayoutProfileRoute
 }
 
 export interface FileRoutesById {
@@ -227,21 +209,14 @@ export interface FileRoutesById {
   '/dashboard/_layout': typeof DashboardLayoutRouteWithChildren
   '/(auth)/_auth/login': typeof authAuthLoginRoute
   '/(auth)/_auth/register': typeof authAuthRegisterRoute
-  '/dashboard/_layout/profile': typeof DashboardLayoutProfileRoute
   '/dashboard/_layout/': typeof DashboardLayoutIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/dashboard'
-    | '/login'
-    | '/register'
-    | '/dashboard/profile'
-    | '/dashboard/'
+  fullPaths: '/' | '/dashboard' | '/login' | '/register' | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/login' | '/register' | '/dashboard/profile'
+  to: '/' | '/dashboard' | '/login' | '/register'
   id:
     | '__root__'
     | '/'
@@ -251,7 +226,6 @@ export interface FileRouteTypes {
     | '/dashboard/_layout'
     | '/(auth)/_auth/login'
     | '/(auth)/_auth/register'
-    | '/dashboard/_layout/profile'
     | '/dashboard/_layout/'
   fileRoutesById: FileRoutesById
 }
@@ -310,7 +284,6 @@ export const routeTree = rootRoute
       "filePath": "dashboard/_layout.tsx",
       "parent": "/dashboard",
       "children": [
-        "/dashboard/_layout/profile",
         "/dashboard/_layout/"
       ]
     },
@@ -321,10 +294,6 @@ export const routeTree = rootRoute
     "/(auth)/_auth/register": {
       "filePath": "(auth)/_auth/register.tsx",
       "parent": "/(auth)/_auth"
-    },
-    "/dashboard/_layout/profile": {
-      "filePath": "dashboard/_layout/profile.tsx",
-      "parent": "/dashboard/_layout"
     },
     "/dashboard/_layout/": {
       "filePath": "dashboard/_layout/index.tsx",
