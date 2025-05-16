@@ -29,14 +29,15 @@ export default function BookmarkCard({ bookmark }: PropsType) {
         </span>
       </div>
       <section className="font-roboto space-y-1">
-        <a
-          href={bookmark.url}
-          target="_blank"
-          className="font-bold capitalize"
-          rel="noreferrer"
+        <Button
+          variant="link"
+          className="font-bold capitalize block p-0 h-auto text-base"
+          asChild
         >
-          {bookmark.title}
-        </a>
+          <a href={bookmark.url} target="_blank" rel="noreferrer">
+            {bookmark.title}
+          </a>
+        </Button>
         <div className="text-xs -space-x-1 text-foreground/60 font-medium inline-flex items-center">
           <Button
             variant="info"
