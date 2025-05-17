@@ -5,6 +5,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
+  DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -12,7 +13,8 @@ import { type Alphabet, options } from "@/constants";
 import { cn } from "@/lib/utils";
 import type { Bookmark } from "@/types/bookmark";
 import dayjs from "dayjs";
-import { Dot, Ellipsis } from "lucide-react";
+import { Dot, Ellipsis, SquarePen, Trash } from "lucide-react";
+import React, { useRef } from "react";
 import { parse } from "tldts";
 
 interface PropsType {
@@ -20,20 +22,33 @@ interface PropsType {
 }
 
 const BookmarkActions = ({ bookmark }: { bookmark: Bookmark }) => {
+  const deleteButtonRef = useRef<HTMLButtonElement>(null);
+  const editButtonRef = useRef<HTMLButtonElement>(null);
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="size-6">
-          <Ellipsis />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <EditBookmark bookmark={bookmark} />
-        <DeleteBookmark id={bookmark.id} />
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <React.Fragment>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" className="size-6">
+            <Ellipsis />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <EditBookmark bookmark={bookmark} />
+          <DropdownMenuItem onClick={() => editButtonRef.current?.click()}>
+            <SquarePen />
+            Edit
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => deleteButtonRef.current?.click()}>
+            <Trash /> Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <DeleteBookmark id={bookmark.id} ref={deleteButtonRef} />
+      <EditBookmark bookmark={bookmark} ref={editButtonRef} />
+    </React.Fragment>
   );
 };
 

@@ -8,16 +8,18 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { deleteInfQueryData } from "@/lib/query.utils";
 import { deleteBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark } from "@/types/bookmark";
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Trash } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 
-export default function DeleteBookmark({ id }: { id: number }) {
+export default function DeleteBookmark({
+  id,
+  ref,
+}: Pick<React.ComponentProps<"button">, "ref"> & { id: number }) {
   const [open, setOpen] = useState(false);
 
   const queryClient = useQueryClient();
@@ -43,14 +45,7 @@ export default function DeleteBookmark({ id }: { id: number }) {
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <DropdownMenuItem
-        onClick={(e) => {
-          e.preventDefault();
-          setOpen(true);
-        }}
-      >
-        <Trash className="text-foreground" /> Delete
-      </DropdownMenuItem>
+      <AlertDialogTrigger ref={ref} className="hidden" />
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

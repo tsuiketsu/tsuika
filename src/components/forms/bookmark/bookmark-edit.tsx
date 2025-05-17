@@ -1,19 +1,17 @@
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import Modal from "@/components/ui/modal";
 import { updateInfQueryData } from "@/lib/query.utils";
 import { editBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark, BookmarkFormSchemaType } from "@/types/bookmark";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { SquarePen } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 import BookmarkForm from "./bookmark-form";
 
-interface PropsType {
+interface PropsType extends Pick<React.ComponentProps<"button">, "ref"> {
   bookmark: Bookmark;
 }
 
-export default function EditBookmark({ bookmark }: PropsType) {
+export default function EditBookmark({ bookmark, ref }: PropsType) {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
 
@@ -34,7 +32,7 @@ export default function EditBookmark({ bookmark }: PropsType) {
 
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
         ["bookmarks"],
-        (old) => updateInfQueryData(old, data, (old) => old.id),
+        (old) => updateInfQueryData(old, data, (old) => old.id)
       );
 
       toast.success(message || "Successfully updated bookmark");
@@ -50,17 +48,7 @@ export default function EditBookmark({ bookmark }: PropsType) {
       title="Update bookmark"
       desc="When you're happy with it, just hit the save button"
       isPending={mutation.isPending}
-      triggerButton={
-        <DropdownMenuItem
-          onClick={(e) => {
-            e.preventDefault();
-            setOpen(true);
-          }}
-        >
-          <SquarePen className="text-foreground" />
-          Edit
-        </DropdownMenuItem>
-      }
+      triggerButton={<button ref={ref} type="button" className="hidden" />}
       btnTxt="Save"
     >
       <BookmarkForm
