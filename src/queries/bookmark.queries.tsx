@@ -8,10 +8,14 @@ import type { Bookmark, BookmarkFormSchema } from "@/types/bookmark";
 import type { type } from "arktype";
 import axios from "axios";
 
+const baseQuery = `${options.ApiBaseUrl}/api/v1/bookmarks`;
+
 export const fetchBookmarks = async ({
   pageParam,
-}: { pageParam: number }): PaginatedResponse<Bookmark[]> => {
-  const query = `${options.ApiBaseUrl}/api/v1/bookmarks?page=${pageParam}&limit=16`;
+}: {
+  pageParam: number;
+}): PaginatedResponse<Bookmark[]> => {
+  const query = `${baseQuery}?page=${pageParam}&limit=16`;
 
   const {
     data: { data: bookmarks, pagination },
@@ -31,11 +35,11 @@ export const fetchBookmarks = async ({
 };
 
 export const addBookmark = async (
-  payload: type.infer<typeof BookmarkFormSchema>,
+  payload: type.infer<typeof BookmarkFormSchema>
 ) => {
   return await axios<SuccessResponse<Bookmark>>({
     method: "post",
-    url: `${options.ApiBaseUrl}/api/v1/bookmarks`,
+    url: baseQuery,
     data: payload,
     withCredentials: true,
   });
@@ -43,13 +47,17 @@ export const addBookmark = async (
 
 export const editBookmark = async (
   id: number,
-  payload: type.infer<typeof BookmarkFormSchema>,
+  payload: type.infer<typeof BookmarkFormSchema>
 ) => {
   return await axios<SuccessResponse<Bookmark>>({
     method: "put",
-    url: `${options.ApiBaseUrl}/api/v1/bookmarks/${id}`,
+    url: `${baseQuery}/${id}`,
     data: payload,
     withCredentials: true,
   });
 };
-export const deleteBookmark = () => {};
+export const deleteBookmark = async (id: number) => {
+  return await axios.delete(`${baseQuery}/${id}`, {
+    withCredentials: true,
+  });
+};

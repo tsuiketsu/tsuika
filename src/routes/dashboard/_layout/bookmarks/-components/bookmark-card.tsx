@@ -1,9 +1,9 @@
+import DeleteBookmark from "@/components/forms/bookmark/bookmark-delete";
 import EditBookmark from "@/components/forms/bookmark/bookmark-edit";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -12,7 +12,7 @@ import { type Alphabet, options } from "@/constants";
 import { cn } from "@/lib/utils";
 import type { Bookmark } from "@/types/bookmark";
 import dayjs from "dayjs";
-import { Dot, Ellipsis, Trash } from "lucide-react";
+import { Dot, Ellipsis } from "lucide-react";
 import { parse } from "tldts";
 
 interface PropsType {
@@ -31,10 +31,7 @@ const BookmarkActions = ({ bookmark }: { bookmark: Bookmark }) => {
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <EditBookmark bookmark={bookmark} />
-        <DropdownMenuItem>
-          <Trash className="text-foreground" />
-          Delete
-        </DropdownMenuItem>
+        <DeleteBookmark id={bookmark.id} />
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -94,7 +91,7 @@ export default function BookmarkCard({ bookmark }: PropsType) {
                 variant: "secondary",
                 size: "sm",
               }),
-              "text-xs py-1.5 h-auto",
+              "text-xs py-1.5 h-auto"
             )}
           >
             <span>{dayjs(bookmark.created_at).format("MMM DD, HH:MM")}</span>

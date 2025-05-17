@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 export function insertInfQueryData<T>(
   old:
     | {
         pages: { data: T[] }[];
       }
     | undefined,
-  data: T,
+  data: T
 ) {
   if (!old || old.pages.length === 0) {
     return { pageParams: [0], pages: [{ data: [data] }] };
@@ -39,7 +40,7 @@ export function updateInfQueryData<T>(
       }
     | undefined,
   data: T,
-  idSelector: (item: T) => number | string,
+  idSelector: (item: T) => number | string
 ) {
   if (!old) return old;
 
@@ -48,8 +49,28 @@ export function updateInfQueryData<T>(
     pages: old.pages.map((list) => ({
       ...list,
       data: list.data.map((item) =>
-        idSelector(item) === idSelector(data) ? data : item,
+        idSelector(item) === idSelector(data) ? data : item
       ),
+    })),
+  };
+}
+
+export function deleteInfQueryData<T>(
+  old:
+    | {
+        pages: { data: T[] }[];
+      }
+    | undefined,
+  id: number | string,
+  idSelector: (item: T) => number | string
+) {
+  if (!old) return old;
+
+  return {
+    ...old,
+    pages: old.pages.map((list) => ({
+      ...list,
+      data: list.data.filter((item) => idSelector(item) !== id),
     })),
   };
 }

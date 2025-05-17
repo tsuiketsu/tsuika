@@ -11,7 +11,7 @@ export const Route = createFileRoute("/dashboard/_layout")({
     try {
       const session = await fetchUserSession();
       return { session };
-    } catch (error) {
+    } catch {
       throw redirect({
         to: "/login",
         search: {
