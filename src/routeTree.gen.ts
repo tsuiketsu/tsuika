@@ -19,6 +19,7 @@ import { Route as authAuthImport } from './routes/(auth)/_auth'
 import { Route as DashboardLayoutIndexImport } from './routes/dashboard/_layout/index'
 import { Route as authAuthRegisterImport } from './routes/(auth)/_auth/register'
 import { Route as authAuthLoginImport } from './routes/(auth)/_auth/login'
+import { Route as DashboardLayoutBookmarksIndexImport } from './routes/dashboard/_layout/bookmarks/index'
 
 // Create Virtual Routes
 
@@ -71,6 +72,13 @@ const authAuthLoginRoute = authAuthLoginImport.update({
   path: '/login',
   getParentRoute: () => authAuthRoute,
 } as any)
+
+const DashboardLayoutBookmarksIndexRoute =
+  DashboardLayoutBookmarksIndexImport.update({
+    id: '/bookmarks/',
+    path: '/bookmarks/',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -132,6 +140,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardLayoutIndexImport
       parentRoute: typeof DashboardLayoutImport
     }
+    '/dashboard/_layout/bookmarks/': {
+      id: '/dashboard/_layout/bookmarks/'
+      path: '/bookmarks'
+      fullPath: '/dashboard/bookmarks'
+      preLoaderRoute: typeof DashboardLayoutBookmarksIndexImport
+      parentRoute: typeof DashboardLayoutImport
+    }
   }
 }
 
@@ -163,10 +178,12 @@ const authRouteWithChildren = authRoute._addFileChildren(authRouteChildren)
 
 interface DashboardLayoutRouteChildren {
   DashboardLayoutIndexRoute: typeof DashboardLayoutIndexRoute
+  DashboardLayoutBookmarksIndexRoute: typeof DashboardLayoutBookmarksIndexRoute
 }
 
 const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardLayoutIndexRoute: DashboardLayoutIndexRoute,
+  DashboardLayoutBookmarksIndexRoute: DashboardLayoutBookmarksIndexRoute,
 }
 
 const DashboardLayoutRouteWithChildren = DashboardLayoutRoute._addFileChildren(
@@ -191,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof authAuthLoginRoute
   '/register': typeof authAuthRegisterRoute
   '/dashboard/': typeof DashboardLayoutIndexRoute
+  '/dashboard/bookmarks': typeof DashboardLayoutBookmarksIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -198,6 +216,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardLayoutIndexRoute
   '/login': typeof authAuthLoginRoute
   '/register': typeof authAuthRegisterRoute
+  '/dashboard/bookmarks': typeof DashboardLayoutBookmarksIndexRoute
 }
 
 export interface FileRoutesById {
@@ -210,13 +229,20 @@ export interface FileRoutesById {
   '/(auth)/_auth/login': typeof authAuthLoginRoute
   '/(auth)/_auth/register': typeof authAuthRegisterRoute
   '/dashboard/_layout/': typeof DashboardLayoutIndexRoute
+  '/dashboard/_layout/bookmarks/': typeof DashboardLayoutBookmarksIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/login' | '/register' | '/dashboard/'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/register'
+    | '/dashboard/'
+    | '/dashboard/bookmarks'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/login' | '/register'
+  to: '/' | '/dashboard' | '/login' | '/register' | '/dashboard/bookmarks'
   id:
     | '__root__'
     | '/'
@@ -227,6 +253,7 @@ export interface FileRouteTypes {
     | '/(auth)/_auth/login'
     | '/(auth)/_auth/register'
     | '/dashboard/_layout/'
+    | '/dashboard/_layout/bookmarks/'
   fileRoutesById: FileRoutesById
 }
 
@@ -284,7 +311,8 @@ export const routeTree = rootRoute
       "filePath": "dashboard/_layout.tsx",
       "parent": "/dashboard",
       "children": [
-        "/dashboard/_layout/"
+        "/dashboard/_layout/",
+        "/dashboard/_layout/bookmarks/"
       ]
     },
     "/(auth)/_auth/login": {
@@ -297,6 +325,10 @@ export const routeTree = rootRoute
     },
     "/dashboard/_layout/": {
       "filePath": "dashboard/_layout/index.tsx",
+      "parent": "/dashboard/_layout"
+    },
+    "/dashboard/_layout/bookmarks/": {
+      "filePath": "dashboard/_layout/bookmarks/index.tsx",
       "parent": "/dashboard/_layout"
     }
   }
