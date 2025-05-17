@@ -18,7 +18,7 @@ export interface Bookmark {
 export const BookmarkFormSchema = type({
   url: "string",
   title: "string<255",
-  "description?": "string<500",
-  thumbnail: "string?",
+  description: "string<500|undefined",
+  thumbnail: "string|undefined",
 });
 export type BookmarkFormSchemaType = type.infer<typeof BookmarkFormSchema>;

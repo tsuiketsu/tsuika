@@ -21,7 +21,11 @@ interface PropsType {
 export default function BookmarkForm({ data, onSubmit }: PropsType) {
   const form = useForm<type.infer<typeof BookmarkFormSchema>>({
     resolver: arktypeResolver(BookmarkFormSchema),
-    defaultValues: data,
+    defaultValues: data
+      ? Object.fromEntries(
+          Object.entries(data).filter(([_, value]) => value != null)
+        )
+      : {},
   });
 
   return (
