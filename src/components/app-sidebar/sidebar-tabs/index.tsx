@@ -1,11 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { SidebarContent, SidebarHeader } from "@/components/ui/sidebar";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Hash, Home, Plus } from "lucide-react";
-import { Suspense, lazy, useState } from "react";
+import { Hash, Home } from "lucide-react";
+import { useState } from "react";
 import HomeTab from "./home-tab";
-
-const TagsTab = lazy(() => import("./tags-tab"));
+import TagsTab from "./tags-tab";
+import InsertTag from "@/components/forms/tag/insert-tag";
 
 const tabs = [
   { label: "home", icon: Home },
@@ -14,25 +13,18 @@ const tabs = [
 
 const SelectedTab = ({ tabIndex }: { tabIndex: number }) => {
   if (tabIndex === 1) {
-    return (
-      <Suspense
-        fallback={
-          <div className="space-y-2 px-3">
-            {Array.from({ length: 8 }).map((_, idx) => (
-              <Skeleton
-                key={`tag-skeleton-${idx}`}
-                className="w-full h-6 rounded"
-              />
-            ))}
-          </div>
-        }
-      >
-        <TagsTab />
-      </Suspense>
-    );
+    return <TagsTab />;
   }
 
   return <HomeTab />;
+};
+
+const ActionButton = ({ tabIndex }: { tabIndex: number }) => {
+  if (tabIndex === 1) {
+    return <InsertTag />;
+  }
+
+  return null;
 };
 
 export default function SidebarTabs() {
@@ -55,9 +47,7 @@ export default function SidebarTabs() {
               </Button>
             ))}
           </div>
-          <Button variant="ghost" className="size-8">
-            <Plus size={20} />
-          </Button>
+          <ActionButton tabIndex={tabIndex} />
         </div>
       </SidebarHeader>
       <SidebarContent>

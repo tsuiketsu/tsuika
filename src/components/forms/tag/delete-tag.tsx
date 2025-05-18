@@ -9,14 +9,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { deleteInfQueryData } from "@/lib/query.utils";
-import { deleteBookmark } from "@/queries/bookmark.queries";
-import type { Bookmark } from "@/types/bookmark";
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+import type { Tag } from "@/types/tag";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { toast } from "sonner";
+import { deleteTag } from "@/queries/tags.queries";
 
-export default function DeleteBookmark({
+export default function Deletetag({
   id,
   ref,
 }: Pick<React.ComponentProps<"button">, "ref"> & { id: number }) {
@@ -25,20 +25,19 @@ export default function DeleteBookmark({
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationKey: ["deleteBookmark"],
-    mutationFn: async ({ id }: { id: number }) => await deleteBookmark(id),
+    mutationKey: ["deleteTag"],
+    mutationFn: async ({ id }: { id: number }) => await deleteTag(id),
     onSuccess: ({ status, data: { message } }) => {
       if (status !== 200) {
-        toast.error(message || "Failed to delete bookmark");
+        toast.error(message || "Failed to delete tag");
         return;
       }
 
-      queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
-        ["bookmarks"],
-        (old) => deleteInfQueryData(old, id, (old) => old.id)
+      queryClient.setQueryData<{ pages: { data: Tag[] }[] }>(["tags"], (old) =>
+        deleteInfQueryData(old, id, (old) => old.id)
       );
 
-      toast.success(message || "Successfully deleted bookmark");
+      toast.success(message || "Successfully deleted tag");
       setOpen(false);
     },
   });

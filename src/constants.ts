@@ -28,6 +28,12 @@ export const options = {
     Y: { color: "#2563EB", bg: "#BFDBFE" },
     Z: { color: "#9333EA", bg: "#E9D5FF" },
   } as const,
+  get colorPickerColors() {
+    return Object.values(this.alphabetColors).flatMap((value) => [
+      value.color,
+      value.bg,
+    ]);
+  },
 };
 
 export type Alphabet = keyof typeof options.alphabetColors;

@@ -1,38 +1,29 @@
-import {
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { Link } from "@tanstack/react-router";
-import { Hash } from "lucide-react";
-
-const items = [
-  { title: "linux", url: "#", count: 28, color: "#fbbf24" },
-  { title: "anime", url: "#", count: 10, color: "#16a34a" },
-  { title: "typescript", url: "#", count: 36, color: "#8b5cf6" },
-];
+import { SidebarGroup, SidebarGroupContent } from "@/components/ui/sidebar";
+import { fetchAllTags } from "@/queries/tags.queries";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
+import TagItems from "./tag-items";
 
 export default function TagsTab() {
+  const { data, status } = useInfiniteQuery({
+    queryKey: ["tags"],
+    queryFn: fetchAllTags,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
+
+  const tags = useMemo(() => {
+    return data?.pages.flatMap(({ data }) => data) ?? [];
+  }, [data]);
+
+  if (status !== "pending" && tags.length === 0) {
+    return <div>No Tags</div>;
+  }
+
   return (
     <SidebarGroup>
       <SidebarGroupContent>
-        <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
-                <Link to={item.url} className="inline-flex justify-between">
-                  <div className="inline-flex items-center gap-1.5">
-                    <Hash color={item.color} size={16} />
-                    <span>{item.title}</span>
-                  </div>
-                  <span>{item.count}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
+        <TagItems tags={tags} isFetching={status === "pending"} />
       </SidebarGroupContent>
     </SidebarGroup>
   );
