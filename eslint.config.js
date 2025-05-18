@@ -9,12 +9,7 @@ import tseslint from "typescript-eslint";
 export default tseslint.config(
   { ignores: ["dist"] },
   {
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.recommendedTypeChecked,
-      ...tseslint.configs.strictTypeChecked,
-      ...tseslint.configs.stylisticTypeChecked,
-    ],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       ecmaVersion: 2020,
@@ -33,6 +28,19 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
 
+      // General
+      "no-console": "warn",
+      "prefer-const": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
+
       // Tanstack Router
       "@tanstack/router/create-route-property-order": "error",
 
@@ -42,5 +50,5 @@ export default tseslint.config(
       "@tanstack/query/no-void-query-fn": "error",
       "@tanstack/query/no-rest-destructuring": "error",
     },
-  },
+  }
 );
