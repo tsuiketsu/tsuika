@@ -4,9 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "postinstall": "bunx lefthook install",
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "format": "prettier --write 'src/**/*.{ts,tsx}' --plugin=prettier-plugin-tailwindcss",
+    "lint": "eslint ./src/**/*.{ts,tsx}",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -56,10 +58,10 @@
     "@vitejs/plugin-react": "^4.4.1",
     "eslint": "^9.25.0",
     "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-prettier": "^5.4.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "lefthook": "^1.11.13",
     "prettier": "3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tw-animate-css": "^1.2.9",
