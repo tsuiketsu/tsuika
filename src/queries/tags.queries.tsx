@@ -53,3 +53,11 @@ export const updateTag = async (id: number, tag: TagInsertSchemaType) => {
 export const deleteTag = async (id: number) => {
   return axios.delete(`${baseQuery}/${id}`, { withCredentials: true });
 };
+
+export const searchTagsByName = async (query: string) => {
+  return axios<SuccessResponse<Tag[]>>({
+    method: "get",
+    url: `${baseQuery}/search?name=${query}&limit=5`,
+    withCredentials: true,
+  }).then(({ data: { data } }) => data);
+};

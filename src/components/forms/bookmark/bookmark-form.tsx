@@ -1,3 +1,4 @@
+import TagOptions from "./tag-options";
 import {
   Form,
   FormControl,
@@ -8,19 +9,22 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { type Bookmark, BookmarkFormSchema } from "@/types/bookmark";
-import { arktypeResolver } from "@hookform/resolvers/arktype";
-import type { type } from "arktype";
+import {
+  type Bookmark,
+  BookmarkFormSchema,
+  type BookmarkFormSchemaType,
+} from "@/types/bookmark";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 interface PropsType {
   data?: Bookmark;
-  onSubmit: (payload: type.infer<typeof BookmarkFormSchema>) => void;
+  onSubmit: (payload: BookmarkFormSchemaType) => void;
 }
 
 export default function BookmarkForm({ data, onSubmit }: PropsType) {
-  const form = useForm<type.infer<typeof BookmarkFormSchema>>({
-    resolver: arktypeResolver(BookmarkFormSchema),
+  const form = useForm<BookmarkFormSchemaType>({
+    resolver: zodResolver(BookmarkFormSchema),
     defaultValues: data
       ? Object.fromEntries(
           Object.entries(data).filter(([_, value]) => value != null)
@@ -101,6 +105,7 @@ export default function BookmarkForm({ data, onSubmit }: PropsType) {
           )}
         />
       </form>
+      <TagOptions control={form.control} />
     </Form>
   );
 }

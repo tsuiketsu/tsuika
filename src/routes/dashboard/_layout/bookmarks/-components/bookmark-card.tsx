@@ -59,22 +59,22 @@ export default function BookmarkCard({ bookmark }: PropsType) {
   return (
     <div className="space-y-2 select-none">
       <div
-        className="@container accent-transparent rounded-md relative overflow-hidden"
+        className="@container relative overflow-hidden rounded-md accent-transparent"
         style={{
           aspectRatio: "5/3",
           backgroundColor: options.alphabetColors[titleChar].bg,
           color: options.alphabetColors[titleChar].color,
         }}
       >
-        <span className="text-[74cqw] size-full font-cal-sans absolute bottom-[14%] left-[4%] select-none font-extrabold">
+        <span className="font-cal-sans absolute bottom-[14%] left-[4%] size-full text-[74cqw] font-extrabold select-none">
           {titleChar}
         </span>
       </div>
       <section className="font-roboto space-y-1">
-        <div className="inline-flex items-center w-full justify-between">
+        <div className="inline-flex w-full items-center justify-between">
           <Button
             variant="link"
-            className="font-bold capitalize block p-0 h-auto text-base"
+            className="block h-auto p-0 text-base font-bold capitalize"
             asChild
           >
             <a href={bookmark.url} target="_blank" rel="noreferrer">
@@ -83,7 +83,7 @@ export default function BookmarkCard({ bookmark }: PropsType) {
           </Button>
           <BookmarkActions bookmark={bookmark} />
         </div>
-        <div className="text-xs -space-x-1 text-foreground/60 font-medium inline-flex items-center">
+        <div className="text-foreground/60 inline-flex items-center -space-x-1 text-xs font-medium">
           <Button
             variant="info"
             size="sm"
@@ -91,9 +91,9 @@ export default function BookmarkCard({ bookmark }: PropsType) {
             asChild
           >
             <a
-              href={domain ?? bookmark.url}
+              href={`https://${domain}`}
               target="_blank"
-              className="px-2 rounded-sm py-1"
+              className="rounded-sm px-2 py-1"
               rel="noreferrer"
             >
               {domain}
@@ -106,7 +106,7 @@ export default function BookmarkCard({ bookmark }: PropsType) {
                 variant: "secondary",
                 size: "sm",
               }),
-              "text-xs py-1.5 h-auto"
+              "h-auto py-1.5 text-xs"
             )}
           >
             <span>{dayjs(bookmark.created_at).format("MMM DD, HH:MM")}</span>

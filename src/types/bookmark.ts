@@ -1,4 +1,4 @@
-import { type } from "arktype";
+import { z } from "zod";
 
 export interface Bookmark {
   id: number;
@@ -15,10 +15,14 @@ export interface Bookmark {
   updated_at: Date | string;
 }
 
-export const BookmarkFormSchema = type({
-  url: "string",
-  title: "string<255",
-  description: "string<500|undefined",
-  thumbnail: "string|undefined",
+export const BookmarkFormSchema = z.object({
+  url: z.string().url(),
+  title: z.string().max(255),
+  description: z.string().max(500).optional(),
+  thumbnail: z.string().url().optional(),
+  tags: z
+    .array(z.object({ id: z.number(), name: z.string(), color: z.string() }))
+    .optional(),
 });
-export type BookmarkFormSchemaType = type.infer<typeof BookmarkFormSchema>;
+
+export type BookmarkFormSchemaType = z.infer<typeof BookmarkFormSchema>;
