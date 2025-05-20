@@ -1,17 +1,18 @@
+import BookmarkForm from "./bookmark-form";
 import Modal from "@/components/ui/modal";
-import { updateInfQueryData } from "@/lib/query.utils";
+import { deleteInfQueryData, updateInfQueryData } from "@/lib/query.utils";
 import { editBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark, BookmarkFormSchemaType } from "@/types/bookmark";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { toast } from "sonner";
-import BookmarkForm from "./bookmark-form";
 
 interface PropsType extends Pick<React.ComponentProps<"button">, "ref"> {
   bookmark: Bookmark;
+  folderSlug: string;
 }
 
-export default function EditBookmark({ bookmark, ref }: PropsType) {
+export default function EditBookmark({ bookmark, ref, folderSlug }: PropsType) {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
 
@@ -24,14 +25,31 @@ export default function EditBookmark({ bookmark, ref }: PropsType) {
       id: number;
       payload: BookmarkFormSchemaType;
     }) => await editBookmark(id, payload),
-    onSuccess: ({ status, data: { data, message } }) => {
+    onSuccess: ({ status, data: { data, message } }, { payload }) => {
       if (status !== 200) {
         toast.error(message || "Failed to add bookmark");
         return;
       }
 
+      const prevBookmark = (
+        queryClient.getQueryData(["bookmarks", folderSlug]) as
+          | { pages: { data: Bookmark[] }[] }
+          | undefined
+      )?.pages.flatMap((bookmarks) =>
+        bookmarks.data.find(({ id }) => id === bookmark.id)
+      )?.[0];
+
+      if (prevBookmark && prevBookmark.folderId !== payload.folderId) {
+        queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
+          ["bookmarks", folderSlug],
+          (old) => deleteInfQueryData(old, bookmark.id, (old) => old.id)
+        );
+
+        return;
+      }
+
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
-        ["bookmarks"],
+        ["bookmarks", folderSlug],
         (old) => updateInfQueryData(old, data, (old) => old.id)
       );
 

@@ -5,7 +5,8 @@ import { useMemo } from "react";
 
 export const useFolderData = (limit?: number) => {
   const { data, isFetching, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["folders", limit],
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: ["folders"],
     queryFn: ({ pageParam }) => fetchFolders({ pageParam, limit }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextCursor,

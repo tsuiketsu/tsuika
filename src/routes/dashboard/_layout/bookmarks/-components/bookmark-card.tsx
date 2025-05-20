@@ -1,3 +1,4 @@
+import useBookmarkContext from "./context/use-context";
 import DeleteBookmark from "@/components/forms/bookmark/bookmark-delete";
 import EditBookmark from "@/components/forms/bookmark/bookmark-edit";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -21,9 +22,11 @@ interface PropsType {
   bookmark: Bookmark;
 }
 
-const BookmarkActions = ({ bookmark }: { bookmark: Bookmark }) => {
+const BookmarkActions = ({ bookmark }: PropsType) => {
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
+
+  const { folderSlug } = useBookmarkContext();
 
   return (
     <React.Fragment>
@@ -36,7 +39,6 @@ const BookmarkActions = ({ bookmark }: { bookmark: Bookmark }) => {
         <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <EditBookmark bookmark={bookmark} />
           <DropdownMenuItem onClick={() => editButtonRef.current?.click()}>
             <SquarePen />
             Edit
@@ -47,7 +49,11 @@ const BookmarkActions = ({ bookmark }: { bookmark: Bookmark }) => {
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteBookmark id={bookmark.id} ref={deleteButtonRef} />
-      <EditBookmark bookmark={bookmark} ref={editButtonRef} />
+      <EditBookmark
+        bookmark={bookmark}
+        folderSlug={folderSlug}
+        ref={editButtonRef}
+      />
     </React.Fragment>
   );
 };
@@ -109,7 +115,7 @@ export default function BookmarkCard({ bookmark }: PropsType) {
               "h-auto py-1.5 text-xs"
             )}
           >
-            <span>{dayjs(bookmark.created_at).format("MMM DD, HH:MM")}</span>
+            <span>{dayjs(bookmark.createdAt).format("MMM DD, HH:MM")}</span>
           </div>
         </div>
       </section>

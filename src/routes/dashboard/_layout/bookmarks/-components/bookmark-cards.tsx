@@ -1,7 +1,11 @@
-import type { Bookmark } from "@/types/bookmark";
 import BookmarkCard from "./bookmark-card";
+import type { Bookmark } from "@/types/bookmark";
 
-const BookmarkCards = ({ bookmarks }: { bookmarks: Bookmark[] }) =>
+interface PropsType {
+  bookmarks: Bookmark[];
+}
+
+const BookmarkCards = ({ bookmarks }: PropsType) =>
   bookmarks.map((bookmark) => (
     <BookmarkCard key={bookmark.id} bookmark={bookmark} />
   ));

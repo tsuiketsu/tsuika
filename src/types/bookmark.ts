@@ -2,17 +2,18 @@ import { z } from "zod";
 
 export interface Bookmark {
   id: number;
-  user_id: string;
+  userId: string;
+  folderId: number;
   title: string;
   description?: string;
   url: string;
   favicon_url?: string;
   thumbnail?: string;
-  is_pinned: boolean;
-  is_favourite: boolean;
-  is_archived: boolean;
-  created_at: Date | string;
-  updated_at: Date | string;
+  isPinned: boolean;
+  isFavourite: boolean;
+  isArchived: boolean;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }
 
 export const BookmarkFormSchema = z.object({

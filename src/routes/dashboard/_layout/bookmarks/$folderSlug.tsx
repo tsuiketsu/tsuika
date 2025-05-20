@@ -1,4 +1,5 @@
 import BookmarkSkeleton from "./-components/bookmark-skeleton";
+import BookmarkContextProvider from "./-components/context/context-provider";
 import { useInfiniteScrollObserver } from "@/hooks/infinite-scroll-observer";
 import { fetchBookmarks } from "@/queries/bookmark.queries";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -40,9 +41,11 @@ function Bookmarks() {
   return (
     <div className="@container/dash relative size-full">
       <div className="grid w-full auto-rows-min gap-4 @2xl/dash:grid-cols-2 @5xl/dash:grid-cols-3 @7xl/dash:grid-cols-4">
-        <Suspense fallback={<BookmarkSkeleton />}>
-          <BookmarkCards bookmarks={bookmarks} />
-        </Suspense>
+        <BookmarkContextProvider folderSlug={folderSlug}>
+          <Suspense fallback={<BookmarkSkeleton />}>
+            <BookmarkCards bookmarks={bookmarks} />
+          </Suspense>
+        </BookmarkContextProvider>
         {Array.from({ length: isFetching ? 16 : 0 }).map((_, idx) => (
           <BookmarkSkeleton key={`bm-skleton-${idx}`} />
         ))}
