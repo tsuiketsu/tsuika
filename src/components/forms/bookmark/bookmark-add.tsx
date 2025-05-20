@@ -1,3 +1,4 @@
+import BookmarkForm from "./bookmark-form";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import { insertInfQueryData } from "@/lib/query.utils";
@@ -7,7 +8,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { BookmarkPlus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import BookmarkForm from "./bookmark-form";
 
 export default function AddBookmark() {
   const [open, setOpen] = useState(false);
@@ -24,7 +24,7 @@ export default function AddBookmark() {
 
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
         ["bookmarks"],
-        (old) => insertInfQueryData(old, data),
+        (old) => insertInfQueryData(old, data)
       );
 
       toast.success(message || "Successfully added bookmark");
@@ -34,7 +34,12 @@ export default function AddBookmark() {
 
   return (
     <>
-      <Button variant="ghost" className="ml-auto" onClick={() => setOpen(true)}>
+      <Button
+        variant="outline"
+        size="icon"
+        className="ml-auto"
+        onClick={() => setOpen(true)}
+      >
         <BookmarkPlus />
       </Button>
       <Modal
