@@ -9,12 +9,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { deleteInfQueryData } from "@/lib/query.utils";
-import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+import { deleteTag } from "@/queries/tags.queries";
 import type { Tag } from "@/types/tag";
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { deleteTag } from "@/queries/tags.queries";
 
 export default function Deletetag({
   id,
@@ -49,18 +49,19 @@ export default function Deletetag({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            Deleting this tag will remove it from{" "}
+            <b className="text-destructive">all associated bookmarks</b>. This
+            action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel className="w-24">Cancel</AlertDialogCancel>
           <Button
+            variant="destructive"
             onClick={() => mutation.mutate({ id })}
             isLoading={mutation.isPending}
-            className="w-24"
           >
-            Contine
+            Yes, I&apos;m sure
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

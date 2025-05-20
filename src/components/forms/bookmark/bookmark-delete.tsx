@@ -50,18 +50,18 @@ export default function DeleteBookmark({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            This action is irreversible. The selected bookmark will be
+            permanently deleted from our servers
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel className="w-24">Cancel</AlertDialogCancel>
           <Button
+            variant="destructive"
             onClick={() => mutation.mutate({ id })}
             isLoading={mutation.isPending}
-            className="w-24"
           >
-            Contine
+            Yes, I&apos;m sure
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

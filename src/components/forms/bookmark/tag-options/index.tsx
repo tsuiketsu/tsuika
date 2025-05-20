@@ -11,7 +11,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { searchTagsByName } from "@/queries/tags.queries";
 import type { BookmarkFormSchemaType } from "@/types/bookmark";
 import { useQuery } from "@tanstack/react-query";
-import { invariant } from "@tanstack/react-router";
 import { useDebounce } from "@uidotdev/usehooks";
 import clsx from "clsx";
 import { LoaderCircle } from "lucide-react";
