@@ -11,10 +11,14 @@ const baseQuery = `${options.ApiBaseUrl}/api/v1/bookmarks`;
 
 export const fetchBookmarks = async ({
   pageParam,
+  folderSlug,
 }: {
   pageParam: number;
+  folderSlug?: string;
 }): PaginatedResponse<Bookmark[]> => {
-  const query = `${baseQuery}?page=${pageParam}&limit=16`;
+  const query = !folderSlug
+    ? `${baseQuery}?page=${pageParam}&limit=16`
+    : `${baseQuery}/${folderSlug}?page=${pageParam}&limit=16`;
 
   const {
     data: { data: bookmarks, pagination },

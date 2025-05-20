@@ -63,7 +63,7 @@ export default function FolderPicker({ value, onChange }: PropsType) {
             account and remove your data from our servers.
           </DialogDescription>
         </DialogHeader>
-        <div className="bg-secondary/20 grid h-48 space-y-1 overflow-y-auto rounded-lg border p-2">
+        <div className="bg-secondary/20 flex h-48 flex-col space-y-1 overflow-y-auto rounded-lg border p-2">
           {folders.map((folder, idx) => (
             <Button
               variant={selectedId === folder.id ? "default" : "ghost"}

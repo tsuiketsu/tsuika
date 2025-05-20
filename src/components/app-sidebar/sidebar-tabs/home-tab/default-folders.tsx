@@ -11,17 +11,17 @@ import { Archive, Inbox, Star } from "lucide-react";
 const items = [
   {
     title: "Favorites",
-    url: "#",
+    url: "favorites",
     icon: Star,
   },
   {
     title: "Unsorted",
-    url: "#",
+    url: "unsorted",
     icon: Inbox,
   },
   {
     title: "Archived",
-    url: "#",
+    url: "archived",
     icon: Archive,
   },
 ];
@@ -34,7 +34,13 @@ export default function DefaultFolders() {
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
-                <Link to={item.url}>
+                <Link
+                  to={"/dashboard/bookmarks/$folderSlug"}
+                  params={{
+                    folderSlug: item.url,
+                  }}
+                  className="[&.active]:bg-secondary active:scale-97"
+                >
                   <item.icon />
                   <span>{item.title}</span>
                 </Link>

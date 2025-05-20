@@ -2,11 +2,12 @@ import { z } from "zod";
 
 export type Folder = {
   id: number;
-  user_id?: string;
+  userId?: string;
   name: string;
+  slug: string;
   description: string;
-  created_at: Date;
-  updated_at: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export const FolderInsertSchema = z.object({

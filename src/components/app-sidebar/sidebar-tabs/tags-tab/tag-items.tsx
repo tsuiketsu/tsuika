@@ -1,7 +1,7 @@
-import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
+import TagItem from "./tag-item";
+import { SidebarMenu } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Tag } from "@/types/tag";
-import TagItem from "./tag-item";
 
 interface PropsType {
   tags: Tag[];
@@ -16,7 +16,7 @@ export default function TagItems({ tags, isFetching }: PropsType) {
       ))}
       {isFetching &&
         Array.from({ length: 8 }).map((_, idx) => (
-          <Skeleton key={`tag-ske-${idx}`} className="w-full h-6 rounded" />
+          <Skeleton key={`tag-ske-${idx}`} className="h-6 w-full rounded" />
         ))}
     </SidebarMenu>
   );

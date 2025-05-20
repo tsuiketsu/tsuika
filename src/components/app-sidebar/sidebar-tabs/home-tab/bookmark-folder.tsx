@@ -18,6 +18,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { Folder } from "@/types/folder";
+import { Link } from "@tanstack/react-router";
 import { MoreHorizontal } from "lucide-react";
 import React, { useRef } from "react";
 
@@ -56,7 +57,13 @@ const BookmarkFolder = ({ folder }: { folder: Folder }) => {
           isDisabled={!folder.description}
         >
           <SidebarMenuButton asChild>
-            <span>{folder.name}</span>
+            <Link
+              to={`/dashboard/bookmarks/$folderSlug`}
+              className="[&.active]:bg-secondary active:scale-97"
+              params={{ folderSlug: folder.slug }}
+            >
+              <span>{folder.name}</span>
+            </Link>
           </SidebarMenuButton>
         </FolderTooltip>
         <DropdownMenu>

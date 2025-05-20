@@ -1,22 +1,30 @@
+import BookmarkSkeleton from "./-components/bookmark-skeleton";
 import { useInfiniteScrollObserver } from "@/hooks/infinite-scroll-observer";
 import { fetchBookmarks } from "@/queries/bookmark.queries";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense, lazy, useMemo } from "react";
-import BookmarkSkeleton from "./-components/bookmark-skeleton";
 
 const BookmarkCards = lazy(() => import("./-components/bookmark-cards"));
 
-export const Route = createFileRoute("/dashboard/_layout/bookmarks/")({
+export const Route = createFileRoute(
+  "/dashboard/_layout/bookmarks/$folderSlug"
+)({
   component: Bookmarks,
+  loader: async ({ params }) => {
+    return params;
+  },
 });
 
 function Bookmarks() {
-  const { data, isFetching, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["bookmarks"],
-    queryFn: ({ pageParam }) => fetchBookmarks({ pageParam }),
+  const folderSlug = Route.useLoaderData().folderSlug;
+
+  const { data, fetchNextPage, isFetching } = useInfiniteQuery({
+    queryKey: ["bookmarks", folderSlug],
+    queryFn: ({ pageParam }) => fetchBookmarks({ pageParam, folderSlug }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
+    retry: false,
   });
 
   const sneakyRef = useInfiniteScrollObserver(fetchNextPage, isFetching);
@@ -30,8 +38,8 @@ function Bookmarks() {
   }
 
   return (
-    <div className="@container/dash size-full relative">
-      <div className="w-full grid gap-4 @7xl/dash:grid-cols-4 @5xl/dash:grid-cols-3 @2xl/dash:grid-cols-2 grid-flow auto-rows-min">
+    <div className="@container/dash relative size-full">
+      <div className="grid w-full auto-rows-min gap-4 @2xl/dash:grid-cols-2 @5xl/dash:grid-cols-3 @7xl/dash:grid-cols-4">
         <Suspense fallback={<BookmarkSkeleton />}>
           <BookmarkCards bookmarks={bookmarks} />
         </Suspense>
