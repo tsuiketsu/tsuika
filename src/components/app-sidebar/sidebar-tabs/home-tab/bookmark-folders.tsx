@@ -1,3 +1,4 @@
+import BookmarkFolder from "./bookmark-folder";
 import {
   Collapsible,
   CollapsibleContent,
@@ -8,37 +9,28 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Link } from "@tanstack/react-router";
-import { BookA, ChevronDown, Cpu, Eclipse, Images } from "lucide-react";
-
-const items = [
-  {
-    title: "Hacker News",
-    url: "#",
-    icon: Cpu,
-  },
-  {
-    title: "Research",
-    url: "#",
-    icon: BookA,
-  },
-  {
-    title: "Movies & Albums",
-    url: "#",
-    icon: Images,
-  },
-
-  {
-    title: "UI Components",
-    url: "#",
-    icon: Eclipse,
-  },
-];
+import { fetchAllFolders } from "@/queries/folder.queries";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { ChevronDown } from "lucide-react";
+import { useMemo } from "react";
 
 export default function BookmarkFolders() {
+  const { data, isFetching } = useInfiniteQuery({
+    queryKey: ["folders"],
+    queryFn: fetchAllFolders,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
+
+  const folders = useMemo(() => {
+    return data?.pages.flatMap(({ data }) => data) ?? [];
+  }, [data]);
+
+  if (!isFetching && data?.pages.length === 0) {
+    return null;
+  }
+
   return (
     <Collapsible defaultOpen className="group/collapsible">
       <SidebarGroup>
@@ -51,15 +43,8 @@ export default function BookmarkFolders() {
         <CollapsibleContent>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link to={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+              {folders.map((folder) => (
+                <BookmarkFolder key={`folder-${folder.id}`} folder={folder} />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>

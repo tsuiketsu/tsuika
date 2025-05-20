@@ -1,10 +1,15 @@
-import { Button } from "@/components/ui/button";
-import { SidebarContent, SidebarHeader } from "@/components/ui/sidebar";
-import { Hash, Home } from "lucide-react";
-import { useState } from "react";
 import HomeTab from "./home-tab";
 import TagsTab from "./tags-tab";
-import InsertTag from "@/components/forms/tag/insert-tag";
+import { Button } from "@/components/ui/button";
+import { SidebarContent, SidebarHeader } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Hash, Home } from "lucide-react";
+import { lazy, Suspense, useState } from "react";
+
+const InsertFolder = lazy(
+  () => import("@/components/forms/folder/insert-folder")
+);
+const InsertTag = lazy(() => import("@/components/forms/tag/insert-tag"));
 
 const tabs = [
   { label: "home", icon: Home },
@@ -19,12 +24,26 @@ const SelectedTab = ({ tabIndex }: { tabIndex: number }) => {
   return <HomeTab />;
 };
 
+const ButtonFallback = () => (
+  <Skeleton className="size-6 rounded-sm bg-black/10" />
+);
+
 const ActionButton = ({ tabIndex }: { tabIndex: number }) => {
-  if (tabIndex === 1) {
-    return <InsertTag />;
+  if (tabIndex === 0) {
+    return (
+      <Suspense fallback={<ButtonFallback />}>
+        <InsertFolder />
+      </Suspense>
+    );
   }
 
-  return null;
+  if (tabIndex === 1) {
+    return (
+      <Suspense fallback={<ButtonFallback />}>
+        <InsertTag />
+      </Suspense>
+    );
+  }
 };
 
 export default function SidebarTabs() {
