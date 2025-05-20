@@ -9,12 +9,14 @@ import axios from "axios";
 
 export const baseQuery = `${options.ApiBaseUrl}/api/v1/folders`;
 
-export const fetchAllFolders = async ({
+export const fetchFolders = async ({
   pageParam,
+  limit = 30,
 }: {
   pageParam: number;
+  limit?: number;
 }): PaginatedResponse<Folder[]> => {
-  const query = `${baseQuery}?page=${pageParam}&limit=30&orderBy=desc`;
+  const query = `${baseQuery}?page=${pageParam}&limit=${limit}&orderBy=desc`;
 
   const {
     data: { data: folders, pagination },

@@ -16,6 +16,7 @@ export interface Bookmark {
 }
 
 export const BookmarkFormSchema = z.object({
+  folderId: z.number().optional(),
   url: z.string().url(),
   title: z.string().max(255),
   description: z.string().max(500).optional(),

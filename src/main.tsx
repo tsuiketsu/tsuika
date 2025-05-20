@@ -27,7 +27,7 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
 
   // FIX: Make this dynamic later
-  // document.documentElement.classList.add("dark");
+  document.documentElement.classList.add("dark");
 
   root.render(
     <StrictMode>

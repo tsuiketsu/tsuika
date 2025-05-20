@@ -10,22 +10,11 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
 } from "@/components/ui/sidebar";
-import { fetchAllFolders } from "@/queries/folder.queries";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useFolderData } from "@/hooks/user-folder.hook";
 import { ChevronDown } from "lucide-react";
-import { useMemo } from "react";
 
 export default function BookmarkFolders() {
-  const { data, isFetching } = useInfiniteQuery({
-    queryKey: ["folders"],
-    queryFn: fetchAllFolders,
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-  });
-
-  const folders = useMemo(() => {
-    return data?.pages.flatMap(({ data }) => data) ?? [];
-  }, [data]);
+  const { data, folders, isFetching } = useFolderData();
 
   if (!isFetching && data?.pages.length === 0) {
     return null;

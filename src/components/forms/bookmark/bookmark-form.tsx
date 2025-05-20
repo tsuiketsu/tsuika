@@ -1,3 +1,4 @@
+import FolderOptions from "./folder-options";
 import TagOptions from "./tag-options";
 import {
   Form,
@@ -39,6 +40,7 @@ export default function BookmarkForm({ data, onSubmit }: PropsType) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4"
       >
+        <FolderOptions control={form.control} />
         <FormField
           control={form.control}
           name="url"

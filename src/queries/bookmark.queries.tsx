@@ -4,8 +4,7 @@ import type {
   PaginatedSuccessResponse,
   SuccessResponse,
 } from "@/types";
-import type { Bookmark, BookmarkFormSchema } from "@/types/bookmark";
-import type { type } from "arktype";
+import type { Bookmark, BookmarkFormSchemaType } from "@/types/bookmark";
 import axios from "axios";
 
 const baseQuery = `${options.ApiBaseUrl}/api/v1/bookmarks`;
@@ -34,9 +33,7 @@ export const fetchBookmarks = async ({
   };
 };
 
-export const addBookmark = async (
-  payload: type.infer<typeof BookmarkFormSchema>
-) => {
+export const addBookmark = async (payload: BookmarkFormSchemaType) => {
   return await axios<SuccessResponse<Bookmark>>({
     method: "post",
     url: baseQuery,
@@ -47,7 +44,7 @@ export const addBookmark = async (
 
 export const editBookmark = async (
   id: number,
-  payload: type.infer<typeof BookmarkFormSchema>
+  payload: BookmarkFormSchemaType
 ) => {
   return await axios<SuccessResponse<Bookmark>>({
     method: "put",
