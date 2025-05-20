@@ -1,4 +1,3 @@
-import { SuggestionBoxFallback } from "./suggestion-box";
 import {
   FormControl,
   FormField,
@@ -17,8 +16,17 @@ import { LoaderCircle } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
 import type { Control } from "react-hook-form";
 
+// Lazy Imports
 const TagList = lazy(() => import("./tag-list"));
 const SuggestionBox = lazy(() => import("./suggestion-box"));
+
+export const SuggestionBoxFallback = () => (
+  <div className="bg-card absolute w-full space-y-2 rounded-lg border p-2">
+    {Array.from({ length: 4 }).map((_, idx) => (
+      <Skeleton key={`tag-sugg-ske-${idx}`} className="h-8 w-full" />
+    ))}
+  </div>
+);
 
 interface PropsType {
   control: Control<BookmarkFormSchemaType>;

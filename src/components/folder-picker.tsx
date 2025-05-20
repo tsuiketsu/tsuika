@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -57,11 +56,7 @@ export default function FolderPicker({ value, onChange }: PropsType) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Pick a folder</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription>
+          <DialogTitle>Pick Folder</DialogTitle>
         </DialogHeader>
         <div className="bg-secondary/20 flex h-48 flex-col space-y-1 overflow-y-auto rounded-lg border p-2">
           {folders.map((folder, idx) => (

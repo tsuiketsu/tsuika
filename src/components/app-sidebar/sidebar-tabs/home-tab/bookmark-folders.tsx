@@ -9,12 +9,26 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useFolderData } from "@/hooks/user-folder.hook";
 import { ChevronDown } from "lucide-react";
 
+const BookmarkFoldersSkeletons = ({ isEnabled }: { isEnabled: boolean }) => {
+  if (!isEnabled) {
+    return null;
+  }
+
+  return Array.from({ length: 22 }).map((_, idx) => (
+    <SidebarMenuItem key={`sidebar-folder-ske-${idx}`}>
+      <Skeleton className="h-8 w-full" />
+    </SidebarMenuItem>
+  ));
+};
+
 export default function BookmarkFolders() {
-  const { data, folders, isFetching } = useFolderData();
+  const { ref: sneakyRef, data, folders, isFetching } = useFolderData(30);
 
   if (!isFetching && data?.pages.length === 0) {
     return null;
@@ -35,6 +49,8 @@ export default function BookmarkFolders() {
               {folders.map((folder) => (
                 <BookmarkFolder key={`folder-${folder.id}`} folder={folder} />
               ))}
+              <BookmarkFoldersSkeletons isEnabled={isFetching} />
+              <span ref={sneakyRef} className="h-0.5" />
             </SidebarMenu>
           </SidebarGroupContent>
         </CollapsibleContent>

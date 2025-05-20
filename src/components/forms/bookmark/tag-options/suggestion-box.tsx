@@ -1,5 +1,4 @@
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { cn, type Setter } from "@/lib/utils";
 import type { BookmarkFormSchemaType } from "@/types/bookmark";
 import type { Tag } from "@/types/tag";
@@ -13,14 +12,6 @@ interface PropsType {
   tags: Tag[] | undefined;
   setQuery: Setter<string>;
 }
-
-export const SuggestionBoxFallback = () => (
-  <div className="bg-card absolute w-full space-y-2 rounded-lg border p-2">
-    {Array.from({ length: 4 }).map((_, idx) => (
-      <Skeleton key={`tag-sugg-ske-${idx}`} className="h-8 w-full" />
-    ))}
-  </div>
-);
 
 const SuggestionBox = ({ field, tags, setQuery }: PropsType) => (
   <ul className="bg-card absolute max-h-45 w-full space-y-2 overflow-y-auto rounded-lg border p-1 shadow-xl">
