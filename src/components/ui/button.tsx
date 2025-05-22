@@ -1,5 +1,5 @@
+import { SvgSpinners3DotsScale } from "../icons/dots-loader";
 import { cn } from "@/lib/utils";
-import { Icon } from "@iconify/react";
 import { Slot } from "@radix-ui/react-slot";
 import { type VariantProps, cva } from "class-variance-authority";
 import type * as React from "react";
@@ -33,7 +33,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 function Button({
@@ -57,7 +57,7 @@ function Button({
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     >
-      {isLoading ? <Icon icon="svg-spinners:3-dots-scale" /> : children}
+      {isLoading ? <SvgSpinners3DotsScale /> : children}
     </Comp>
   );
 }
