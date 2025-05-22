@@ -28,3 +28,5 @@ export const BookmarkFormSchema = z.object({
 });
 
 export type BookmarkFormSchemaType = z.infer<typeof BookmarkFormSchema>;
+
+export type CategoryType = "tag" | "folder";

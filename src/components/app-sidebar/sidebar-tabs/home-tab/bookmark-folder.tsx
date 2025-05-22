@@ -58,9 +58,9 @@ const BookmarkFolder = ({ folder }: { folder: Folder }) => {
         >
           <SidebarMenuButton asChild>
             <Link
-              to={`/dashboard/bookmarks/$folderSlug`}
+              to="/dashboard/bookmarks/$slug"
               className="[&.active]:bg-secondary active:scale-97"
-              params={{ folderSlug: folder.slug }}
+              params={{ slug: `folder/${folder.slug}` }}
             >
               <span>{folder.name}</span>
             </Link>

@@ -35,9 +35,9 @@ export default function DefaultFolders() {
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
                 <Link
-                  to={"/dashboard/bookmarks/$folderSlug"}
+                  to="/dashboard/bookmarks/$slug"
                   params={{
-                    folderSlug: item.url,
+                    slug: `folder/${item.url}`,
                   }}
                   className="[&.active]:bg-secondary active:scale-97"
                 >

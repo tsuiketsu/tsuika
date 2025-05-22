@@ -26,7 +26,7 @@ const BookmarkActions = ({ bookmark }: PropsType) => {
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
 
-  const { folderSlug } = useBookmarkContext();
+  const { query } = useBookmarkContext();
 
   return (
     <React.Fragment>
@@ -49,11 +49,7 @@ const BookmarkActions = ({ bookmark }: PropsType) => {
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteBookmark id={bookmark.id} ref={deleteButtonRef} />
-      <EditBookmark
-        bookmark={bookmark}
-        folderSlug={folderSlug}
-        ref={editButtonRef}
-      />
+      <EditBookmark bookmark={bookmark} query={query} ref={editButtonRef} />
     </React.Fragment>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 
-interface BookmarkContextType {
-  folderSlug: string;
+export interface BookmarkContextType {
+  query: string;
 }
 
 const BookmarkContext = React.createContext<BookmarkContextType | null>(null);

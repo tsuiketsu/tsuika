@@ -1,15 +1,12 @@
-import BookmarkContext from "./bookmark-context";
+import BookmarkContext, { type BookmarkContextType } from "./bookmark-context";
 import React from "react";
 
 const BookmarkContextProvider = ({
   children,
-  folderSlug,
-}: {
-  children: React.ReactNode;
-  folderSlug: string;
-}) => {
+  query,
+}: BookmarkContextType & { children: React.ReactNode }) => {
   return (
-    <BookmarkContext.Provider value={{ folderSlug }}>
+    <BookmarkContext.Provider value={{ query }}>
       {children}
     </BookmarkContext.Provider>
   );

@@ -11,7 +11,7 @@ import { Route as authAuthRegisterImport } from "./routes/(auth)/_auth/register"
 
 import { Route as rootRoute } from "./routes/__root";
 import { Route as DashboardLayoutImport } from "./routes/dashboard/_layout";
-import { Route as DashboardLayoutBookmarksFolderSlugImport } from "./routes/dashboard/_layout/bookmarks/$folderSlug";
+import { Route as DashboardLayoutBookmarksSlugImport } from "./routes/dashboard/_layout/bookmarks/$slug";
 import { Route as DashboardLayoutIndexImport } from "./routes/dashboard/_layout/index";
 import { Route as IndexImport } from "./routes/index";
 import { createFileRoute } from "@tanstack/react-router";
@@ -68,10 +68,10 @@ const authAuthLoginRoute = authAuthLoginImport.update({
   getParentRoute: () => authAuthRoute,
 } as any);
 
-const DashboardLayoutBookmarksFolderSlugRoute =
-  DashboardLayoutBookmarksFolderSlugImport.update({
-    id: "/bookmarks/$folderSlug",
-    path: "/bookmarks/$folderSlug",
+const DashboardLayoutBookmarksSlugRoute =
+  DashboardLayoutBookmarksSlugImport.update({
+    id: "/bookmarks/$slug",
+    path: "/bookmarks/$slug",
     getParentRoute: () => DashboardLayoutRoute,
   } as any);
 
@@ -135,11 +135,11 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof DashboardLayoutIndexImport;
       parentRoute: typeof DashboardLayoutImport;
     };
-    "/dashboard/_layout/bookmarks/$folderSlug": {
-      id: "/dashboard/_layout/bookmarks/$folderSlug";
-      path: "/bookmarks/$folderSlug";
-      fullPath: "/dashboard/bookmarks/$folderSlug";
-      preLoaderRoute: typeof DashboardLayoutBookmarksFolderSlugImport;
+    "/dashboard/_layout/bookmarks/$slug": {
+      id: "/dashboard/_layout/bookmarks/$slug";
+      path: "/bookmarks/$slug";
+      fullPath: "/dashboard/bookmarks/$slug";
+      preLoaderRoute: typeof DashboardLayoutBookmarksSlugImport;
       parentRoute: typeof DashboardLayoutImport;
     };
   }
@@ -173,13 +173,12 @@ const authRouteWithChildren = authRoute._addFileChildren(authRouteChildren);
 
 interface DashboardLayoutRouteChildren {
   DashboardLayoutIndexRoute: typeof DashboardLayoutIndexRoute;
-  DashboardLayoutBookmarksFolderSlugRoute: typeof DashboardLayoutBookmarksFolderSlugRoute;
+  DashboardLayoutBookmarksSlugRoute: typeof DashboardLayoutBookmarksSlugRoute;
 }
 
 const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardLayoutIndexRoute: DashboardLayoutIndexRoute,
-  DashboardLayoutBookmarksFolderSlugRoute:
-    DashboardLayoutBookmarksFolderSlugRoute,
+  DashboardLayoutBookmarksSlugRoute: DashboardLayoutBookmarksSlugRoute,
 };
 
 const DashboardLayoutRouteWithChildren = DashboardLayoutRoute._addFileChildren(
@@ -204,7 +203,7 @@ export interface FileRoutesByFullPath {
   "/login": typeof authAuthLoginRoute;
   "/register": typeof authAuthRegisterRoute;
   "/dashboard/": typeof DashboardLayoutIndexRoute;
-  "/dashboard/bookmarks/$folderSlug": typeof DashboardLayoutBookmarksFolderSlugRoute;
+  "/dashboard/bookmarks/$slug": typeof DashboardLayoutBookmarksSlugRoute;
 }
 
 export interface FileRoutesByTo {
@@ -212,7 +211,7 @@ export interface FileRoutesByTo {
   "/dashboard": typeof DashboardLayoutIndexRoute;
   "/login": typeof authAuthLoginRoute;
   "/register": typeof authAuthRegisterRoute;
-  "/dashboard/bookmarks/$folderSlug": typeof DashboardLayoutBookmarksFolderSlugRoute;
+  "/dashboard/bookmarks/$slug": typeof DashboardLayoutBookmarksSlugRoute;
 }
 
 export interface FileRoutesById {
@@ -225,7 +224,7 @@ export interface FileRoutesById {
   "/(auth)/_auth/login": typeof authAuthLoginRoute;
   "/(auth)/_auth/register": typeof authAuthRegisterRoute;
   "/dashboard/_layout/": typeof DashboardLayoutIndexRoute;
-  "/dashboard/_layout/bookmarks/$folderSlug": typeof DashboardLayoutBookmarksFolderSlugRoute;
+  "/dashboard/_layout/bookmarks/$slug": typeof DashboardLayoutBookmarksSlugRoute;
 }
 
 export interface FileRouteTypes {
@@ -236,14 +235,14 @@ export interface FileRouteTypes {
     | "/login"
     | "/register"
     | "/dashboard/"
-    | "/dashboard/bookmarks/$folderSlug";
+    | "/dashboard/bookmarks/$slug";
   fileRoutesByTo: FileRoutesByTo;
   to:
     | "/"
     | "/dashboard"
     | "/login"
     | "/register"
-    | "/dashboard/bookmarks/$folderSlug";
+    | "/dashboard/bookmarks/$slug";
   id:
     | "__root__"
     | "/"
@@ -254,7 +253,7 @@ export interface FileRouteTypes {
     | "/(auth)/_auth/login"
     | "/(auth)/_auth/register"
     | "/dashboard/_layout/"
-    | "/dashboard/_layout/bookmarks/$folderSlug";
+    | "/dashboard/_layout/bookmarks/$slug";
   fileRoutesById: FileRoutesById;
 }
 
@@ -313,7 +312,7 @@ export const routeTree = rootRoute
       "parent": "/dashboard",
       "children": [
         "/dashboard/_layout/",
-        "/dashboard/_layout/bookmarks/$folderSlug"
+        "/dashboard/_layout/bookmarks/$slug"
       ]
     },
     "/(auth)/_auth/login": {
@@ -328,8 +327,8 @@ export const routeTree = rootRoute
       "filePath": "dashboard/_layout/index.tsx",
       "parent": "/dashboard/_layout"
     },
-    "/dashboard/_layout/bookmarks/$folderSlug": {
-      "filePath": "dashboard/_layout/bookmarks/$folderSlug.tsx",
+    "/dashboard/_layout/bookmarks/$slug": {
+      "filePath": "dashboard/_layout/bookmarks/$slug.tsx",
       "parent": "/dashboard/_layout"
     }
   }

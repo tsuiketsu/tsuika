@@ -8,9 +8,7 @@ import { Suspense, lazy, useMemo } from "react";
 
 const BookmarkCards = lazy(() => import("./-components/bookmark-cards"));
 
-export const Route = createFileRoute(
-  "/dashboard/_layout/bookmarks/$folderSlug"
-)({
+export const Route = createFileRoute("/dashboard/_layout/bookmarks/$slug")({
   component: Bookmarks,
   loader: async ({ params }) => {
     return params;
@@ -18,11 +16,11 @@ export const Route = createFileRoute(
 });
 
 function Bookmarks() {
-  const folderSlug = Route.useLoaderData().folderSlug;
+  const slug = Route.useLoaderData().slug;
 
   const { data, fetchNextPage, isFetching } = useInfiniteQuery({
-    queryKey: ["bookmarks", folderSlug],
-    queryFn: ({ pageParam }) => fetchBookmarks({ pageParam, folderSlug }),
+    queryKey: ["bookmarks", slug],
+    queryFn: ({ pageParam }) => fetchBookmarks({ pageParam, slug }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     retry: false,
@@ -41,7 +39,7 @@ function Bookmarks() {
   return (
     <div className="@container/dash relative size-full">
       <div className="grid w-full auto-rows-min gap-4 @2xl/dash:grid-cols-2 @5xl/dash:grid-cols-3 @7xl/dash:grid-cols-4">
-        <BookmarkContextProvider folderSlug={folderSlug}>
+        <BookmarkContextProvider query={slug}>
           <Suspense fallback={<BookmarkSkeleton />}>
             <BookmarkCards bookmarks={bookmarks} />
           </Suspense>

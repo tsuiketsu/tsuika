@@ -13,20 +13,34 @@ import {
 } from "@/components/ui/sidebar";
 import type { Tag } from "@/types/tag";
 import { getTextColor } from "@/utils";
+import { useNavigate } from "@tanstack/react-router";
 import { Hash, MoreVertical } from "lucide-react";
 import { useRef } from "react";
 
 const TagItem = ({ tag }: { tag: Tag }) => {
   const editButtonRef = useRef<HTMLButtonElement>(null);
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
+  const navigate = useNavigate();
+
+  const onClick = (tag: string) => (_: React.MouseEvent) => {
+    navigate({
+      to: "/dashboard/bookmarks/$slug",
+      params: {
+        slug: `tag/${tag}`,
+      },
+    });
+  };
 
   return (
     <>
       <SidebarMenuItem>
         <SidebarMenuButton asChild className="pl-1">
-          <div className="inline-flex items-center gap-1.5">
+          <div
+            className="inline-flex items-center gap-1.5"
+            onClick={onClick(tag.name)}
+          >
             <span
-              className="p-1 rounded-sm bg-red-500"
+              className="rounded-sm bg-red-500 p-1"
               style={{
                 backgroundColor: tag.color,
               }}

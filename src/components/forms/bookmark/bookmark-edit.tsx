@@ -9,10 +9,10 @@ import { toast } from "sonner";
 
 interface PropsType extends Pick<React.ComponentProps<"button">, "ref"> {
   bookmark: Bookmark;
-  folderSlug: string;
+  query: string;
 }
 
-export default function EditBookmark({ bookmark, ref, folderSlug }: PropsType) {
+export default function EditBookmark({ bookmark, ref, query }: PropsType) {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
 
@@ -32,7 +32,7 @@ export default function EditBookmark({ bookmark, ref, folderSlug }: PropsType) {
       }
 
       const prevBookmark = (
-        queryClient.getQueryData(["bookmarks", folderSlug]) as
+        queryClient.getQueryData(["bookmarks", query]) as
           | { pages: { data: Bookmark[] }[] }
           | undefined
       )?.pages.flatMap((bookmarks) =>
@@ -41,7 +41,7 @@ export default function EditBookmark({ bookmark, ref, folderSlug }: PropsType) {
 
       if (prevBookmark && prevBookmark.folderId !== payload.folderId) {
         queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
-          ["bookmarks", folderSlug],
+          ["bookmarks", query],
           (old) => deleteInfQueryData(old, bookmark.id, (old) => old.id)
         );
 
@@ -49,7 +49,7 @@ export default function EditBookmark({ bookmark, ref, folderSlug }: PropsType) {
       }
 
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
-        ["bookmarks", folderSlug],
+        ["bookmarks", query],
         (old) => updateInfQueryData(old, data, (old) => old.id)
       );
 
