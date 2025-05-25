@@ -9,7 +9,11 @@ import { BookmarkPlus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function AddBookmark() {
+interface PropsType {
+  query: string;
+}
+
+export default function AddBookmark({ query }: PropsType) {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
 
@@ -23,7 +27,7 @@ export default function AddBookmark() {
       }
 
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
-        ["bookmarks"],
+        ["bookmarks", query],
         (old) => insertInfQueryData(old, data)
       );
 

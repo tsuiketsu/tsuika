@@ -13,13 +13,16 @@ import { deleteBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark } from "@/types/bookmark";
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useState, type RefObject } from "react";
 import { toast } from "sonner";
 
-export default function DeleteBookmark({
-  id,
-  ref,
-}: Pick<React.ComponentProps<"button">, "ref"> & { id: number }) {
+interface PropsType {
+  id: number;
+  ref: RefObject<HTMLButtonElement | null>;
+  query: string;
+}
+
+export default function DeleteBookmark({ id, ref, query }: PropsType) {
   const [open, setOpen] = useState(false);
 
   const queryClient = useQueryClient();
@@ -34,7 +37,7 @@ export default function DeleteBookmark({
       }
 
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
-        ["bookmarks"],
+        ["bookmarks", query],
         (old) => deleteInfQueryData(old, id, (old) => old.id)
       );
 

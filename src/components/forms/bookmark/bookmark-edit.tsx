@@ -39,7 +39,12 @@ export default function EditBookmark({ bookmark, ref, query }: PropsType) {
         bookmarks.data.find(({ id }) => id === bookmark.id)
       )?.[0];
 
-      if (prevBookmark && prevBookmark.folderId !== payload.folderId) {
+      if (
+        prevBookmark &&
+        (query === "folder/unsorted"
+          ? payload.folderId
+          : prevBookmark.folderId !== payload.folderId)
+      ) {
         queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
           ["bookmarks", query],
           (old) => deleteInfQueryData(old, bookmark.id, (old) => old.id)
