@@ -32,7 +32,7 @@ const BookmarkActions = ({ bookmark }: PropsType) => {
     <React.Fragment>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className="group absolute top-4 right-4 h-7 rounded-full bg-white/80 text-black shadow-xl hover:bg-white">
+          <Button className="group absolute top-4 right-4 z-10 h-7 rounded-full bg-white/80 text-black shadow-xl hover:bg-white">
             More <Ellipsis />
           </Button>
         </DropdownMenuTrigger>
@@ -68,12 +68,12 @@ export default function BookmarkCard({ bookmark }: PropsType) {
 
   return (
     <div className="bg-card group @container relative overflow-hidden rounded-md border p-2 select-none">
-      <div className="relative z-10 overflow-hidden">
+      <div className="relative z-10 overflow-hidden rounded-b-sm border">
         <BookmarkThumbnail
           image={bookmark.thumbnail || undefined}
           title={bookmark.title}
         />
-        <div className="bg-background/90 text-foreground absolute bottom-0 flex size-full h-auto max-h-4/5 w-full translate-y-full flex-col rounded-t-lg p-3 font-medium transition-transform duration-500 ease-in-out group-hover:translate-y-0">
+        <div className="bg-background/90 text-foreground absolute bottom-0 flex size-full h-auto max-h-4/5 w-full translate-y-full flex-col rounded-t-lg p-3 font-medium shadow-xl transition-transform duration-500 ease-in-out group-hover:translate-y-1">
           <h3 className="pb-2 text-sm font-bold @lg:text-base">
             {bookmark.title}
           </h3>
@@ -84,14 +84,14 @@ export default function BookmarkCard({ bookmark }: PropsType) {
       </div>
       <section className="font-roboto @container space-y-4">
         <div className="relative overflow-hidden pt-2 text-sm font-medium">
-          <h3 className="truncate transition-transform duration-300 ease-in-out group-hover:-translate-y-8">
+          <h3 className="border-e-secondary-foreground truncate transition-transform duration-200 group-hover:-translate-y-8">
             {bookmark.title}
           </h3>
           <a
             href={bookmark.url}
             target="_blank"
             rel="noreferrer"
-            className="lef-0 text-info absolute top-2 block translate-y-4 transition-transform duration-300 group-hover:translate-y-0"
+            className="lef-0 text-info absolute top-2 block translate-y-4 transition-transform duration-200 ease-linear group-hover:translate-y-0"
           >
             {bookmark.url}
           </a>

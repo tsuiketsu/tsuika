@@ -4,17 +4,18 @@ import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 
 const BookmarkImageFallback = ({ char }: { char: Alphabet }) => (
-  <div
-    className="@container relative overflow-hidden rounded-sm accent-transparent"
-    style={{
-      aspectRatio: "5/3",
-      backgroundColor: options.alphabetColors[char].bg,
-      color: options.alphabetColors[char].color,
-    }}
-  >
-    <span className="font-cal-sans absolute bottom-[14%] left-[4%] size-full text-[74cqw] font-extrabold select-none">
-      {char}
-    </span>
+  <div className="@container">
+    <div
+      className="relative aspect-video overflow-hidden rounded-sm accent-transparent"
+      style={{
+        backgroundColor: options.alphabetColors[char].bg,
+        color: options.alphabetColors[char].color,
+      }}
+    >
+      <span className="font-cal-sans absolute bottom-[14%] left-[4%] size-full text-[74cqw] font-extrabold select-none">
+        {char}
+      </span>
+    </div>
   </div>
 );
 
@@ -32,10 +33,10 @@ export default function BookmarkThumbnail({ image, title }: PropsType) {
   }
 
   return (
-    <div className="relative aspect-video overflow-hidden rounded-sm border">
+    <div className="relative aspect-video overflow-hidden rounded-sm">
       <div
         className={clsx(
-          "bg-background absolute inset-0 flex size-full items-center justify-center",
+          "bg-background absolute inset-0 z-10 flex size-full items-center justify-center",
           { hidden: !loading }
         )}
       >
