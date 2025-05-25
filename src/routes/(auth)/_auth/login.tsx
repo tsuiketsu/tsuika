@@ -47,11 +47,15 @@ function Login() {
     onSuccess: ({ error, data }) => {
       if (error) {
         toast.error(error.message || "Login failed, Something went wrong");
+        // eslint-disable-next-line no-console
         console.error(error);
         return;
       }
       toast.success(`Welcome back ${data.user.name}!`);
-      navigate({ to: "/dashboard" });
+      navigate({
+        to: "/dashboard/bookmarks/$slug",
+        params: { slug: "folder/unsorted" },
+      });
     },
   });
 
@@ -60,7 +64,7 @@ function Login() {
   }
 
   return (
-    <Card className="max-w-sm w-full">
+    <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Login</CardTitle>
         <CardDescription>Let's get started with Tsuika</CardDescription>
@@ -108,7 +112,7 @@ function Login() {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="grid text-center gap-4">
+      <CardFooter className="grid gap-4 text-center">
         <Button form="login-form" isLoading={mutation.isPending}>
           Login
         </Button>

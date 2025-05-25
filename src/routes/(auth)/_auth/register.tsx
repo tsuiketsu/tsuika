@@ -48,12 +48,16 @@ function Register() {
     onSuccess: ({ error }) => {
       if (error) {
         toast.error(
-          error.message || "Registration failed, something went wrong",
+          error.message || "Registration failed, something went wrong"
         );
+        // eslint-disable-next-line no-console
         console.error(error);
         return;
       }
-      navigate({ to: "/dashboard" });
+      navigate({
+        to: "/dashboard/bookmarks/$slug",
+        params: { slug: "folder/unsorted" },
+      });
     },
   });
 
@@ -62,7 +66,7 @@ function Register() {
   }
 
   return (
-    <Card className="max-w-sm w-full">
+    <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Register</CardTitle>
         <CardDescription>Let's get started with Tsuika</CardDescription>
@@ -125,7 +129,7 @@ function Register() {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="grid text-center gap-4">
+      <CardFooter className="grid gap-4 text-center">
         <Button form="register-form" isLoading={mutation.isPending}>
           Register
         </Button>

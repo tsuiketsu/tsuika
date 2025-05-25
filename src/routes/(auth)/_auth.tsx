@@ -8,10 +8,12 @@ export const Route = createFileRoute("/(auth)/_auth")({
       const session = await fetchUserSession();
       if (session) {
         return redirect({
-          to: "/dashboard",
+          to: "/dashboard/bookmarks/$slug",
+          params: { slug: "folder/unsorted" },
         });
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
     }
   },
@@ -19,7 +21,7 @@ export const Route = createFileRoute("/(auth)/_auth")({
 
 function LayoutComponent() {
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex min-h-screen items-center justify-center">
       <Outlet />
     </div>
   );

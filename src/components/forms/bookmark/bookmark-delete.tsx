@@ -13,7 +13,7 @@ import { deleteBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark } from "@/types/bookmark";
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useState, type RefObject } from "react";
+import { useState, type RefObject } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
