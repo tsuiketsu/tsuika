@@ -19,3 +19,7 @@ export type PaginatedResponse<T> = Promise<{
   data: T;
   nextCursor: number | null;
 }>;
+
+export type StringKeys<T> = {
+  [K in keyof T]: Extract<T[K], string> extends never ? never : K;
+}[keyof T];

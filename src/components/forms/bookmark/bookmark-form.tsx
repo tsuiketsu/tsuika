@@ -10,13 +10,60 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import type { StringKeys } from "@/types";
 import {
   type Bookmark,
   BookmarkFormSchema,
   type BookmarkFormSchemaType,
 } from "@/types/bookmark";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, type Control } from "react-hook-form";
+
+interface FieldProps {
+  type?: "input" | "textarea";
+  isHidden?: boolean;
+  control: Control<BookmarkFormSchemaType>;
+  placeholder: string;
+  fieldName: StringKeys<BookmarkFormSchemaType>;
+  className?: string;
+}
+
+const TextField = ({
+  type = "input",
+  fieldName,
+  isHidden = false,
+  control,
+  placeholder,
+  className,
+}: FieldProps) => {
+  const Comp = type === "input" ? Input : Textarea;
+
+  if (isHidden) {
+    return null;
+  }
+
+  return (
+    <FormField
+      control={control}
+      name={fieldName as keyof BookmarkFormSchemaType}
+      render={({ field: { value, ...field } }) => (
+        <FormItem>
+          <FormLabel className="capitalize">{fieldName}</FormLabel>
+          <FormControl>
+            <Comp
+              value={value?.toString()}
+              placeholder={placeholder}
+              className={cn(className)}
+              {...field}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
 
 interface PropsType {
   data?: Bookmark;
@@ -33,6 +80,10 @@ export default function BookmarkForm({ data, onSubmit }: PropsType) {
       : {},
   });
 
+  const isFieldHidden = (field: keyof BookmarkFormSchemaType): boolean => {
+    return !data && BookmarkFormSchema.shape[field].isOptional();
+  };
+
   return (
     <Form {...form}>
       <form
@@ -41,70 +92,25 @@ export default function BookmarkForm({ data, onSubmit }: PropsType) {
         className="space-y-4"
       >
         <FolderOptions control={form.control} />
-        <FormField
+        <TextField
           control={form.control}
-          name="url"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Url</FormLabel>
-              <FormControl>
-                <Input
-                  type="url"
-                  placeholder="e.g., https://anilist.co"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          placeholder="e.g., https://anilist.co"
+          fieldName="url"
         />
-        <FormField
+
+        <TextField
+          isHidden={isFieldHidden("title")}
           control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input
-                  type="title"
-                  placeholder="e.g., The next generation anime platform"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          placeholder="e.g., The next generation anime platform"
+          fieldName="title"
         />
-        <FormField
+
+        <TextField
+          type="textarea"
+          isHidden={isFieldHidden("description")}
           control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  {...field}
-                  placeholder="Keep track of your progress on-the-go with one of many AniList apps across iOS, Android, macOS, and Windows"
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="thumbnail"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Thumbnail</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="e.g., https://placehold.co/800x480"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          placeholder="Keep track of your progress on-the-go with one of many AniList apps across iOS, Android, macOS, and Windows"
+          fieldName="description"
         />
       </form>
       <TagOptions control={form.control} />
