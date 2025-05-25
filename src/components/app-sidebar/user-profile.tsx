@@ -1,6 +1,3 @@
-import { signOut, useSession } from "@/lib/auth-client";
-import { useNavigate } from "@tanstack/react-router";
-import { ChevronUp, LoaderCircle, User2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +10,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../ui/sidebar";
+import { signOut, useSession } from "@/lib/auth-client";
+import { useNavigate } from "@tanstack/react-router";
+import { ChevronUp, LoaderCircle, User2 } from "lucide-react";
 
 export default function UserProfile() {
   const { data: session, isPending } = useSession();

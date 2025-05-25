@@ -13,9 +13,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import type { Bookmark } from "@/types/bookmark";
-import clsx from "clsx";
 import dayjs from "dayjs";
-import { ChevronRight, Dot, Ellipsis } from "lucide-react";
+import { Dot, Ellipsis } from "lucide-react";
 import React, { useRef } from "react";
 import { parse } from "tldts";
 
@@ -69,29 +68,34 @@ export default function BookmarkCard({ bookmark }: PropsType) {
 
   return (
     <div className="bg-card group @container relative overflow-hidden rounded-md border p-2 select-none">
-      <div className="relative overflow-hidden">
+      <div className="relative z-10 overflow-hidden">
         <BookmarkThumbnail
           image={bookmark.thumbnail || undefined}
           title={bookmark.title}
         />
-        <div className="absolute bottom-0 flex size-full h-auto max-h-4/5 w-full translate-y-full flex-col rounded-t-lg border bg-[#0D0D0D] p-3 text-sm font-medium transition-transform duration-500 ease-in-out group-hover:translate-y-0">
-          <p className="mb-2 line-clamp-4 @sm:line-clamp-6 @lg:line-clamp-9 @lg:text-base">
+        <div className="bg-background/90 text-foreground absolute bottom-0 flex size-full h-auto max-h-4/5 w-full translate-y-full flex-col rounded-t-lg p-3 font-medium transition-transform duration-500 ease-in-out group-hover:translate-y-0">
+          <h3 className="pb-2 text-sm font-bold @lg:text-base">
+            {bookmark.title}
+          </h3>
+          <p className="mb-2 line-clamp-4 text-xs @sm:line-clamp-6 @lg:line-clamp-9 @lg:text-sm">
             {bookmark.description}
           </p>
-          <Button
-            variant="secondary"
-            size="sm"
-            className="mt-auto ml-auto"
-            asChild
-          >
-            <a href={bookmark.url} target="_blank" rel="noreferrer">
-              Open Link
-            </a>
-          </Button>
         </div>
       </div>
-      <section className="font-roboto @container space-y-2">
-        <h3 className="truncate pt-2 text-sm font-medium">{bookmark.title}</h3>
+      <section className="font-roboto @container space-y-4">
+        <div className="relative overflow-hidden pt-2 text-sm font-medium">
+          <h3 className="truncate transition-transform duration-300 ease-in-out group-hover:-translate-y-8">
+            {bookmark.title}
+          </h3>
+          <a
+            href={bookmark.url}
+            target="_blank"
+            rel="noreferrer"
+            className="lef-0 text-info absolute top-2 block translate-y-4 transition-transform duration-300 group-hover:translate-y-0"
+          >
+            {bookmark.url}
+          </a>
+        </div>
         <div className="text-foreground/60 inline-flex items-center -space-x-1 text-xs font-medium">
           <Button
             variant="info"
@@ -124,12 +128,13 @@ export default function BookmarkCard({ bookmark }: PropsType) {
       </section>
       <BookmarkActions bookmark={bookmark} />
       <Button
-        size="icon"
-        className={clsx(
-          "dark:bg-secondary dark:text-secondary-foreground invisible absolute right-2 bottom-2 size-7 translate-x-full rounded-full duration-500 group-hover:visible group-hover:translate-x-0 group-hover:-rotate-90"
-        )}
+        size="sm"
+        className="border-primary absolute right-2 bottom-2 mt-auto ml-auto h-7 translate-y-9 rounded-full font-bold duration-300 ease-in-out group-hover:translate-y-0"
+        asChild
       >
-        <ChevronRight />
+        <a href={bookmark.url} target="_blank" rel="noreferrer">
+          Open Link
+        </a>
       </Button>
     </div>
   );
