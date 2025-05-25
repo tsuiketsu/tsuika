@@ -18,6 +18,7 @@ import {
   type BookmarkFormSchemaType,
 } from "@/types/bookmark";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Suspense } from "react";
 import { useForm, type Control } from "react-hook-form";
 
 interface FieldProps {
@@ -91,7 +92,9 @@ export default function BookmarkForm({ data, onSubmit }: PropsType) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4"
       >
-        <FolderOptions control={form.control} />
+        <Suspense>
+          <FolderOptions control={form.control} />
+        </Suspense>
         <TextField
           control={form.control}
           placeholder="e.g., https://anilist.co"

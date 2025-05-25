@@ -32,7 +32,7 @@ interface PropsType {
 export default function FolderPicker({ value, onChange }: PropsType) {
   const [selectedId, setSelectedId] = useState<number | null>(value ?? null);
 
-  const { ref: sneakyRef, folders, isFetching } = useFolderData(5);
+  const { ref: sneakyRef, folders, isFetching } = useFolderData();
 
   const closeBtnRef = useRef<HTMLButtonElement>(null);
 

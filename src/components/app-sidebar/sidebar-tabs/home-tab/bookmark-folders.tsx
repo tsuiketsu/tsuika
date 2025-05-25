@@ -28,7 +28,7 @@ const BookmarkFoldersSkeletons = ({ isEnabled }: { isEnabled: boolean }) => {
 };
 
 export default function BookmarkFolders() {
-  const { ref: sneakyRef, data, folders, isFetching } = useFolderData(30);
+  const { ref: sneakyRef, data, folders, isFetching } = useFolderData();
 
   if (!isFetching && data?.pages.length === 0) {
     return null;
