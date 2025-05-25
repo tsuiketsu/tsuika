@@ -1,19 +1,20 @@
+import TagForm from "./tag-form";
 import Modal from "@/components/ui/modal";
 import { updateInfQueryData } from "@/lib/query.utils";
+import { updateTag } from "@/queries/tags.queries";
+import type { Tag, TagInsertSchemaWithId } from "@/types/tag";
+import type { TagInsertSchemaType } from "@/types/tag";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Tag } from "@/types/tag";
 import { type RefObject } from "react";
 import { toast } from "sonner";
-import TagForm from "./tag-form";
-import type { TagInsertSchemaType } from "@/types/tag";
-import { updateTag } from "@/queries/tags.queries";
 
 interface PropsType {
   tag: Tag;
   ref: RefObject<HTMLButtonElement | null>;
+  onChange?: (value: TagInsertSchemaWithId) => void;
 }
 
-export default function UpdateTag({ tag, ref }: PropsType) {
+export default function UpdateTag({ tag, ref, onChange }: PropsType) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -51,7 +52,14 @@ export default function UpdateTag({ tag, ref }: PropsType) {
     >
       <TagForm
         data={tag}
-        onSubmit={(payload) => mutation.mutate({ id: tag.id, payload })}
+        onSubmit={(payload) => {
+          if (onChange) {
+            onChange(payload as Tag);
+            ref.current?.click();
+            return;
+          }
+          mutation.mutate({ id: tag.id, payload });
+        }}
       />
     </Modal>
   );

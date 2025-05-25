@@ -1,3 +1,4 @@
+import { buttonVariants } from "@/components/ui/button";
 import {
   Form,
   FormField,
@@ -7,18 +8,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { HexColorPicker } from "react-colorful";
+import { cn } from "@/lib/utils";
 import {
   TagInsertSchema,
   type Tag,
   type TagInsertSchemaType,
 } from "@/types/tag";
-import { arktypeResolver } from "@hookform/resolvers/arktype";
-import { useForm } from "react-hook-form";
-import { buttonVariants } from "@/components/ui/button";
-import { Hash } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { getTextColor } from "@/utils";
+import { arktypeResolver } from "@hookform/resolvers/arktype";
+import { Hash } from "lucide-react";
+import { HexColorPicker } from "react-colorful";
+import { useForm } from "react-hook-form";
 
 interface PropsType {
   data?: Tag;
@@ -68,7 +68,7 @@ export default function TagForm({ data, onSubmit }: PropsType) {
                 <div
                   className={cn(
                     buttonVariants({ variant: "outline" }),
-                    "h-6 rounded-full gap-1"
+                    "h-6 gap-1 rounded-full"
                   )}
                   style={{
                     backgroundColor: field.value,

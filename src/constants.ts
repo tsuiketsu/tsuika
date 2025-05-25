@@ -34,6 +34,15 @@ export const options = {
       value.bg,
     ]);
   },
+  get randomColor() {
+    const colors = Object.entries(this.alphabetColors).flatMap(([_, value]) => [
+      value.bg,
+      value.color,
+    ]);
+
+    const colorIndex = Math.floor(Math.random() * colors.length) + 1;
+    return colors[colorIndex];
+  },
 };
 
 export type Alphabet = keyof typeof options.alphabetColors;

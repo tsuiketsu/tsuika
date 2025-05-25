@@ -43,11 +43,13 @@ function Button({
   asChild = false,
   children,
   isLoading = false,
+  customLoader,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
     isLoading?: boolean;
+    customLoader?: React.ReactNode;
   }) {
   const Comp = asChild ? Slot : "button";
 
@@ -57,7 +59,7 @@ function Button({
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     >
-      {isLoading ? <SvgSpinners3DotsScale /> : children}
+      {isLoading ? (customLoader ?? <SvgSpinners3DotsScale />) : children}
     </Comp>
   );
 }

@@ -4,7 +4,7 @@ import { Hash } from "lucide-react";
 const TagList = ({
   tags,
 }: {
-  tags: { id: number; name: string; color: string }[] | undefined;
+  tags: { name: string; color: string }[] | undefined;
 }) => (
   <div className="flex flex-wrap gap-2">
     {tags?.map((tag, idx) => (

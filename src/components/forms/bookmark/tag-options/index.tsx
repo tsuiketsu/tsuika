@@ -7,13 +7,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import { options } from "@/constants";
 import { searchTagsByName } from "@/queries/tags.queries";
 import type { BookmarkFormSchemaType } from "@/types/bookmark";
+import type { Tag, TagInsertSchemaWithId } from "@/types/tag";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
 import clsx from "clsx";
+import isEqual from "lodash.isequal";
+import kebabCase from "lodash.kebabcase";
 import { LoaderCircle } from "lucide-react";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import type { Control } from "react-hook-form";
 
 // Lazy Imports
@@ -34,14 +38,41 @@ interface PropsType {
 
 export default function TagOptions({ control }: PropsType) {
   const [query, setQuery] = useState("");
-
   const debouncedQuery = useDebounce(query, 200);
+  const [randomColor, setRandomColor] = useState("");
+  const [randomTag, setRandomTag] = useState<TagInsertSchemaWithId | null>(
+    null
+  );
 
   const { data: tags, isFetching } = useQuery({
     queryKey: ["tags", debouncedQuery],
     queryFn: () => searchTagsByName(debouncedQuery),
     enabled: debouncedQuery.trim() !== "",
   });
+
+  useEffect(() => {
+    if (!randomColor) {
+      setRandomColor(options.randomColor);
+    }
+  }, [randomColor]);
+
+  useEffect(() => {
+    if (debouncedQuery) {
+      setRandomTag((prev) => {
+        const newObj = {
+          id: 0,
+          name: kebabCase(debouncedQuery),
+          color: randomColor,
+        };
+
+        if (!prev || (debouncedQuery && !isEqual(prev, newObj))) {
+          return newObj;
+        }
+
+        return prev;
+      });
+    }
+  }, [debouncedQuery, randomColor]);
 
   return (
     <FormField
@@ -68,11 +99,12 @@ export default function TagOptions({ control }: PropsType) {
                 </div>
               </div>
               <Suspense fallback={<SuggestionBoxFallback />}>
-                {query !== "" && !!tags && tags.length > 0 && (
+                {query !== "" && tags && (
                   <SuggestionBox
                     field={field}
-                    tags={tags}
+                    tags={tags.length === 0 ? ([randomTag] as Tag[]) : tags}
                     setQuery={setQuery}
+                    setTag={setRandomTag}
                   />
                 )}
               </Suspense>

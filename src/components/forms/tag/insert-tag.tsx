@@ -1,35 +1,15 @@
-import Modal from "@/components/ui/modal";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { insertTag } from "@/queries/tags.queries";
-import { toast } from "sonner";
-import type { Tag } from "@/types/tag";
-import { useRef } from "react";
 import TagForm from "./tag-form";
 import { Button } from "@/components/ui/button";
+import Modal from "@/components/ui/modal";
+import useTagInsertMutation from "@/hooks/insert-tag-mutation.hook";
 import { Plus } from "lucide-react";
-import { insertInfQueryData } from "@/lib/query.utils";
+import { useRef } from "react";
 
 export default function InsertTag() {
-  const queryClient = useQueryClient();
   const ref = useRef<HTMLButtonElement>(null);
 
-  const mutation = useMutation({
-    mutationKey: ["insertTag"],
-    mutationFn: insertTag,
-    onSuccess: ({ status, data: { data, message } }) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to add tag");
-        return;
-      }
+  const mutation = useTagInsertMutation(ref);
 
-      queryClient.setQueryData<{ pages: { data: Tag[] }[] }>(["tags"], (old) =>
-        insertInfQueryData(old, data)
-      );
-
-      toast.success(message || "Successfully added tag");
-      ref.current?.click();
-    },
-  });
   return (
     <Modal
       form="tag-form"

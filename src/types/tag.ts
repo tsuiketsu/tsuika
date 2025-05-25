@@ -13,4 +13,6 @@ export const TagInsertSchema = type({
   name: "string < 30 | undefined",
   color: "6 <= string < 15 | undefined",
 });
+
 export type TagInsertSchemaType = type.infer<typeof TagInsertSchema>;
+export type TagInsertSchemaWithId = Pick<Tag, "id" | "name" | "color">;
