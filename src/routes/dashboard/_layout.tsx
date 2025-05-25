@@ -8,10 +8,10 @@ import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard/_layout")({
   component: DashboardLayout,
-  loader: async () => {
+  loader: async ({ params }: { params: { slug: string } }) => {
     try {
       const session = await fetchUserSession();
-      return { session };
+      return { session, slug: params.slug };
     } catch {
       throw redirect({
         to: "/login",
@@ -24,16 +24,18 @@ export const Route = createFileRoute("/dashboard/_layout")({
 });
 
 function DashboardLayout() {
+  const slug = Route.useLoaderData().slug;
+
   return (
     <SidebarProvider>
       <AppSidebar />
       <div className="flex w-full flex-col">
         <div className="bg-background sticky top-0 z-10 flex h-[53px] items-center gap-2 border px-2.5">
           <SidebarTrigger />
-          <Input placeholder="Search" className="max-w-96" />
+          <Input placeholder="Search" className="max-w-80" />
           <div className="ml-auto space-x-2">
             <ThemeToggle />
-            <AddBookmark />
+            <AddBookmark query={slug} />
           </div>
         </div>
         <div className="@container/dash flex h-full p-4">

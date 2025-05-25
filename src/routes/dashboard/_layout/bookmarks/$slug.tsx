@@ -23,7 +23,6 @@ function Bookmarks() {
     queryFn: ({ pageParam }) => fetchBookmarks({ pageParam, slug }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
-    retry: false,
   });
 
   const sneakyRef = useInfiniteScrollObserver(fetchNextPage, isFetching);

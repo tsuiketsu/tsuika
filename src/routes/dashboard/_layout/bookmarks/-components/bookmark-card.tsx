@@ -1,3 +1,4 @@
+import BookmarkThumbnail from "./bookmark-thumbnail";
 import useBookmarkContext from "./context/use-context";
 import DeleteBookmark from "@/components/forms/bookmark/bookmark-delete";
 import EditBookmark from "@/components/forms/bookmark/bookmark-edit";
@@ -10,11 +11,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { type Alphabet, options } from "@/constants";
 import { cn } from "@/lib/utils";
 import type { Bookmark } from "@/types/bookmark";
+import clsx from "clsx";
 import dayjs from "dayjs";
-import { Dot, Ellipsis, SquarePen, Trash } from "lucide-react";
+import { ChevronRight, Dot, Ellipsis } from "lucide-react";
 import React, { useRef } from "react";
 import { parse } from "tldts";
 
@@ -32,23 +33,32 @@ const BookmarkActions = ({ bookmark }: PropsType) => {
     <React.Fragment>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="size-6">
-            <Ellipsis />
+          <Button className="group absolute top-4 right-4 h-7 rounded-full bg-white/80 text-black shadow-xl hover:bg-white">
+            More <Ellipsis />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
+        <DropdownMenuContent className="z-40 w-56">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => editButtonRef.current?.click()}>
-            <SquarePen />
+          <DropdownMenuItem
+            onClick={(e) => {
+              e.stopPropagation();
+              editButtonRef.current?.click();
+            }}
+          >
             Edit
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => deleteButtonRef.current?.click()}>
-            <Trash /> Delete
+          <DropdownMenuItem
+            onClick={(e) => {
+              e.stopPropagation();
+              deleteButtonRef.current?.click();
+            }}
+          >
+            Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <DeleteBookmark id={bookmark.id} ref={deleteButtonRef} />
+      <DeleteBookmark id={bookmark.id} query={query} ref={deleteButtonRef} />
       <EditBookmark bookmark={bookmark} query={query} ref={editButtonRef} />
     </React.Fragment>
   );
@@ -56,35 +66,32 @@ const BookmarkActions = ({ bookmark }: PropsType) => {
 
 export default function BookmarkCard({ bookmark }: PropsType) {
   const domain = parse(bookmark.url).domain;
-  const titleChar = bookmark.title[0].toUpperCase() as Alphabet;
 
   return (
-    <div className="space-y-2 select-none">
-      <div
-        className="@container relative overflow-hidden rounded-md accent-transparent"
-        style={{
-          aspectRatio: "5/3",
-          backgroundColor: options.alphabetColors[titleChar].bg,
-          color: options.alphabetColors[titleChar].color,
-        }}
-      >
-        <span className="font-cal-sans absolute bottom-[14%] left-[4%] size-full text-[74cqw] font-extrabold select-none">
-          {titleChar}
-        </span>
-      </div>
-      <section className="font-roboto space-y-1">
-        <div className="inline-flex w-full items-center justify-between">
+    <div className="bg-card group @container relative overflow-hidden rounded-md border p-2 select-none">
+      <div className="relative overflow-hidden">
+        <BookmarkThumbnail
+          image={bookmark.thumbnail || undefined}
+          title={bookmark.title}
+        />
+        <div className="absolute bottom-0 flex size-full h-auto max-h-4/5 w-full translate-y-full flex-col rounded-t-lg border bg-[#0D0D0D] p-3 text-sm font-medium transition-transform duration-500 ease-in-out group-hover:translate-y-0">
+          <p className="mb-2 line-clamp-4 @sm:line-clamp-6 @lg:line-clamp-9 @lg:text-base">
+            {bookmark.description}
+          </p>
           <Button
-            variant="link"
-            className="block h-auto p-0 text-base font-bold capitalize"
+            variant="secondary"
+            size="sm"
+            className="mt-auto ml-auto"
             asChild
           >
             <a href={bookmark.url} target="_blank" rel="noreferrer">
-              {bookmark.title}
+              Open Link
             </a>
           </Button>
-          <BookmarkActions bookmark={bookmark} />
         </div>
+      </div>
+      <section className="font-roboto @container space-y-2">
+        <h3 className="truncate pt-2 text-sm font-medium">{bookmark.title}</h3>
         <div className="text-foreground/60 inline-flex items-center -space-x-1 text-xs font-medium">
           <Button
             variant="info"
@@ -115,6 +122,15 @@ export default function BookmarkCard({ bookmark }: PropsType) {
           </div>
         </div>
       </section>
+      <BookmarkActions bookmark={bookmark} />
+      <Button
+        size="icon"
+        className={clsx(
+          "dark:bg-secondary dark:text-secondary-foreground invisible absolute right-2 bottom-2 size-7 translate-x-full rounded-full duration-500 group-hover:visible group-hover:translate-x-0 group-hover:-rotate-90"
+        )}
+      >
+        <ChevronRight />
+      </Button>
     </div>
   );
 }
