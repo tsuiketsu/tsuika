@@ -1,3 +1,6 @@
+import type { LucideProps } from "lucide-react";
+import type { ForwardRefExoticComponent, RefAttributes } from "react";
+
 export interface SuccessResponse<T> {
   success: true; // No point, for the sake of completeness
   message: string;
@@ -23,3 +26,8 @@ export type PaginatedResponse<T> = Promise<{
 export type StringKeys<T> = {
   [K in keyof T]: Extract<T[K], string> extends never ? never : K;
 }[keyof T];
+
+export type LucideIconElement = ForwardRefExoticComponent<
+  Omit<LucideProps, "ref">
+> &
+  RefAttributes<SVGSVGElement>;

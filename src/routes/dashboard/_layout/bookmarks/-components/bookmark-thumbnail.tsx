@@ -1,7 +1,9 @@
 import { options, type Alphabet } from "@/constants";
+import useLayoutStore from "@/stores/layout.store";
+import { getAspectRatio, getRandomAspectRatio } from "@/utils";
 import clsx from "clsx";
 import { LoaderCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const BookmarkImageFallback = ({ char }: { char: Alphabet }) => (
   <div className="@container">
@@ -20,20 +22,49 @@ const BookmarkImageFallback = ({ char }: { char: Alphabet }) => (
 );
 
 interface PropsType {
-  image: string | undefined;
   title: string;
+  image: string | undefined;
+  width: number | undefined;
+  height: number | undefined;
 }
 
-export default function BookmarkThumbnail({ image, title }: PropsType) {
+export default function BookmarkThumbnail({
+  title,
+  image,
+  width,
+  height,
+}: PropsType) {
   const titleChar = title[0].toUpperCase() as Alphabet;
+  const layout = useLayoutStore((s) => s.layout);
   const [loading, setLoading] = useState(true);
+  const [aspact, setAspact] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    if (!width || !height) {
+      const randomRatio = getRandomAspectRatio();
+      setAspact(randomRatio);
+    } else {
+      const [w, h] = getAspectRatio(width, height);
+      setAspact({ width: w, height: h });
+    }
+  }, [width, height]);
 
   if (!image) {
     return <BookmarkImageFallback char={titleChar} />;
   }
 
+  const aspectRatio = (() => {
+    if (layout === "masonry") {
+      return loading ? Object.values(aspact).join("/") : "";
+    }
+    return "16/9";
+  })();
+
   return (
-    <div className="relative aspect-video overflow-hidden rounded-sm">
+    <div
+      className="relative overflow-hidden rounded-sm"
+      style={{ aspectRatio }}
+    >
       <div
         className={clsx(
           "bg-background absolute inset-0 z-10 flex size-full items-center justify-center",

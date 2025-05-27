@@ -1,9 +1,13 @@
+import BookmarkSkeletons from "./-components/bookmark-skeletions";
 import BookmarkSkeleton from "./-components/bookmark-skeleton";
 import BookmarkContextProvider from "./-components/context/context-provider";
+import { CardsLayout } from "@/components/layouts/cards-layout";
 import { useInfiniteScrollObserver } from "@/hooks/infinite-scroll-observer";
 import { fetchBookmarks } from "@/queries/bookmark.queries";
+import useLayoutStore from "@/stores/layout.store";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import clsx from "clsx";
 import { Suspense, lazy, useMemo } from "react";
 
 const BookmarkCards = lazy(() => import("./-components/bookmark-cards"));
@@ -17,6 +21,7 @@ export const Route = createFileRoute("/dashboard/_layout/bookmarks/$slug")({
 
 function Bookmarks() {
   const slug = Route.useLoaderData().slug;
+  const layout = useLayoutStore((s) => s.layout);
 
   const { data, fetchNextPage, isFetching } = useInfiniteQuery({
     queryKey: ["bookmarks", slug],
@@ -36,18 +41,22 @@ function Bookmarks() {
   }
 
   return (
-    <div className="@container/dash relative size-full">
-      <div className="grid w-full auto-rows-min gap-4 @2xl/dash:grid-cols-2 @5xl/dash:grid-cols-3 @7xl/dash:grid-cols-4">
+    <div className="@container/dash size-full">
+      <CardsLayout
+        layout={layout}
+        className={clsx("relative", { "pb-20": isFetching })}
+      >
         <BookmarkContextProvider query={slug}>
-          <Suspense fallback={<BookmarkSkeleton />}>
+          <Suspense fallback={<BookmarkSkeleton layout={layout} />}>
             <BookmarkCards bookmarks={bookmarks} />
           </Suspense>
         </BookmarkContextProvider>
-        {Array.from({ length: isFetching ? 16 : 0 }).map((_, idx) => (
-          <BookmarkSkeleton key={`bm-skleton-${idx}`} />
-        ))}
+        <BookmarkSkeletons
+          isLoading={isFetching}
+          bookmarksLength={bookmarks.length}
+        />
         <span ref={sneakyRef} className="h-1" />
-      </div>
+      </CardsLayout>
     </div>
   );
 }

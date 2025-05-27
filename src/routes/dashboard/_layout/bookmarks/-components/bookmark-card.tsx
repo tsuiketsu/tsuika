@@ -68,10 +68,12 @@ export default function BookmarkCard({ bookmark }: PropsType) {
 
   return (
     <div className="bg-card group @container relative overflow-hidden rounded-md border p-2 select-none">
-      <div className="relative z-10 overflow-hidden rounded-b-sm border">
+      <div className="relative z-10 overflow-hidden rounded-b-sm">
         <BookmarkThumbnail
           image={bookmark.thumbnail || undefined}
           title={bookmark.title}
+          height={bookmark.thumbnailHeight}
+          width={bookmark.thumbnailWidth}
         />
         <div className="bg-background/90 text-foreground absolute bottom-0 flex size-full h-auto max-h-4/5 w-full translate-y-full flex-col rounded-t-lg p-3 font-medium shadow-xl transition-transform duration-500 ease-in-out group-hover:translate-y-1">
           <h3 className="pb-2 text-sm font-bold @lg:text-base">

@@ -12,6 +12,8 @@ export interface Bookmark {
   isPinned: boolean;
   isFavourite: boolean;
   isArchived: boolean;
+  thumbnailHeight?: number;
+  thumbnailWidth?: number;
   createdAt: Date | string;
   updatedAt: Date | string;
 }
