@@ -31,3 +31,5 @@ export type LucideIconElement = ForwardRefExoticComponent<
   Omit<LucideProps, "ref">
 > &
   RefAttributes<SVGSVGElement>;
+
+export type InfiniteQueryResponse<T> = { pages: { data: T[] }[] };

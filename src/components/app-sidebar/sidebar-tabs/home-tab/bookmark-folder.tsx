@@ -1,11 +1,4 @@
-import DeleteFolder from "@/components/forms/folder/delete-folder";
-import UpdateFolder from "@/components/forms/folder/update-folder";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import FolderMenu from "@/components/dropdowns/folder-menu";
 import {
   SidebarMenuAction,
   SidebarMenuButton,
@@ -19,8 +12,8 @@ import {
 } from "@/components/ui/tooltip";
 import type { Folder } from "@/types/folder";
 import { Link } from "@tanstack/react-router";
-import { MoreHorizontal } from "lucide-react";
-import React, { useRef } from "react";
+import { Ellipsis } from "lucide-react";
+import React from "react";
 
 interface FolderTooltipProps {
   text: string;
@@ -46,45 +39,28 @@ const FolderTooltip = ({ text, children, isDisabled }: FolderTooltipProps) => {
 };
 
 const BookmarkFolder = ({ folder }: { folder: Folder }) => {
-  const editButtonRef = useRef<HTMLButtonElement>(null);
-  const deleteButtonRef = useRef<HTMLButtonElement>(null);
-
   return (
-    <>
-      <SidebarMenuItem className="relative select-none">
-        <FolderTooltip
-          text={folder.description}
-          isDisabled={!folder.description}
-        >
-          <SidebarMenuButton asChild>
-            <Link
-              to="/dashboard/bookmarks/$slug"
-              className="[&.active]:bg-secondary active:scale-97"
-              params={{ slug: `folder/${folder.slug}` }}
-            >
-              <span>{folder.name}</span>
-            </Link>
-          </SidebarMenuButton>
-        </FolderTooltip>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="mr-0.5">
-            <SidebarMenuAction>
-              <MoreHorizontal />
-            </SidebarMenuAction>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent side="right" align="start">
-            <DropdownMenuItem onClick={() => editButtonRef.current?.click()}>
-              <span>Edit Folder</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => deleteButtonRef.current?.click()}>
-              <span>Delete Folder</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarMenuItem>
-      <UpdateFolder folder={folder} ref={editButtonRef} />
-      <DeleteFolder id={folder.id} ref={deleteButtonRef} />
-    </>
+    <SidebarMenuItem className="relative select-none">
+      <FolderTooltip text={folder.description} isDisabled={!folder.description}>
+        <SidebarMenuButton asChild>
+          <Link
+            to="/dashboard/bookmarks/$slug"
+            className="[&.active]:bg-secondary active:scale-97"
+            params={{ slug: `folder/${folder.slug}` }}
+          >
+            <span>{folder.name}</span>
+          </Link>
+        </SidebarMenuButton>
+      </FolderTooltip>
+      <FolderMenu
+        folder={folder}
+        triggerButton={
+          <SidebarMenuAction asChild>
+            <Ellipsis size={18} />
+          </SidebarMenuAction>
+        }
+      />
+    </SidebarMenuItem>
   );
 };
 

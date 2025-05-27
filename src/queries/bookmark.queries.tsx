@@ -12,24 +12,21 @@ const baseQuery = `${options.ApiBaseUrl}/api/v1/bookmarks`;
 export const fetchBookmarks = async ({
   pageParam,
   slug,
+  query = "",
 }: {
   pageParam: number;
   slug?: string;
+  query?: string;
 }): PaginatedResponse<Bookmark[]> => {
-  let query = "";
-
-  if (slug && slug.trim() !== "") {
-    query = `${baseQuery}/${slug}?page=${pageParam}&limit=16`;
-  } else {
-    query = `${baseQuery}?page=${pageParam}&limit=16`;
-  }
+  const slugPath = slug?.trim() ? `/${slug.trim()}` : "";
+  const url = `${baseQuery}${slugPath}?query=${query}&page=${pageParam}&limit=16`;
 
   const {
     data: { data: bookmarks, pagination },
     status,
   } = await axios<PaginatedSuccessResponse<Bookmark[]>>({
     method: "get",
-    url: query,
+    url,
     withCredentials: true,
   });
 

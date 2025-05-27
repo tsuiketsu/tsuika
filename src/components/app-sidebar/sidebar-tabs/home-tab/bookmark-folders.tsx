@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useFolderData } from "@/hooks/user-folder.hook";
+import { useFoldersData } from "@/hooks/use-folder";
 import { ChevronDown } from "lucide-react";
 
 const BookmarkFoldersSkeletons = ({ isEnabled }: { isEnabled: boolean }) => {
@@ -28,7 +28,7 @@ const BookmarkFoldersSkeletons = ({ isEnabled }: { isEnabled: boolean }) => {
 };
 
 export default function BookmarkFolders() {
-  const { ref: sneakyRef, data, folders, isFetching } = useFolderData();
+  const { ref: sneakyRef, data, folders, isFetching } = useFoldersData();
 
   if (!isFetching && data?.pages.length === 0) {
     return null;

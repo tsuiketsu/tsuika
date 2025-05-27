@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useFolderData } from "@/hooks/user-folder.hook";
+import { useFoldersData } from "@/hooks/use-folder";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useRef, useState } from "react";
 
@@ -32,7 +32,7 @@ interface PropsType {
 export default function FolderPicker({ value, onChange }: PropsType) {
   const [selectedId, setSelectedId] = useState<number | null>(value ?? null);
 
-  const { ref: sneakyRef, folders, isFetching } = useFolderData();
+  const { ref: sneakyRef, folders, isFetching } = useFoldersData();
 
   const closeBtnRef = useRef<HTMLButtonElement>(null);
 

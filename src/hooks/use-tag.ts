@@ -1,21 +1,21 @@
 import { useInfiniteScrollObserver } from "./infinite-scroll-observer";
-import { fetchFolders } from "@/queries/folder.queries";
+import { fetchAllTags } from "@/queries/tags.queries";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-export const useFolderData = () => {
+export const useTagsData = () => {
   const { data, isFetching, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["folders"],
-    queryFn: ({ pageParam }) => fetchFolders({ pageParam, limit: 30 }),
+    queryKey: ["tags"],
+    queryFn: fetchAllTags,
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 
   const ref = useInfiniteScrollObserver(fetchNextPage, isFetching);
 
-  const folders = useMemo(() => {
+  const tags = useMemo(() => {
     return data?.pages.flatMap(({ data }) => data) ?? [];
   }, [data]);
 
-  return { data, folders, isFetching, ref };
+  return { data, tags, isFetching, ref };
 };
