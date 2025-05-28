@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFoldersData } from "@/hooks/use-folder";
+import type { Folder } from "@/types/folder";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useRef, useState } from "react";
 
@@ -25,12 +26,14 @@ const FolderItemsSkeleton = ({ isVisible }: { isVisible: boolean }) => {
 };
 
 interface PropsType {
-  value?: number;
-  onChange: (id: number) => void;
+  value?: Folder["id"];
+  onChange: (id: Folder["id"]) => void;
 }
 
 export default function FolderPicker({ value, onChange }: PropsType) {
-  const [selectedId, setSelectedId] = useState<number | null>(value ?? null);
+  const [selectedId, setSelectedId] = useState<Folder["id"] | null>(
+    value ?? null
+  );
 
   const { ref: sneakyRef, folders, isFetching } = useFoldersData();
 

@@ -23,7 +23,7 @@ export default function UpdateTag({ tag, ref, onChange }: PropsType) {
       id,
       payload,
     }: {
-      id: number;
+      id: Tag["id"];
       payload: TagInsertSchemaType;
     }) => await updateTag(id, payload),
     onSuccess: ({ status, data: { data, message } }) => {

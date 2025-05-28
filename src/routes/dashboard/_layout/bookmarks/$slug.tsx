@@ -54,7 +54,7 @@ function Bookmarks() {
           layout={layout}
           className={clsx("relative", { "pb-20": isFetching })}
         >
-          <BookmarkContextProvider query={slug}>
+          <BookmarkContextProvider query={query}>
             <Suspense fallback={<BookmarkSkeleton layout={layout} />}>
               <BookmarkCards bookmarks={bookmarks} />
             </Suspense>

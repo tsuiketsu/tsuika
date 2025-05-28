@@ -1,3 +1,4 @@
+import { defaultTagId } from "./constants";
 import {
   FormControl,
   FormField,
@@ -60,7 +61,7 @@ export default function TagOptions({ control }: PropsType) {
     if (debouncedQuery) {
       setRandomTag((prev) => {
         const newObj = {
-          id: 0,
+          id: defaultTagId,
           name: kebabCase(debouncedQuery),
           color: randomColor,
         };

@@ -46,7 +46,7 @@ const BookmarkFolder = ({ folder }: { folder: Folder }) => {
           <Link
             to="/dashboard/bookmarks/$slug"
             className="[&.active]:bg-secondary active:scale-97"
-            params={{ slug: `folder/${folder.slug}` }}
+            params={{ slug: `folder/${folder.id}` }}
           >
             <span>{folder.name}</span>
           </Link>

@@ -1,3 +1,4 @@
+import { defaultTagId } from "./constants";
 import { Button, buttonVariants } from "@/components/ui/button";
 import useTagInsertMutation from "@/hooks/insert-tag-mutation.hook";
 import { cn, type Setter } from "@/lib/utils";
@@ -36,12 +37,14 @@ const SuggestionBox = ({ field, tags, setQuery, setTag }: PropsType) => {
         data: { data: tag },
       } = mutation.data;
 
-      setTagsState((prev) => prev.map((t) => (t.id === 0 ? tag : t)));
+      setTagsState((prev) =>
+        prev.map((t) => (t.id === defaultTagId ? tag : t))
+      );
     }
   }, [mutation.data, mutation.isPending, mutation.isSuccess]);
 
   const selectTagHandler = (tag: TagInsertSchemaWithId) => () => {
-    if (tag.id === 0) return;
+    if (tag.id === defaultTagId) return;
     if (!field.value?.some((t) => t.name === tag.name)) {
       field.onChange([...(field.value || []), tag]);
     } else {
@@ -57,7 +60,7 @@ const SuggestionBox = ({ field, tags, setQuery, setTag }: PropsType) => {
           <div
             className={cn(
               "hover:bg-secondary bg-card text-card-foreground inline-flex w-full items-center justify-start gap-2 rounded-md p-1 px-1 text-sm capitalize",
-              tag.id === 0 && "hover:bg-card"
+              tag.id === defaultTagId && "hover:bg-card"
             )}
             onClick={selectTagHandler(tag)}
           >
@@ -77,7 +80,7 @@ const SuggestionBox = ({ field, tags, setQuery, setTag }: PropsType) => {
             <Button
               variant="info"
               className={clsx("size-7 rounded-sm p-0", {
-                hidden: tag.id !== 0,
+                hidden: tag.id !== defaultTagId,
               })}
               onClick={() => editButtonRef.current?.click()}
             >
@@ -85,7 +88,7 @@ const SuggestionBox = ({ field, tags, setQuery, setTag }: PropsType) => {
             </Button>
             <Button
               className={clsx("size-7 rounded-sm p-0", {
-                hidden: tag.id !== 0,
+                hidden: tag.id !== defaultTagId,
               })}
               isLoading={mutation.isPending}
               onClick={addTagHandler(tag)}
@@ -102,7 +105,7 @@ const SuggestionBox = ({ field, tags, setQuery, setTag }: PropsType) => {
             </div>
           </div>
           <Suspense>
-            {tag.id === 0 && (
+            {tag.id === defaultTagId && (
               <UpdateTag
                 tag={tag as Tag}
                 ref={editButtonRef}

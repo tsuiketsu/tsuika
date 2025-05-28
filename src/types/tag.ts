@@ -1,7 +1,7 @@
 import { type } from "arktype";
 
 export type Tag = {
-  id: number;
+  id: string;
   name: string;
   color: string;
   useCount: number;

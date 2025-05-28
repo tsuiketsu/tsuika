@@ -41,7 +41,7 @@ export const insertTag = async (payload: TagInsertSchemaType) =>
     withCredentials: true,
   });
 
-export const updateTag = async (id: number, tag: TagInsertSchemaType) => {
+export const updateTag = async (id: Tag["id"], tag: TagInsertSchemaType) => {
   return await axios<SuccessResponse<Tag>>({
     method: "put",
     url: `${baseQuery}/${id}`,
@@ -50,7 +50,7 @@ export const updateTag = async (id: number, tag: TagInsertSchemaType) => {
   });
 };
 
-export const deleteTag = async (id: number) => {
+export const deleteTag = async (id: Tag["id"]) => {
   return axios.delete(`${baseQuery}/${id}`, { withCredentials: true });
 };
 

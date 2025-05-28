@@ -17,7 +17,7 @@ import { useState, type RefObject } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
-  id: number;
+  id: Bookmark["id"];
   ref: RefObject<HTMLButtonElement | null>;
   query: string;
 }
@@ -29,7 +29,8 @@ export default function DeleteBookmark({ id, ref, query }: PropsType) {
 
   const mutation = useMutation({
     mutationKey: ["deleteBookmark"],
-    mutationFn: async ({ id }: { id: number }) => await deleteBookmark(id),
+    mutationFn: async ({ id }: Pick<Bookmark, "id">) =>
+      await deleteBookmark(id),
     onSuccess: ({ status, data: { message } }) => {
       if (status !== 200) {
         toast.error(message || "Failed to delete bookmark");

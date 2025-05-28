@@ -1,3 +1,4 @@
+import { defaultFolders } from "./constants";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -6,32 +7,13 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link } from "@tanstack/react-router";
-import { Archive, Inbox, Star } from "lucide-react";
-
-const items = [
-  {
-    title: "Favorites",
-    url: "favorites",
-    icon: Star,
-  },
-  {
-    title: "Unsorted",
-    url: "unsorted",
-    icon: Inbox,
-  },
-  {
-    title: "Archived",
-    url: "archived",
-    icon: Archive,
-  },
-];
 
 export default function DefaultFolders() {
   return (
     <SidebarGroup>
       <SidebarGroupContent>
         <SidebarMenu>
-          {items.map((item) => (
+          {defaultFolders.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
                 <Link

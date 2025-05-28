@@ -25,7 +25,6 @@ interface PropsType {
 const BookmarkActions = ({ bookmark }: PropsType) => {
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
-
   const { query } = useBookmarkContext();
 
   return (

@@ -48,7 +48,7 @@ export const addBookmark = async (payload: BookmarkFormSchemaType) => {
 };
 
 export const editBookmark = async (
-  id: number,
+  id: Bookmark["id"],
   payload: BookmarkFormSchemaType
 ) => {
   return await axios<SuccessResponse<Bookmark>>({
@@ -58,7 +58,8 @@ export const editBookmark = async (
     withCredentials: true,
   });
 };
-export const deleteBookmark = async (id: number) => {
+
+export const deleteBookmark = async (id: Bookmark["id"]) => {
   return await axios.delete(`${baseQuery}/${id}`, {
     withCredentials: true,
   });

@@ -13,20 +13,22 @@ import { deleteTag } from "@/queries/tags.queries";
 import type { Tag } from "@/types/tag";
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useState, type RefObject } from "react";
 import { toast } from "sonner";
 
-export default function Deletetag({
-  id,
-  ref,
-}: Pick<React.ComponentProps<"button">, "ref"> & { id: number }) {
+interface PropsType {
+  ref: RefObject<HTMLButtonElement | null>;
+  id: Tag["id"];
+}
+
+export default function Deletetag({ id, ref }: PropsType) {
   const [open, setOpen] = useState(false);
 
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationKey: ["deleteTag"],
-    mutationFn: async ({ id }: { id: number }) => await deleteTag(id),
+    mutationFn: async ({ id }: Pick<Tag, "id">) => await deleteTag(id),
     onSuccess: ({ status, data: { message } }) => {
       if (status !== 200) {
         toast.error(message || "Failed to delete tag");

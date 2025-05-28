@@ -1,10 +1,8 @@
 import { z } from "zod";
 
 export type Folder = {
-  id: number;
-  userId?: string;
+  id: string;
   name: string;
-  slug: string;
   description: string;
   createdAt: Date;
   updatedAt: Date;

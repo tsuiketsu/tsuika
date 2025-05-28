@@ -12,11 +12,11 @@ import { Hash, MoreVertical } from "lucide-react";
 const TagItem = ({ tag }: { tag: Tag }) => {
   const navigate = useNavigate();
 
-  const onClick = (tag: string) => (_: React.MouseEvent) => {
+  const onClick = () => (_: React.MouseEvent) => {
     navigate({
       to: "/dashboard/bookmarks/$slug",
       params: {
-        slug: `tag/${tag}`,
+        slug: `tag/${tag.id}`,
       },
     });
   };
@@ -24,10 +24,7 @@ const TagItem = ({ tag }: { tag: Tag }) => {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton asChild className="pl-1">
-        <div
-          className="inline-flex items-center gap-1.5"
-          onClick={onClick(tag.name)}
-        >
+        <div className="inline-flex items-center gap-1.5" onClick={onClick()}>
           <span
             className="rounded-sm bg-red-500 p-1"
             style={{

@@ -1,12 +1,11 @@
 import { z } from "zod";
 
 export interface Bookmark {
-  id: number;
-  userId: string;
-  folderId: number;
+  id: string;
   title: string;
   description?: string;
   url: string;
+  folderId: string | null;
   favicon_url?: string;
   thumbnail?: string;
   isPinned: boolean;
@@ -19,12 +18,12 @@ export interface Bookmark {
 }
 
 export const BookmarkFormSchema = z.object({
-  folderId: z.number().optional(),
+  folderId: z.string().optional(),
   url: z.string().url(),
   title: z.string().max(255).optional(),
   description: z.string().max(500).optional(),
   tags: z
-    .array(z.object({ id: z.number(), name: z.string(), color: z.string() }))
+    .array(z.object({ id: z.string(), name: z.string(), color: z.string() }))
     .optional(),
 });
 

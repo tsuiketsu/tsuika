@@ -44,7 +44,7 @@ export const insertFolder = async (payload: FolderInsertSchemaType) =>
   });
 
 export const updateFolder = async (
-  id: number,
+  id: Folder["id"],
   folder: FolderInsertSchemaType
 ) => {
   return await axios<SuccessResponse<Folder>>({
@@ -55,6 +55,6 @@ export const updateFolder = async (
   });
 };
 
-export const deleteFolder = async (id: number) => {
+export const deleteFolder = async (id: Folder["id"]) => {
   return axios.delete(`${baseQuery}/${id}`, { withCredentials: true });
 };

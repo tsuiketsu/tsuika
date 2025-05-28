@@ -21,7 +21,7 @@ export default function UpdateFolder({ folder, ref }: PropsType) {
       id,
       payload,
     }: {
-      id: number;
+      id: Folder["id"];
       payload: FolderInsertSchemaType;
     }) => await updateFolder(id, payload),
     onSuccess: ({ status, data: { data, message } }) => {

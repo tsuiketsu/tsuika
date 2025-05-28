@@ -13,20 +13,22 @@ import { deleteFolder } from "@/queries/folder.queries";
 import type { Folder } from "@/types/folder";
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useState, type RefObject } from "react";
 import { toast } from "sonner";
 
-export default function DeleteFolder({
-  id,
-  ref,
-}: Pick<React.ComponentProps<"button">, "ref"> & { id: number }) {
+interface PropsType {
+  ref: RefObject<HTMLButtonElement | null>;
+  id: Folder["id"];
+}
+
+export default function DeleteFolder({ id, ref }: PropsType) {
   const [open, setOpen] = useState(false);
 
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationKey: ["deleteFolder"],
-    mutationFn: async ({ id }: { id: number }) => await deleteFolder(id),
+    mutationFn: async ({ id }: Pick<Folder, "id">) => await deleteFolder(id),
     onSuccess: ({ status, data: { message } }) => {
       if (status !== 200) {
         toast.error(message || "Failed to delete folder");
