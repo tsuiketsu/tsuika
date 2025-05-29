@@ -11,6 +11,11 @@ import { Route as AuthRegisterImport } from "./routes/_auth/register";
 import { Route as AuthRouteImport } from "./routes/_auth/route";
 import { Route as AuthenticatedBookmarksSlugImport } from "./routes/_authenticated/bookmarks/$slug";
 import { Route as AuthenticatedRouteImport } from "./routes/_authenticated/route";
+import { Route as AuthenticatedSettingsAccountIndexImport } from "./routes/_authenticated/settings/account/index";
+import { Route as AuthenticatedSettingsAppearanceIndexImport } from "./routes/_authenticated/settings/appearance/index";
+import { Route as AuthenticatedSettingsIndexImport } from "./routes/_authenticated/settings/index";
+import { Route as AuthenticatedSettingsProfileIndexImport } from "./routes/_authenticated/settings/profile/index";
+import { Route as AuthenticatedSettingsRouteImport } from "./routes/_authenticated/settings/route";
 import { Route as IndexImport } from "./routes/index";
 
 // Create/Update Routes
@@ -43,6 +48,22 @@ const AuthLoginRoute = AuthLoginImport.update({
   getParentRoute: () => AuthRouteRoute,
 } as any);
 
+const AuthenticatedSettingsRouteRoute = AuthenticatedSettingsRouteImport.update(
+  {
+    id: "/settings",
+    path: "/settings",
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any
+);
+
+const AuthenticatedSettingsIndexRoute = AuthenticatedSettingsIndexImport.update(
+  {
+    id: "/",
+    path: "/",
+    getParentRoute: () => AuthenticatedSettingsRouteRoute,
+  } as any
+);
+
 const AuthenticatedBookmarksSlugRoute = AuthenticatedBookmarksSlugImport.update(
   {
     id: "/bookmarks/$slug",
@@ -50,6 +71,27 @@ const AuthenticatedBookmarksSlugRoute = AuthenticatedBookmarksSlugImport.update(
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any
 );
+
+const AuthenticatedSettingsProfileIndexRoute =
+  AuthenticatedSettingsProfileIndexImport.update({
+    id: "/profile/",
+    path: "/profile/",
+    getParentRoute: () => AuthenticatedSettingsRouteRoute,
+  } as any);
+
+const AuthenticatedSettingsAppearanceIndexRoute =
+  AuthenticatedSettingsAppearanceIndexImport.update({
+    id: "/appearance/",
+    path: "/appearance/",
+    getParentRoute: () => AuthenticatedSettingsRouteRoute,
+  } as any);
+
+const AuthenticatedSettingsAccountIndexRoute =
+  AuthenticatedSettingsAccountIndexImport.update({
+    id: "/account/",
+    path: "/account/",
+    getParentRoute: () => AuthenticatedSettingsRouteRoute,
+  } as any);
 
 // Populate the FileRoutesByPath interface
 
@@ -76,6 +118,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticatedRouteImport;
       parentRoute: typeof rootRoute;
     };
+    "/_authenticated/settings": {
+      id: "/_authenticated/settings";
+      path: "/settings";
+      fullPath: "/settings";
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport;
+      parentRoute: typeof AuthenticatedRouteImport;
+    };
     "/_auth/login": {
       id: "/_auth/login";
       path: "/login";
@@ -97,6 +146,34 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticatedBookmarksSlugImport;
       parentRoute: typeof AuthenticatedRouteImport;
     };
+    "/_authenticated/settings/": {
+      id: "/_authenticated/settings/";
+      path: "/";
+      fullPath: "/settings/";
+      preLoaderRoute: typeof AuthenticatedSettingsIndexImport;
+      parentRoute: typeof AuthenticatedSettingsRouteImport;
+    };
+    "/_authenticated/settings/account/": {
+      id: "/_authenticated/settings/account/";
+      path: "/account";
+      fullPath: "/settings/account";
+      preLoaderRoute: typeof AuthenticatedSettingsAccountIndexImport;
+      parentRoute: typeof AuthenticatedSettingsRouteImport;
+    };
+    "/_authenticated/settings/appearance/": {
+      id: "/_authenticated/settings/appearance/";
+      path: "/appearance";
+      fullPath: "/settings/appearance";
+      preLoaderRoute: typeof AuthenticatedSettingsAppearanceIndexImport;
+      parentRoute: typeof AuthenticatedSettingsRouteImport;
+    };
+    "/_authenticated/settings/profile/": {
+      id: "/_authenticated/settings/profile/";
+      path: "/profile";
+      fullPath: "/settings/profile";
+      preLoaderRoute: typeof AuthenticatedSettingsProfileIndexImport;
+      parentRoute: typeof AuthenticatedSettingsRouteImport;
+    };
   }
 }
 
@@ -116,11 +193,36 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren
 );
 
+interface AuthenticatedSettingsRouteRouteChildren {
+  AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute;
+  AuthenticatedSettingsAccountIndexRoute: typeof AuthenticatedSettingsAccountIndexRoute;
+  AuthenticatedSettingsAppearanceIndexRoute: typeof AuthenticatedSettingsAppearanceIndexRoute;
+  AuthenticatedSettingsProfileIndexRoute: typeof AuthenticatedSettingsProfileIndexRoute;
+}
+
+const AuthenticatedSettingsRouteRouteChildren: AuthenticatedSettingsRouteRouteChildren =
+  {
+    AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
+    AuthenticatedSettingsAccountIndexRoute:
+      AuthenticatedSettingsAccountIndexRoute,
+    AuthenticatedSettingsAppearanceIndexRoute:
+      AuthenticatedSettingsAppearanceIndexRoute,
+    AuthenticatedSettingsProfileIndexRoute:
+      AuthenticatedSettingsProfileIndexRoute,
+  };
+
+const AuthenticatedSettingsRouteRouteWithChildren =
+  AuthenticatedSettingsRouteRoute._addFileChildren(
+    AuthenticatedSettingsRouteRouteChildren
+  );
+
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren;
   AuthenticatedBookmarksSlugRoute: typeof AuthenticatedBookmarksSlugRoute;
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedBookmarksSlugRoute: AuthenticatedBookmarksSlugRoute,
 };
 
@@ -130,9 +232,14 @@ const AuthenticatedRouteRouteWithChildren =
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
   "": typeof AuthenticatedRouteRouteWithChildren;
+  "/settings": typeof AuthenticatedSettingsRouteRouteWithChildren;
   "/login": typeof AuthLoginRoute;
   "/register": typeof AuthRegisterRoute;
   "/bookmarks/$slug": typeof AuthenticatedBookmarksSlugRoute;
+  "/settings/": typeof AuthenticatedSettingsIndexRoute;
+  "/settings/account": typeof AuthenticatedSettingsAccountIndexRoute;
+  "/settings/appearance": typeof AuthenticatedSettingsAppearanceIndexRoute;
+  "/settings/profile": typeof AuthenticatedSettingsProfileIndexRoute;
 }
 
 export interface FileRoutesByTo {
@@ -141,6 +248,10 @@ export interface FileRoutesByTo {
   "/login": typeof AuthLoginRoute;
   "/register": typeof AuthRegisterRoute;
   "/bookmarks/$slug": typeof AuthenticatedBookmarksSlugRoute;
+  "/settings": typeof AuthenticatedSettingsIndexRoute;
+  "/settings/account": typeof AuthenticatedSettingsAccountIndexRoute;
+  "/settings/appearance": typeof AuthenticatedSettingsAppearanceIndexRoute;
+  "/settings/profile": typeof AuthenticatedSettingsProfileIndexRoute;
 }
 
 export interface FileRoutesById {
@@ -148,24 +259,53 @@ export interface FileRoutesById {
   "/": typeof IndexRoute;
   "/_auth": typeof AuthRouteRouteWithChildren;
   "/_authenticated": typeof AuthenticatedRouteRouteWithChildren;
+  "/_authenticated/settings": typeof AuthenticatedSettingsRouteRouteWithChildren;
   "/_auth/login": typeof AuthLoginRoute;
   "/_auth/register": typeof AuthRegisterRoute;
   "/_authenticated/bookmarks/$slug": typeof AuthenticatedBookmarksSlugRoute;
+  "/_authenticated/settings/": typeof AuthenticatedSettingsIndexRoute;
+  "/_authenticated/settings/account/": typeof AuthenticatedSettingsAccountIndexRoute;
+  "/_authenticated/settings/appearance/": typeof AuthenticatedSettingsAppearanceIndexRoute;
+  "/_authenticated/settings/profile/": typeof AuthenticatedSettingsProfileIndexRoute;
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "" | "/login" | "/register" | "/bookmarks/$slug";
+  fullPaths:
+    | "/"
+    | ""
+    | "/settings"
+    | "/login"
+    | "/register"
+    | "/bookmarks/$slug"
+    | "/settings/"
+    | "/settings/account"
+    | "/settings/appearance"
+    | "/settings/profile";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "" | "/login" | "/register" | "/bookmarks/$slug";
+  to:
+    | "/"
+    | ""
+    | "/login"
+    | "/register"
+    | "/bookmarks/$slug"
+    | "/settings"
+    | "/settings/account"
+    | "/settings/appearance"
+    | "/settings/profile";
   id:
     | "__root__"
     | "/"
     | "/_auth"
     | "/_authenticated"
+    | "/_authenticated/settings"
     | "/_auth/login"
     | "/_auth/register"
-    | "/_authenticated/bookmarks/$slug";
+    | "/_authenticated/bookmarks/$slug"
+    | "/_authenticated/settings/"
+    | "/_authenticated/settings/account/"
+    | "/_authenticated/settings/appearance/"
+    | "/_authenticated/settings/profile/";
   fileRoutesById: FileRoutesById;
 }
 
@@ -209,7 +349,18 @@ export const routeTree = rootRoute
     "/_authenticated": {
       "filePath": "_authenticated/route.tsx",
       "children": [
+        "/_authenticated/settings",
         "/_authenticated/bookmarks/$slug"
+      ]
+    },
+    "/_authenticated/settings": {
+      "filePath": "_authenticated/settings/route.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/settings/",
+        "/_authenticated/settings/account/",
+        "/_authenticated/settings/appearance/",
+        "/_authenticated/settings/profile/"
       ]
     },
     "/_auth/login": {
@@ -223,6 +374,22 @@ export const routeTree = rootRoute
     "/_authenticated/bookmarks/$slug": {
       "filePath": "_authenticated/bookmarks/$slug.tsx",
       "parent": "/_authenticated"
+    },
+    "/_authenticated/settings/": {
+      "filePath": "_authenticated/settings/index.tsx",
+      "parent": "/_authenticated/settings"
+    },
+    "/_authenticated/settings/account/": {
+      "filePath": "_authenticated/settings/account/index.tsx",
+      "parent": "/_authenticated/settings"
+    },
+    "/_authenticated/settings/appearance/": {
+      "filePath": "_authenticated/settings/appearance/index.tsx",
+      "parent": "/_authenticated/settings"
+    },
+    "/_authenticated/settings/profile/": {
+      "filePath": "_authenticated/settings/profile/index.tsx",
+      "parent": "/_authenticated/settings"
     }
   }
 }

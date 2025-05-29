@@ -29,3 +29,15 @@ export function getAspectRatio(w: number, h: number): [number, number] {
   const divisor = gcd(w, h);
   return [w / divisor, h / divisor];
 }
+
+export const getPreviewUrl = (
+  file: FileList | File | undefined
+): string | null => {
+  if (file && file instanceof FileList && file[0] != null) {
+    return URL.createObjectURL(file[0]);
+  } else if (file && file instanceof File && file != null) {
+    return URL.createObjectURL(file);
+  }
+
+  return null;
+};

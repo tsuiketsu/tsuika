@@ -15,11 +15,12 @@ const SectionHeader = ({ title, description, children }: PropsType) => {
     );
 
   return (
-    <div className="flex w-full items-start justify-between select-none">
+    <div className="flex w-full flex-col items-start justify-between space-y-8 select-none">
       <section className="w-full">
-        <h2 className="text-2xl font-bold capitalize">{title}</h2>
+        <h2 className="text-3xl font-bold capitalize">{title}</h2>
         {_description}
       </section>
+      <hr className="border-border w-full" />
       {children}
     </div>
   );

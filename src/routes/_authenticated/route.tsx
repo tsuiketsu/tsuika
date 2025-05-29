@@ -3,14 +3,24 @@ import AddBookmark from "@/components/forms/bookmark/bookmark-add";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { fetchUserSession } from "@/queries/user-session";
-import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
+import {
+  Outlet,
+  createFileRoute,
+  redirect,
+  useRouterState,
+} from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated")({
   component: DashboardLayout,
-  loader: async ({ params }: { params: { slug: string } }) => {
+  loader: async () => {
     try {
       const session = await fetchUserSession();
-      return { session, slug: params.slug };
+
+      if (!session) {
+        throw new Error("No session");
+      }
+
+      return { session };
     } catch {
       throw redirect({
         to: "/login",
@@ -23,7 +33,9 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function DashboardLayout() {
-  const slug = Route.useLoaderData().slug;
+  const {
+    location: { pathname },
+  } = useRouterState();
 
   return (
     <SidebarProvider>
@@ -34,7 +46,7 @@ function DashboardLayout() {
           {/* <Input placeholder="Search" className="max-w-80" /> */}
           <div className="ml-auto inline-flex space-x-2">
             <ThemeToggle />
-            <AddBookmark query={slug} />
+            <AddBookmark query={pathname} />
           </div>
         </div>
         <div className="@container/dash flex h-full p-4">

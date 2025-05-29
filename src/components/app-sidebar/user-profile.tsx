@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
 } from "../ui/sidebar";
 import { signOut, useSession } from "@/lib/auth-client";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { ChevronUp, LoaderCircle, User2 } from "lucide-react";
 
 export default function UserProfile() {
@@ -45,8 +45,8 @@ export default function UserProfile() {
               </DropdownMenuTrigger>
             )}
             <DropdownMenuContent side="top" className="w-60">
-              <DropdownMenuItem>
-                <span>Account</span>
+              <DropdownMenuItem asChild>
+                <Link to="/settings">Settings</Link>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={logOut}>
                 <span>Sign Out</span>
