@@ -1,11 +1,13 @@
-import SidebarTabs from "./sidebar-tabs";
+import GeneralSection from "./sections/general";
 import UserProfile from "./user-profile";
-import { Sidebar } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
 
 export function AppSidebar() {
   return (
     <Sidebar className="select-none">
-      <SidebarTabs />
+      <SidebarContent>
+        <GeneralSection />
+      </SidebarContent>
       <UserProfile />
     </Sidebar>
   );

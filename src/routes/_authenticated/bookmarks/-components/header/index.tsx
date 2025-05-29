@@ -1,5 +1,5 @@
 import TagIcon from "./tag-icon";
-import { defaultFolders } from "@/components/app-sidebar/sidebar-tabs/home-tab/constants";
+import { defaultFolders } from "@/components/app-sidebar/sections/general/bookmark-options/constants";
 import FolderMenu from "@/components/dropdowns/folder-menu";
 import TagMenu from "@/components/dropdowns/tag-menu";
 import Show from "@/components/show";
@@ -12,7 +12,11 @@ interface PropsType {
 }
 
 const getDefaultFolder = (url: string) => {
-  return defaultFolders.find((folder) => folder.url === url);
+  return defaultFolders.find((folder) => {
+    const { slug } = folder.link.params as { slug: string };
+    if (!slug) return false;
+    return slug.split("/").slice(-1).join("") === url;
+  });
 };
 
 const Title = ({ title, isLoading }: { title: string; isLoading: boolean }) => {
@@ -61,7 +65,7 @@ export default function BookmarksPageHeader({ slug }: PropsType) {
 
   const isLoading = pageType === "tag" ? isTagsFetching : isFoldersFetching;
   const title = (() => {
-    if (defaultFolders.some(({ url }) => url === splits[1])) {
+    if (getDefaultFolder(splits[1])) {
       return splits[1];
     }
 
