@@ -5,7 +5,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { fetchUserSession } from "@/queries/user-session";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/dashboard/_layout")({
+export const Route = createFileRoute("/_authenticated")({
   component: DashboardLayout,
   loader: async ({ params }: { params: { slug: string } }) => {
     try {

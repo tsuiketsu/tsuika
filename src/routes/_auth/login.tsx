@@ -29,7 +29,7 @@ const LoginSchema = type({
   password: "string",
 });
 
-export const Route = createFileRoute("/(auth)/_auth/login")({
+export const Route = createFileRoute("/_auth/login")({
   component: Login,
 });
 
@@ -53,7 +53,7 @@ function Login() {
       }
       toast.success(`Welcome back ${data.user.name}!`);
       navigate({
-        to: "/dashboard/bookmarks/$slug",
+        to: "/bookmarks/$slug",
         params: { slug: "folder/unsorted" },
       });
     },

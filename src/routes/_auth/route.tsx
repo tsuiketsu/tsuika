@@ -1,14 +1,14 @@
 import { fetchUserSession } from "@/queries/user-session";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/(auth)/_auth")({
+export const Route = createFileRoute("/_auth")({
   component: LayoutComponent,
   loader: async () => {
     try {
       const session = await fetchUserSession();
       if (session) {
         return redirect({
-          to: "/dashboard/bookmarks/$slug",
+          to: "/bookmarks/$slug",
           params: { slug: "folder/unsorted" },
         });
       }

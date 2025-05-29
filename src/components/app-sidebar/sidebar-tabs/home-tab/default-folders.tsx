@@ -17,7 +17,7 @@ export default function DefaultFolders() {
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
                 <Link
-                  to="/dashboard/bookmarks/$slug"
+                  to="/bookmarks/$slug"
                   params={{
                     slug: `folder/${item.url}`,
                   }}

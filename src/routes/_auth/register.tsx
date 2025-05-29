@@ -30,7 +30,7 @@ const SignUpSchema = type({
   password: "string",
 });
 
-export const Route = createFileRoute("/(auth)/_auth/register")({
+export const Route = createFileRoute("/_auth/register")({
   component: Register,
 });
 
@@ -55,7 +55,7 @@ function Register() {
         return;
       }
       navigate({
-        to: "/dashboard/bookmarks/$slug",
+        to: "/bookmarks/$slug",
         params: { slug: "folder/unsorted" },
       });
     },

@@ -44,7 +44,7 @@ const BookmarkFolder = ({ folder }: { folder: Folder }) => {
       <FolderTooltip text={folder.description} isDisabled={!folder.description}>
         <SidebarMenuButton asChild>
           <Link
-            to="/dashboard/bookmarks/$slug"
+            to="/bookmarks/$slug"
             className="[&.active]:bg-secondary active:scale-97"
             params={{ slug: `folder/${folder.id}` }}
           >

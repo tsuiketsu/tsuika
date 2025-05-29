@@ -14,7 +14,7 @@ import { Suspense, lazy, useMemo, useState } from "react";
 
 const BookmarkCards = lazy(() => import("./-components/bookmark-cards"));
 
-export const Route = createFileRoute("/dashboard/_layout/bookmarks/$slug")({
+export const Route = createFileRoute("/_authenticated/bookmarks/$slug")({
   component: Bookmarks,
   loader: async ({ params }) => {
     return params;

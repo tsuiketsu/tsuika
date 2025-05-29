@@ -14,7 +14,7 @@ const TagItem = ({ tag }: { tag: Tag }) => {
 
   const onClick = () => (_: React.MouseEvent) => {
     navigate({
-      to: "/dashboard/bookmarks/$slug",
+      to: "/bookmarks/$slug",
       params: {
         slug: `tag/${tag.id}`,
       },
