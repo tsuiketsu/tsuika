@@ -1,4 +1,5 @@
 import BookmarkForm from "./bookmark-form";
+import { useBookmarPathSlug } from "./use-slug.hook";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import { insertInfQueryData } from "@/lib/query.utils";
@@ -9,16 +10,14 @@ import { BookmarkPlus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-interface PropsType {
-  query: string;
-}
+export default function AddBookmark() {
+  const { slug } = useBookmarPathSlug();
 
-export default function AddBookmark({ query }: PropsType) {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationKey: ["addBookmark"],
+    mutationKey: ["addBookmark", slug, ""],
     mutationFn: addBookmark,
     onSuccess: ({ status, data: { data, message } }) => {
       if (status !== 200) {
@@ -27,7 +26,7 @@ export default function AddBookmark({ query }: PropsType) {
       }
 
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
-        ["bookmarks", query],
+        ["bookmarks", slug, ""],
         (old) => insertInfQueryData(old, data)
       );
 

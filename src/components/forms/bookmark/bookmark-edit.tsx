@@ -1,10 +1,10 @@
 import BookmarkForm from "./bookmark-form";
+import { useBookmarPathSlug } from "./use-slug.hook";
 import Modal from "@/components/ui/modal";
 import { deleteInfQueryData, updateInfQueryData } from "@/lib/query.utils";
 import { editBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark, BookmarkFormSchemaType } from "@/types/bookmark";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouterState } from "@tanstack/react-router";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
@@ -16,9 +16,7 @@ interface PropsType extends Pick<React.ComponentProps<"button">, "ref"> {
 export default function EditBookmark({ bookmark, ref, query }: PropsType) {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
-  const {
-    location: { pathname },
-  } = useRouterState();
+  const { slug } = useBookmarPathSlug();
 
   const mutation = useMutation({
     mutationKey: ["editBookmark"],
@@ -35,9 +33,7 @@ export default function EditBookmark({ bookmark, ref, query }: PropsType) {
         return;
       }
 
-      const pathnameSplits = decodeURIComponent(pathname).split("/");
-      const slug = pathnameSplits.slice(-2).join("/");
-      const queryId = pathnameSplits[pathnameSplits.length - 1];
+      const queryId = slug.split("/").slice(-1).join("");
 
       if (payload.folderId && queryId !== payload.folderId) {
         queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(

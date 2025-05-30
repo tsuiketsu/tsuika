@@ -1,3 +1,4 @@
+import { useBookmarPathSlug } from "./use-slug.hook";
 import {
   AlertDialog,
   AlertDialogHeader,
@@ -23,8 +24,9 @@ interface PropsType {
 }
 
 export default function DeleteBookmark({ id, ref, query }: PropsType) {
-  const [open, setOpen] = useState(false);
+  const { slug } = useBookmarPathSlug();
 
+  const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -38,7 +40,7 @@ export default function DeleteBookmark({ id, ref, query }: PropsType) {
       }
 
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
-        ["bookmarks", query],
+        ["bookmarks", slug, query],
         (old) => deleteInfQueryData(old, id, (old) => old.id)
       );
 
