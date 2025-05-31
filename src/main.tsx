@@ -1,25 +1,21 @@
 import FontProvider from "./components/font/context/font-provider.tsx";
 import ThemeProvider from "./components/theme/context/theme-provider.tsx";
 import "./index.css";
+import * as TanstackQuery from "./integrations/tanstack-query/root-provider.tsx";
 import { routeTree } from "./routeTree.gen.ts";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
 const router = createRouter({
   routeTree,
-});
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5,
-      refetchOnReconnect: true,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    },
+  context: {
+    ...TanstackQuery.getContext(),
   },
+  defaultPreload: "intent",
+  scrollRestoration: true,
+  defaultStructuralSharing: false,
+  defaultPreloadStaleTime: 0,
 });
 
 declare module "@tanstack/react-router" {
@@ -35,13 +31,13 @@ if (!rootElement.innerHTML) {
 
   root.render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
+      <TanstackQuery.Provider>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <FontProvider storageKey="vite-ui-font">
             <RouterProvider router={router} />
           </FontProvider>
         </ThemeProvider>
-      </QueryClientProvider>
+      </TanstackQuery.Provider>
     </StrictMode>
   );
 }
