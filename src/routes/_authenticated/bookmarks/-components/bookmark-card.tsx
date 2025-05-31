@@ -83,7 +83,7 @@ export default function BookmarkCard({ bookmark }: PropsType) {
           </p>
         </div>
       </div>
-      <section className="font-roboto @container space-y-4">
+      <section className="@container space-y-4">
         <div className="relative overflow-hidden pt-2 text-sm font-medium">
           <h3 className="border-e-secondary-foreground truncate transition-transform duration-200 group-hover:-translate-y-8">
             {bookmark.title}

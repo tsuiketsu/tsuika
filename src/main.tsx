@@ -1,3 +1,4 @@
+import FontProvider from "./components/font/context/font-provider.tsx";
 import ThemeProvider from "./components/theme/context/theme-provider.tsx";
 import "./index.css";
 import { routeTree } from "./routeTree.gen.ts";
@@ -36,7 +37,9 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-          <RouterProvider router={router} />
+          <FontProvider storageKey="vite-ui-font">
+            <RouterProvider router={router} />
+          </FontProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </StrictMode>

@@ -10,7 +10,7 @@ const TagList = ({
     {tags?.map((tag, idx) => (
       <span
         key={`selected-tag-${idx}`}
-        className="font-roboto inline-flex items-center rounded-full px-2 py-0.5 text-sm"
+        className="inline-flex items-center rounded-full px-2 py-0.5 text-sm"
         style={{
           backgroundColor: tag.color,
           color: getTextColor(tag.color),

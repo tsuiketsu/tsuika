@@ -80,7 +80,7 @@ function SettingsRouteComponent() {
               <Button
                 variant="ghost"
                 key={`option-nav-${idx}`}
-                className="w-32 @2xl/dash:w-58 @2xl/dash:justify-start"
+                className="w-32 font-normal @2xl/dash:w-58 @2xl/dash:justify-start"
                 asChild
               >
                 <Link {...value.link} className="[&.active]:bg-secondary">
@@ -94,8 +94,10 @@ function SettingsRouteComponent() {
             <section>
               {typeof currentPath !== "undefined" && (
                 <>
-                  <h2 className="font-bold">{links[currentPath].title}</h2>
-                  <p>{links[currentPath].description}</p>
+                  <h2 className="text-lg">{links[currentPath].title}</h2>
+                  <p className="text-muted-foreground text-sm">
+                    {links[currentPath].description}
+                  </p>
                 </>
               )}
             </section>

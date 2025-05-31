@@ -64,7 +64,7 @@ function ProfileComponent() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full @lg/dash:w-28">
+        <Button type="submit" className="w-full @lg/dash:w-38">
           Save Profile
         </Button>
       </form>

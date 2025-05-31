@@ -113,7 +113,7 @@ function Login() {
         </Form>
       </CardContent>
       <CardFooter className="grid gap-4 text-center">
-        <Button form="login-form" isLoading={mutation.isPending}>
+        <Button type="submit" form="login-form" isLoading={mutation.isPending}>
           Login
         </Button>
         <span className="text-sm">

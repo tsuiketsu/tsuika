@@ -130,7 +130,11 @@ function Register() {
         </Form>
       </CardContent>
       <CardFooter className="grid gap-4 text-center">
-        <Button form="register-form" isLoading={mutation.isPending}>
+        <Button
+          type="submit"
+          form="register-form"
+          isLoading={mutation.isPending}
+        >
           Register
         </Button>
         <span className="text-sm">
