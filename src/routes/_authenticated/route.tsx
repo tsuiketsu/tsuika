@@ -1,7 +1,6 @@
+import NavigationBar from "./-components/navigation-bar";
 import { AppSidebar } from "@/components/app-sidebar/index";
-import AddBookmark from "@/components/forms/bookmark/bookmark-add";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { fetchUserSession } from "@/queries/user-session";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
@@ -32,13 +31,7 @@ function DashboardLayout() {
     <SidebarProvider>
       <AppSidebar />
       <div className="flex w-full flex-col">
-        <div className="bg-background sticky top-0 z-20 flex h-[53px] items-center gap-2 border px-2.5">
-          <SidebarTrigger />
-          <div className="ml-auto inline-flex space-x-2">
-            <ThemeToggle />
-            <AddBookmark />
-          </div>
-        </div>
+        <NavigationBar />
         <div className="@container/dash flex h-full p-4">
           <Outlet />
         </div>

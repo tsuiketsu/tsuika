@@ -5,17 +5,20 @@ import { insertInfQueryData } from "@/lib/query.utils";
 import { insertFolder } from "@/queries/folder.queries";
 import type { Folder } from "@/types/folder";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
 import { Plus } from "lucide-react";
-import React, { useRef } from "react";
+import React, { useRef, type RefObject } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
   customTrigger?: React.ReactNode;
+  triggerRef?: RefObject<HTMLButtonElement | null>;
 }
 
-export default function InsertFolder({ customTrigger }: PropsType) {
+export default function InsertFolder({ customTrigger, triggerRef }: PropsType) {
   const queryClient = useQueryClient();
-  const ref = useRef<HTMLButtonElement>(null);
+  const localRef = useRef<HTMLButtonElement>(null);
+  const ref = triggerRef ?? localRef;
 
   const mutation = useMutation({
     mutationKey: ["insertFolder"],
@@ -42,7 +45,12 @@ export default function InsertFolder({ customTrigger }: PropsType) {
       desc="When you're happy with it, just hit the Create button"
       triggerButton={
         customTrigger ?? (
-          <Button variant="ghost" size="icon" ref={ref}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className={clsx({ hidden: triggerRef })}
+            ref={ref}
+          >
             <Plus size={20} />
           </Button>
         )

@@ -6,11 +6,16 @@ import { insertInfQueryData } from "@/lib/query.utils";
 import { addBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark } from "@/types/bookmark";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
 import { BookmarkPlus } from "lucide-react";
-import { useState } from "react";
+import { useState, type RefObject } from "react";
 import { toast } from "sonner";
 
-export default function AddBookmark() {
+interface PropsType {
+  triggerRef?: RefObject<HTMLButtonElement | null>;
+}
+
+export default function AddBookmark({ triggerRef }: PropsType) {
   const { slug } = useBookmarPathSlug();
 
   const [open, setOpen] = useState(false);
@@ -38,9 +43,10 @@ export default function AddBookmark() {
   return (
     <>
       <Button
+        ref={triggerRef}
         variant="outline"
         size="icon"
-        className="ml-auto"
+        className={clsx("ml-auto", { hidden: triggerRef })}
         onClick={() => setOpen(true)}
       >
         <BookmarkPlus />
