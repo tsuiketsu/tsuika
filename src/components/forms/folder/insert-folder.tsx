@@ -6,10 +6,14 @@ import { insertFolder } from "@/queries/folder.queries";
 import type { Folder } from "@/types/folder";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { toast } from "sonner";
 
-export default function InsertFolder() {
+interface PropsType {
+  customTrigger?: React.ReactNode;
+}
+
+export default function InsertFolder({ customTrigger }: PropsType) {
   const queryClient = useQueryClient();
   const ref = useRef<HTMLButtonElement>(null);
 
@@ -37,9 +41,11 @@ export default function InsertFolder() {
       title="Create Folder"
       desc="When you're happy with it, just hit the Create button"
       triggerButton={
-        <Button ref={ref} variant="ghost" className="size-8">
-          <Plus size={20} />
-        </Button>
+        customTrigger ?? (
+          <Button variant="ghost" size="icon" ref={ref}>
+            <Plus size={20} />
+          </Button>
+        )
       }
       isPending={mutation.isPending}
       btnTxt="Create"
