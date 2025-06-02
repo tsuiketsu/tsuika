@@ -6,6 +6,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 // Import Routes
 import { Route as rootRoute } from "./routes/__root";
+import { Route as AuthEmailVerificationIndexImport } from "./routes/_auth/email-verification/index";
 import { Route as AuthLoginImport } from "./routes/_auth/login";
 import { Route as AuthRegisterImport } from "./routes/_auth/register";
 import { Route as AuthRouteImport } from "./routes/_auth/route";
@@ -61,6 +62,14 @@ const AuthenticatedSettingsIndexRoute = AuthenticatedSettingsIndexImport.update(
     id: "/",
     path: "/",
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
+  } as any
+);
+
+const AuthEmailVerificationIndexRoute = AuthEmailVerificationIndexImport.update(
+  {
+    id: "/email-verification/",
+    path: "/email-verification/",
+    getParentRoute: () => AuthRouteRoute,
   } as any
 );
 
@@ -146,6 +155,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticatedBookmarksSlugImport;
       parentRoute: typeof AuthenticatedRouteImport;
     };
+    "/_auth/email-verification/": {
+      id: "/_auth/email-verification/";
+      path: "/email-verification";
+      fullPath: "/email-verification";
+      preLoaderRoute: typeof AuthEmailVerificationIndexImport;
+      parentRoute: typeof AuthRouteImport;
+    };
     "/_authenticated/settings/": {
       id: "/_authenticated/settings/";
       path: "/";
@@ -182,11 +198,13 @@ declare module "@tanstack/react-router" {
 interface AuthRouteRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute;
   AuthRegisterRoute: typeof AuthRegisterRoute;
+  AuthEmailVerificationIndexRoute: typeof AuthEmailVerificationIndexRoute;
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
+  AuthEmailVerificationIndexRoute: AuthEmailVerificationIndexRoute,
 };
 
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
@@ -236,6 +254,7 @@ export interface FileRoutesByFullPath {
   "/login": typeof AuthLoginRoute;
   "/register": typeof AuthRegisterRoute;
   "/bookmarks/$slug": typeof AuthenticatedBookmarksSlugRoute;
+  "/email-verification": typeof AuthEmailVerificationIndexRoute;
   "/settings/": typeof AuthenticatedSettingsIndexRoute;
   "/settings/account": typeof AuthenticatedSettingsAccountIndexRoute;
   "/settings/appearance": typeof AuthenticatedSettingsAppearanceIndexRoute;
@@ -248,6 +267,7 @@ export interface FileRoutesByTo {
   "/login": typeof AuthLoginRoute;
   "/register": typeof AuthRegisterRoute;
   "/bookmarks/$slug": typeof AuthenticatedBookmarksSlugRoute;
+  "/email-verification": typeof AuthEmailVerificationIndexRoute;
   "/settings": typeof AuthenticatedSettingsIndexRoute;
   "/settings/account": typeof AuthenticatedSettingsAccountIndexRoute;
   "/settings/appearance": typeof AuthenticatedSettingsAppearanceIndexRoute;
@@ -263,6 +283,7 @@ export interface FileRoutesById {
   "/_auth/login": typeof AuthLoginRoute;
   "/_auth/register": typeof AuthRegisterRoute;
   "/_authenticated/bookmarks/$slug": typeof AuthenticatedBookmarksSlugRoute;
+  "/_auth/email-verification/": typeof AuthEmailVerificationIndexRoute;
   "/_authenticated/settings/": typeof AuthenticatedSettingsIndexRoute;
   "/_authenticated/settings/account/": typeof AuthenticatedSettingsAccountIndexRoute;
   "/_authenticated/settings/appearance/": typeof AuthenticatedSettingsAppearanceIndexRoute;
@@ -278,6 +299,7 @@ export interface FileRouteTypes {
     | "/login"
     | "/register"
     | "/bookmarks/$slug"
+    | "/email-verification"
     | "/settings/"
     | "/settings/account"
     | "/settings/appearance"
@@ -289,6 +311,7 @@ export interface FileRouteTypes {
     | "/login"
     | "/register"
     | "/bookmarks/$slug"
+    | "/email-verification"
     | "/settings"
     | "/settings/account"
     | "/settings/appearance"
@@ -302,6 +325,7 @@ export interface FileRouteTypes {
     | "/_auth/login"
     | "/_auth/register"
     | "/_authenticated/bookmarks/$slug"
+    | "/_auth/email-verification/"
     | "/_authenticated/settings/"
     | "/_authenticated/settings/account/"
     | "/_authenticated/settings/appearance/"
@@ -343,7 +367,8 @@ export const routeTree = rootRoute
       "filePath": "_auth/route.tsx",
       "children": [
         "/_auth/login",
-        "/_auth/register"
+        "/_auth/register",
+        "/_auth/email-verification/"
       ]
     },
     "/_authenticated": {
@@ -374,6 +399,10 @@ export const routeTree = rootRoute
     "/_authenticated/bookmarks/$slug": {
       "filePath": "_authenticated/bookmarks/$slug.tsx",
       "parent": "/_authenticated"
+    },
+    "/_auth/email-verification/": {
+      "filePath": "_auth/email-verification/index.tsx",
+      "parent": "/_auth"
     },
     "/_authenticated/settings/": {
       "filePath": "_authenticated/settings/index.tsx",

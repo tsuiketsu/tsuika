@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { signUp } from "@/lib/auth-client";
+import { emailOtp, signUp } from "@/lib/auth-client";
 import { arktypeResolver } from "@hookform/resolvers/arktype";
 import { useMutation } from "@tanstack/react-query";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -45,7 +45,7 @@ function Register() {
     mutationFn: async (payload: type.infer<typeof SignUpSchema>) => {
       return signUp.email(payload);
     },
-    onSuccess: ({ error }) => {
+    onSuccess: ({ error }, { email }) => {
       if (error) {
         toast.error(
           error.message || "Registration failed, something went wrong"
@@ -54,11 +54,36 @@ function Register() {
         console.error(error);
         return;
       }
-      navigate({
-        to: "/bookmarks/$slug",
-        params: { slug: "folder/unsorted" },
+
+      const promise = new Promise((resolve, reject) => {
+        emailOtp
+          .sendVerificationOtp({ email, type: "email-verification" })
+          .then(({ data, error }) => {
+            if (error || !data.success) {
+              // eslint-disable-next-line no-console
+              console.error(error);
+              reject();
+            }
+            resolve({});
+          })
+          .catch((error) => {
+            // eslint-disable-next-line no-console
+            console.error(error);
+            reject();
+          });
+      });
+
+      toast.promise(promise, {
+        loading: "Sending verification OTP to your email",
+        success: () => {
+          sessionStorage.setItem("pending_email", email);
+          navigate({ to: "/email-verification" });
+          return "Verification OTP sent to your email";
+        },
+        error: "Failed to send verification OTP",
       });
     },
+    onError: (error) => toast.error(error.message || "Something went wrong!"),
   });
 
   async function onSubmit(values: type.infer<typeof SignUpSchema>) {
