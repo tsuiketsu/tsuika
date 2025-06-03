@@ -143,3 +143,14 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+@media print {
+  body * {
+    display: none;
+  }
+
+  #printable,
+  #printable * {
+    display: block;
+  }
+}

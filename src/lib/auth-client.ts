@@ -1,9 +1,9 @@
-import { emailOTPClient } from "better-auth/client/plugins";
+import { emailOTPClient, twoFactorClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  plugins: [emailOTPClient()],
+  plugins: [emailOTPClient(), twoFactorClient()],
 });
 
 export const {
@@ -15,6 +15,7 @@ export const {
   resetPassword,
   updateUser,
   emailOtp,
+  twoFactor,
 } = authClient;
 
 export type Session = typeof authClient.$Infer.Session;

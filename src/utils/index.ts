@@ -1,4 +1,6 @@
+import type { Setter } from "@/lib/utils";
 import { getLuminance } from "color2k";
+import { toast } from "sonner";
 
 // Constants
 const aspectRatios = [
@@ -40,4 +42,16 @@ export const getPreviewUrl = (
   }
 
   return null;
+};
+
+export const copyCodes = async (text: string, setState?: Setter<boolean>) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    toast.success("Copied codes to clipboard");
+    setState?.(true);
+    setTimeout(() => setState?.(false), 4000);
+  } catch (error) {
+    toast.error("Failed to copy codes, please try again!");
+    console.error(error);
+  }
 };

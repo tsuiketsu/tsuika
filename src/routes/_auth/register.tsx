@@ -98,7 +98,6 @@ function Register() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          {mutation.isPending && <div>Loading...</div>}
           <form
             id="register-form"
             onSubmit={form.handleSubmit(onSubmit)}
