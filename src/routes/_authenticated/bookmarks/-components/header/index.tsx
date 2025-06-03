@@ -20,7 +20,7 @@ const getDefaultFolder = (url: string) => {
 };
 
 const Title = ({ title, isLoading }: { title: string; isLoading: boolean }) => {
-  if (isLoading) {
+  if (isLoading && !getDefaultFolder(title)) {
     return <Skeleton className="h-7 w-3/6 @3xl:w-2/6 @4xl:w-1/3 @5xl:w-1/6" />;
   }
 
@@ -47,14 +47,15 @@ export default function BookmarksPageHeader({ slug }: PropsType) {
   const selectedFolder = folders.find(({ id }) => id === query);
   const defaultFolder = getDefaultFolder(splits[1]);
 
-  const description = isFoldersFetching ? (
-    <div className="space-y-2 pt-2">
-      <Skeleton className="h-4 w-4/5 @3xl:w-2/4 @4xl:w-1/2 @5xl:w-2/5" />
-      <Skeleton className="h-4 w-2/3 @3xl:w-2/6 @4xl:w-1/5 @5xl:w-2/6" />
-    </div>
-  ) : (
-    <p>{selectedFolder?.description || defaultFolder?.description}</p>
-  );
+  const description =
+    isFoldersFetching && !defaultFolder?.description ? (
+      <div className="space-y-2 pt-2">
+        <Skeleton className="h-4 w-4/5 @3xl:w-2/4 @4xl:w-1/2 @5xl:w-2/5" />
+        <Skeleton className="h-4 w-2/3 @3xl:w-2/6 @4xl:w-1/5 @5xl:w-2/6" />
+      </div>
+    ) : (
+      <p>{selectedFolder?.description || defaultFolder?.description}</p>
+    );
 
   const Actions =
     pageType === "folder" && selectedFolder ? (

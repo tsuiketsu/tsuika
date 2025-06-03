@@ -1,3 +1,4 @@
+import Show from "./show";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -35,7 +36,12 @@ export default function FolderPicker({ value, onChange }: PropsType) {
     value ?? null
   );
 
-  const { ref: sneakyRef, folders, isFetching } = useFoldersData();
+  const {
+    ref: sneakyRef,
+    folders,
+    isFetching,
+    shouldFetchNext,
+  } = useFoldersData();
 
   const closeBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -72,7 +78,9 @@ export default function FolderPicker({ value, onChange }: PropsType) {
               {folder.name}
             </Button>
           ))}
-          <span ref={sneakyRef} className="h-1" />
+          <Show when={shouldFetchNext}>
+            <span ref={sneakyRef} className="h-1" />
+          </Show>
           <FolderItemsSkeleton isVisible={isFetching} />
         </div>
         <DialogFooter>

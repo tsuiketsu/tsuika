@@ -128,15 +128,6 @@ export default function BookmarkCard({ bookmark }: PropsType) {
         </div>
       </section>
       <BookmarkActions bookmark={bookmark} />
-      <Button
-        size="sm"
-        className="border-primary absolute right-2 bottom-2 mt-auto ml-auto h-7 translate-y-9 rounded-full font-bold duration-300 ease-in-out group-hover:translate-y-0"
-        asChild
-      >
-        <a href={bookmark.url} target="_blank" rel="noreferrer">
-          Open Link
-        </a>
-      </Button>
     </div>
   );
 }
