@@ -1,4 +1,4 @@
-import BookmarkCard from "./bookmark-card";
+import BookmarkCard from "./card";
 import type { Bookmark } from "@/types/bookmark";
 
 interface PropsType {

@@ -1,5 +1,7 @@
-import BookmarkSkeletons from "./-components/bookmark-skeletions";
-import BookmarkSkeleton from "./-components/bookmark-skeleton";
+import {
+  BookmarkSkeleton,
+  BookmarkSkeletons,
+} from "./-components/bookmark-cards/skeletions";
 import BookmarkContextProvider from "./-components/context/context-provider";
 import BookmarksPageHeader from "./-components/header";
 import ActionBar from "./-components/toolbar";
