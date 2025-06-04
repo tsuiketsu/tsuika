@@ -1,5 +1,6 @@
 import { options, type Alphabet } from "@/constants";
-import useLayoutStore from "@/stores/layout.store";
+import { cn } from "@/lib/utils";
+import useLayoutStore, { cardLayout } from "@/stores/layout.store";
 import { getAspectRatio, getRandomAspectRatio } from "@/utils";
 import clsx from "clsx";
 import { LoaderCircle } from "lucide-react";
@@ -54,15 +55,16 @@ export default function BookmarkThumbnail({
   }
 
   const aspectRatio = (() => {
-    if (layout === "masonry") {
+    if (layout === cardLayout.MASONRY) {
       return loading ? Object.values(aspact).join("/") : "";
     }
     return "16/9";
   })();
-
   return (
     <div
-      className="relative overflow-hidden rounded-sm"
+      className={cn("overflow-hidden rounded-sm", {
+        "w-[30cqw] shrink-0": layout === cardLayout.COMPACT,
+      })}
       style={{ aspectRatio }}
     >
       <div
