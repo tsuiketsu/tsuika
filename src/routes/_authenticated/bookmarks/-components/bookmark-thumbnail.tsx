@@ -78,7 +78,7 @@ export default function BookmarkThumbnail({
         alt={title}
         onLoad={() => setLoading(false)}
         loading="lazy"
-        className="size-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:blur-sm group-hover:grayscale-100"
+        className="size-full object-cover transition-all duration-700"
       />
     </div>
   );

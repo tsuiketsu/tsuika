@@ -2,19 +2,17 @@ import BookmarkThumbnail from "./bookmark-thumbnail";
 import useBookmarkContext from "./context/use-context";
 import DeleteBookmark from "@/components/forms/bookmark/bookmark-delete";
 import EditBookmark from "@/components/forms/bookmark/bookmark-edit";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuLabel,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
 import type { Bookmark } from "@/types/bookmark";
 import dayjs from "dayjs";
-import { Dot, Ellipsis } from "lucide-react";
+import { Ellipsis } from "lucide-react";
 import React, { useRef } from "react";
 import { parse } from "tldts";
 
@@ -22,112 +20,74 @@ interface PropsType {
   bookmark: Bookmark;
 }
 
-const BookmarkActions = ({ bookmark }: PropsType) => {
-  const deleteButtonRef = useRef<HTMLButtonElement>(null);
-  const editButtonRef = useRef<HTMLButtonElement>(null);
-  const { query } = useBookmarkContext();
-
-  return (
-    <React.Fragment>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button className="group absolute top-4 right-4 z-10 h-7 rounded-full bg-white/80 text-black shadow-xl hover:bg-white">
-            More <Ellipsis />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="z-40 w-56">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={(e) => {
-              e.stopPropagation();
-              editButtonRef.current?.click();
-            }}
-          >
-            Edit
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={(e) => {
-              e.stopPropagation();
-              deleteButtonRef.current?.click();
-            }}
-          >
-            Delete
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <DeleteBookmark id={bookmark.id} query={query} ref={deleteButtonRef} />
-      <EditBookmark bookmark={bookmark} query={query} ref={editButtonRef} />
-    </React.Fragment>
-  );
-};
-
 export default function BookmarkCard({ bookmark }: PropsType) {
-  const domain = parse(bookmark.url).domain;
-
   return (
-    <div className="bg-card group @container relative overflow-hidden rounded-md border p-2 select-none">
-      <div className="relative z-10 overflow-hidden rounded-b-sm">
+    <div className="bg-card group @container/main overflow-hidden rounded-md border p-2 duration-150 select-none">
+      <div className="@container relative z-10 overflow-hidden rounded-b-sm">
         <BookmarkThumbnail
           image={bookmark.thumbnail || undefined}
           title={bookmark.title}
           height={bookmark.thumbnailHeight}
           width={bookmark.thumbnailWidth}
         />
-        <div className="bg-background/90 text-foreground absolute bottom-0 flex size-full h-auto max-h-4/5 w-full translate-y-full flex-col rounded-t-lg p-3 font-medium shadow-xl transition-transform duration-500 ease-in-out group-hover:translate-y-1">
-          <h3 className="pb-2 text-sm font-bold @lg:text-base">
-            {bookmark.title}
-          </h3>
-          <p className="mb-2 line-clamp-4 text-xs @sm:line-clamp-6 @lg:line-clamp-9 @lg:text-sm">
-            {bookmark.description}
-          </p>
-        </div>
       </div>
-      <section className="@container space-y-4">
-        <div className="relative overflow-hidden pt-2 text-sm font-medium">
-          <h3 className="border-e-secondary-foreground truncate transition-transform duration-200 group-hover:-translate-y-8">
-            {bookmark.title}
-          </h3>
-          <a
-            href={bookmark.url}
-            target="_blank"
-            rel="noreferrer"
-            className="lef-0 text-info absolute top-2 block translate-y-4 transition-transform duration-200 ease-linear group-hover:translate-y-0"
-          >
-            {bookmark.url}
-          </a>
-        </div>
-        <div className="text-foreground/60 inline-flex items-center -space-x-1 text-xs font-medium">
-          <Button
-            variant="info"
-            size="sm"
-            className="h-auto py-1.5 text-xs"
-            asChild
-          >
-            <a
-              href={`https://${domain}`}
-              target="_blank"
-              className="rounded-sm px-2 py-1"
-              rel="noreferrer"
-            >
-              {domain}
-            </a>
-          </Button>
-          <Dot />
-          <div
-            className={cn(
-              buttonVariants({
-                variant: "secondary",
-                size: "sm",
-              }),
-              "h-auto py-1.5 text-xs"
-            )}
-          >
-            <span>{dayjs(bookmark.createdAt).format("MMM DD, HH:MM")}</span>
-          </div>
+      <section className="space-y-2.5">
+        <h3 className="truncate transition-transform duration-200">
+          {bookmark.title}
+        </h3>
+        <div className="inline-flex w-full items-center justify-between">
+          <Extras url={bookmark.url} createdAt={bookmark.createdAt} />
+          <Actions bookmark={bookmark} />
         </div>
       </section>
-      <BookmarkActions bookmark={bookmark} />
     </div>
   );
 }
+
+const Extras = (props: { url: string; createdAt: string | Date }) => {
+  const domain = parse(props.url).domain;
+  return (
+    <div className="text-foreground/60 inline-flex items-center space-x-2 text-xs font-medium">
+      <Button variant="info" className="h-6 px-2 text-xs" asChild>
+        <a href={`https://${domain}`} target="_blank" rel="noreferrer">
+          {domain}
+        </a>
+      </Button>
+      <Badge variant="outline">
+        <span>{dayjs(props.createdAt).format("MMM DD, YYYY")}</span>
+      </Badge>
+    </div>
+  );
+};
+
+const Actions = ({ bookmark }: PropsType) => {
+  const editButtonRef = useRef<HTMLButtonElement>(null);
+  const deleteButtonRef = useRef<HTMLButtonElement>(null);
+  const { query } = useBookmarkContext();
+
+  const onEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    editButtonRef.current?.click();
+  };
+
+  const onDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    deleteButtonRef.current?.click();
+  };
+
+  return (
+    <div className="group top-2 right-2 z-10 space-x-2 rounded-full">
+      <DropdownMenu>
+        <DropdownMenuTrigger className="pointer-cursor hover:scale-95">
+          <Ellipsis size={20} />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onClick={onEdit}>Edit</DropdownMenuItem>
+          <DropdownMenuItem onClick={onDelete}>Delete</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <DeleteBookmark id={bookmark.id} query={query} ref={deleteButtonRef} />
+      <EditBookmark bookmark={bookmark} query={query} ref={editButtonRef} />
+    </div>
+  );
+};
