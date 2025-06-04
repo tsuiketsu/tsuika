@@ -1,19 +1,23 @@
+import type { User } from "@/lib/auth-client";
 import { fetchUserSession } from "@/queries/user-session";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth")({
   component: LayoutComponent,
-  loader: async () => {
+  loader: async ({ location: { pathname } }) => {
     try {
-      const session = await fetchUserSession();
-      if (session) {
+      const session: { user: User } = await fetchUserSession();
+      if (!session) return;
+
+      if (pathname === "/email-verification" && !session.user.emailVerified) {
+        return;
+      } else {
         return redirect({
           to: "/bookmarks/$slug",
           params: { slug: "folder/unsorted" },
         });
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error(error);
     }
   },

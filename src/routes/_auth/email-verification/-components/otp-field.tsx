@@ -11,7 +11,6 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-import React from "react";
 import type { Control } from "react-hook-form";
 import type { z } from "zod";
 
@@ -29,12 +28,9 @@ const OTPField = ({ control }: PropsType) => (
           <InputOTP maxLength={6} {...field} pattern={REGEXP_ONLY_DIGITS}>
             <InputOTPGroup className="space-x-3">
               {Array.from({ length: 6 }).map((_, idx) => (
-                <React.Fragment key={`otp-input-${idx}`}>
-                  <InputOTPSlot
-                    index={idx}
-                    className="size-12 rounded-md border"
-                  />
-                </React.Fragment>
+                <InputOTPGroup key={`otp-input-${idx}`}>
+                  <InputOTPSlot index={idx} className="size-10" />
+                </InputOTPGroup>
               ))}
             </InputOTPGroup>
           </InputOTP>

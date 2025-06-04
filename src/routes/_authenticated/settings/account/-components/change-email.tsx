@@ -8,7 +8,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { changeEmail } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useLoaderData } from "@tanstack/react-router";
 import type { User } from "better-auth/types";
 import { useState } from "react";
@@ -29,13 +31,43 @@ export default function ChangeEmail() {
     from: "/_authenticated",
   });
 
+  const errorToast = (message: string | undefined) => {
+    toast.error(message || "Failed to change email");
+  };
+
+  const mutation = useMutation({
+    mutationKey: ["change-email"],
+    mutationFn: async (newEmail: string) => {
+      return changeEmail({
+        newEmail,
+      });
+    },
+    onSuccess: ({ error }) => {
+      if (error) {
+        console.error(error);
+        errorToast(error.message);
+        return;
+      }
+
+      if (session.user.emailVerified) {
+        toast.success(
+          `Check your inbox at ${session.user.email} for a link to verify your account.`
+        );
+        return;
+      }
+
+      toast.success("Successfully updated your email!");
+    },
+    onError: (error) => errorToast(error.message),
+  });
+
   const form = useForm<InputType>({
     resolver: zodResolver(formScheme),
     defaultValues: { email: session.user.email },
   });
 
   const onSubmit: SubmitHandler<InputType> = (data) => {
-    toast(data.email);
+    mutation.mutate(data.email);
   };
 
   return (
@@ -76,7 +108,12 @@ export default function ChangeEmail() {
             Change Email
           </Button>
         ) : (
-          <Button type="submit" variant="secondary" className="ml-auto w-36">
+          <Button
+            type="submit"
+            variant="secondary"
+            isLoading={mutation.isPending}
+            className="ml-auto w-36"
+          >
             Save
           </Button>
         )}
