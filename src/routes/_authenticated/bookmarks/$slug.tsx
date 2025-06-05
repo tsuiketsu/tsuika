@@ -6,6 +6,7 @@ import BookmarkContextProvider from "./-components/context/context-provider";
 import BookmarksPageHeader from "./-components/header";
 import ActionBar from "./-components/toolbar";
 import { CardsLayout } from "@/components/layouts/cards-layout";
+import Show from "@/components/show";
 import { useInfiniteScrollObserver } from "@/hooks/infinite-scroll-observer";
 import { fetchBookmarks } from "@/queries/bookmark.queries";
 import useLayoutStore from "@/stores/layout.store";
@@ -28,12 +29,14 @@ function Bookmarks() {
   const layout = useLayoutStore((s) => s.layout);
   const [query, setQuery] = useState("");
 
-  const { data, fetchNextPage, isFetching } = useInfiniteQuery({
+  const { data, fetchNextPage, isFetching, hasNextPage } = useInfiniteQuery({
     queryKey: ["bookmarks", slug, query],
     queryFn: ({ pageParam }) => fetchBookmarks({ pageParam, slug, query }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
+
+  const shouldFetchNext = hasNextPage && !isFetching;
 
   const sneakyRef = useInfiniteScrollObserver(fetchNextPage, isFetching);
 
@@ -65,7 +68,9 @@ function Bookmarks() {
             isLoading={isFetching}
             bookmarksLength={bookmarks.length}
           />
-          <span ref={sneakyRef} className="h-1" />
+          <Show when={shouldFetchNext}>
+            <span ref={sneakyRef} className="h-1" />
+          </Show>
         </CardsLayout>
       )}
     </div>
