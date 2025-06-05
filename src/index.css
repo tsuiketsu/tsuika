@@ -126,7 +126,20 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+
+    &::-webkit-scrollbar {
+      @apply fixed h-1 w-2;
+    }
+
+    &::-webkit-scrollbar-track {
+      @apply mx-1 my-0.5 rounded-xs bg-transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @apply bg-primary/20 cursor-pointer rounded-md;
+    }
   }
+
   body {
     @apply bg-background text-foreground;
   }
