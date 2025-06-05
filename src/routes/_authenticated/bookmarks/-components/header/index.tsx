@@ -20,12 +20,21 @@ const getDefaultFolder = (url: string) => {
   });
 };
 
-const Title = ({ title, isLoading }: { title: string; isLoading: boolean }) => {
+const Title = ({
+  title,
+  isLoading,
+  pageType,
+}: {
+  title: string;
+  isLoading: boolean;
+  pageType: string;
+}) => {
   if (isLoading && !getDefaultFolder(title)) {
     return <Skeleton className="h-7 w-3/6 @3xl:w-2/6 @4xl:w-1/3 @5xl:w-1/6" />;
   }
 
-  const Icon = getDefaultFolder(title)?.icon ?? FolderIcon;
+  const Icon =
+    getDefaultFolder(title)?.icon ?? (pageType !== "tag" && FolderIcon);
 
   return (
     <h2 className="inline-flex items-center gap-2 text-2xl font-bold capitalize">
@@ -82,7 +91,7 @@ export default function BookmarksPageHeader({ slug }: PropsType) {
           <Show when={pageType === "tag"}>
             <TagIcon isLoading={isTagsFetching} color={selectedTag?.color} />
           </Show>
-          <Title title={title} isLoading={isLoading} />
+          <Title title={title} isLoading={isLoading} pageType={pageType} />
         </div>
         {pageType !== "tag" && description}
       </div>
