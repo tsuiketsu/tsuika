@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/tooltip";
 import type { Folder } from "@/types/folder";
 import { Link } from "@tanstack/react-router";
+import { Folder as FolderIcon } from "lucide-react";
 import React from "react";
 
 interface FolderTooltipProps {
@@ -41,7 +42,7 @@ const BookmarkFolder = ({ folder }: { folder: Folder }) => {
           className="[&.active]:bg-secondary active:scale-97"
           params={{ slug: `folder/${folder.id}` }}
         >
-          <span>{folder.name}</span>
+          <FolderIcon /> <span>{folder.name}</span>
         </Link>
       </SidebarMenuButton>
     </FolderTooltip>
