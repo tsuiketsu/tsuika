@@ -110,7 +110,6 @@ export default function ChangeEmail() {
         ) : (
           <Button
             type="submit"
-            variant="secondary"
             isLoading={mutation.isPending}
             className="ml-auto w-36"
           >

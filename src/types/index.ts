@@ -1,5 +1,6 @@
 import type { LucideProps } from "lucide-react";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
+import type { FieldValues, FieldPath } from "react-hook-form";
 
 export interface SuccessResponse<T> {
   success: true; // No point, for the sake of completeness
@@ -33,3 +34,11 @@ export type LucideIconElement = ForwardRefExoticComponent<
   RefAttributes<SVGSVGElement>;
 
 export type InfiniteQueryResponse<T> = { pages: { data: T[] }[] };
+
+// react-hook-form type utils
+export type RHFFieldPath<TFieldValues extends FieldValues = FieldValues> =
+  FieldPath<TFieldValues>;
+export type NestedPathsOnly<T extends FieldValues> = Exclude<
+  FieldPath<T>,
+  keyof T
+>;

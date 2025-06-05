@@ -17,6 +17,7 @@ export const {
   emailOtp,
   twoFactor,
   changeEmail,
+  changePassword,
 } = authClient;
 
 export type Session = typeof authClient.$Infer.Session;
