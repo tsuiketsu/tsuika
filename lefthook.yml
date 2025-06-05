@@ -7,3 +7,8 @@ pre-commit:
     - name: linting
       glob: "*.{ts,tsx}"
       run: bun run eslint {staged_files}
+
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: bun run lint:commit
