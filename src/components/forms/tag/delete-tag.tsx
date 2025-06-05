@@ -62,6 +62,7 @@ export default function Deletetag({ id, ref }: PropsType) {
             variant="destructive"
             onClick={() => mutation.mutate({ id })}
             isLoading={mutation.isPending}
+            className="min-w-30"
           >
             Yes, I&apos;m sure
           </Button>
