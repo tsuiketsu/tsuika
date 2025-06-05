@@ -49,7 +49,7 @@ export default function ChangePasswordForm({
           </div>
           <RevokeSessions control={form.control} />
 
-          <Button type="submit" className="ml-auto w-36" isLoading={isLoading}>
+          <Button type="submit" className="w-36" isLoading={isLoading}>
             Save
           </Button>
         </Show>

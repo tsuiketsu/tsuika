@@ -103,16 +103,12 @@ export default function ChangeEmail() {
               setIsDisabled(false);
               form.reset({ email: "" });
             }}
-            className="ml-auto w-36"
+            className="w-36"
           >
             Change Email
           </Button>
         ) : (
-          <Button
-            type="submit"
-            isLoading={mutation.isPending}
-            className="ml-auto w-36"
-          >
+          <Button type="submit" isLoading={mutation.isPending} className="w-36">
             Save
           </Button>
         )}

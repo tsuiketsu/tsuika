@@ -75,7 +75,7 @@ function SettingsRouteComponent() {
         description="Manage your account settings, profile, theme preferences etc."
       >
         <div className="flex size-full flex-col gap-6 @2xl/dash:flex-row @2xl/dash:gap-10">
-          <div className="flex w-auto gap-3 overflow-x-hidden @2xl/dash:flex-col @2xl/dash:gap-1 @2xl/dash:overflow-x-clip">
+          <div className="flex w-auto gap-3 @2xl/dash:flex-col @2xl/dash:gap-1">
             {Object.entries(links).map(([_, value], idx) => (
               <Button
                 variant="ghost"

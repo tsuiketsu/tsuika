@@ -49,21 +49,19 @@ export default function ChangePassword() {
         isDisabled={isDisabled}
       />
       <Show when={isDisabled}>
-        <div className="flex justify-end">
-          <Button
-            variant="secondary"
-            className="ml-auto w-36"
-            onClick={() => {
-              setIsDisabled(false);
-              form.reset({
-                ...initialValues,
-                password: { ...initialValues.password, currentPassword: "" },
-              });
-            }}
-          >
-            Change password
-          </Button>
-        </div>
+        <Button
+          variant="secondary"
+          className="ml-auto min-w-36"
+          onClick={() => {
+            setIsDisabled(false);
+            form.reset({
+              ...initialValues,
+              password: { ...initialValues.password, currentPassword: "" },
+            });
+          }}
+        >
+          Change password
+        </Button>
       </Show>
     </div>
   );

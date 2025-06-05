@@ -1,5 +1,3 @@
-import AddBookmark from "@/components/forms/bookmark/bookmark-add";
-import InsertFolder from "@/components/forms/folder/insert-folder";
 import { buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,7 +6,14 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { PlusCircle } from "lucide-react";
-import { useRef } from "react";
+import { lazy, useRef } from "react";
+
+const InsertFolder = lazy(
+  () => import("@/components/forms/folder/insert-folder")
+);
+const AddBookmark = lazy(
+  () => import("@/components/forms/bookmark/bookmark-add")
+);
 
 export default function DropdownOptions() {
   const linkButtonRef = useRef<HTMLButtonElement>(null);
