@@ -1,20 +1,36 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { useFolderName } from "@/hooks/use-folder";
 import { cn } from "@/lib/utils";
 import useLayoutStore, { cardLayout } from "@/stores/layout.store";
 import { Slot } from "@radix-ui/react-slot";
+import { useLoaderData } from "@tanstack/react-router";
 import dayjs from "dayjs";
+import { Folder, Inbox } from "lucide-react";
 import { parse } from "tldts";
 
-export default function BookmarkExtras(props: {
+interface PropsType {
   url: string;
   createdAt: string | Date;
-}) {
+  folderId: string | null;
+}
+
+export default function BookmarkExtras(props: PropsType) {
   const layout = useLayoutStore((s) => s.layout);
   const domain = parse(props.url).domain;
   const isCompact = layout === cardLayout.COMPACT;
-  const ButtonComp = isCompact ? Slot : Button;
   const BadgeComp = isCompact ? Slot : Badge;
+
+  const { slug } = useLoaderData({ from: "/_authenticated/bookmarks/$slug" });
+  const { folderName } = useFolderName(props.folderId);
+
+  const isAll = slug.split("/")?.splice(-1)?.[0] === "all";
+
+  const responsiveSpan = cn(
+    "max-w-20 truncate",
+    "@lg/dash:max-w-58 @3xl/dash:max-w-28 @6xl/dash:max-w-24 @7xl/dash:max-w-48",
+    { "@xl/dash:max-w-20 @7xl/dash:max-w-38": layout !== cardLayout.COMPACT }
+  );
 
   return (
     <div
@@ -22,20 +38,24 @@ export default function BookmarkExtras(props: {
         "text-foreground/60 inline-flex items-center space-x-2 font-medium"
       )}
     >
-      <ButtonComp
-        variant="info"
-        className={cn("h-6 px-2", { hidden: isCompact })}
-        asChild
-      >
+      {isAll ? (
+        <Badge className="inline-flex items-center gap-1">
+          {folderName ? <Folder size={14} /> : <Inbox size={14} />}
+          <span className={responsiveSpan}>{folderName ?? "Unsorted"}</span>
+        </Badge>
+      ) : (
         <a
           href={`https://${domain}`}
           target="_blank"
           rel="noreferrer"
-          className="text-xs"
+          className={cn(
+            buttonVariants({ variant: "info" }),
+            "h-6 px-2 text-xs"
+          )}
         >
-          {domain}
+          <span className={responsiveSpan}>{domain}</span>
         </a>
-      </ButtonComp>
+      )}
       <BadgeComp variant="outline" className="text-muted-foreground text-xs">
         <span>{dayjs(props.createdAt).format("DD/MM/YYYY")}</span>
       </BadgeComp>

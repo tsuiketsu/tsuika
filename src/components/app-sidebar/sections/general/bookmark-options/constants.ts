@@ -1,6 +1,6 @@
 import type { LucideIconElement } from "@/types";
 import type { LinkProps } from "@tanstack/react-router";
-import { Star, Inbox, Archive } from "lucide-react";
+import { Star, Inbox, Archive, LibraryBig } from "lucide-react";
 
 type Folder = {
   title: string;
@@ -11,19 +11,25 @@ type Folder = {
 
 export const defaultFolders: Folder[] = [
   {
-    title: "Favorite Bookmarks",
+    title: "All Bookmarks",
+    description: "Bookmarks chosen for quick access to top sites.",
+    link: { to: "/bookmarks/$slug", params: { slug: "folder/all" } },
+    icon: LibraryBig,
+  },
+  {
+    title: "Favourites",
     description: "Bookmarks chosen for quick access to top sites.",
     link: { to: "/bookmarks/$slug", params: { slug: "folder/favourites" } },
     icon: Star,
   },
   {
-    title: "Archived Bookmarks",
+    title: "Archived",
     description: "Bookmarks saved for reference, not actively used",
     link: { to: "/bookmarks/$slug", params: { slug: "folder/archived" } },
     icon: Archive,
   },
   {
-    title: "Unsorted Bookmarks",
+    title: "Unsorted",
     description:
       "Bookmarks automatically saved here without user categorization, acting as a default holding area for later organization",
     link: { to: "/bookmarks/$slug", params: { slug: "folder/unsorted" } },

@@ -23,3 +23,14 @@ export const useFoldersData = () => {
 
   return { data, folders, isFetching, hasNextPage, shouldFetchNext, ref };
 };
+
+export const useFolderName = (id: string | undefined | null) => {
+  const { folders, isFetching } = useFoldersData();
+
+  const folderName = useMemo(
+    () => (id ? folders.find((folder) => folder.id === id)?.name : null),
+    [folders, id]
+  );
+
+  return { folderName, isFetching };
+};

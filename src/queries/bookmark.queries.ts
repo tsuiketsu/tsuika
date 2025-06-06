@@ -18,8 +18,14 @@ export const fetchBookmarks = async ({
   slug?: string;
   query?: string;
 }): PaginatedResponse<Bookmark[]> => {
+  const limit = 16;
   const slugPath = slug?.trim() ? `/${slug.trim()}` : "";
-  const url = `${baseQuery}${slugPath}?query=${query}&page=${pageParam}&limit=16`;
+
+  let url = `${baseQuery}/?page=${pageParam}&limit=${limit}`;
+
+  if (slugPath.split("/")?.slice(-1)?.[0] !== "all") {
+    url = `${baseQuery}${slugPath}?query=${query}&page=${pageParam}&limit=${limit}`;
+  }
 
   const {
     data: { data: bookmarks, pagination },
