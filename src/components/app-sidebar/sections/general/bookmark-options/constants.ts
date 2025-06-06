@@ -17,9 +17,9 @@ export const defaultFolders: Folder[] = [
     icon: LibraryBig,
   },
   {
-    title: "Favourites",
+    title: "Favorites",
     description: "Bookmarks chosen for quick access to top sites.",
-    link: { to: "/bookmarks/$slug", params: { slug: "folder/favourites" } },
+    link: { to: "/bookmarks/$slug", params: { slug: "folder/favorites" } },
     icon: Star,
   },
   {
@@ -36,3 +36,8 @@ export const defaultFolders: Folder[] = [
     icon: Inbox,
   },
 ];
+
+export const getDefaultFoldersSlug = (): string[] => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return defaultFolders.map((f: any) => f.link.params.slug) ?? [];
+};

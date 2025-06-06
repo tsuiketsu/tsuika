@@ -4,8 +4,12 @@ import type {
   PaginatedSuccessResponse,
   SuccessResponse,
 } from "@/types";
-import type { Bookmark, BookmarkFormSchemaType } from "@/types/bookmark";
-import axios from "axios";
+import type {
+  Bookmark,
+  BookmarkFlag,
+  BookmarkFormSchemaType,
+} from "@/types/bookmark";
+import axios, { type AxiosResponse } from "axios";
 
 const baseQuery = `${options.ApiBaseUrl}/api/v1/bookmarks`;
 
@@ -68,5 +72,18 @@ export const editBookmark = async (
 export const deleteBookmark = async (id: Bookmark["id"]) => {
   return await axios.delete(`${baseQuery}/${id}`, {
     withCredentials: true,
+  });
+};
+
+export const setBookmarkFlag = async (
+  bookmarkId: string,
+  flagType: BookmarkFlag,
+  state: boolean
+): Promise<AxiosResponse> => {
+  return axios({
+    method: "patch",
+    url: `${baseQuery}/${bookmarkId}/${flagType}`,
+    withCredentials: true,
+    data: { state },
   });
 };

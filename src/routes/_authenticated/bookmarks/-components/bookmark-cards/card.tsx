@@ -8,6 +8,7 @@ import useLayoutStore, {
   type CardsLayoutKey,
 } from "@/stores/layout.store";
 import type { Bookmark } from "@/types/bookmark";
+import clsx from "clsx";
 
 interface PropsType {
   bookmark: Bookmark;
@@ -19,7 +20,7 @@ export default function BookmarkCard({ bookmark }: PropsType) {
   return (
     <div
       className={cn(
-        "bg-card group @container/main flex flex-col overflow-hidden rounded-md border p-2 select-none",
+        "bg-card group @container/main relative flex flex-col rounded-md border p-2 select-none",
         { "flex-row gap-2 p-1": layout === cardLayout.COMPACT }
       )}
     >
@@ -47,6 +48,15 @@ export default function BookmarkCard({ bookmark }: PropsType) {
           <BookmarkActions bookmark={bookmark} />
         </div>
       </div>
+      <span
+        className={clsx("absolute -top-2 -right-2 text-xl", {
+          hidden: !bookmark.isPinned,
+        })}
+        role="img"
+        aria-label="pin"
+      >
+        📌
+      </span>
     </div>
   );
 }

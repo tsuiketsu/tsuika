@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 export function insertInfQueryData<T>(
   old:
     | {

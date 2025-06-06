@@ -55,3 +55,10 @@ export const copyCodes = async (text: string, setState?: Setter<boolean>) => {
     console.error(error);
   }
 };
+
+export const objectPick = <T, K extends keyof T>(
+  obj: T,
+  keys: K[]
+): Pick<T, K> => {
+  return Object.fromEntries(keys.map((key) => [key, obj[key]])) as Pick<T, K>;
+};
