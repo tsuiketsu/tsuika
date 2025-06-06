@@ -20,7 +20,7 @@ export default function BookmarkCard({ bookmark }: PropsType) {
   return (
     <div
       className={cn(
-        "bg-card group @container/main relative flex flex-col rounded-md border p-2 select-none",
+        "bg-card group @container/main relative flex flex-col overflow-hidden rounded-md border p-2 select-none",
         { "flex-row gap-2 p-1": layout === cardLayout.COMPACT }
       )}
     >
@@ -49,7 +49,7 @@ export default function BookmarkCard({ bookmark }: PropsType) {
         </div>
       </div>
       <span
-        className={clsx("absolute -top-2 -right-2 text-xl", {
+        className={clsx("absolute top-0 right-0 z-10 text-xl", {
           hidden: !bookmark.isPinned,
         })}
         role="img"
