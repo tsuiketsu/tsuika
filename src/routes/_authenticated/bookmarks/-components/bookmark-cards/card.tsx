@@ -19,8 +19,8 @@ export default function BookmarkCard({ bookmark }: PropsType) {
   return (
     <div
       className={cn(
-        "bg-card group @container/main overflow-hidden rounded-md border p-2 duration-150 select-none",
-        { "flex gap-2 p-1": layout === cardLayout.COMPACT }
+        "bg-card group @container/main flex flex-col overflow-hidden rounded-md border p-2 select-none",
+        { "flex-row gap-2 p-1": layout === cardLayout.COMPACT }
       )}
     >
       <BookmarkThumbnail
@@ -29,7 +29,7 @@ export default function BookmarkCard({ bookmark }: PropsType) {
         height={bookmark.thumbnailHeight}
         width={bookmark.thumbnailWidth}
       />
-      <section className="@container flex w-full flex-col justify-between space-y-2.5">
+      <div className="@container flex h-full w-full flex-col justify-between space-y-3">
         <div className="flex w-full flex-col">
           <Title layout={layout} bookmark={bookmark} />
           <Show when={layout === cardLayout.COMPACT}>
@@ -42,7 +42,7 @@ export default function BookmarkCard({ bookmark }: PropsType) {
           <BookmarkExtras url={bookmark.url} createdAt={bookmark.createdAt} />
           <BookmarkActions bookmark={bookmark} />
         </div>
-      </section>
+      </div>
     </div>
   );
 }
@@ -55,16 +55,17 @@ const Title = ({
   layout: CardsLayoutKey;
 }) => (
   <div
-    className={cn("inline-flex items-start justify-between pt-1", {
-      "pt-0 text-sm": layout === cardLayout.COMPACT,
+    className={cn("inline-flex items-start justify-between pt-2 text-sm", {
+      "pt-0": layout === cardLayout.COMPACT,
     })}
   >
     <a href={bookmark.url} target="_blank" rel="noreferrer">
       <h3
         className={cn(
-          ["w-[98cqw] truncate"],
+          ["line-clamp-2 w-[98cqw]"],
           ["transition-transform duration-200"],
-          ["underline-offset-2 hover:underline"]
+          ["underline-offset-2 hover:underline"],
+          { truncate: layout === cardLayout.COMPACT }
         )}
       >
         {bookmark.title}

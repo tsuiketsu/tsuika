@@ -58,12 +58,17 @@ export default function BookmarkThumbnail({
     if (layout === cardLayout.MASONRY) {
       return loading ? Object.values(aspact).join("/") : "";
     }
+
+    if (layout === cardLayout.COMPACT) {
+      return "1/1";
+    }
+
     return "16/9";
   })();
   return (
     <div
-      className={cn("overflow-hidden rounded-sm", {
-        "w-[30cqw] shrink-0": layout === cardLayout.COMPACT,
+      className={cn("relative shrink-0 overflow-hidden rounded-sm", {
+        "w-[24cqw]": layout === cardLayout.COMPACT,
       })}
       style={{ aspectRatio }}
     >
@@ -80,7 +85,7 @@ export default function BookmarkThumbnail({
         alt={title}
         onLoad={() => setLoading(false)}
         loading="lazy"
-        className="size-full object-cover transition-all duration-700"
+        className="size-full object-cover object-top transition-all duration-700"
       />
     </div>
   );

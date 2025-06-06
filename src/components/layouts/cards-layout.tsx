@@ -8,7 +8,7 @@ const layoutVariants = {
   masonry:
     "space-y-4 @xl/dash:columns-2 @5xl/dash:columns-3 @7xl/dash:columns-4",
   compact:
-    "grid w-full auto-rows-min gap-2  @3xl/dash:grid-cols-2  @5xl/dash:grid-cols-3 @7xl/dash:grid-cols-4",
+    "grid w-full auto-rows-min gap-2 @2xl/dash:grid-cols-2 @5xl/dash:grid-cols-3 @6xl/dash:grid-cols-4 ",
 } as const;
 
 const cardsLayoutVariant = cva("", {

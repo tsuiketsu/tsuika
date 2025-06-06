@@ -19,23 +19,25 @@ export default function BookmarkExtras(props: {
   return (
     <div
       className={cn(
-        "text-foreground/60 inline-flex items-center space-x-2 text-xs font-medium"
+        "text-foreground/60 inline-flex items-center space-x-2 font-medium"
       )}
     >
       <ButtonComp
         variant="info"
-        className={cn("h-6 px-2 text-xs", {
-          "text-info h-auto px-0 text-sm hover:underline": isCompact,
-        })}
+        className={cn("h-6 px-2", { hidden: isCompact })}
         asChild
       >
-        <a href={`https://${domain}`} target="_blank" rel="noreferrer">
+        <a
+          href={`https://${domain}`}
+          target="_blank"
+          rel="noreferrer"
+          className="text-xs"
+        >
           {domain}
         </a>
       </ButtonComp>
-      <span>•</span>
-      <BadgeComp variant="outline">
-        <span>{dayjs(props.createdAt).format("MMM DD, YYYY")}</span>
+      <BadgeComp variant="outline" className="text-muted-foreground text-xs">
+        <span>{dayjs(props.createdAt).format("DD/MM/YYYY")}</span>
       </BadgeComp>
     </div>
   );

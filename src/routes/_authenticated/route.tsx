@@ -1,5 +1,6 @@
 import NavigationBar from "./-components/navigation-bar";
 import { AppSidebar } from "@/components/app-sidebar/index";
+import ContainerSize from "@/components/dev/container-size";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useSession } from "@/lib/auth-client";
 import { fetchUserSession } from "@/queries/user-session";
@@ -49,6 +50,7 @@ function DashboardLayout() {
         </div>
         <div className="@container/dash flex h-full p-4">
           <Outlet />
+          <ContainerSize />
         </div>
       </div>
     </SidebarProvider>
