@@ -25,14 +25,17 @@ export const getBookmarkFlagInfo = (isActive: boolean) => {
 export const initialFlagActions: { [key in BookmarkFlag]: DefaultAction } = {
   favorite: {
     isActive: false,
+    isVisible: false,
     key: "isFavourite",
   },
   archive: {
     isActive: false,
+    isVisible: false,
     key: "isArchived",
   },
   pin: {
     isActive: false,
+    isVisible: false,
     key: "isPinned",
   },
 };

@@ -9,6 +9,7 @@ export type BookmarkFlagKey = keyof Pick<
 
 export interface DefaultAction {
   isActive: boolean;
+  isVisible: boolean;
   key: BookmarkFlagKey;
 }
 

@@ -1,4 +1,9 @@
-import { deleteInfQueryData, insertInfQueryData } from "@/lib/query.utils";
+import {
+  deleteInfQueryData,
+  insertInfQueryData,
+  sortInfQueryDataByDate,
+  updateInfQueryData,
+} from "@/lib/query.utils";
 import { setBookmarkFlag } from "@/queries/bookmark.queries";
 import type { Bookmark, BookmarkFlag } from "@/types/bookmark";
 import { objectPick } from "@/utils";
@@ -12,7 +17,7 @@ const getMessage = (flag: BookmarkFlag) => ({
   error: `Failed to set as ${flag}`,
 });
 
-interface SetFlatProps {
+interface SetFlagProps {
   queryClient: QueryClient;
   bookmark: Bookmark;
   flag: BookmarkFlag;
@@ -30,37 +35,37 @@ const handlePin = ({
   slug,
   query,
   dispatch,
-}: Omit<SetFlatProps, "flag" | "state">) => {
+}: Omit<SetFlagProps, "flag" | "state">) => {
   const queryKey = ["bookmarks", slug, query];
 
-  queryClient.setQueryData<InfiniteQueryType>(queryKey, (old) => {
-    if (!old || old.pages.length === 0) {
-      return;
-    }
+  const wasPinned = bookmark.isPinned;
 
-    const [firstPage, ...rest] = old.pages;
+  const allQueryKeys = [[...queryKey, { isPinned: true }], queryKey];
 
-    let updatedData;
+  for (const queryKey of allQueryKeys) {
+    const isPinnedQuery = queryKey.some(
+      (q) => typeof q === "object" && q.isPinned === true
+    );
 
-    if (!bookmark.isPinned) {
-      updatedData = [
-        { ...bookmark, isPinned: !bookmark.isPinned },
-        ...firstPage.data.filter((b) => b.id !== bookmark.id),
-      ];
-    } else {
-      updatedData = firstPage.data
-        .map((b) =>
-          b.id === bookmark.id ? { ...b, isPinned: !bookmark.isPinned } : b
-        )
-        .sort(
-          (a, b) =>
-            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-        );
-    }
+    queryClient.setQueryData<InfiniteQueryType>(queryKey, (old) => {
+      // Remove from the list it currently belongs to
+      if (isPinnedQuery === wasPinned) {
+        return deleteInfQueryData(old, bookmark.id, (item) => item.id);
+      }
 
-    return { ...old, pages: [{ ...firstPage, data: updatedData }, ...rest] };
-  });
+      // Add to the new list
+      if (isPinnedQuery === !wasPinned) {
+        const newData = insertInfQueryData(old, {
+          ...bookmark,
+          isPinned: !wasPinned,
+        });
 
+        return sortInfQueryDataByDate(newData, (item) => item.updatedAt);
+      }
+
+      return old;
+    });
+  }
   dispatch("pin");
 };
 
@@ -68,17 +73,30 @@ const handleFavourite = ({
   queryClient,
   bookmark,
   dispatch,
-}: Pick<SetFlatProps, "queryClient" | "bookmark" | "dispatch">) => {
+}: Pick<SetFlagProps, "queryClient" | "bookmark" | "dispatch">) => {
   const queryKey = ["bookmarks", "folder/favorites", ""];
 
+  const wasFavourite = bookmark.isFavourite;
+
   queryClient.setQueryData<InfiniteQueryType>(queryKey, (old) =>
-    bookmark.isFavourite
+    wasFavourite
       ? deleteInfQueryData(old, bookmark.id, (old) => old.id)
       : insertInfQueryData(old, {
           ...bookmark,
-          isFavourite: !bookmark.isFavourite,
+          isFavourite: !wasFavourite,
         })
   );
+
+  queryClient.setQueryData<InfiniteQueryType>(
+    [queryKey[0], `folder/${bookmark.folderId}`, ""],
+    (old) =>
+      updateInfQueryData(
+        old,
+        { ...bookmark, isFavourite: !wasFavourite },
+        (old) => old.id
+      )
+  );
+
   dispatch("favorite");
 };
 
@@ -88,36 +106,39 @@ const handleArchive = ({
   slug,
   query,
   dispatch,
-}: Omit<SetFlatProps, "flag" | "state">) => {
-  if (bookmark.isArchived) {
-    queryClient.invalidateQueries({
-      predicate: (query) => query.queryKey[0] === "bookmarks",
-    });
-    dispatch("archive");
-    return;
-  }
+}: Omit<SetFlagProps, "flag" | "state">) => {
+  const archivedPath = "folder/archived";
+  const pathType = slug.split("/")[0];
+  const wasArchived = bookmark.isArchived;
 
-  let isArchived = false;
-
-  const allQueryKeys = [
-    ["bookmarks", slug, query],
-    ["bookmarks", "folder/archived", ""],
+  const queryKey = [
+    "bookmarks",
+    slug === archivedPath ? `${pathType}/${bookmark.folderId}` : slug,
+    query,
   ];
 
-  for (const queryKey of allQueryKeys) {
-    queryClient.setQueryData<InfiniteQueryType>(queryKey, (old) =>
-      !isArchived
-        ? deleteInfQueryData(old, bookmark.id, (old) => old.id)
-        : insertInfQueryData(old, {
-            ...bookmark,
-            isArchived: !bookmark.isArchived,
-          })
-    );
+  const allQueryKeys = [queryKey, [queryKey[0], archivedPath, ""]];
 
-    isArchived = !isArchived;
+  for (const key of allQueryKeys) {
+    const isArchivedQuery = key[1] === "folder/archived";
+
+    queryClient.setQueryData<InfiniteQueryType>(key, (old) => {
+      // Remove from the list it currently belongs to
+      if (isArchivedQuery === wasArchived) {
+        return deleteInfQueryData(old, bookmark.id, (item) => item.id);
+      }
+
+      // Add to the new list
+      if (isArchivedQuery === !wasArchived) {
+        return insertInfQueryData(old, {
+          ...bookmark,
+          isArchived: !wasArchived,
+        });
+      }
+
+      return old;
+    });
   }
-
-  const pathType = slug.split("/")[0];
 
   queryClient.invalidateQueries({
     predicate: (query) => {
@@ -135,10 +156,11 @@ const handleArchive = ({
       return keyPart.startsWith("tag");
     },
   });
+
   dispatch("archive");
 };
 
-const updateQueryData = (props: Omit<SetFlatProps, "state">) => {
+const updateQueryData = (props: Omit<SetFlagProps, "state">) => {
   switch (props.flag) {
     case "favorite":
       handleFavourite(
@@ -154,26 +176,9 @@ const updateQueryData = (props: Omit<SetFlatProps, "state">) => {
   }
 };
 
-export const setFlag = (props: SetFlatProps) => () => {
-  const { bookmark, flag, state, queryClient, slug, query } = props;
+export const setFlag = (props: SetFlagProps) => () => {
+  const { bookmark, flag, state } = props;
   const message = getMessage(flag);
-  const queryKey = ["bookmarks", slug, query];
-
-  switch (flag) {
-    case "archive": {
-      queryClient.setQueryData<InfiniteQueryType>(queryKey, (old) =>
-        deleteInfQueryData(old, bookmark.id, (old) => old.id)
-      );
-
-      queryClient.setQueryData<InfiniteQueryType>(queryKey, (old) =>
-        insertInfQueryData(old, bookmark)
-      );
-      break;
-    }
-
-    default:
-      break;
-  }
 
   const promise = new Promise((resolve, reject) => {
     setBookmarkFlag(bookmark.id, flag, state)

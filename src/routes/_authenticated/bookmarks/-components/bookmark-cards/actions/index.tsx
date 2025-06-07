@@ -1,7 +1,7 @@
 import useBookmarkContext from "../../context/use-context";
 import { setFlag } from "./api";
-import { getBookmarkFlagInfo, initialFlagActions } from "./constants";
-import { bookmarkFlagReducer } from "./reducer";
+import { getBookmarkFlagInfo } from "./constants";
+import { useBookmarkFlagActionsReducer } from "./reducer";
 import type { DefaultAction } from "./types";
 import DeleteBookmark from "@/components/forms/bookmark/bookmark-delete";
 import EditBookmark from "@/components/forms/bookmark/bookmark-edit";
@@ -17,28 +17,16 @@ import type { Bookmark, BookmarkFlag } from "@/types/bookmark";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLoaderData } from "@tanstack/react-router";
 import { Edit, Ellipsis, Trash2 } from "lucide-react";
-import React, { useReducer, useRef } from "react";
+import React, { useRef } from "react";
 
 export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
   const editButtonRef = useRef<HTMLButtonElement>(null);
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
+  const queryClient = useQueryClient();
   const { query } = useBookmarkContext();
-
-  const [flagActions, dispatch] = useReducer(
-    bookmarkFlagReducer,
-    Object.entries(initialFlagActions).reduce(
-      (acc, [key, value]) => {
-        const k = key as BookmarkFlag;
-        acc[k] = { ...value, isActive: bookmark[value.key] };
-        return acc;
-      },
-      {} as { [key in BookmarkFlag]: DefaultAction }
-    )
-  );
-
   const { slug } = useLoaderData({ from: "/_authenticated/bookmarks/$slug" });
 
-  const queryClient = useQueryClient();
+  const [flagActions, dispatch] = useBookmarkFlagActionsReducer(bookmark, slug);
 
   const onEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -66,6 +54,9 @@ export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
           {(Object.entries(flagActions) as [BookmarkFlag, DefaultAction][]).map(
             ([flag, action], idx) => {
               const info = getBookmarkFlagInfo(action.isActive)[flag];
+
+              if (!action.isVisible) return null;
+
               return (
                 <DropdownMenuItem
                   key={`default-option-${idx}`}

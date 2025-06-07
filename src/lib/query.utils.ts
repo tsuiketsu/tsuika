@@ -73,3 +73,25 @@ export function deleteInfQueryData<T>(
     })),
   };
 }
+
+export function sortInfQueryDataByDate<T>(
+  old:
+    | {
+        pages: { data: T[] }[];
+      }
+    | undefined,
+  dateField: (value: T) => string | Date
+) {
+  if (!old) return old;
+  const [firstPage, ...rest] = old.pages;
+
+  const sortedDate = firstPage.data.sort(
+    (a, b) =>
+      new Date(dateField(b)).getTime() - new Date(dateField(a)).getTime()
+  );
+
+  return {
+    ...old,
+    pages: [{ ...firstPage, data: sortedDate }, ...rest],
+  };
+}

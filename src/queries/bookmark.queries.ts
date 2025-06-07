@@ -13,17 +13,23 @@ import axios, { type AxiosResponse } from "axios";
 
 const baseQuery = `${options.ApiBaseUrl}/api/v1/bookmarks`;
 
+interface FetchBookmarksArgs {
+  pageParam: number;
+  slug?: string;
+  query?: string;
+  limit?: number;
+  isPinned?: boolean;
+}
+
 export const fetchBookmarks = async ({
   pageParam,
   slug,
   query = "",
-}: {
-  pageParam: number;
-  slug?: string;
-  query?: string;
-}): PaginatedResponse<Bookmark[]> => {
-  const limit = 16;
+  limit = 16,
+  isPinned = true,
+}: FetchBookmarksArgs): PaginatedResponse<Bookmark[]> => {
   const slugPath = slug?.trim() ? `/${slug.trim()}` : "";
+  const flag = `isPinned=${isPinned}`;
 
   let url = `${baseQuery}/?page=${pageParam}&limit=${limit}`;
 
@@ -36,7 +42,7 @@ export const fetchBookmarks = async ({
     status,
   } = await axios<PaginatedSuccessResponse<Bookmark[]>>({
     method: "get",
-    url,
+    url: `${url}&${flag}`,
     withCredentials: true,
   });
 

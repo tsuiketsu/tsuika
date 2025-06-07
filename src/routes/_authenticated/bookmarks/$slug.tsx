@@ -7,7 +7,6 @@ import BookmarksPageHeader from "./-components/header";
 import ActionBar from "./-components/toolbar";
 import FallbackScreen from "@/components/fallback";
 import { CardsLayout } from "@/components/layouts/cards-layout";
-import Show from "@/components/show";
 import { useInfiniteScrollObserver } from "@/hooks/infinite-scroll-observer";
 import { fetchBookmarks } from "@/queries/bookmark.queries";
 import useLayoutStore from "@/stores/layout.store";
@@ -31,20 +30,57 @@ function Bookmarks() {
   const layout = useLayoutStore((s) => s.layout);
   const [query, setQuery] = useState("");
 
-  const { data, fetchNextPage, isFetching, hasNextPage } = useInfiniteQuery({
-    queryKey: ["bookmarks", slug, query],
-    queryFn: ({ pageParam }) => fetchBookmarks({ pageParam, slug, query }),
+  // Pinned Bookmarks
+  const {
+    data: pinnedData,
+    fetchNextPage: fetchMorePinned,
+    isFetching: isFetchingPinned,
+    hasNextPage: hasMorePinned,
+  } = useInfiniteQuery({
+    queryKey: ["bookmarks", slug, query, { isPinned: true }],
+    queryFn: ({ pageParam }) =>
+      fetchBookmarks({
+        pageParam,
+        slug,
+        query,
+        isPinned: true,
+      }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
+    enabled: slug.split("/")[1] !== "all",
   });
 
-  const shouldFetchNext = hasNextPage && !isFetching;
+  // Regular Bookmarks
+  const { data, fetchNextPage, isFetching, hasNextPage } = useInfiniteQuery({
+    queryKey: ["bookmarks", slug, query],
+    queryFn: ({ pageParam }) =>
+      fetchBookmarks({
+        pageParam,
+        slug,
+        query,
+        isPinned: false,
+      }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    enabled: !hasMorePinned,
+  });
 
-  const sneakyRef = useInfiniteScrollObserver(fetchNextPage, isFetching);
+  const handleFetch = async () => {
+    if (hasMorePinned && !isFetchingPinned) {
+      await fetchMorePinned();
+    } else if (hasNextPage && !isFetching) {
+      await fetchNextPage();
+    }
+  };
+
+  const sneakyRef = useInfiniteScrollObserver(handleFetch, isFetching);
 
   const bookmarks = useMemo(() => {
-    return data?.pages.flatMap((page) => page.data) ?? [];
-  }, [data]);
+    const regular = data?.pages.flatMap((page) => page.data) ?? [];
+    const pinned = pinnedData?.pages.flatMap((page) => page.data) ?? [];
+
+    return [...pinned, ...regular];
+  }, [data?.pages, pinnedData?.pages]);
 
   return (
     <div className="flex size-full flex-col">
@@ -76,9 +112,7 @@ function Bookmarks() {
             isLoading={isFetching}
             bookmarksLength={bookmarks.length}
           />
-          <Show when={shouldFetchNext}>
-            <span ref={sneakyRef} className="h-1" />
-          </Show>
+          <span ref={sneakyRef} className="h-1" />
         </CardsLayout>
       )}
     </div>
