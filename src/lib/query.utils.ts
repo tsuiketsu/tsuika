@@ -18,6 +18,29 @@ export function insertInfQueryData<T>(
   };
 }
 
+export function insertInfQueryDataInBulk<T>(
+  old:
+    | {
+        pages: { data: T[] }[];
+      }
+    | undefined,
+  newData: T[]
+) {
+  if (!old || old.pages.length === 0) {
+    return { pageParams: [0], pages: [{ data: [...newData] }] };
+  }
+
+  const [firstPage, ...rest] = old.pages;
+
+  return {
+    ...old,
+    pages: [
+      { ...firstPage, data: [...(firstPage.data || []), ...newData] },
+      ...rest,
+    ],
+  };
+}
+
 /**
  * Compares a single `newData` item against a list of `oldData` items using a provided `idSelector`.
  *
@@ -70,6 +93,26 @@ export function deleteInfQueryData<T>(
     pages: old.pages.map((list) => ({
       ...list,
       data: list.data.filter((item) => idSelector(item) !== id),
+    })),
+  };
+}
+
+export function deleteInfQueryDataInBulk<T, K extends string | number>(
+  old:
+    | {
+        pages: { data: T[] }[];
+      }
+    | undefined,
+  ids: K[],
+  idSelector: (item: T) => K
+) {
+  if (!old) return old;
+
+  return {
+    ...old,
+    pages: old.pages.map((list) => ({
+      ...list,
+      data: list.data.filter((item) => !ids.includes(idSelector(item))),
     })),
   };
 }

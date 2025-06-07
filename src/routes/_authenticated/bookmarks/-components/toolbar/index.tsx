@@ -1,3 +1,4 @@
+import BulkEdit from "./bulk-edit";
 import LayoutPicker from "./layout-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,17 +24,17 @@ export default function ActionBar({ slug, total, onQueryChange }: PropsType) {
   };
 
   return (
-    <div className="flex items-center justify-between pb-4">
+    <div className="flex flex-col items-center gap-4 pb-4 sm:flex-row sm:justify-between">
       <form
         className={clsx(
-          "gap-2",
+          "w-full gap-2",
           slug.includes("tag") ? "hidden" : "inline-flex"
         )}
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
           type="text"
-          className="max-w-xs"
+          className="w-full sm:max-w-xs"
           placeholder="Filter Bookmarks"
           onInput={(e) =>
             e.currentTarget.value.trim() === "" && onQueryChange("")
@@ -47,11 +48,22 @@ export default function ActionBar({ slug, total, onQueryChange }: PropsType) {
           <Search />
         </Button>
       </form>
-      <span className={clsx({ hidden: !slug.includes("tag") })}>
-        Showing <b>{total}</b> results
-      </span>
-      <div className="ml-auto">
-        <LayoutPicker />
+      <div className="inline-flex w-full items-center justify-between">
+        <span className={"whitespace-nowrap sm:hidden"}>
+          Showing <b>{total}</b> results
+        </span>
+        <span
+          className={clsx(
+            { hidden: !slug.includes("tag") },
+            "whitespace-nowrap"
+          )}
+        >
+          Showing <b>{total}</b> results
+        </span>
+        <div className="ml-auto inline-flex w-full items-center justify-end space-x-2">
+          <BulkEdit />
+          <LayoutPicker />
+        </div>
       </div>
     </div>
   );

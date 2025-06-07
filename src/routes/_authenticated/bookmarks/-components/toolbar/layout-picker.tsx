@@ -9,14 +9,20 @@ import useLayoutStore, {
   cardsLayout,
   type CardsLayoutKey,
 } from "@/stores/layout.store";
+import { useToolbarStore } from "@/stores/toolbar.store";
 import { LayoutGrid } from "lucide-react";
 
 export default function LayoutPicker() {
   const layout = useLayoutStore((s) => s.layout);
+  const isBulkEdit = useToolbarStore((s) => s.isBulkEdit);
   const setLayout = useLayoutStore((s) => s.setLayout);
   const selectedLayout = cardsLayout?.[layout];
   const Icon = selectedLayout?.icon ?? LayoutGrid;
   const label = selectedLayout?.label;
+
+  if (isBulkEdit) {
+    return null;
+  }
 
   return (
     <DropdownMenu>

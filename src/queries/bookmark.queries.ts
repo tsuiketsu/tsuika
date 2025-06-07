@@ -9,6 +9,7 @@ import type {
   BookmarkFlag,
   BookmarkFormSchemaType,
 } from "@/types/bookmark";
+import type { Folder } from "@/types/folder";
 import axios, { type AxiosResponse } from "axios";
 
 const baseQuery = `${options.ApiBaseUrl}/api/v1/bookmarks`;
@@ -71,6 +72,18 @@ export const editBookmark = async (
     method: "put",
     url: `${baseQuery}/${id}`,
     data: payload,
+    withCredentials: true,
+  });
+};
+
+export const bulkMoveBookmarksToFolder = async (
+  folderId: Folder["id"],
+  bookmarkIds: Bookmark["id"][]
+) => {
+  return await axios({
+    method: "patch",
+    url: `${baseQuery}/folder/${folderId}/bulk-assign-folder`,
+    data: { bookmarkIds },
     withCredentials: true,
   });
 };

@@ -46,6 +46,7 @@ function Bookmarks() {
         isPinned: true,
       }),
     initialPageParam: 1,
+    retry: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     enabled: slug.split("/")[1] !== "all",
   });
@@ -61,6 +62,7 @@ function Bookmarks() {
         isPinned: false,
       }),
     initialPageParam: 1,
+    retry: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     enabled: !hasMorePinned,
   });

@@ -1,4 +1,5 @@
 import BookmarkActions from "./actions";
+import BookmarkCheckbox from "./checkbox";
 import BookmarkExtras from "./extras";
 import BookmarkThumbnail from "./thumbnail";
 import Show from "@/components/show";
@@ -12,9 +13,11 @@ import clsx from "clsx";
 
 interface PropsType {
   bookmark: Bookmark;
+  enableCheckbox: boolean;
 }
 
-export default function BookmarkCard({ bookmark }: PropsType) {
+export default function BookmarkCard(props: PropsType) {
+  const { bookmark, enableCheckbox = false } = props;
   const layout = useLayoutStore((s) => s.layout);
 
   return (
@@ -57,6 +60,9 @@ export default function BookmarkCard({ bookmark }: PropsType) {
       >
         📌
       </span>
+      <Show when={enableCheckbox}>
+        <BookmarkCheckbox bookmarkId={bookmark.id} />
+      </Show>
     </div>
   );
 }
