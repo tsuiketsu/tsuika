@@ -25,7 +25,7 @@ const BookmarkFoldersSkeletons = ({ isEnabled }: { isEnabled: boolean }) => {
     return null;
   }
 
-  return Array.from({ length: 14 }).map((_, idx) => (
+  return Array.from({ length: 4 }).map((_, idx) => (
     <BookmarkFolderSkeleton key={`sidebar-folder-ske-${idx}`} />
   ));
 };

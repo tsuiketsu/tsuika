@@ -21,7 +21,7 @@ const TagSkeletion = () => (
 const TagSkeletions = ({ isVisible }: { isVisible?: boolean }) => {
   if (!isVisible) return null;
 
-  return Array.from({ length: 14 }).map((_, idx) => (
+  return Array.from({ length: 5 }).map((_, idx) => (
     <TagSkeletion key={`tag-ske-${idx}`} />
   ));
 };
