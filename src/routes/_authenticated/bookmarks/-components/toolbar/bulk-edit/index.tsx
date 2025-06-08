@@ -1,3 +1,4 @@
+import DeleteForm from "./delete-form";
 import FolderForm from "./folder-form";
 import Show from "@/components/show";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ export default function BulkEdit() {
       </Button>
       <Show when={isBulkEdit}>
         <FolderForm />
+        <DeleteForm />
       </Show>
     </div>
   );

@@ -88,6 +88,15 @@ export const bulkMoveBookmarksToFolder = async (
   });
 };
 
+export const bulkDeleteBookmarks = async (bookmarkIds: Bookmark["id"][]) => {
+  return await axios<SuccessResponse<string[]>>({
+    method: "delete",
+    url: `${baseQuery}/bulk`,
+    data: { bookmarkIds },
+    withCredentials: true,
+  }).then(({ data }) => data);
+};
+
 export const deleteBookmark = async (id: Bookmark["id"]) => {
   return await axios.delete(`${baseQuery}/${id}`, {
     withCredentials: true,
