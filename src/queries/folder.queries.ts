@@ -35,6 +35,16 @@ export const fetchFolders = async ({
   };
 };
 
+export const fetchTotalFoldersCount = async (): Promise<{
+  total: number;
+}> => {
+  return await axios({
+    method: "get",
+    url: `${baseQuery}/total-count`,
+    withCredentials: true,
+  }).then(({ data: { data } }) => data);
+};
+
 export const insertFolder = async (payload: FolderInsertSchemaType) =>
   await axios<SuccessResponse<Folder>>({
     method: "post",

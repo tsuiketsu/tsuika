@@ -10,6 +10,7 @@ interface OverlayContainerProps {
 
 interface PropsType {
   src: string;
+  alt?: string;
   fallback?: string;
   className?: string;
 }
@@ -25,7 +26,7 @@ const OverlayContainer = ({ children, className }: OverlayContainerProps) => (
   </div>
 );
 
-const Avatar = ({ src, fallback, className }: PropsType) => {
+const Avatar = ({ src, alt = "", fallback, className }: PropsType) => {
   const [isFallback, setIsFallback] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -42,7 +43,7 @@ const Avatar = ({ src, fallback, className }: PropsType) => {
       <img
         ref={imageRef}
         src={src}
-        alt=""
+        alt={alt}
         onError={() => setIsFallback(true)}
         className={clsx("size-full object-cover", { hidden: isFallback })}
       />

@@ -33,6 +33,16 @@ export const fetchAllTags = async ({
   };
 };
 
+export const fetchTotalTagsCount = async (): Promise<{
+  total: number;
+}> => {
+  return await axios({
+    method: "get",
+    url: `${baseQuery}/total-count`,
+    withCredentials: true,
+  }).then(({ data: { data } }) => data);
+};
+
 export const insertTag = async (payload: TagInsertSchemaType) =>
   await axios<SuccessResponse<Tag>>({
     method: "post",

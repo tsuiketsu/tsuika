@@ -18,6 +18,7 @@ import { Route as AuthRegisterImport } from './routes/_auth/register'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedSettingsIndexImport } from './routes/_authenticated/settings/index'
+import { Route as AuthenticatedDashboardIndexImport } from './routes/_authenticated/dashboard/index'
 import { Route as AuthEmailVerificationIndexImport } from './routes/_auth/email-verification/index'
 import { Route as AuthenticatedBookmarksSlugImport } from './routes/_authenticated/bookmarks/$slug'
 import { Route as AuthenticatedSettingsProfileIndexImport } from './routes/_authenticated/settings/profile/index'
@@ -69,6 +70,13 @@ const AuthenticatedSettingsIndexRoute = AuthenticatedSettingsIndexImport.update(
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any,
 )
+
+const AuthenticatedDashboardIndexRoute =
+  AuthenticatedDashboardIndexImport.update({
+    id: '/dashboard/',
+    path: '/dashboard/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 const AuthEmailVerificationIndexRoute = AuthEmailVerificationIndexImport.update(
   {
@@ -167,6 +175,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthEmailVerificationIndexImport
       parentRoute: typeof AuthRouteImport
     }
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
       path: '/'
@@ -242,11 +257,13 @@ const AuthenticatedSettingsRouteRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedBookmarksSlugRoute: typeof AuthenticatedBookmarksSlugRoute
+  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedBookmarksSlugRoute: AuthenticatedBookmarksSlugRoute,
+  AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -260,6 +277,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof AuthRegisterRoute
   '/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
   '/email-verification': typeof AuthEmailVerificationIndexRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceIndexRoute
@@ -273,6 +291,7 @@ export interface FileRoutesByTo {
   '/register': typeof AuthRegisterRoute
   '/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
   '/email-verification': typeof AuthEmailVerificationIndexRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceIndexRoute
@@ -289,6 +308,7 @@ export interface FileRoutesById {
   '/_auth/register': typeof AuthRegisterRoute
   '/_authenticated/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
   '/_auth/email-verification/': typeof AuthEmailVerificationIndexRoute
+  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/settings/account/': typeof AuthenticatedSettingsAccountIndexRoute
   '/_authenticated/settings/appearance/': typeof AuthenticatedSettingsAppearanceIndexRoute
@@ -305,6 +325,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/bookmarks/$slug'
     | '/email-verification'
+    | '/dashboard'
     | '/settings/'
     | '/settings/account'
     | '/settings/appearance'
@@ -317,6 +338,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/bookmarks/$slug'
     | '/email-verification'
+    | '/dashboard'
     | '/settings'
     | '/settings/account'
     | '/settings/appearance'
@@ -331,6 +353,7 @@ export interface FileRouteTypes {
     | '/_auth/register'
     | '/_authenticated/bookmarks/$slug'
     | '/_auth/email-verification/'
+    | '/_authenticated/dashboard/'
     | '/_authenticated/settings/'
     | '/_authenticated/settings/account/'
     | '/_authenticated/settings/appearance/'
@@ -380,7 +403,8 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/route.tsx",
       "children": [
         "/_authenticated/settings",
-        "/_authenticated/bookmarks/$slug"
+        "/_authenticated/bookmarks/$slug",
+        "/_authenticated/dashboard/"
       ]
     },
     "/_authenticated/settings": {
@@ -408,6 +432,10 @@ export const routeTree = rootRoute
     "/_auth/email-verification/": {
       "filePath": "_auth/email-verification/index.tsx",
       "parent": "/_auth"
+    },
+    "/_authenticated/dashboard/": {
+      "filePath": "_authenticated/dashboard/index.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/settings/": {
       "filePath": "_authenticated/settings/index.tsx",

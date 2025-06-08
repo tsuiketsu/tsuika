@@ -23,7 +23,7 @@ export default function BookmarkCard(props: PropsType) {
   return (
     <div
       className={cn(
-        "bg-card group @container/main relative flex flex-col overflow-hidden rounded-md border p-2 select-none",
+        "bg-card group @container/main relative flex flex-col overflow-hidden rounded-md p-2 shadow-xs select-none",
         { "flex-row gap-2 p-1": layout === cardLayout.COMPACT }
       )}
     >

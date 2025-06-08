@@ -55,6 +55,31 @@ export const fetchBookmarks = async ({
   };
 };
 
+export const fetchRecentBookmarks = async (): Promise<Bookmark[]> => {
+  return await axios({
+    method: "get",
+    url: `${baseQuery}?limit=5`,
+    withCredentials: true,
+  }).then(({ data: { data } }) => data);
+};
+
+export const fetchTotalBookmarksCount = async (
+  filter?: "pinned" | "archived" | "favorites"
+): Promise<{
+  total: number;
+}> => {
+  let url = `${baseQuery}/total-count`;
+
+  if (filter) {
+    url = `${url}?filter=${filter}`;
+  }
+  return await axios({
+    method: "get",
+    url,
+    withCredentials: true,
+  }).then(({ data: { data } }) => data);
+};
+
 export const addBookmark = async (payload: BookmarkFormSchemaType) => {
   return await axios<SuccessResponse<Bookmark>>({
     method: "post",

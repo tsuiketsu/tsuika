@@ -6,7 +6,7 @@ export interface Bookmark {
   description?: string;
   url: string;
   folderId: string | null;
-  favicon_url?: string;
+  faviconUrl?: string;
   thumbnail?: string;
   isPinned: boolean;
   isFavourite: boolean;

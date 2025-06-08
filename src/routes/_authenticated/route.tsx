@@ -40,7 +40,7 @@ function DashboardLayout() {
     <SidebarProvider>
       <AppSidebar />
       <div className="flex w-full flex-col">
-        <div>
+        <div className="sticky top-0 z-20">
           <Suspense>
             {!isPending && !data?.user.emailVerified && (
               <VerificationReminder />
