@@ -4,7 +4,7 @@ import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
 
 export function AppSidebar() {
   return (
-    <Sidebar className="select-none">
+    <Sidebar variant="floating" collapsible="icon" className="select-none">
       <SidebarContent>
         <GeneralSection />
       </SidebarContent>

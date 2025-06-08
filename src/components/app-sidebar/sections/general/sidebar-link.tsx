@@ -6,12 +6,13 @@ interface PropsType {
   label: string;
   navigate: LinkProps;
   icon: LucideIconElement;
+  tooltip?: string;
 }
 
 export default function SidebarLink(props: PropsType) {
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild>
+      <SidebarMenuButton tooltip={props.tooltip} asChild>
         <Link {...props.navigate}>
           <props.icon />
           {props.label}

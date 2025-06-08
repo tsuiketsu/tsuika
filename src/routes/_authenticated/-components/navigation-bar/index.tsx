@@ -4,7 +4,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function NavigationBar() {
   return (
-    <div className="bg-background flex h-[53px] items-center gap-2 border px-2.5">
+    <div className="bg-background flex h-[53px] items-center gap-2 px-2.5 pt-2">
       <SidebarTrigger />
       <div className="ml-auto inline-flex space-x-2">
         <ThemeToggle />

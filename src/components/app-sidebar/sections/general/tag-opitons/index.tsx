@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-import { ChevronRight, FolderOpen } from "lucide-react";
+import { ChevronRight, Tag } from "lucide-react";
 
 export default function TagOptions() {
   return (
@@ -17,8 +17,8 @@ export default function TagOptions() {
       <Collapsible className="group/collapsible">
         <SidebarMenuItem>
           <CollapsibleTrigger asChild>
-            <SidebarMenuButton>
-              <FolderOpen />
+            <SidebarMenuButton tooltip="Tags">
+              <Tag />
               <span>Tags</span>
               <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
             </SidebarMenuButton>

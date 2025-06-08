@@ -35,7 +35,7 @@ export default function BookmarkOptions() {
       <Collapsible defaultOpen={true} className="group/collapsible">
         <SidebarMenuItem>
           <CollapsibleTrigger asChild>
-            <SidebarMenuButton>
+            <SidebarMenuButton tooltip="Default bookmark folders">
               <Bookmark />
               <span>Bookmark</span>
               <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />

@@ -17,7 +17,7 @@ export default function FolderOptions() {
       <Collapsible className="group/collapsible">
         <SidebarMenuItem>
           <CollapsibleTrigger asChild>
-            <SidebarMenuButton>
+            <SidebarMenuButton tooltip="Folders">
               <FolderOpen />
               <span>Folders</span>
               <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />

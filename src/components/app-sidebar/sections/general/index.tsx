@@ -13,6 +13,7 @@ export default function GeneralSection() {
           label="Dashboard"
           navigate={{ to: "/dashboard" }}
           icon={LayoutDashboard}
+          tooltip="Dashboard"
         />
         <BookmarkOptions />
         <FolderOptions />
