@@ -3,6 +3,7 @@ import { AppSidebar } from "@/components/app-sidebar/index";
 import ContainerSize from "@/components/dev/container-size";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useSession } from "@/lib/auth-client";
+import UserProfileProvider from "@/providers/user-profile.provider";
 import { fetchUserSession } from "@/queries/user-session";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
@@ -53,6 +54,7 @@ function DashboardLayout() {
           <ContainerSize />
         </div>
       </div>
+      {!isPending && data?.user && <UserProfileProvider />}
     </SidebarProvider>
   );
 }

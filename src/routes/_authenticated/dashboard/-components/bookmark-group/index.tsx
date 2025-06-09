@@ -46,7 +46,7 @@ export default function BookmarkGroup({
       </CardHeader>
       <CardContent className="h-full space-y-3 px-0">
         {isFetching ? (
-          <BookmarkGroupListSkeletions key={kebabCase(title)} />
+          <BookmarkGroupListSkeletions uniqueKey={kebabCase(title)} />
         ) : bookmarks.length > 0 ? (
           <BookmarkList bookmarks={bookmarks} />
         ) : (

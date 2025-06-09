@@ -1,7 +1,11 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function BookmarkGroupListSkeletions({ key }: { key: string }) {
+interface PropsType {
+  uniqueKey: string;
+}
+
+export default function BookmarkGroupListSkeletions({ uniqueKey }: PropsType) {
   return Array.from({ length: 5 }).map((_, idx) => (
-    <Skeleton key={`${key}${idx}`} className="h-10 w-full rounded-md" />
+    <Skeleton key={`${uniqueKey}${idx}`} className="h-10 w-full rounded-md" />
   ));
 }

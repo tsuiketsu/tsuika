@@ -1,7 +1,8 @@
 import type { Font } from "@/components/font/context/font-context";
 
 export interface Preferences {
-  font: Font;
+  font?: Font;
+  pinnedFolders?: string[];
 }
 
 export interface Profile {

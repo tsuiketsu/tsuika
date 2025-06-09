@@ -15,6 +15,7 @@ export default function BookmarkListItem({ bookmark }: PropsType) {
     <div className={clsx("group flex cursor-pointer items-center gap-2")}>
       <img
         src={bookmark.faviconUrl}
+        alt="favicon"
         className="aspect-square size-10 rounded-sm"
       />
       <div className="flex flex-col">

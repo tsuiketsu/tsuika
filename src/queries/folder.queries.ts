@@ -12,18 +12,24 @@ export const baseQuery = `${options.ApiBaseUrl}/api/v1/folders`;
 export const fetchFolders = async ({
   pageParam,
   limit = 30,
+  folderIds,
 }: {
   pageParam: number;
   limit?: number;
+  folderIds?: string[];
 }): PaginatedResponse<Folder[]> => {
-  const query = `${baseQuery}?page=${pageParam}&limit=${limit}&orderBy=desc`;
+  let url = `${baseQuery}?page=${pageParam}&limit=${limit}&orderBy=desc`;
+
+  if (folderIds && folderIds.length > 0) {
+    url = `${url}&id=${folderIds?.join("&id=")}`;
+  }
 
   const {
     data: { data: folders, pagination },
     status,
   } = await axios<PaginatedSuccessResponse<Folder[]>>({
     method: "get",
-    url: query,
+    url,
     withCredentials: true,
   });
 

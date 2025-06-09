@@ -1,6 +1,5 @@
 import FontOptions from "./-font-options";
-import { usePreferencesMutation } from "./-hooks/mutation.hook";
-import { preferencesReduces } from "./-utils/reducer.utils";
+import { fonts, type Font } from "@/components/font/context/font-context";
 import { useFont } from "@/components/font/context/use-font";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,26 +7,35 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { usePreferencesMutation } from "@/hooks/preferences.hook";
+import { useUserProfileStore } from "@/stores/user-profile.store";
 import { createFileRoute } from "@tanstack/react-router";
-import { useReducer } from "react";
+import { useRef } from "react";
 
 export const Route = createFileRoute("/_authenticated/settings/appearance/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { font } = useFont();
+  const { setFont } = useFont();
+  const pref = useUserProfileStore((s) => s.profile)?.preferencesJson;
+  const payloadFont = useRef<Font>(fonts.default);
 
-  const [preferences, dispatch] = useReducer(preferencesReduces, { font });
-  const mutation = usePreferencesMutation(preferences);
+  const mutation = usePreferencesMutation((preferences) => {
+    if (preferences.font) {
+      setFont(preferences.font);
+    }
+  });
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-2">
         <span className="ml-0.5 text-sm">Font</span>
         <FontOptions
-          value={font}
-          onValueChange={(e) => dispatch({ type: "SET_FONT", payload: e })}
+          value={pref?.font}
+          onValueChange={(font) => {
+            payloadFont.current = font;
+          }}
         />
         <p className="text-muted-foreground ml-0.5 text-sm">
           Select will be shown in most places, bookmarks, folders, tags..
@@ -38,7 +46,7 @@ function RouteComponent() {
         <TooltipTrigger asChild>
           <Button
             isLoading={mutation.isPending}
-            onClick={() => mutation.mutate({ font })}
+            onClick={() => mutation.mutate({ font: payloadFont.current })}
             className="w-48"
           >
             Save preferences

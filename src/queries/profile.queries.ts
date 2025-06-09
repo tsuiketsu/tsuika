@@ -5,10 +5,12 @@ import axios from "axios";
 
 export const baseQuery = `${options.ApiBaseUrl}/api/v1/profiles`;
 
-export const fetchProfile = async () => {
-  return axios
-    .get<SuccessResponse<Profile>>(baseQuery)
-    .then(({ data: { data } }) => data);
+export const fetchProfile = async (): Promise<SuccessResponse<Profile>> => {
+  return axios({
+    method: "get",
+    url: baseQuery,
+    withCredentials: true,
+  }).then((response) => response.data);
 };
 
 export const updatePreferences = async (payload: Preferences) => {
@@ -19,5 +21,5 @@ export const updatePreferences = async (payload: Preferences) => {
       preferencesJson: payload,
     },
     withCredentials: true,
-  });
+  }).then((data) => data);
 };

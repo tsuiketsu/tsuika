@@ -62,3 +62,19 @@ export const objectPick = <T, K extends keyof T>(
 ): Pick<T, K> => {
   return Object.fromEntries(keys.map((key) => [key, obj[key]])) as Pick<T, K>;
 };
+
+export const mergeOnlyUpdatedFields = <T extends object>(
+  update: Partial<T>,
+  current: T
+): Partial<T> => {
+  const result: Partial<T> = { ...current };
+  for (const key in update) {
+    if (key == null) {
+      delete result[key];
+    } else {
+      result[key] = update[key];
+    }
+  }
+
+  return result;
+};

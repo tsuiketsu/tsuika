@@ -38,10 +38,7 @@ function RouteComponent() {
         </div>
       </div>
       <div className="flex h-full w-full flex-col gap-4 space-y-6 rounded-lg @6xl/dash:max-w-md @6xl/dash:border @6xl:p-4">
-        <section className="space-y-4">
-          <h4 className="font-bold">Pinned Folders</h4>
-          <PinnedFolders />
-        </section>
+        <PinnedFolders />
         <section className="space-y-4">
           <div className="inline-flex w-full items-center justify-between">
             <h4 className="font-bold">Reminders</h4>
