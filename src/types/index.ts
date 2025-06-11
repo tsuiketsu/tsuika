@@ -4,6 +4,8 @@ import type { FieldValues, FieldPath } from "react-hook-form";
 
 export interface SuccessResponse<T> {
   success: true; // No point, for the sake of completeness
+  code: string;
+  source: string;
   message: string;
   data: T;
 }

@@ -1,5 +1,6 @@
 import type { Setter } from "@/lib/utils";
 import { getLuminance } from "color2k";
+import { format, parse, parseISO } from "date-fns";
 import { toast } from "sonner";
 
 // Constants
@@ -77,4 +78,17 @@ export const mergeOnlyUpdatedFields = <T extends object>(
   }
 
   return result;
+};
+
+export const combineDateAndTime = (date: string, time: string) => {
+  const dateOnly = format(parseISO(date), "yyyy-MM-dd");
+  return parse(`${dateOnly} ${time}`, "yyyy-MM-dd HH:mm:ss", new Date());
+};
+
+export const splitDateAndTime = (dateISO: string) => {
+  const dateObj = parseISO(dateISO);
+  return {
+    date: format(dateObj, "yyyy-MM-dd"),
+    time: format(dateObj, "HH:mm:ss"),
+  };
 };

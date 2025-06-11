@@ -5,6 +5,7 @@ import { useBookmarkFlagActionsReducer } from "./reducer";
 import type { DefaultAction } from "./types";
 import DeleteBookmark from "@/components/forms/bookmark/delete-bookmark";
 import UpdateBookmark from "@/components/forms/bookmark/update-bookmark";
+import InsertReminder from "@/components/forms/remidner/insert-reminder";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,17 +17,23 @@ import {
 import type { Bookmark, BookmarkFlag } from "@/types/bookmark";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLoaderData } from "@tanstack/react-router";
-import { Edit, Ellipsis, Trash2 } from "lucide-react";
+import { AlarmPlus, Edit, Ellipsis, Trash2 } from "lucide-react";
 import React, { useRef } from "react";
 
 export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
   const editButtonRef = useRef<HTMLButtonElement>(null);
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
+  const insertReminderRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
   const { query } = useBookmarkContext();
   const { slug } = useLoaderData({ from: "/_authenticated/bookmarks/$slug" });
 
   const [flagActions, dispatch] = useBookmarkFlagActionsReducer(bookmark, slug);
+
+  const onReminderAdd = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    insertReminderRef.current?.click();
+  };
 
   const onEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -77,6 +84,10 @@ export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
             }
           )}
           <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={onReminderAdd}>
+            <AlarmPlus className="text-foreground" />
+            Add as Reminder
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={onEdit}>
             <Edit className="text-foreground" />
             Edit Bookmark
@@ -89,6 +100,11 @@ export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
       </DropdownMenu>
       <DeleteBookmark id={bookmark.id} query={query} ref={deleteButtonRef} />
       <UpdateBookmark bookmark={bookmark} query={query} ref={editButtonRef} />
+      <InsertReminder
+        contentType="bookmark"
+        contentId={bookmark.id}
+        triggerRef={insertReminderRef}
+      />
     </div>
   );
 }

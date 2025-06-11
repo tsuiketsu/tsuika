@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import useLayoutStore, { cardLayout } from "@/stores/layout.store";
 import { Slot } from "@radix-ui/react-slot";
 import { useLoaderData } from "@tanstack/react-router";
-import dayjs from "dayjs";
+import { format } from "date-fns";
 import { Folder, Inbox } from "lucide-react";
 import { parse } from "tldts";
 
@@ -57,7 +57,7 @@ export default function BookmarkExtras(props: PropsType) {
         </a>
       )}
       <BadgeComp variant="outline" className="text-muted-foreground text-xs">
-        <span>{dayjs(props.createdAt).format("DD/MM/YYYY")}</span>
+        <span>{format(new Date(props.createdAt), "dd/MM/yyyy")}</span>
       </BadgeComp>
     </div>
   );
