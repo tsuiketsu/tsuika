@@ -3,8 +3,8 @@ import { setFlag } from "./api";
 import { getBookmarkFlagInfo } from "./constants";
 import { useBookmarkFlagActionsReducer } from "./reducer";
 import type { DefaultAction } from "./types";
-import DeleteBookmark from "@/components/forms/bookmark/bookmark-delete";
-import EditBookmark from "@/components/forms/bookmark/bookmark-edit";
+import DeleteBookmark from "@/components/forms/bookmark/delete-bookmark";
+import UpdateBookmark from "@/components/forms/bookmark/update-bookmark";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -88,7 +88,7 @@ export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteBookmark id={bookmark.id} query={query} ref={deleteButtonRef} />
-      <EditBookmark bookmark={bookmark} query={query} ref={editButtonRef} />
+      <UpdateBookmark bookmark={bookmark} query={query} ref={editButtonRef} />
     </div>
   );
 }

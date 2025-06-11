@@ -12,7 +12,7 @@ const InsertFolder = lazy(
   () => import("@/components/forms/folder/insert-folder")
 );
 const AddBookmark = lazy(
-  () => import("@/components/forms/bookmark/bookmark-add")
+  () => import("@/components/forms/bookmark/insert-bookmark")
 );
 
 export default function DropdownOptions() {

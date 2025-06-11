@@ -15,7 +15,7 @@ interface PropsType {
   triggerRef?: RefObject<HTMLButtonElement | null>;
 }
 
-export default function AddBookmark({ triggerRef }: PropsType) {
+export default function InsertBookmark({ triggerRef }: PropsType) {
   const { slug } = useBookmarPathSlug();
 
   const [open, setOpen] = useState(false);

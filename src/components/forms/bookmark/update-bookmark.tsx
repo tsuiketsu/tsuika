@@ -13,7 +13,7 @@ interface PropsType extends Pick<React.ComponentProps<"button">, "ref"> {
   query: string;
 }
 
-export default function EditBookmark({ bookmark, ref, query }: PropsType) {
+export default function UpdateBookmark({ bookmark, ref, query }: PropsType) {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
   const { slug } = useBookmarPathSlug();
