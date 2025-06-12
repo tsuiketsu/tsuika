@@ -3,7 +3,7 @@ import BookmarkStats from "./-components/bookmark-stats";
 import PinnedBookmarks from "./-components/pinned-bookmarks";
 import PinnedFolders from "./-components/pinned-folders";
 import RecentBookmarks from "./-components/recent-bookmarks";
-import Reminders from "./-components/reminders";
+import Tasks from "./-components/tasks";
 import { Button } from "@/components/ui/button";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -41,12 +41,12 @@ function RouteComponent() {
         <PinnedFolders />
         <section className="space-y-4">
           <div className="inline-flex w-full items-center justify-between">
-            <h4 className="font-bold">Reminders</h4>
+            <h4 className="font-bold">Tasks</h4>
             <Button variant="ghost" size="sm">
               Clear All
             </Button>
           </div>
-          <Reminders />
+          <Tasks />
         </section>
       </div>
     </div>

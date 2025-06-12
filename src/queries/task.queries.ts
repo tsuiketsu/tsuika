@@ -1,11 +1,11 @@
 import { options } from "@/constants";
 import type { PaginatedSuccessResponse, SuccessResponse } from "@/types";
-import type { Reminder, ReminderInsertSchema } from "@/types/reminder";
+import type { Task, TaskInsertSchema } from "@/types/task";
 import axios from "axios";
 
-const baseUrl = `${options.ApiBaseUrl}/api/v1/reminders`;
+const baseUrl = `${options.ApiBaseUrl}/api/v1/tasks`;
 
-export const fetchReminders = async ({
+export const fetchTasks = async ({
   pageParam,
   limit = 5,
 }: {
@@ -15,9 +15,9 @@ export const fetchReminders = async ({
   const url = `${baseUrl}?page=${pageParam}&limit=${limit}&orderBy=desc`;
 
   const {
-    data: { data: reminders, pagination },
+    data: { data: tasks, pagination },
     status,
-  } = await axios<PaginatedSuccessResponse<Reminder[]>>({
+  } = await axios<PaginatedSuccessResponse<Task[]>>({
     method: "get",
     url,
     withCredentials: true,
@@ -26,19 +26,19 @@ export const fetchReminders = async ({
   if (status !== 200) throw Error;
 
   return {
-    data: reminders,
+    data: tasks,
     nextCursor: pagination.hasMore ? pageParam + 1 : null,
   };
 };
 
-export const insertReminder = async ({
+export const insertTask = async ({
   contentId,
   payload,
 }: {
   contentId: string;
-  payload: ReminderInsertSchema;
+  payload: TaskInsertSchema;
 }) => {
-  return await axios<SuccessResponse<Reminder>>({
+  return await axios<SuccessResponse<Task>>({
     method: "post",
     url: `${baseUrl}/${contentId}`,
     data: payload,
@@ -46,14 +46,14 @@ export const insertReminder = async ({
   });
 };
 
-export const updateReminder = async ({
+export const updateTask = async ({
   id,
   payload,
 }: {
   id: string;
-  payload: ReminderInsertSchema;
+  payload: TaskInsertSchema;
 }) => {
-  return await axios<SuccessResponse<Reminder>>({
+  return await axios<SuccessResponse<Task>>({
     method: "put",
     url: `${baseUrl}/${id}`,
     data: payload,

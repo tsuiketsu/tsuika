@@ -10,15 +10,15 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  reminderPriorities,
-  reminderStatus,
-  reminderTypes,
-  type Reminder,
-  type ReminderInsertSchema,
-  type ReminderPriority,
-  type ReminderStatus,
-  type ReminderType,
-} from "@/types/reminder";
+  taskPriorities,
+  taskStatus,
+  taskTypes,
+  type Task,
+  type TaskInsertSchema,
+  type TaskPriority,
+  type TaskStatus,
+  type TaskType,
+} from "@/types/task";
 import { combineDateAndTime, splitDateAndTime } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
@@ -28,14 +28,9 @@ import { z } from "zod";
 const formSchema = z.object({
   note: z.string(),
   priority: z.enum(
-    Object.values(reminderPriorities) as [
-      ReminderPriority,
-      ...ReminderPriority[],
-    ]
+    Object.values(taskPriorities) as [TaskPriority, ...TaskPriority[]]
   ),
-  status: z.enum(
-    Object.values(reminderStatus) as [ReminderStatus, ...ReminderStatus[]]
-  ),
+  status: z.enum(Object.values(taskStatus) as [TaskStatus, ...TaskStatus[]]),
   remindDate: z
     .object(
       {
@@ -47,12 +42,10 @@ const formSchema = z.object({
     .refine((v) => v.date !== "" && v.time !== "", {
       message: "You must pick date and time to continue",
     }),
-  type: z.enum(
-    Object.values(reminderTypes) as [ReminderType, ...ReminderType[]]
-  ),
+  type: z.enum(Object.values(taskTypes) as [TaskType, ...TaskType[]]),
 });
 
-const getButtonVariant = (value: ReminderPriority) => {
+const getButtonVariant = (value: TaskPriority) => {
   switch (value) {
     case "low":
       return "info";
@@ -64,18 +57,18 @@ const getButtonVariant = (value: ReminderPriority) => {
 };
 
 interface PropsType {
-  data?: Reminder;
-  type: ReminderType;
-  onSubmit: (payload: ReminderInsertSchema) => void;
+  data?: Task;
+  type: TaskType;
+  onSubmit: (payload: TaskInsertSchema) => void;
 }
 
-export default function ReminderForm({ type, data, onSubmit }: PropsType) {
+export default function TaskForm({ type, data, onSubmit }: PropsType) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: data
       ? {
           ...data,
-          remindDate: splitDateAndTime(data.remindDate),
+          remindDate: splitDateAndTime(data.remindAt),
         }
       : {
           type,
@@ -91,14 +84,14 @@ export default function ReminderForm({ type, data, onSubmit }: PropsType) {
 
     onSubmit({
       ...payload,
-      remindDate: combineDateAndTime(date, time).toISOString(),
+      remindAt: combineDateAndTime(date, time).toISOString(),
     });
   };
 
   return (
     <Form {...form}>
       <form
-        id="reminder-form"
+        id="task-form"
         onSubmit={form.handleSubmit(_onSubmit)}
         className="space-y-4"
       >
@@ -109,7 +102,7 @@ export default function ReminderForm({ type, data, onSubmit }: PropsType) {
             <FormItem>
               <FormControl>
                 <div className="grid grid-cols-3 gap-4">
-                  {Object.values(reminderPriorities).map((value, idx) => (
+                  {Object.values(taskPriorities).map((value, idx) => (
                     <Button
                       key={`value-${idx}`}
                       variant={

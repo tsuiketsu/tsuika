@@ -1,9 +1,9 @@
-import ReminderForm from "./reminder-form";
+import TaskForm from "./task-form";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import { insertInfQueryData } from "@/lib/query.utils";
-import { insertReminder } from "@/queries/reminder.queries";
-import type { Reminder, ReminderType } from "@/types/reminder";
+import { insertTask } from "@/queries/task.queries";
+import type { Task, TaskType } from "@/types/task";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
@@ -11,13 +11,13 @@ import { useRef, type RefObject } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
-  contentType: ReminderType;
+  contentType: TaskType;
   contentId: string;
   customTrigger?: React.ReactNode;
   triggerRef?: RefObject<HTMLButtonElement | null>;
 }
 
-export default function InsertReminder({
+export default function InsertTask({
   contentType,
   contentId,
   customTrigger,
@@ -28,28 +28,28 @@ export default function InsertReminder({
   const ref = triggerRef ?? localRef;
 
   const mutation = useMutation({
-    mutationKey: ["insert-reminder", contentType],
-    mutationFn: insertReminder,
+    mutationKey: ["insert-task", contentType],
+    mutationFn: insertTask,
     onSuccess: ({ data: { data } }) => {
-      queryClient.setQueryData<{ pages: { data: Reminder[] }[] }>(
-        ["reminders", { type: contentType }],
+      queryClient.setQueryData<{ pages: { data: Task[] }[] }>(
+        ["tasks", { type: contentType }],
         (old) => insertInfQueryData(old, data)
       );
 
-      toast.success("Successfully added reminder");
+      toast.success("Successfully added task");
       ref.current?.click();
     },
 
     onError: (error) => {
       console.error(error);
-      toast.error("Failed to add reminder");
+      toast.error("Failed to add task");
     },
   });
 
   return (
     <Modal
-      form="reminder-form"
-      title="Create Reminder"
+      form="task-form"
+      title="Create Task"
       desc="When you're happy with it, just hit the Create button"
       triggerButton={
         customTrigger ?? (
@@ -64,9 +64,9 @@ export default function InsertReminder({
         )
       }
       isPending={mutation.isPending}
-      btnTxt="Remind Me"
+      btnTxt="Create Task"
     >
-      <ReminderForm
+      <TaskForm
         type={contentType}
         onSubmit={(payload) => mutation.mutate({ contentId, payload })}
       />

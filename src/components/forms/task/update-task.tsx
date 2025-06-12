@@ -1,9 +1,9 @@
-import ReminderForm from "./reminder-form";
+import TaskForm from "./task-form";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import { updateInfQueryData } from "@/lib/query.utils";
-import { updateReminder } from "@/queries/reminder.queries";
-import type { Reminder, ReminderType } from "@/types/reminder";
+import { updateTask } from "@/queries/task.queries";
+import type { Task, TaskType } from "@/types/task";
 import { Slot } from "@radix-ui/react-slot";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
@@ -12,14 +12,14 @@ import { useRef, type RefObject } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
-  reminder: Reminder;
-  contentType: ReminderType;
+  task: Task;
+  contentType: TaskType;
   customTrigger?: React.ReactNode;
   triggerRef?: RefObject<HTMLButtonElement | null>;
 }
 
-export default function UpdateReminder({
-  reminder,
+export default function UpdateTask({
+  task,
   contentType,
   customTrigger,
   triggerRef,
@@ -29,28 +29,28 @@ export default function UpdateReminder({
   const ref = triggerRef ?? localRef;
 
   const mutation = useMutation({
-    mutationKey: ["update-reminder", contentType],
-    mutationFn: updateReminder,
+    mutationKey: ["update-task", contentType],
+    mutationFn: updateTask,
     onSuccess: ({ data: { data } }) => {
-      queryClient.setQueryData<{ pages: { data: Reminder[] }[] }>(
-        ["reminders"],
+      queryClient.setQueryData<{ pages: { data: Task[] }[] }>(
+        ["tasks"],
         (old) => updateInfQueryData(old, data, (old) => old.id)
       );
 
-      toast.success("Successfully updated reminder");
+      toast.success("Successfully updated task");
       ref.current?.click();
     },
 
     onError: (error) => {
       console.error(error);
-      toast.error("Failed to updated reminder");
+      toast.error("Failed to updated task");
     },
   });
 
   return (
     <Modal
-      form="reminder-form"
-      title="Update Reminder"
+      form="task-form"
+      title="Update task"
       desc="When you're happy with it, just hit the Create button"
       triggerButton={
         <Slot ref={ref}>
@@ -68,10 +68,10 @@ export default function UpdateReminder({
       isPending={mutation.isPending}
       btnTxt="Update"
     >
-      <ReminderForm
+      <TaskForm
         type={contentType}
-        data={reminder}
-        onSubmit={(payload) => mutation.mutate({ id: reminder.id, payload })}
+        data={task}
+        onSubmit={(payload) => mutation.mutate({ id: task.id, payload })}
       />
     </Modal>
   );
