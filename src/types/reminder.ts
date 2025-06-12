@@ -1,3 +1,5 @@
+import type { Bookmark } from "./bookmark";
+
 export const reminderPriorities = {
   LOW: "low",
   NORMAL: "normal",
@@ -9,6 +11,7 @@ export type ReminderPriority =
 
 export const reminderTypes = {
   BOOKMARK: "bookmark",
+  NOTE: "note",
 } as const;
 
 export type ReminderType = (typeof reminderTypes)[keyof typeof reminderTypes];
@@ -22,14 +25,28 @@ export const reminderStatus = {
 export type ReminderStatus =
   (typeof reminderStatus)[keyof typeof reminderStatus];
 
-export interface Reminder {
+interface ReminderCommon {
   id: string;
   note: string;
   status: ReminderStatus;
   priority: ReminderPriority;
   remindDate: string;
+  content: {
+    title: string;
+  };
 }
 
-export interface ReminderInsertSchema extends Omit<Reminder, "id"> {
+export type Reminder =
+  | (ReminderCommon & {
+      type: "bookmark";
+      content: Pick<Bookmark, "title" | "description" | "url" | "faviconUrl">;
+    })
+  | (ReminderCommon & {
+      type: "note";
+      contnet: { title: string };
+    });
+
+export interface ReminderInsertSchema
+  extends Omit<ReminderCommon, "id" | "content"> {
   type: ReminderType;
 }

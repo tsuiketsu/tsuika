@@ -1,9 +1,10 @@
 import ReminderForm from "./reminder-form";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
-import { insertInfQueryData } from "@/lib/query.utils";
-import { insertReminder } from "@/queries/reminder.queries";
+import { updateInfQueryData } from "@/lib/query.utils";
+import { updateReminder } from "@/queries/reminder.queries";
 import type { Reminder, ReminderType } from "@/types/reminder";
+import { Slot } from "@radix-ui/react-slot";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
@@ -11,15 +12,15 @@ import { useRef, type RefObject } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
+  reminder: Reminder;
   contentType: ReminderType;
-  contentId: string;
   customTrigger?: React.ReactNode;
   triggerRef?: RefObject<HTMLButtonElement | null>;
 }
 
-export default function InsertReminder({
+export default function UpdateReminder({
+  reminder,
   contentType,
-  contentId,
   customTrigger,
   triggerRef,
 }: PropsType) {
@@ -28,47 +29,49 @@ export default function InsertReminder({
   const ref = triggerRef ?? localRef;
 
   const mutation = useMutation({
-    mutationKey: ["insert-reminder", contentType],
-    mutationFn: insertReminder,
+    mutationKey: ["update-reminder", contentType],
+    mutationFn: updateReminder,
     onSuccess: ({ data: { data } }) => {
       queryClient.setQueryData<{ pages: { data: Reminder[] }[] }>(
-        ["reminders", { type: contentType }],
-        (old) => insertInfQueryData(old, data)
+        ["reminders"],
+        (old) => updateInfQueryData(old, data, (old) => old.id)
       );
 
-      toast.success("Successfully added reminder");
+      toast.success("Successfully updated reminder");
       ref.current?.click();
     },
 
     onError: (error) => {
       console.error(error);
-      toast.error("Failed to add reminder");
+      toast.error("Failed to updated reminder");
     },
   });
 
   return (
     <Modal
       form="reminder-form"
-      title="Create Reminder"
+      title="Update Reminder"
       desc="When you're happy with it, just hit the Create button"
       triggerButton={
-        customTrigger ?? (
-          <Button
-            variant="ghost"
-            size="icon"
-            className={clsx({ hidden: triggerRef })}
-            ref={ref}
-          >
-            <Plus size={20} />
-          </Button>
-        )
+        <Slot ref={ref}>
+          {customTrigger ?? (
+            <Button
+              variant="ghost"
+              size="icon"
+              className={clsx({ hidden: triggerRef })}
+            >
+              <Plus size={20} />
+            </Button>
+          )}
+        </Slot>
       }
       isPending={mutation.isPending}
-      btnTxt="Remind Me"
+      btnTxt="Update"
     >
       <ReminderForm
         type={contentType}
-        onSubmit={(payload) => mutation.mutate({ contentId, payload })}
+        data={reminder}
+        onSubmit={(payload) => mutation.mutate({ id: reminder.id, payload })}
       />
     </Modal>
   );

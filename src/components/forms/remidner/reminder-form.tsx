@@ -18,7 +18,7 @@ import {
   type ReminderPriority,
   type ReminderStatus,
   type ReminderType,
-} from "@/types/remidner";
+} from "@/types/reminder";
 import { combineDateAndTime, splitDateAndTime } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";

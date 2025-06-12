@@ -71,7 +71,9 @@ export function updateInfQueryData<T>(
     pages: old.pages.map((list) => ({
       ...list,
       data: list.data.map((item) =>
-        idSelector(item) === idSelector(data) ? data : item
+        idSelector(item) === idSelector(data)
+          ? Object.assign({}, item, data)
+          : item
       ),
     })),
   };
