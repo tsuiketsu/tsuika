@@ -1,6 +1,6 @@
 import { options } from "@/constants";
 import type { PaginatedSuccessResponse, SuccessResponse } from "@/types";
-import type { Task, TaskInsertSchema } from "@/types/task";
+import type { Task, TaskInsertSchema, TaskStatus } from "@/types/task";
 import axios from "axios";
 
 const baseUrl = `${options.ApiBaseUrl}/api/v1/tasks`;
@@ -57,6 +57,28 @@ export const updateTask = async ({
     method: "put",
     url: `${baseUrl}/${id}`,
     data: payload,
+    withCredentials: true,
+  });
+};
+
+export const updateTaskStatus = async ({
+  id,
+  status,
+}: {
+  id: string;
+  status: TaskStatus;
+}) => {
+  return await axios<SuccessResponse<{ id: string; status: TaskStatus }>>({
+    method: "patch",
+    url: `${baseUrl}/${id}?status=${status}`,
+    withCredentials: true,
+  });
+};
+
+export const deleteTask = async ({ id }: { id: string }) => {
+  return await axios<SuccessResponse<{ deletedId: string }>>({
+    method: "delete",
+    url: `${baseUrl}/${id}`,
     withCredentials: true,
   });
 };

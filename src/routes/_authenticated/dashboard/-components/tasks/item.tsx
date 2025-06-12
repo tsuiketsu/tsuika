@@ -1,10 +1,11 @@
+import TaskCheckbox from "./checkbox";
+import DeleteTask from "@/components/forms/task/delete-task";
 import UpdateTask from "@/components/forms/task/update-task";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { type Task } from "@/types/task";
 import { format } from "date-fns";
-import { Edit, Trash, ChevronRight } from "lucide-react";
+import { Edit, ChevronRight } from "lucide-react";
 
 interface PropsType {
   task: Task;
@@ -27,13 +28,13 @@ export default function TaskListItem({ task: task }: PropsType) {
           <span className="line-clamp-1 text-sm">{task.content.title}</span>
           <p className="text-muted-foreground line-clamp-2 text-xs">
             {task.type === "bookmark"
-              ? (task.note ?? task.content.description)
+              ? task.note || task.content.description
               : task.note}
           </p>
         </div>
-        <Checkbox />
+        <TaskCheckbox task={task} />
       </div>
-      <div className="inline-flex w-full items-center justify-between">
+      <div className="inline-flex w-full items-end justify-between">
         <Badge
           variant="outline"
           className="text-muted-foreground gap-2 text-xs"
@@ -54,13 +55,7 @@ export default function TaskListItem({ task: task }: PropsType) {
               </Button>
             }
           />
-          <Button
-            variant="outline"
-            size="icon"
-            className="bg-card size-7 text-xs shadow-none"
-          >
-            <Trash className="size-3" />
-          </Button>
+          <DeleteTask taskId={task.id} />
           <Button
             variant="outline"
             size="icon"
