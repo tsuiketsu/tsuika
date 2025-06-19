@@ -21,7 +21,7 @@ export const BookmarkFormSchema = z.object({
   folderId: z.string().optional(),
   url: z.string().url(),
   title: z.string().max(255).optional(),
-  description: z.string().max(500).optional(),
+  description: z.string().max(5000).optional(),
   tags: z
     .array(z.object({ id: z.string(), name: z.string(), color: z.string() }))
     .optional(),
