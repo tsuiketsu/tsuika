@@ -1,3 +1,4 @@
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormField,
@@ -14,6 +15,7 @@ import {
   type FolderInsertSchemaType,
 } from "@/types/folder";
 import { arktypeResolver } from "@hookform/resolvers/arktype";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface PropsType {
@@ -21,15 +23,18 @@ interface PropsType {
   onSubmit: (payload: FolderInsertSchemaType) => void;
 }
 
-export default function FolderForm({ data, onSubmit }: PropsType) {
+export default function FolderForm({ onSubmit }: PropsType) {
   const form = useForm<FolderInsertSchemaType>({
     resolver: arktypeResolver(FolderInsertSchema),
-    defaultValues: data
-      ? Object.fromEntries(
-          Object.entries(data).filter(([_, value]) => value != null)
-        )
-      : {},
+    defaultValues: {
+      name: "",
+      description: "",
+      isEncrypted: false,
+      password: "",
+    },
   });
+
+  const [isEnabled, setIsEnabled] = useState(false);
 
   return (
     <Form {...form}>
@@ -67,6 +72,46 @@ export default function FolderForm({ data, onSubmit }: PropsType) {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="isEncrypted"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <div className="inline-flex items-center gap-2 text-sm">
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={(v) => {
+                      setIsEnabled(v as boolean);
+                      field.onChange(v);
+                    }}
+                  />
+                  Password Encryption
+                </div>
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        {isEnabled && (
+          <FormField
+            disabled={!isEnabled}
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder={Array.from({ length: 32 }).fill("•").join(" ")}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
       </form>
     </Form>
   );

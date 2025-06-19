@@ -4,7 +4,11 @@ import type {
   PaginatedSuccessResponse,
   SuccessResponse,
 } from "@/types";
-import type { Folder, FolderInsertSchemaType } from "@/types/folder";
+import type {
+  Folder,
+  FolderInsertSchemaType,
+  KeyDerivation,
+} from "@/types/folder";
 import axios from "axios";
 
 export const baseQuery = `${options.ApiBaseUrl}/api/v1/folders`;
@@ -51,13 +55,32 @@ export const fetchTotalFoldersCount = async (): Promise<{
   }).then(({ data: { data } }) => data);
 };
 
-export const insertFolder = async (payload: FolderInsertSchemaType) =>
-  await axios<SuccessResponse<Folder>>({
+export const insertFolder = async (payload: FolderInsertSchemaType) => {
+  let keyDerivation: KeyDerivation | null = null;
+
+  if (payload.isEncrypted && payload.password) {
+    const { LibSodium } = await import("@/utils/libsodium");
+    const crypto = await new LibSodium().initialize();
+    const { salt, opslimit, memlimit, algorithm } = crypto.deriveKey(
+      payload.password
+    );
+
+    keyDerivation = {
+      salt: crypto.toBase64(salt),
+      nonce: crypto.toBase64(crypto.generateNonce()),
+      kdf_opslimit: opslimit,
+      kdf_memlimit: memlimit,
+      kdf_algorithm: algorithm,
+    };
+  }
+
+  return await axios<SuccessResponse<Folder>>({
     method: "post",
     url: baseQuery,
-    data: payload,
+    data: { ...payload, keyDerivation },
     withCredentials: true,
   });
+};
 
 export const updateFolder = async (
   id: Folder["id"],
