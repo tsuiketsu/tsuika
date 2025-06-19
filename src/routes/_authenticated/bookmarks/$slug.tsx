@@ -10,6 +10,7 @@ import { CardsLayout } from "@/components/layouts/cards-layout";
 import { useInfiniteScrollObserver } from "@/hooks/infinite-scroll-observer";
 import { fetchBookmarks } from "@/queries/bookmark.queries";
 import useLayoutStore from "@/stores/layout.store";
+import { bookmarkFilters } from "@/types/bookmark";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import clsx from "clsx";
@@ -43,7 +44,7 @@ function Bookmarks() {
         pageParam,
         slug,
         query,
-        isPinned: true,
+        filter: bookmarkFilters.PINNED,
       }),
     initialPageParam: 1,
     retry: 1,
@@ -59,7 +60,6 @@ function Bookmarks() {
         pageParam,
         slug,
         query,
-        isPinned: false,
       }),
     initialPageParam: 1,
     retry: 1,

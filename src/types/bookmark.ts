@@ -32,3 +32,12 @@ export type BookmarkFormSchemaType = z.infer<typeof BookmarkFormSchema>;
 export type CategoryType = "tag" | "folder";
 
 export type BookmarkFlag = "pin" | "favorite" | "archive";
+
+export const bookmarkFilters = {
+  ARCHIVED: "archived",
+  FAVORITES: "favorites",
+  PINNED: "pinned",
+} as const;
+
+export type BookmarkFilter =
+  (typeof bookmarkFilters)[keyof typeof bookmarkFilters];

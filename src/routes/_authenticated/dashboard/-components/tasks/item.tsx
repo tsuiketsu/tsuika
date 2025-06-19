@@ -20,7 +20,7 @@ export default function TaskListItem({ task: task }: PropsType) {
             <img
               src={task.content.faviconUrl}
               alt="bookmark favicon"
-              className="w-6"
+              className="aspect-square size-6"
             />
           ) : null}
         </span>

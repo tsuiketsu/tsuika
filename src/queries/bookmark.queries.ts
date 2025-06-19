@@ -7,6 +7,7 @@ import type {
 import type {
   Bookmark,
   BookmarkFlag,
+  BookmarkFilter,
   BookmarkFormSchemaType,
 } from "@/types/bookmark";
 import type { Folder } from "@/types/folder";
@@ -19,7 +20,7 @@ interface FetchBookmarksArgs {
   slug?: string;
   query?: string;
   limit?: number;
-  isPinned?: boolean;
+  filter?: BookmarkFilter;
 }
 
 export const fetchBookmarks = async ({
@@ -27,10 +28,9 @@ export const fetchBookmarks = async ({
   slug,
   query = "",
   limit = 16,
-  isPinned = true,
+  filter,
 }: FetchBookmarksArgs): PaginatedResponse<Bookmark[]> => {
   const slugPath = slug?.trim() ? `/${slug.trim()}` : "";
-  const flag = `isPinned=${isPinned}`;
 
   let url = `${baseQuery}/?page=${pageParam}&limit=${limit}`;
 
@@ -43,7 +43,7 @@ export const fetchBookmarks = async ({
     status,
   } = await axios<PaginatedSuccessResponse<Bookmark[]>>({
     method: "get",
-    url: `${url}&${flag}`,
+    url: `${url}&filter=${filter ?? ""}`,
     withCredentials: true,
   });
 
