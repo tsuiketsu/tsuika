@@ -25,31 +25,29 @@ export const useBookmarkFlagActionsReducer = (
 ] => {
   const updatedActions = (() => {
     const pathType = slug.split("/")[1];
-    let filteredActions = initialFlagActions;
+    const visibleKeyByPath: Record<
+      string,
+      (keyof typeof initialFlagActions)[]
+    > = {
+      all: ["favorite"],
+      unsorted: ["favorite"],
+      archived: ["favorite", "archive"],
+      default: ["favorite", "archive", "pin"],
+    };
 
-    switch (pathType) {
-      case "all":
-      case "favorites":
-      case "unsorted":
-        filteredActions = Object.assign({}, initialFlagActions, {
-          favorite: { isVisible: true },
-        });
-        break;
-      case "archived":
-        filteredActions = Object.assign({}, initialFlagActions, {
-          favorite: { isVisible: true },
-          archive: { isVisible: true },
-        });
-        break;
-      default:
-        filteredActions = Object.assign({}, initialFlagActions, {
-          favorite: { isVisible: true },
-          archive: { isVisible: true },
-          pin: { isVisible: true },
-        });
-        break;
-    }
-    return filteredActions;
+    const keysToShow = visibleKeyByPath[pathType] || visibleKeyByPath.default;
+
+    return Object.fromEntries(
+      Object.entries(initialFlagActions).map(([key, value]) => [
+        key,
+        {
+          ...value,
+          isVisible: keysToShow.includes(
+            key as keyof typeof initialFlagActions
+          ),
+        },
+      ])
+    );
   })();
 
   const [actions, dispatch] = useReducer(
@@ -57,7 +55,7 @@ export const useBookmarkFlagActionsReducer = (
     Object.entries(updatedActions).reduce(
       (acc, [key, value]) => {
         const k = key as BookmarkFlag;
-        acc[k] = { ...value, isActive: bookmark[value.key] };
+        acc[k] = { ...value, isActive: bookmark[value.key], key: value.key };
         return acc;
       },
       {} as { [key in BookmarkFlag]: DefaultAction }
