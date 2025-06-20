@@ -30,20 +30,29 @@ export class LibSodium {
     return sodium.to_base64(input);
   }
 
+  getVerificationMessage(): Uint8Array {
+    return sodium.from_string("password-ok");
+  }
+
   deriveKey(password: string, salt?: Uint8Array<ArrayBufferLike>) {
     if (!this.ready) throw new Error("sodium is not ready");
+
+    const {
+      crypto_pwhash_SALTBYTES,
+      crypto_secretbox_KEYBYTES,
+      crypto_pwhash_OPSLIMIT_MODERATE: opslimit,
+      crypto_pwhash_MEMLIMIT_MODERATE: memlimit,
+      crypto_pwhash_ALG_ARGON2ID13: algorithm,
+    } = sodium;
 
     let _salt = salt;
 
     if (!_salt) {
-      _salt = sodium.randombytes_buf(sodium.crypto_pwhash_SALTBYTES);
+      _salt = sodium.randombytes_buf(crypto_pwhash_SALTBYTES);
     }
 
-    const opslimit = sodium.crypto_pwhash_OPSLIMIT_MODERATE;
-    const memlimit = sodium.crypto_pwhash_MEMLIMIT_MODERATE;
-    const algorithm = sodium.crypto_pwhash_ALG_ARGON2ID13;
     const key = sodium.crypto_pwhash(
-      sodium.crypto_secretbox_KEYBYTES,
+      crypto_secretbox_KEYBYTES,
       password,
       _salt,
       opslimit,
@@ -51,11 +60,31 @@ export class LibSodium {
       algorithm
     );
 
-    return { key, salt: _salt, opslimit, memlimit, algorithm };
+    const mac = sodium.crypto_auth(this.getVerificationMessage(), key);
+
+    return { mac, key, salt: _salt, opslimit, memlimit, algorithm };
   }
 
   generateNonce() {
     return sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
+  }
+
+  verifyAuth(password: string, salt: string, mac: string) {
+    const { salt: _salt, key } = this.deriveKey(
+      password,
+      sodium.from_base64(salt)
+    );
+
+    const isMatching = sodium.crypto_auth_verify(
+      sodium.from_base64(mac),
+      this.getVerificationMessage(),
+      key
+    );
+
+    return {
+      isMatching,
+      key: sodium.to_base64(key),
+    };
   }
 
   encrypt(

@@ -140,3 +140,15 @@ export function sortInfQueryDataByDate<T>(
     pages: [{ ...firstPage, data: sortedDate }, ...rest],
   };
 }
+
+export function findDataFromInfQuery<T>(
+  data: {
+    pages: { data: T[] | undefined }[];
+  },
+  id: string | number,
+  idSelector: (v: T) => string | number
+): T | undefined {
+  return data?.pages?.flatMap((p) =>
+    p.data?.find((f) => idSelector(f) === id)
+  )?.[0];
+}

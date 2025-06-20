@@ -12,6 +12,7 @@ export type Folder = {
 export interface KeyDerivation {
   salt: string;
   nonce: string;
+  mac: string;
   kdf_algorithm: number;
   kdf_opslimit: number;
   kdf_memlimit: number;

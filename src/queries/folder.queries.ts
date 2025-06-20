@@ -61,11 +61,12 @@ export const insertFolder = async (payload: FolderInsertSchemaType) => {
   if (payload.isEncrypted && payload.password) {
     const { LibSodium } = await import("@/utils/libsodium");
     const crypto = await new LibSodium().initialize();
-    const { salt, opslimit, memlimit, algorithm } = crypto.deriveKey(
+    const { mac, salt, opslimit, memlimit, algorithm } = crypto.deriveKey(
       payload.password
     );
 
     keyDerivation = {
+      mac: crypto.toBase64(mac),
       salt: crypto.toBase64(salt),
       nonce: crypto.toBase64(crypto.generateNonce()),
       kdf_opslimit: opslimit,

@@ -43,6 +43,7 @@ export const options = {
     const colorIndex = Math.floor(Math.random() * colors.length) + 1;
     return colors[colorIndex];
   },
+  passwordPlaceholder: Array.from({ length: 32 }).fill("•").join(" "),
 };
 
 export type Alphabet = keyof typeof options.alphabetColors;

@@ -4,14 +4,14 @@ import {
 } from "./-components/bookmark-cards/skeletions";
 import BookmarkContextProvider from "./-components/context/context-provider";
 import BookmarksPageHeader from "./-components/header";
+import SecureFolder from "./-components/secure-folder";
 import ActionBar from "./-components/toolbar";
+import { useBookmarks, usePinnedBookmarks } from "./-query-hooks";
 import FallbackScreen from "@/components/fallback";
 import { CardsLayout } from "@/components/layouts/cards-layout";
 import { useInfiniteScrollObserver } from "@/hooks/infinite-scroll-observer";
-import { fetchBookmarks } from "@/queries/bookmark.queries";
+import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import useLayoutStore from "@/stores/layout.store";
-import { bookmarkFilters } from "@/types/bookmark";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import clsx from "clsx";
 import { Ghost } from "lucide-react";
@@ -27,9 +27,17 @@ export const Route = createFileRoute("/_authenticated/bookmarks/$slug")({
 });
 
 function Bookmarks() {
+  const [query, setQuery] = useState("");
+
   const slug = Route.useLoaderData().slug;
   const layout = useLayoutStore((s) => s.layout);
-  const [query, setQuery] = useState("");
+
+  const {
+    isFetching: isFoldersFetching,
+    folder: selectedFolder,
+    isLocked,
+    isSecured,
+  } = useSecuredFolders(slug);
 
   // Pinned Bookmarks
   const {
@@ -37,34 +45,17 @@ function Bookmarks() {
     fetchNextPage: fetchMorePinned,
     isFetching: isFetchingPinned,
     hasNextPage: hasMorePinned,
-  } = useInfiniteQuery({
-    queryKey: ["bookmarks", slug, query, { isPinned: true }],
-    queryFn: ({ pageParam }) =>
-      fetchBookmarks({
-        pageParam,
-        slug,
-        query,
-        filter: bookmarkFilters.PINNED,
-      }),
-    initialPageParam: 1,
-    retry: 1,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    enabled: slug.split("/")[1] !== "all",
+  } = usePinnedBookmarks({
+    query,
+    slug,
+    enabled: !isSecured && slug.split("/")[1] !== "all",
   });
 
   // Regular Bookmarks
-  const { data, fetchNextPage, isFetching, hasNextPage } = useInfiniteQuery({
-    queryKey: ["bookmarks", slug, query],
-    queryFn: ({ pageParam }) =>
-      fetchBookmarks({
-        pageParam,
-        slug,
-        query,
-      }),
-    initialPageParam: 1,
-    retry: 1,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    enabled: !hasMorePinned,
+  const { data, fetchNextPage, isFetching, hasNextPage } = useBookmarks({
+    query,
+    slug,
+    enabled: !isSecured && !hasMorePinned,
   });
 
   const handleFetch = async () => {
@@ -75,6 +66,10 @@ function Bookmarks() {
     }
   };
 
+  const isLoading = useMemo(() => {
+    return isFoldersFetching || isFetching || isFetchingPinned;
+  }, [isFetching, isFetchingPinned, isFoldersFetching]);
+
   const sneakyRef = useInfiniteScrollObserver(handleFetch, isFetching);
 
   const bookmarks = useMemo(() => {
@@ -83,6 +78,10 @@ function Bookmarks() {
 
     return [...pinned, ...regular];
   }, [data?.pages, pinnedData?.pages]);
+
+  if (!isFoldersFetching && selectedFolder && isLocked) {
+    return <SecureFolder key={slug} folder={selectedFolder} />;
+  }
 
   return (
     <div className="flex size-full flex-col">
@@ -94,7 +93,7 @@ function Bookmarks() {
           onQueryChange={(value) => setQuery(value)}
         />
       </div>
-      {!isFetching && bookmarks.length === 0 ? (
+      {!isLoading && bookmarks.length === 0 ? (
         <FallbackScreen
           title="No bookmarks found"
           description="Add a bookmark to see here"
@@ -103,7 +102,7 @@ function Bookmarks() {
       ) : (
         <CardsLayout
           layout={layout}
-          className={clsx("relative", { "pb-20": isFetching })}
+          className={clsx("relative", { "pb-20": isLoading })}
         >
           <BookmarkContextProvider query={query}>
             <Suspense fallback={<BookmarkSkeleton layout={layout} />}>
@@ -111,7 +110,7 @@ function Bookmarks() {
             </Suspense>
           </BookmarkContextProvider>
           <BookmarkSkeletons
-            isLoading={isFetching}
+            isLoading={isLoading}
             bookmarksLength={bookmarks.length}
           />
           <span ref={sneakyRef} className="h-1" />
