@@ -1,3 +1,4 @@
+import type { WorkerRequest, WorkerResponse } from "./types";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,10 +12,10 @@ import Modal from "@/components/ui/modal";
 import { options } from "@/constants";
 import { useSecureFolderStore } from "@/stores/secure-folder.store";
 import type { Folder } from "@/types/folder";
-import { LibSodium } from "@/utils/libsodium";
+import { createTypedWorkerPost } from "@/utils";
 import clsx from "clsx";
 import { LockIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -29,21 +30,50 @@ interface PropsType {
 export default function SecureFolder({ folder }: PropsType) {
   const [open, setOpen] = useState(true);
   const form = useForm<Inputs>();
+  const [isLoading, setIsLoading] = useState(false);
+  const workerRef = useRef<Worker>(null);
+
+  useEffect(() => {
+    workerRef.current = new Worker(new URL("./worker.ts", import.meta.url), {
+      type: "module",
+    });
+
+    workerRef.current.onmessage = (e: MessageEvent<WorkerResponse>) => {
+      if (e.data.status === "success") {
+        useSecureFolderStore
+          .getState()
+          .add({ folderId: folder.id, key: e.data.key });
+        toast.success("Unlocked!");
+      } else {
+        toast.error(e.data.message);
+      }
+
+      setIsLoading(false);
+    };
+
+    workerRef.current.onerror = (e) => {
+      console.error("secure-folder worker error", e.error);
+      toast.error("Something went wrong, fail to unlock!");
+      setIsLoading(false);
+    };
+
+    return () => {
+      workerRef.current?.terminate();
+      setIsLoading(false);
+    };
+  }, [folder.id]);
+
+  const postToWorker = createTypedWorkerPost<WorkerRequest>(workerRef.current!);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (data.password) {
-      if (folder.keyDerivation) {
-        const crypto = await new LibSodium().initialize();
-        const { salt, mac } = folder.keyDerivation;
-        const secret = crypto.verifyAuth(data.password, salt, mac);
-        if (secret.isMatching) {
-          useSecureFolderStore
-            .getState()
-            .add({ folderId: folder.id, key: secret.key });
-        } else {
-          toast.error("Wrong password");
-        }
-      }
+    if (data.password && folder.keyDerivation) {
+      setIsLoading(true);
+      const { mac, salt } = folder.keyDerivation;
+      postToWorker({
+        password: data.password,
+        mac,
+        salt,
+      });
     }
   };
 
@@ -71,6 +101,8 @@ export default function SecureFolder({ folder }: PropsType) {
         title={`Unlock (${folder.name})`}
         open={open}
         onOpenChange={setOpen}
+        isPending={isLoading}
+        btnTxt="Unlock"
       >
         <Form {...form}>
           <form

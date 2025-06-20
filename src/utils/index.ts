@@ -92,3 +92,7 @@ export const splitDateAndTime = (dateISO: string) => {
     time: format(dateObj, "HH:mm:ss"),
   };
 };
+
+export function createTypedWorkerPost<T>(worker: Worker) {
+  return (data: T) => worker.postMessage(data);
+}
