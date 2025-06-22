@@ -4,8 +4,8 @@ import { LibSodium } from "@/utils/libsodium";
 
 self.onmessage = async (e: MessageEvent<WorkerRequest>) => {
   const crypto = await new LibSodium().initialize();
-  const { password, salt, mac } = e.data;
-  const secret = crypto.verifyAuth(password, salt, mac);
+  const { password, salt, mac, kdfOpts } = e.data;
+  const secret = crypto.verifyAuth({ password, salt, mac, kdfOpts });
 
   const response: WorkerResponse = secret.isMatching
     ? {

@@ -1,5 +1,6 @@
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useRouterState } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 
@@ -17,7 +18,11 @@ export default function NavigationBar() {
       <SidebarTrigger />
       <div className="ml-auto inline-flex space-x-2">
         <ThemeToggle />
-        <Suspense>{isMenuVisible && <DropdownOptions />}</Suspense>
+        {isMenuVisible && (
+          <Suspense fallback={<Skeleton className="size-9 rounded-md" />}>
+            <DropdownOptions />
+          </Suspense>
+        )}
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import BookmarkForm from "./bookmark-form";
 import { useBookmarPathSlug } from "./use-slug.hook";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
+import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { insertInfQueryData } from "@/lib/query.utils";
 import { addBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark } from "@/types/bookmark";
@@ -40,6 +41,13 @@ export default function InsertBookmark({ triggerRef }: PropsType) {
     },
   });
 
+  const { isSecured } = useSecuredFolders();
+
+  const title = isSecured ? "Create Bookmark (encrypted)" : "Create bookmark";
+  const desc = isSecured
+    ? "With a secured folder, metadata won't be fetched automatically via URL;" +
+      " you must enter it manually, a known limitation"
+    : "When you're happy with it, just hit the Create button";
   return (
     <>
       <Button
@@ -55,8 +63,8 @@ export default function InsertBookmark({ triggerRef }: PropsType) {
         open={open}
         onOpenChange={setOpen}
         form="bookmark-form"
-        title="Create bookmark"
-        desc="When you're happy with it, just hit the Create button"
+        title={title}
+        desc={desc}
         isPending={mutation.isPending}
         btnTxt="Create"
       >

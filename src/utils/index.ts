@@ -96,3 +96,7 @@ export const splitDateAndTime = (dateISO: string) => {
 export function createTypedWorkerPost<T>(worker: Worker) {
   return (data: T) => worker.postMessage(data);
 }
+
+export const getFavIcon = (url: string) => {
+  return `https://www.google.com/s2/favicons?domain=${url}&sz=128`;
+};

@@ -5,8 +5,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { PlusCircle } from "lucide-react";
-import { lazy, useRef } from "react";
+import { lazy, Suspense, useRef } from "react";
 
 const InsertFolder = lazy(
   () => import("@/components/forms/folder/insert-folder")
@@ -18,6 +19,8 @@ const AddBookmark = lazy(
 export default function DropdownOptions() {
   const linkButtonRef = useRef<HTMLButtonElement>(null);
   const folderButtonRef = useRef<HTMLButtonElement>(null);
+
+  const { isLocked } = useSecuredFolders();
 
   const onNewLink = () => {
     linkButtonRef.current?.click();
@@ -36,11 +39,17 @@ export default function DropdownOptions() {
           <PlusCircle />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="mr-2.5">
-          <DropdownMenuItem onClick={onNewLink}>New Link</DropdownMenuItem>
+          {!isLocked && (
+            <DropdownMenuItem onClick={onNewLink}>New Link</DropdownMenuItem>
+          )}
           <DropdownMenuItem onClick={onNewFolder}>New Folder</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <AddBookmark triggerRef={linkButtonRef} />
+      {!isLocked && (
+        <Suspense>
+          <AddBookmark triggerRef={linkButtonRef} />
+        </Suspense>
+      )}
       <InsertFolder triggerRef={folderButtonRef} />
     </>
   );

@@ -8,6 +8,7 @@ export interface Bookmark {
   folderId: string | null;
   faviconUrl?: string;
   thumbnail?: string;
+  isEncrypted: boolean;
   isPinned: boolean;
   isFavourite: boolean;
   isArchived: boolean;
@@ -22,6 +23,9 @@ export const BookmarkFormSchema = z.object({
   url: z.string().url(),
   title: z.string().max(255).optional(),
   description: z.string().max(5000).optional(),
+  thumbnail: z.string().optional(),
+  isEncrypted: z.boolean().optional(),
+  faviconUrl: z.string().optional(),
   tags: z
     .array(z.object({ id: z.string(), name: z.string(), color: z.string() }))
     .optional(),

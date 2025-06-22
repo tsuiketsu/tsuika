@@ -22,7 +22,7 @@ const FolderTooltip = ({ text, children, isDisabled }: FolderTooltipProps) => {
 
   return (
     <TooltipProvider>
-      <Tooltip delayDuration={1000}>
+      <Tooltip delayDuration={800}>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent className="max-w-60">
           <p>{text}</p>
@@ -46,7 +46,10 @@ const BookmarkFolder = ({
   isLocked,
 }: BookmarkFolderProps) => {
   return (
-    <FolderTooltip text={description ?? ""} isDisabled={!!description}>
+    <FolderTooltip
+      text={description ?? ""}
+      isDisabled={!description || description.trim() === ""}
+    >
       <SidebarMenuButton asChild>
         <Link
           to="/bookmarks/$slug"

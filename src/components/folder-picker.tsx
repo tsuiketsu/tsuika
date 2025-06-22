@@ -9,9 +9,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { useFoldersData } from "@/hooks/use-folder";
 import type { Folder } from "@/types/folder";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { FolderIcon, LockIcon } from "lucide-react";
 import { useRef, useState } from "react";
 
 const FolderItemsSkeleton = ({ isVisible }: { isVisible: boolean }) => {
@@ -52,6 +54,8 @@ export default function FolderPicker({ value, onChange }: PropsType) {
     }
   };
 
+  const { isSecured } = useSecuredFolders();
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -68,16 +72,19 @@ export default function FolderPicker({ value, onChange }: PropsType) {
           <DialogTitle>Pick Folder</DialogTitle>
         </DialogHeader>
         <div className="bg-secondary/20 flex h-48 flex-col space-y-1 overflow-y-auto rounded-lg border p-2">
-          {folders.map((folder, idx) => (
-            <Button
-              variant={selectedId === folder.id ? "default" : "ghost"}
-              className="justify-start"
-              key={`folder-option-${idx}`}
-              onClick={() => setSelectedId(folder.id)}
-            >
-              {folder.name}
-            </Button>
-          ))}
+          {folders
+            .filter((f) => (f.keyDerivation != null) === isSecured)
+            .map((folder, idx) => (
+              <Button
+                variant={selectedId === folder.id ? "default" : "ghost"}
+                className="justify-start"
+                key={`folder-option-${idx}`}
+                onClick={() => setSelectedId(folder.id)}
+              >
+                {folder.keyDerivation ? <LockIcon /> : <FolderIcon />}{" "}
+                {folder.name}
+              </Button>
+            ))}
           <Show when={shouldFetchNext}>
             <span ref={sneakyRef} className="h-1" />
           </Show>

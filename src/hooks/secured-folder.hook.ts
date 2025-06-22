@@ -5,12 +5,20 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouterState } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 
-export const useSecuredFolders = () => {
+interface ReturnType {
+  folderId: string;
+  isSecured: boolean;
+  isLocked: boolean;
+  folder: Folder | undefined;
+  isFetching: boolean;
+}
+
+export const useSecuredFolders = (): ReturnType => {
   const {
     location: { pathname },
   } = useRouterState();
   const [folder, setFolder] = useState<Folder | undefined>(undefined);
-  const [isSecured, setIsSecured] = useState(false);
+  const [isSecured, setIsSecured] = useState(true);
   const [isLocked, setIsLocked] = useState(true);
 
   const folderId = decodeURIComponent(pathname).split("/").slice(-1)[0];
@@ -31,8 +39,6 @@ export const useSecuredFolders = () => {
     if (!isFetching) {
       const current = folders.find((f) => f.id === folderId);
       if (current?.keyDerivation) {
-        setIsSecured(true);
-
         if (!useSecureFolderStore.getState().getKey(folderId)) {
           setIsLocked(true);
           setFolder(current);
@@ -43,9 +49,7 @@ export const useSecuredFolders = () => {
         setIsSecured(false);
       }
     }
-
-    return () => setIsSecured(false);
   }, [folderId, folders, isFetching, queryClient]);
 
-  return { isSecured, isLocked, folder, isFetching };
+  return { folderId, isSecured, isLocked, folder, isFetching };
 };

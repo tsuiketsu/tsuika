@@ -4,12 +4,14 @@ import { createJSONStorage, persist } from "zustand/middleware";
 type SecureFolder = {
   folderId: string;
   key: string;
+  nonce: string;
 };
 
 type SecureFolderStore = {
   folders: SecureFolder[];
   add: (v: SecureFolder) => void;
   getKey: (id: string) => string | undefined;
+  getNonce: (id: string) => string | undefined;
 };
 
 const createSecureFolderSlice: StateCreator<SecureFolderStore> = (
@@ -28,6 +30,10 @@ const createSecureFolderSlice: StateCreator<SecureFolderStore> = (
 
   getKey: (folderId) => {
     return get().folders.find((f) => f.folderId === folderId)?.key;
+  },
+
+  getNonce: (folderId) => {
+    return get().folders.find((f) => f.folderId === folderId)?.nonce;
   },
 });
 

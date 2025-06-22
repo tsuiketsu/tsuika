@@ -1,4 +1,5 @@
 import { options } from "@/constants";
+import { useSecureFolderStore } from "@/stores/secure-folder.store";
 import type {
   PaginatedResponse,
   PaginatedSuccessResponse,
@@ -11,6 +12,7 @@ import type {
   BookmarkFormSchemaType,
 } from "@/types/bookmark";
 import type { Folder } from "@/types/folder";
+import { LibSodium } from "@/utils/libsodium";
 import axios, { type AxiosResponse } from "axios";
 
 const baseQuery = `${options.ApiBaseUrl}/api/v1/bookmarks`;
@@ -81,10 +83,36 @@ export const fetchTotalBookmarksCount = async (
 };
 
 export const addBookmark = async (payload: BookmarkFormSchemaType) => {
+  let _payload = payload;
+
+  if (_payload.isEncrypted && _payload.folderId) {
+    const crypt = await new LibSodium().initialize();
+    const key = useSecureFolderStore.getState().getKey(_payload.folderId);
+    const nonce = useSecureFolderStore.getState().getNonce(_payload.folderId);
+
+    if (key && nonce) {
+      const encrypt = (str: string | undefined) => {
+        return str && str.trim() !== ""
+          ? crypt.encrypt(str, { key, nonce })?.ciphertext
+          : undefined;
+      };
+
+      const { url, title, description, thumbnail } = _payload;
+
+      _payload = {
+        ..._payload,
+        url: encrypt(url) as string,
+        title: encrypt(title || "Untitled"),
+        description: encrypt(description),
+        thumbnail: encrypt(thumbnail),
+      };
+    }
+  }
+
   return await axios<SuccessResponse<Bookmark>>({
     method: "post",
     url: baseQuery,
-    data: payload,
+    data: _payload,
     withCredentials: true,
   });
 };

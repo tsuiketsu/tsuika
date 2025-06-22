@@ -12,7 +12,7 @@ import Modal from "@/components/ui/modal";
 import { options } from "@/constants";
 import { useSecureFolderStore } from "@/stores/secure-folder.store";
 import type { Folder } from "@/types/folder";
-import { createTypedWorkerPost } from "@/utils";
+import { createTypedWorkerPost, objectPick } from "@/utils";
 import clsx from "clsx";
 import { LockIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -40,9 +40,12 @@ export default function SecureFolder({ folder }: PropsType) {
 
     workerRef.current.onmessage = (e: MessageEvent<WorkerResponse>) => {
       if (e.data.status === "success") {
-        useSecureFolderStore
-          .getState()
-          .add({ folderId: folder.id, key: e.data.key });
+        useSecureFolderStore.getState().add({
+          folderId: folder.id,
+          key: e.data.key,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+          nonce: folder.keyDerivation?.nonce!,
+        });
         toast.success("Unlocked!");
       } else {
         toast.error(e.data.message);
@@ -61,7 +64,7 @@ export default function SecureFolder({ folder }: PropsType) {
       workerRef.current?.terminate();
       setIsLoading(false);
     };
-  }, [folder.id]);
+  }, [folder.id, folder.keyDerivation?.nonce]);
 
   const postToWorker = createTypedWorkerPost<WorkerRequest>(workerRef.current!);
 
@@ -69,11 +72,18 @@ export default function SecureFolder({ folder }: PropsType) {
     if (data.password && folder.keyDerivation) {
       setIsLoading(true);
       const { mac, salt } = folder.keyDerivation;
-      postToWorker({
-        password: data.password,
-        mac,
-        salt,
-      });
+
+      const kdfOpts = Object.fromEntries(
+        Object.entries(
+          objectPick(folder.keyDerivation, [
+            "kdf_opslimit",
+            "kdf_memlimit",
+            "kdf_algorithm",
+          ])
+        ).map(([key, value]) => [key.split("_").slice(-1)[0], value])
+      );
+
+      postToWorker({ password: data.password, mac, salt, kdfOpts });
     }
   };
 

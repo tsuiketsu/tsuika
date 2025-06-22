@@ -34,10 +34,10 @@ function Bookmarks() {
 
   const {
     isFetching: isFoldersFetching,
-    folder: selectedFolder,
+    folder: selectedSecuredFolder,
     isLocked,
     isSecured,
-  } = useSecuredFolders(slug);
+  } = useSecuredFolders();
 
   // Pinned Bookmarks
   const {
@@ -48,7 +48,11 @@ function Bookmarks() {
   } = usePinnedBookmarks({
     query,
     slug,
-    enabled: !isSecured && slug.split("/")[1] !== "all",
+    enabled:
+      !isSecured &&
+      !["all", "archived", "unsorted", "favorites"].includes(
+        slug.split("/")[1]
+      ),
   });
 
   // Regular Bookmarks
@@ -79,8 +83,8 @@ function Bookmarks() {
     return [...pinned, ...regular];
   }, [data?.pages, pinnedData?.pages]);
 
-  if (!isFoldersFetching && selectedFolder && isLocked) {
-    return <SecureFolder key={slug} folder={selectedFolder} />;
+  if (!isFoldersFetching && selectedSecuredFolder && isLocked) {
+    return <SecureFolder key={slug} folder={selectedSecuredFolder} />;
   }
 
   return (
