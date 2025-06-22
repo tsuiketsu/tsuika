@@ -17,6 +17,7 @@ export const useSecuredFolders = (): ReturnType => {
   const {
     location: { pathname },
   } = useRouterState();
+
   const [folder, setFolder] = useState<Folder | undefined>(undefined);
   const [isSecured, setIsSecured] = useState(true);
   const [isLocked, setIsLocked] = useState(true);
@@ -49,6 +50,11 @@ export const useSecuredFolders = (): ReturnType => {
         setIsSecured(false);
       }
     }
+
+    return () => {
+      setIsLocked(true);
+      setIsSecured(true);
+    };
   }, [folderId, folders, isFetching, queryClient]);
 
   return { folderId, isSecured, isLocked, folder, isFetching };

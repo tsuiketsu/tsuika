@@ -43,8 +43,6 @@ export default function SecureFolder({ folder }: PropsType) {
         useSecureFolderStore.getState().add({
           folderId: folder.id,
           key: e.data.key,
-          // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-          nonce: folder.keyDerivation?.nonce!,
         });
         toast.success("Unlocked!");
       } else {

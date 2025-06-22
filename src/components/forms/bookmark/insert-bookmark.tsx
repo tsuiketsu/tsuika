@@ -18,6 +18,7 @@ interface PropsType {
 
 export default function InsertBookmark({ triggerRef }: PropsType) {
   const { slug } = useBookmarPathSlug();
+  const { isSecured } = useSecuredFolders();
 
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -31,17 +32,25 @@ export default function InsertBookmark({ triggerRef }: PropsType) {
         return;
       }
 
+      const queryKey: unknown[] = ["bookmarks", slug, ""];
+
+      if (isSecured) {
+        queryKey.push({ isEncrypted: true });
+      }
+
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
-        ["bookmarks", slug, ""],
+        queryKey,
         (old) => insertInfQueryData(old, data)
       );
 
       toast.success(message || "Successfully added bookmark");
       setOpen(false);
     },
+    onError: (error) => {
+      toast.error("Something went wrong! Failed to add bookmark");
+      console.error(error);
+    },
   });
-
-  const { isSecured } = useSecuredFolders();
 
   const title = isSecured ? "Create Bookmark (encrypted)" : "Create bookmark";
   const desc = isSecured

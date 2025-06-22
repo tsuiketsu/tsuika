@@ -6,6 +6,8 @@ export interface KdfOptions {
   algorithm?: number;
 }
 
+export type Encrypted = Record<"ciphertext" | "nonce" | "salt", string | null>;
+
 export class LibSodium {
   ready: boolean;
   constructor() {
@@ -122,54 +124,53 @@ export class LibSodium {
 
   encrypt(
     message: string,
-    encryptionParams: Record<"key" | "nonce", Uint8Array | string>
-  ) {
-    const { key, nonce } = encryptionParams;
+    key: string | Uint8Array,
+    nonce?: Uint8Array
+  ): Omit<Encrypted, "salt"> {
+    const _nonce = nonce ?? this.generateNonce();
 
     try {
       const ciphertext = sodium.crypto_secretbox_easy(
         message,
-        this.generateNonce(),
+        _nonce,
         typeof key === "string" ? sodium.from_base64(key) : key
       );
 
       return {
         ciphertext: sodium.to_base64(ciphertext),
-        nonce: sodium.to_base64(nonce),
+        nonce: sodium.to_base64(_nonce),
       };
     } catch (error) {
       console.error(error);
+      return { ciphertext: null, nonce: sodium.to_base64(_nonce) };
     }
   }
 
-  encryptNow(message: string, password: string, kdfOpts?: KdfOptions) {
-    const { key } = this.deriveKey({ password, ...kdfOpts });
-    return this.encrypt(message, { key, nonce: this.generateNonce() });
+  encryptNow(
+    message: string,
+    password: string,
+    kdfOpts?: KdfOptions
+  ): Encrypted {
+    const { key, salt } = this.deriveKey({ password, ...kdfOpts });
+    return { ...this.encrypt(message, key), salt: sodium.to_base64(salt) };
   }
 
   decrypt(
-    {
-      ciphertext,
-      nonce,
-      salt,
-      kdfOpts,
-    }: { ciphertext: string; nonce: string; salt: string } & {
-      kdfOpts?: KdfOptions;
-    },
-    password: string
+    ciphertext: string,
+    encryptionParams: Record<"key" | "nonce", Uint8Array | string>
   ) {
-    const { key } = this.deriveKey({
-      password,
-      salt: sodium.from_base64(salt),
-      ...kdfOpts,
-    });
+    const { key, nonce } = encryptionParams;
 
-    const decrypted = sodium.crypto_secretbox_open_easy(
-      sodium.from_base64(ciphertext),
-      sodium.from_base64(nonce),
-      key
-    );
+    try {
+      const decrypted = sodium.crypto_secretbox_open_easy(
+        sodium.from_base64(ciphertext),
+        typeof nonce === "string" ? sodium.from_base64(nonce) : nonce,
+        typeof key === "string" ? sodium.from_base64(key) : key
+      );
 
-    return sodium.to_string(decrypted);
+      return sodium.to_string(decrypted);
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
