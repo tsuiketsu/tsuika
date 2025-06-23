@@ -1,6 +1,10 @@
-import { SidebarMenuButton } from "@/components/ui/sidebar";
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 import type { LucideIconElement } from "@/types";
-import { Link, type LinkProps } from "@tanstack/react-router";
+import { useNavigate, type LinkProps } from "@tanstack/react-router";
 
 interface PropsType {
   label: string;
@@ -10,12 +14,16 @@ interface PropsType {
 }
 
 export default function SidebarLink(props: PropsType) {
+  const navigate = useNavigate();
+
   return (
-    <SidebarMenuButton tooltip={props.tooltip} asChild>
-      <Link {...props.navigate}>
-        <props.icon />
-        {props.label}
-      </Link>
-    </SidebarMenuButton>
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <SidebarMenuButton onClick={() => navigate(props.navigate)}>
+          <props.icon />
+          {props.label}
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    </SidebarMenu>
   );
 }
