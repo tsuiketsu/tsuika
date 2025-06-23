@@ -33,6 +33,7 @@ export const useBookmarkFlagActionsReducer = (
       unsorted: ["favorite"],
       archived: ["favorite", "archive"],
       default: ["favorite", "archive", "pin"],
+      secured: [],
     };
 
     const keysToShow = visibleKeyByPath[pathType] || visibleKeyByPath.default;

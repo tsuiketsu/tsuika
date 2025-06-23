@@ -105,10 +105,21 @@ export const editBookmark = async (
   id: Bookmark["id"],
   payload: BookmarkFormSchemaType
 ) => {
+  let _payload = payload;
+
+  if (_payload.isEncrypted && _payload.folderId) {
+    const encrypted = await encryptBookmarks(payload);
+    if (encrypted) {
+      _payload = encrypted;
+    } else {
+      throw new Error("Encryption process failed: aborting");
+    }
+  }
+
   return await axios<SuccessResponse<Bookmark>>({
     method: "put",
     url: `${baseQuery}/${id}`,
-    data: payload,
+    data: _payload,
     withCredentials: true,
   });
 };

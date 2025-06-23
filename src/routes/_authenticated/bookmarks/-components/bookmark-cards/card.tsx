@@ -29,7 +29,7 @@ export default function BookmarkCard(props: PropsType) {
     >
       <BookmarkThumbnail
         image={bookmark.thumbnail || undefined}
-        title={bookmark.title}
+        title={bookmark.title || "Untitled"}
         height={bookmark.thumbnailHeight}
         width={bookmark.thumbnailWidth}
       />
@@ -88,7 +88,7 @@ const Title = ({
           { truncate: layout === cardLayout.COMPACT }
         )}
       >
-        {bookmark.title}
+        {bookmark?.title}
       </h3>
     </a>
   </div>

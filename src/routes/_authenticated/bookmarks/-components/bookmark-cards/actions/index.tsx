@@ -14,9 +14,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
+import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import type { Bookmark, BookmarkFlag } from "@/types/bookmark";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLoaderData } from "@tanstack/react-router";
+import clsx from "clsx";
 import { CircleCheck, Edit, Ellipsis, Trash2 } from "lucide-react";
 import React, { useRef } from "react";
 
@@ -27,6 +29,7 @@ export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
   const queryClient = useQueryClient();
   const { query } = useBookmarkContext();
   const { slug } = useLoaderData({ from: "/_authenticated/bookmarks/$slug" });
+  const { isSecured } = useSecuredFolders();
 
   const [flagActions, dispatch] = useBookmarkFlagActionsReducer(bookmark, slug);
 
@@ -62,7 +65,8 @@ export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
             ([flag, action], idx) => {
               const info = getBookmarkFlagInfo(action.isActive)[flag];
 
-              if (!action.isVisible) return null;
+              // NOTE: Temporally disabled on secured folders until handled
+              if (isSecured || !action.isVisible) return null;
 
               return (
                 <DropdownMenuItem
@@ -83,8 +87,12 @@ export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
               );
             }
           )}
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={onTaskAdd}>
+          {!isSecured && <DropdownMenuSeparator />}
+          <DropdownMenuItem
+            onClick={onTaskAdd}
+            // NOTE: Temporally disabled on secured folders until handled
+            className={clsx({ hidden: isSecured })}
+          >
             <CircleCheck className="text-foreground" />
             Add as Task
           </DropdownMenuItem>

@@ -1,6 +1,7 @@
 import BookmarkForm from "./bookmark-form";
 import { useBookmarPathSlug } from "./use-slug.hook";
 import Modal from "@/components/ui/modal";
+import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { deleteInfQueryData, updateInfQueryData } from "@/lib/query.utils";
 import { editBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark, BookmarkFormSchemaType } from "@/types/bookmark";
@@ -17,6 +18,7 @@ export default function UpdateBookmark({ bookmark, ref, query }: PropsType) {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
   const { slug } = useBookmarPathSlug();
+  const { folderId, isSecured } = useSecuredFolders();
 
   const mutation = useMutation({
     mutationKey: ["editBookmark"],
@@ -33,11 +35,13 @@ export default function UpdateBookmark({ bookmark, ref, query }: PropsType) {
         return;
       }
 
-      const queryId = slug.split("/").slice(-1).join("");
+      const queryKey = isSecured
+        ? ["bookmarks", slug, "", { isEncrypted: true }]
+        : ["bookmarks", slug, query];
 
-      if (payload.folderId && queryId !== payload.folderId) {
+      if (payload.folderId && folderId !== payload.folderId) {
         queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
-          ["bookmarks", slug, query],
+          queryKey,
           (old) => deleteInfQueryData(old, bookmark.id, (old) => old.id)
         );
 
@@ -45,7 +49,7 @@ export default function UpdateBookmark({ bookmark, ref, query }: PropsType) {
       }
 
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
-        ["bookmarks", slug, query],
+        queryKey,
         (old) => updateInfQueryData(old, data, (old) => old.id)
       );
 

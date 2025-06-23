@@ -9,6 +9,7 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { deleteInfQueryData } from "@/lib/query.utils";
 import { deleteBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark } from "@/types/bookmark";
@@ -25,6 +26,7 @@ interface PropsType {
 
 export default function DeleteBookmark({ id, ref, query }: PropsType) {
   const { slug } = useBookmarPathSlug();
+  const { isSecured } = useSecuredFolders();
 
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -39,8 +41,12 @@ export default function DeleteBookmark({ id, ref, query }: PropsType) {
         return;
       }
 
+      const queryKey = isSecured
+        ? ["bookmarks", slug, "", { isEncrypted: true }]
+        : ["bookmarks", slug, query];
+
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
-        ["bookmarks", slug, query],
+        queryKey,
         (old) => deleteInfQueryData(old, id, (old) => old.id)
       );
 
