@@ -9,6 +9,7 @@ import type {
   FolderInsertSchemaType,
   KeyDerivation,
 } from "@/types/folder";
+import { runDeriveKeyWorker } from "@/workers/derive-key/worker.run";
 import axios from "axios";
 
 export const baseQuery = `${options.ApiBaseUrl}/api/v1/folders`;
@@ -56,26 +57,25 @@ export const fetchTotalFoldersCount = async (): Promise<{
 };
 
 export const insertFolder = async (payload: FolderInsertSchemaType) => {
-  let keyDerivation: KeyDerivation | null = null;
+  let keyDerivation: KeyDerivation | undefined;
 
   if (payload.isEncrypted && payload.password) {
-    const { Noble } = await import("@/utils/noble");
-    const crypto = new Noble();
+    const data = await runDeriveKeyWorker({ password: payload.password });
 
-    const { mac, salt, opts } = crypto.deriveKey({
-      password: payload.password,
-    });
-
-    keyDerivation = Object.assign({}, opts, {
-      mac: crypto.toBase64(mac),
-      salt: crypto.toBase64(salt),
-    });
+    if (data.status === "success") {
+      keyDerivation = data.keyMetadata;
+    } else {
+      throw new Error(data.message || "Key derivation failed");
+    }
   }
 
   return await axios<SuccessResponse<Folder>>({
     method: "post",
     url: baseQuery,
-    data: { ...payload, keyDerivation },
+    data: {
+      ...payload,
+      keyDerivation,
+    },
     withCredentials: true,
   });
 };
