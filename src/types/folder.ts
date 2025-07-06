@@ -1,3 +1,4 @@
+import type { KdfOptions } from "@/utils/noble";
 import { z } from "zod";
 
 export type Folder = {
@@ -9,13 +10,9 @@ export type Folder = {
   keyDerivation: KeyDerivation | null;
 };
 
-export interface KeyDerivation {
+export interface KeyDerivation extends KdfOptions {
   salt: string;
-  nonce: string;
   mac: string;
-  kdf_algorithm: number;
-  kdf_opslimit: number;
-  kdf_memlimit: number;
 }
 
 export const FolderInsertSchema = z

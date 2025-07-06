@@ -1,5 +1,5 @@
 import { objectPick } from ".";
-import { LibSodium } from "./libsodium";
+import { Noble } from "./noble";
 import { useSecureFolderStore } from "@/stores/secure-folder.store";
 import type { Bookmark, BookmarkFormSchemaType } from "@/types/bookmark";
 import type { InfiniteData } from "@tanstack/react-query";
@@ -12,15 +12,16 @@ export const encryptBookmarks = async (
     return null;
   }
 
-  const crypto = await new LibSodium().initialize();
+  const crypto = new Noble();
   const key = useSecureFolderStore.getState().getKey(bookmark.folderId);
   const nonce = crypto.generateNonce();
+
   let payload: BookmarkFormSchemaType = bookmark;
 
   if (key && nonce) {
-    const encrypt = (str: string | undefined) => {
+    const encrypt = (str: string | undefined): string | undefined => {
       return str && str.trim() !== ""
-        ? crypto.encrypt(str, key, nonce)?.ciphertext
+        ? crypto.encrypt(str, key, nonce)
         : undefined;
     };
 
@@ -29,10 +30,10 @@ export const encryptBookmarks = async (
     payload = {
       ...bookmark,
       url: encrypt(url) as string,
-      title: encrypt(title || "Untitled") ?? undefined,
-      description: encrypt(description) ?? undefined,
-      thumbnail: encrypt(thumbnail) ?? undefined,
-      faviconUrl: encrypt(faviconUrl) ?? undefined,
+      title: encrypt(title || "Untitled"),
+      description: encrypt(description),
+      thumbnail: encrypt(thumbnail),
+      faviconUrl: encrypt(faviconUrl),
       nonce: crypto.toBase64(nonce),
     };
   } else {
@@ -52,7 +53,7 @@ export const decryptBookmarks = async (
 
   const bookmarks: Bookmark[] = [];
   if (encrypted && encrypted.length > 0 && key) {
-    const cypher = await new LibSodium().initialize();
+    const cypher = new Noble();
 
     const fieldsToBeDecrypted = [
       "url",
@@ -66,10 +67,7 @@ export const decryptBookmarks = async (
       let decrypted: Partial<Bookmark> = Object.fromEntries(
         Object.entries(objectPick(item, fieldsToBeDecrypted))
           .filter(([_, v]) => v != null)
-          .map(([k, v]) => [
-            k,
-            cypher.decrypt(v as string, { nonce: item.nonce!, key }),
-          ])
+          .map(([k, v]) => [k, cypher.decrypt(v as string, key, item.nonce!)])
       );
 
       decrypted = Object.assign({}, item, decrypted);

@@ -12,7 +12,7 @@ import Modal from "@/components/ui/modal";
 import { options } from "@/constants";
 import { useSecureFolderStore } from "@/stores/secure-folder.store";
 import type { Folder } from "@/types/folder";
-import { createTypedWorkerPost, objectPick } from "@/utils";
+import { createTypedWorkerPost } from "@/utils";
 import clsx from "clsx";
 import { LockIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -62,25 +62,14 @@ export default function SecureFolder({ folder }: PropsType) {
       workerRef.current?.terminate();
       setIsLoading(false);
     };
-  }, [folder.id, folder.keyDerivation?.nonce]);
+  }, [folder.id]);
 
   const postToWorker = createTypedWorkerPost<WorkerRequest>(workerRef.current!);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (data.password && folder.keyDerivation) {
       setIsLoading(true);
-      const { mac, salt } = folder.keyDerivation;
-
-      const kdfOpts = Object.fromEntries(
-        Object.entries(
-          objectPick(folder.keyDerivation, [
-            "kdf_opslimit",
-            "kdf_memlimit",
-            "kdf_algorithm",
-          ])
-        ).map(([key, value]) => [key.split("_").slice(-1)[0], value])
-      );
-
+      const { mac, salt, ...kdfOpts } = folder.keyDerivation;
       postToWorker({ password: data.password, mac, salt, kdfOpts });
     }
   };

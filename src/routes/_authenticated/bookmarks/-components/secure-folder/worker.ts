@@ -1,16 +1,16 @@
 /// <reference lib="webworker" />
 import type { WorkerRequest, WorkerResponse } from "./types";
-import { LibSodium } from "@/utils/libsodium";
+import { Noble } from "@/utils/noble";
 
-self.onmessage = async (e: MessageEvent<WorkerRequest>) => {
-  const crypto = await new LibSodium().initialize();
+self.onmessage = (e: MessageEvent<WorkerRequest>) => {
+  const crypto = new Noble();
   const { password, salt, mac, kdfOpts } = e.data;
-  const secret = crypto.verifyAuth({ password, salt, mac, kdfOpts });
+  const secret = crypto.verifyAuth({ password, salt, mac, opts: kdfOpts });
 
-  const response: WorkerResponse = secret.isMatching
+  const response: WorkerResponse = secret
     ? {
         status: "success",
-        key: secret.key,
+        key: secret,
       }
     : {
         status: "error",

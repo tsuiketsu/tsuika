@@ -1,4 +1,4 @@
-import type { KdfOptions } from "@/utils/libsodium";
+import type { KdfOptions } from "@/utils/noble";
 
 export interface WorkerRequest {
   password: string;
