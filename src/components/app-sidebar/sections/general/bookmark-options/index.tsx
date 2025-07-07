@@ -11,6 +11,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { useSidebarStore } from "@/stores/sidebar.store";
 import { Link } from "@tanstack/react-router";
 import { ChevronRight, Bookmark } from "lucide-react";
 
@@ -29,10 +30,16 @@ const DefaultFolders = () => (
   </SidebarMenuSub>
 );
 
-export default function BookmarkOptions() {
+export default function BookmarkOptions({ menuId }: { menuId: number }) {
+  const { isExpanded, updateState } = useSidebarStore();
+
   return (
     <SidebarMenu>
-      <Collapsible defaultOpen={true} className="group/collapsible">
+      <Collapsible
+        defaultOpen={isExpanded(menuId)}
+        onOpenChange={(s) => updateState(menuId, s)}
+        className="group/collapsible"
+      >
         <SidebarMenuItem>
           <CollapsibleTrigger asChild>
             <SidebarMenuButton tooltip="Default bookmark folders">

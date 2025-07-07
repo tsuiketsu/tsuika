@@ -9,12 +9,19 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
+import { useSidebarStore } from "@/stores/sidebar.store";
 import { ChevronRight, Tag } from "lucide-react";
 
-export default function TagOptions() {
+export default function TagOptions({ menuId }: { menuId: number }) {
+  const { isExpanded, updateState } = useSidebarStore();
+
   return (
     <SidebarMenu>
-      <Collapsible className="group/collapsible">
+      <Collapsible
+        defaultOpen={isExpanded(menuId)}
+        onOpenChange={(s) => updateState(menuId, s)}
+        className="group/collapsible"
+      >
         <SidebarMenuItem>
           <CollapsibleTrigger asChild>
             <SidebarMenuButton tooltip="Tags">

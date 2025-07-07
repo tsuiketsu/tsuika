@@ -15,9 +15,9 @@ export default function GeneralSection() {
           icon={LayoutDashboard}
           tooltip="Dashboard"
         />
-        <BookmarkOptions />
-        <FolderOptions />
-        <TagOptions />
+        <BookmarkOptions menuId={1} />
+        <FolderOptions menuId={2} />
+        <TagOptions menuId={3} />
       </SidebarGroupContent>
     </SidebarGroup>
   );
