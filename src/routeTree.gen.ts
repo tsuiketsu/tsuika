@@ -19,6 +19,7 @@ import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedSettingsIndexImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedDashboardIndexImport } from './routes/_authenticated/dashboard/index'
+import { Route as AuthVerify2faIndexImport } from './routes/_auth/verify-2fa/index'
 import { Route as AuthEmailVerificationIndexImport } from './routes/_auth/email-verification/index'
 import { Route as AuthenticatedBookmarksSlugImport } from './routes/_authenticated/bookmarks/$slug'
 import { Route as AuthenticatedSettingsProfileIndexImport } from './routes/_authenticated/settings/profile/index'
@@ -77,6 +78,12 @@ const AuthenticatedDashboardIndexRoute =
     path: '/dashboard/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+
+const AuthVerify2faIndexRoute = AuthVerify2faIndexImport.update({
+  id: '/verify-2fa/',
+  path: '/verify-2fa/',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 
 const AuthEmailVerificationIndexRoute = AuthEmailVerificationIndexImport.update(
   {
@@ -175,6 +182,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthEmailVerificationIndexImport
       parentRoute: typeof AuthRouteImport
     }
+    '/_auth/verify-2fa/': {
+      id: '/_auth/verify-2fa/'
+      path: '/verify-2fa'
+      fullPath: '/verify-2fa'
+      preLoaderRoute: typeof AuthVerify2faIndexImport
+      parentRoute: typeof AuthRouteImport
+    }
     '/_authenticated/dashboard/': {
       id: '/_authenticated/dashboard/'
       path: '/dashboard'
@@ -219,12 +233,14 @@ interface AuthRouteRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthEmailVerificationIndexRoute: typeof AuthEmailVerificationIndexRoute
+  AuthVerify2faIndexRoute: typeof AuthVerify2faIndexRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthEmailVerificationIndexRoute: AuthEmailVerificationIndexRoute,
+  AuthVerify2faIndexRoute: AuthVerify2faIndexRoute,
 }
 
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
@@ -277,6 +293,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof AuthRegisterRoute
   '/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
   '/email-verification': typeof AuthEmailVerificationIndexRoute
+  '/verify-2fa': typeof AuthVerify2faIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
@@ -291,6 +308,7 @@ export interface FileRoutesByTo {
   '/register': typeof AuthRegisterRoute
   '/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
   '/email-verification': typeof AuthEmailVerificationIndexRoute
+  '/verify-2fa': typeof AuthVerify2faIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
@@ -308,6 +326,7 @@ export interface FileRoutesById {
   '/_auth/register': typeof AuthRegisterRoute
   '/_authenticated/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
   '/_auth/email-verification/': typeof AuthEmailVerificationIndexRoute
+  '/_auth/verify-2fa/': typeof AuthVerify2faIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/settings/account/': typeof AuthenticatedSettingsAccountIndexRoute
@@ -325,6 +344,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/bookmarks/$slug'
     | '/email-verification'
+    | '/verify-2fa'
     | '/dashboard'
     | '/settings/'
     | '/settings/account'
@@ -338,6 +358,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/bookmarks/$slug'
     | '/email-verification'
+    | '/verify-2fa'
     | '/dashboard'
     | '/settings'
     | '/settings/account'
@@ -353,6 +374,7 @@ export interface FileRouteTypes {
     | '/_auth/register'
     | '/_authenticated/bookmarks/$slug'
     | '/_auth/email-verification/'
+    | '/_auth/verify-2fa/'
     | '/_authenticated/dashboard/'
     | '/_authenticated/settings/'
     | '/_authenticated/settings/account/'
@@ -396,7 +418,8 @@ export const routeTree = rootRoute
       "children": [
         "/_auth/login",
         "/_auth/register",
-        "/_auth/email-verification/"
+        "/_auth/email-verification/",
+        "/_auth/verify-2fa/"
       ]
     },
     "/_authenticated": {
@@ -431,6 +454,10 @@ export const routeTree = rootRoute
     },
     "/_auth/email-verification/": {
       "filePath": "_auth/email-verification/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/verify-2fa/": {
+      "filePath": "_auth/verify-2fa/index.tsx",
       "parent": "/_auth"
     },
     "/_authenticated/dashboard/": {

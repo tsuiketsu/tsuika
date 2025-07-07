@@ -42,16 +42,25 @@ function Login() {
 
   const mutation = useMutation({
     mutationFn: async (payload: type.infer<typeof LoginSchema>) => {
-      return signIn.email(payload);
+      return signIn.email(payload, {
+        async onSuccess(context) {
+          if (context.data.twoFactorRedirect) {
+            navigate({
+              to: "/verify-2fa",
+            });
+          }
+        },
+      });
     },
     onSuccess: ({ error, data }) => {
       if (error) {
         toast.error(error.message || "Login failed, Something went wrong");
-        // eslint-disable-next-line no-console
         console.error(error);
         return;
       }
+
       toast.success(`Welcome back ${data.user.name}!`);
+
       navigate({
         to: "/bookmarks/$slug",
         params: { slug: "folder/unsorted" },
@@ -102,7 +111,9 @@ function Login() {
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="• • • • • • • • • • • • • • • • • • • • • • • •"
+                      placeholder={Array.from({ length: 32 })
+                        .fill("•")
+                        .join(" ")}
                       {...field}
                     />
                   </FormControl>
