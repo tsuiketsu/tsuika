@@ -42,7 +42,7 @@ export default function TextField<T extends FieldValues>({
             <Comp
               value={value?.toString()}
               placeholder={placeholder}
-              className={cn(className, { "min-h-28": type !== "input" })}
+              className={cn({ "min-h-28": type !== "input" }, className)}
               {...field}
             />
           </FormControl>

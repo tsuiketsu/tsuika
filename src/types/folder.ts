@@ -7,7 +7,23 @@ export type Folder = {
   description: string;
   createdAt: Date;
   updatedAt: Date;
+  isPublic: boolean | null;
+  publicId: string | null;
+  expiresAt: Date | null;
+  viewCount: number | null;
   keyDerivation: KeyDerivation | null;
+};
+
+export type SharedFolder = {
+  id: string;
+  title: string;
+  note: string;
+  expiresAt: Date;
+  isPublic: boolean;
+  viewCount: number;
+  lastViewdAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export interface KeyDerivation extends KdfOptions {

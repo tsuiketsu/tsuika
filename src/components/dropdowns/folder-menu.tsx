@@ -1,4 +1,5 @@
 import DeleteFolder from "../forms/folder/delete-folder";
+import ShareFolder from "../forms/folder/share-folder";
 import UpdateFolder from "../forms/folder/update-folder";
 import { Button } from "../ui/button";
 import {
@@ -12,6 +13,7 @@ import {
   useUserProfileStore,
 } from "@/stores/user-profile.store";
 import type { Folder } from "@/types/folder";
+import clsx from "clsx";
 import { Ellipsis } from "lucide-react";
 import React, { Fragment, useRef } from "react";
 import { toast } from "sonner";
@@ -35,6 +37,8 @@ const toastMessages = {
 const FolderMenu = ({ folder, triggerButton }: PropsType) => {
   const editButtonRef = useRef<HTMLButtonElement>(null);
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
+  const shareButtonRef = useRef<HTMLButtonElement>(null);
+
   const { profile, isFolderPinned, setPreferences } = useUserProfileStore();
 
   const setPinHandler = () => {
@@ -97,6 +101,12 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
             <span>Edit Folder</span>
           </DropdownMenuItem>
           <DropdownMenuItem
+            onClick={() => shareButtonRef.current?.click()}
+            className={clsx({ hidden: folder.keyDerivation })}
+          >
+            <span>Share Folder</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem
             variant="destructive"
             onClick={() => deleteButtonRef.current?.click()}
           >
@@ -106,6 +116,7 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
       </DropdownMenu>
       <UpdateFolder folder={folder} ref={editButtonRef} />
       <DeleteFolder id={folder.id} ref={deleteButtonRef} />
+      <ShareFolder folder={folder} ref={shareButtonRef} />
     </Fragment>
   );
 };

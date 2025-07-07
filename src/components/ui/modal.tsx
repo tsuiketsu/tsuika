@@ -1,6 +1,3 @@
-import { Slot } from "@radix-ui/react-slot";
-import clsx from "clsx";
-import React from "react";
 import { Button } from "./button";
 import {
   Dialog,
@@ -12,6 +9,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./dialog";
+import { Slot } from "@radix-ui/react-slot";
+import clsx from "clsx";
+import React from "react";
 
 interface ModalProps {
   isHeaderHidden?: boolean;
@@ -49,7 +49,7 @@ const Modal = ({ children, open, onOpenChange, ...props }: ModalProps) => {
         form={form}
         onClick={btnFunc}
         isLoading={isPending}
-        className="capitalize min-w-24"
+        className="min-w-24 capitalize"
       >
         {btnTxt ?? "Save"}
       </Button>
@@ -68,7 +68,7 @@ const Modal = ({ children, open, onOpenChange, ...props }: ModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <TriggerButton />
-      <DialogContent>
+      <DialogContent className="select-none">
         <DialogHeader
           className={clsx("text-left", { hidden: props?.isHeaderHidden })}
         >
