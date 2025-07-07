@@ -17,17 +17,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { emailOtp, signUp } from "@/lib/auth-client";
-import { arktypeResolver } from "@hookform/resolvers/arktype";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { type } from "arktype";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
-const SignUpSchema = type({
-  name: "string",
-  email: "string.email",
-  password: "string",
+const SignUpSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string(),
 });
 
 export const Route = createFileRoute("/_auth/register")({
@@ -35,14 +35,14 @@ export const Route = createFileRoute("/_auth/register")({
 });
 
 function Register() {
-  const form = useForm<type.infer<typeof SignUpSchema>>({
-    resolver: arktypeResolver(SignUpSchema),
+  const form = useForm<z.infer<typeof SignUpSchema>>({
+    resolver: zodResolver(SignUpSchema),
   });
 
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: async (payload: type.infer<typeof SignUpSchema>) => {
+    mutationFn: async (payload: z.infer<typeof SignUpSchema>) => {
       return signUp.email(payload);
     },
     onSuccess: ({ error }, { email }) => {
@@ -50,7 +50,6 @@ function Register() {
         toast.error(
           error.message || "Registration failed, something went wrong"
         );
-        // eslint-disable-next-line no-console
         console.error(error);
         return;
       }
@@ -60,14 +59,12 @@ function Register() {
           .sendVerificationOtp({ email, type: "email-verification" })
           .then(({ data, error }) => {
             if (error || !data.success) {
-              // eslint-disable-next-line no-console
               console.error(error);
               reject();
             }
             resolve({});
           })
           .catch((error) => {
-            // eslint-disable-next-line no-console
             console.error(error);
             reject();
           });
@@ -86,7 +83,7 @@ function Register() {
     onError: (error) => toast.error(error.message || "Something went wrong!"),
   });
 
-  async function onSubmit(values: type.infer<typeof SignUpSchema>) {
+  async function onSubmit(values: z.infer<typeof SignUpSchema>) {
     mutation.mutate(values);
   }
 

@@ -1,4 +1,4 @@
-import { type } from "arktype";
+import { z } from "zod";
 
 export type Tag = {
   id: string;
@@ -9,10 +9,10 @@ export type Tag = {
   updated_at: Date | string;
 };
 
-export const TagInsertSchema = type({
-  name: "string < 30 | undefined",
-  color: "6 <= string < 15 | undefined",
+export const TagInsertSchema = z.object({
+  name: z.string().max(29).optional(),
+  color: z.string().min(6).max(14).optional(),
 });
 
-export type TagInsertSchemaType = type.infer<typeof TagInsertSchema>;
+export type TagInsertSchemaType = z.infer<typeof TagInsertSchema>;
 export type TagInsertSchemaWithId = Pick<Tag, "id" | "name" | "color">;

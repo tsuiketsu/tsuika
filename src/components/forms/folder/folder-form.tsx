@@ -14,7 +14,7 @@ import {
   type Folder,
   type FolderInsertSchemaType,
 } from "@/types/folder";
-import { arktypeResolver } from "@hookform/resolvers/arktype";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -25,7 +25,7 @@ interface PropsType {
 
 export default function FolderForm({ onSubmit }: PropsType) {
   const form = useForm<FolderInsertSchemaType>({
-    resolver: arktypeResolver(FolderInsertSchema),
+    resolver: zodResolver(FolderInsertSchema),
     defaultValues: {
       name: "",
       description: "",

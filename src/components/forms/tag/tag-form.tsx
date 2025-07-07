@@ -15,7 +15,7 @@ import {
   type TagInsertSchemaType,
 } from "@/types/tag";
 import { getTextColor } from "@/utils";
-import { arktypeResolver } from "@hookform/resolvers/arktype";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Hash } from "lucide-react";
 import { HexColorPicker } from "react-colorful";
 import { useForm } from "react-hook-form";
@@ -27,7 +27,7 @@ interface PropsType {
 
 export default function TagForm({ data, onSubmit }: PropsType) {
   const form = useForm<TagInsertSchemaType>({
-    resolver: arktypeResolver(TagInsertSchema),
+    resolver: zodResolver(TagInsertSchema),
     defaultValues: data
       ? Object.fromEntries(
           Object.entries(data).filter(([_, value]) => value != null)

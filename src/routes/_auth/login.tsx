@@ -17,16 +17,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signIn } from "@/lib/auth-client";
-import { arktypeResolver } from "@hookform/resolvers/arktype";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { type } from "arktype";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
-const LoginSchema = type({
-  email: "string.email",
-  password: "string",
+const LoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
 });
 
 export const Route = createFileRoute("/_auth/login")({
@@ -36,12 +36,12 @@ export const Route = createFileRoute("/_auth/login")({
 function Login() {
   const navigate = useNavigate();
 
-  const form = useForm<type.infer<typeof LoginSchema>>({
-    resolver: arktypeResolver(LoginSchema),
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
   });
 
   const mutation = useMutation({
-    mutationFn: async (payload: type.infer<typeof LoginSchema>) => {
+    mutationFn: async (payload: z.infer<typeof LoginSchema>) => {
       return signIn.email(payload, {
         async onSuccess(context) {
           if (context.data.twoFactorRedirect) {
@@ -68,7 +68,7 @@ function Login() {
     },
   });
 
-  async function onSubmit(values: type.infer<typeof LoginSchema>) {
+  async function onSubmit(values: z.infer<typeof LoginSchema>) {
     mutation.mutate(values);
   }
 
