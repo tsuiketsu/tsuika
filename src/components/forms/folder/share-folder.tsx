@@ -1,6 +1,7 @@
 import ShareFolderForm from "./share-folder-form";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
+import { useSession } from "@/lib/auth-client";
 import { shareFolder } from "@/queries/share-folder.queries";
 import type { Folder } from "@/types/folder";
 import { useMutation } from "@tanstack/react-query";
@@ -14,6 +15,8 @@ interface PropsType {
 }
 
 export default function ShareFolder({ folder, ref }: PropsType) {
+  const { data } = useSession();
+
   const mutation = useMutation({
     mutationKey: ["share-folder"],
     mutationFn: shareFolder,
@@ -28,7 +31,7 @@ export default function ShareFolder({ folder, ref }: PropsType) {
   });
 
   const btnLabel = folder.isPublic ? "Unpublish Now" : "Publish Now";
-  const publicUrl = `${import.meta.env.VITE_API_BASE_URL}/${folder.publicId}`;
+  const publicUrl = `${import.meta.env.VITE_API_BASE_URL}/${data?.user.username}/folder/${folder.publicId}`;
 
   const copyToClipboardHandler = async () => {
     await navigator.clipboard.writeText(publicUrl);
