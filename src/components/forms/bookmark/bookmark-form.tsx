@@ -1,18 +1,8 @@
 import TagOptions from "./tag-options";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import TextField from "@/components/primitives/form/text-field.tsx";
+import { Form } from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import { Textarea } from "@/components/ui/textarea";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
-import { cn } from "@/lib/utils";
-import type { StringKeys } from "@/types";
 import {
   type Bookmark,
   BookmarkFormSchema,
@@ -21,54 +11,9 @@ import {
 import { getFavIcon } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { lazy, Suspense } from "react";
-import { useForm, type Control } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 const FolderOptions = lazy(() => import("./folder-options.tsx"));
-
-interface FieldProps {
-  type?: "input" | "textarea";
-  isHidden?: boolean;
-  control: Control<BookmarkFormSchemaType>;
-  placeholder: string;
-  fieldName: StringKeys<BookmarkFormSchemaType>;
-  className?: string;
-}
-
-const TextField = ({
-  type = "input",
-  fieldName,
-  isHidden = false,
-  control,
-  placeholder,
-  className,
-}: FieldProps) => {
-  const Comp = type === "input" ? Input : Textarea;
-
-  if (isHidden) {
-    return null;
-  }
-
-  return (
-    <FormField
-      control={control}
-      name={fieldName as keyof BookmarkFormSchemaType}
-      render={({ field: { value, ...field } }) => (
-        <FormItem>
-          <FormLabel className="capitalize">{fieldName}</FormLabel>
-          <FormControl>
-            <Comp
-              value={value?.toString()}
-              placeholder={placeholder}
-              className={cn(className, { "min-h-28": type !== "input" })}
-              {...field}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
-};
 
 interface PropsType {
   data?: Bookmark;
