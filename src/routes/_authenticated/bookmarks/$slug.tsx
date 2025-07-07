@@ -51,6 +51,7 @@ function Bookmarks() {
     data: pinnedData,
     fetchNextPage: fetchMorePinned,
     isFetching: isFetchingPinned,
+    isFetched: isFetchedPinned,
     hasNextPage: hasMorePinned,
   } = usePinnedBookmarks({
     query,
@@ -63,7 +64,13 @@ function Bookmarks() {
   });
 
   // Regular Bookmarks
-  const { data, fetchNextPage, isFetching, hasNextPage } = useBookmarks({
+  const {
+    data,
+    fetchNextPage,
+    isFetching: isFetchingRegular,
+    isFetched: isFetchedRegular,
+    hasNextPage,
+  } = useBookmarks({
     query,
     slug,
     enabled: !isSecured && !hasMorePinned,
@@ -75,6 +82,7 @@ function Bookmarks() {
     fetchNextPage: fetchNextEncrypted,
     hasNextPage: hasMoreEncrypted,
     isFetching: isFetchingEncrypted,
+    isFetched: isFetchedEncrypted,
   } = useEncyptedBookmarks({ slug, enabled: isSecured && !isLocked });
 
   const handleFetch = async () => {
@@ -82,7 +90,7 @@ function Bookmarks() {
       await fetchMorePinned();
     }
 
-    if (hasNextPage && !isFetching) {
+    if (hasNextPage && !isFetchingRegular) {
       await fetchNextPage();
     }
 
@@ -91,11 +99,18 @@ function Bookmarks() {
     }
   };
 
-  const isLoading = useMemo(() => {
-    return (
-      isFoldersFetching || isFetching || isFetchingPinned || isFetchingEncrypted
-    );
-  }, [isFetching, isFetchingEncrypted, isFetchingPinned, isFoldersFetching]);
+  const isFetching =
+    isFoldersFetching ||
+    isFetchingRegular ||
+    isFetchingPinned ||
+    isFetchingEncrypted;
+
+  const isFetched = isFetchedPinned || isFetchedRegular || isFetchedEncrypted;
+
+  const isNoData =
+    (pinnedData?.pages?.length ?? 0) === 0 &&
+    (data?.pages?.length ?? 0) === 0 &&
+    (encryptedData?.pages?.length ?? 0) === 0;
 
   const sneakyRef = useInfiniteScrollObserver(handleFetch, isFetching);
 
@@ -111,6 +126,7 @@ function Bookmarks() {
     return [...pinned, ...regular];
   }, [pinned, regular]);
 
+  // Bookmark decryption process
   useEffect(() => {
     if (isSecured && !isLocked) {
       (async () => {
@@ -126,6 +142,16 @@ function Bookmarks() {
     return <SecureFolder key={slug} folder={selectedSecuredFolder} />;
   }
 
+  if (!isFetching && isFetched && isNoData) {
+    return (
+      <FallbackScreen
+        title="No bookmarks found"
+        description="Add a bookmark to see here"
+        icon={Ghost}
+      />
+    );
+  }
+
   return (
     <div className="flex size-full flex-col">
       <div className="space-y-6">
@@ -136,29 +162,21 @@ function Bookmarks() {
           onQueryChange={(value) => setQuery(value)}
         />
       </div>
-      {!isLoading && bookmarks.length === 0 ? (
-        <FallbackScreen
-          title="No bookmarks found"
-          description="Add a bookmark to see here"
-          icon={Ghost}
+      <CardsLayout
+        layout={layout}
+        className={clsx("relative", { "pb-20": isFetching })}
+      >
+        <BookmarkContextProvider query={query}>
+          <Suspense fallback={<BookmarkSkeleton layout={layout} />}>
+            <BookmarkCards bookmarks={bookmarks} />
+          </Suspense>
+        </BookmarkContextProvider>
+        <BookmarkSkeletons
+          isLoading={isFetching}
+          bookmarksLength={bookmarks.length}
         />
-      ) : (
-        <CardsLayout
-          layout={layout}
-          className={clsx("relative", { "pb-20": isLoading })}
-        >
-          <BookmarkContextProvider query={query}>
-            <Suspense fallback={<BookmarkSkeleton layout={layout} />}>
-              <BookmarkCards bookmarks={bookmarks} />
-            </Suspense>
-          </BookmarkContextProvider>
-          <BookmarkSkeletons
-            isLoading={isLoading}
-            bookmarksLength={bookmarks.length}
-          />
-          <span ref={sneakyRef} className="h-1" />
-        </CardsLayout>
-      )}
+        <span ref={sneakyRef} className="h-1" />
+      </CardsLayout>
     </div>
   );
 }
