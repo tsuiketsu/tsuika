@@ -9,6 +9,8 @@ import useLayoutStore, {
   type CardsLayoutKey,
 } from "@/stores/layout.store";
 import type { Bookmark } from "@/types/bookmark";
+import { isDefaultFolder } from "@/utils";
+import { useRouterState } from "@tanstack/react-router";
 import clsx from "clsx";
 
 interface PropsType {
@@ -19,6 +21,9 @@ interface PropsType {
 export default function BookmarkCard(props: PropsType) {
   const { bookmark, enableCheckbox = false } = props;
   const layout = useLayoutStore((s) => s.layout);
+  const {
+    location: { pathname },
+  } = useRouterState();
 
   return (
     <div
@@ -53,7 +58,7 @@ export default function BookmarkCard(props: PropsType) {
       </div>
       <span
         className={clsx("absolute top-0 right-0 z-10 text-xl", {
-          hidden: !bookmark.isPinned,
+          hidden: !bookmark.isPinned || isDefaultFolder(pathname),
         })}
         role="img"
         aria-label="pin"

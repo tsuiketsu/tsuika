@@ -100,3 +100,9 @@ export function createTypedWorkerPost<T>(worker: Worker) {
 export const getFavIcon = (url: string) => {
   return `https://www.google.com/s2/favicons?domain=${url}&sz=128`;
 };
+
+export const isDefaultFolder = (slug: string): boolean => {
+  return ["all", "favorites", "archived", "unsorted"].includes(
+    decodeURIComponent(slug).split("/").slice(-1)[0] ?? ""
+  );
+};
