@@ -31,7 +31,7 @@ export default function ShareFolder({ folder, ref }: PropsType) {
   });
 
   const btnLabel = folder.isPublic ? "Unpublish Now" : "Publish Now";
-  const publicUrl = `${import.meta.env.VITE_API_BASE_URL}/${data?.user.username}/folder/${folder.publicId}`;
+  const publicUrl = `${import.meta.env.VITE_FRONTEND_BASE_URL}/${data?.user.username}/folder/${folder.publicId}`;
 
   const copyToClipboardHandler = async () => {
     await navigator.clipboard.writeText(publicUrl);

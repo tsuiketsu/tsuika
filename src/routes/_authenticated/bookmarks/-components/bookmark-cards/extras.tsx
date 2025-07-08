@@ -4,9 +4,10 @@ import { useFolderName } from "@/hooks/use-folder";
 import { cn } from "@/lib/utils";
 import useLayoutStore, { cardLayout } from "@/stores/layout.store";
 import { Slot } from "@radix-ui/react-slot";
-import { useLoaderData } from "@tanstack/react-router";
+import { useRouterState } from "@tanstack/react-router";
 import { format } from "date-fns";
 import { Folder, Inbox } from "lucide-react";
+import { useMemo } from "react";
 import { parse } from "tldts";
 
 interface PropsType {
@@ -21,10 +22,15 @@ export default function BookmarkExtras(props: PropsType) {
   const isCompact = layout === cardLayout.COMPACT;
   const BadgeComp = isCompact ? Slot : Badge;
 
-  const { slug } = useLoaderData({ from: "/_authenticated/bookmarks/$slug" });
+  const {
+    location: { pathname },
+  } = useRouterState();
   const { folderName } = useFolderName(props.folderId);
 
-  const isAll = slug.split("/")?.splice(-1)?.[0] === "all";
+  const isAll = useMemo((): boolean => {
+    const urlArr = decodeURIComponent(pathname).split("/");
+    return ["bookmarks", "folder", "all"].every((i) => urlArr.includes(i));
+  }, [pathname]);
 
   const responsiveSpan = cn(
     "max-w-20 truncate",
