@@ -7,13 +7,20 @@ import Header from "./-components/Header";
 import PublicDetails from "./-components/PublicDetails";
 import ContainerSize from "@/components/dev/container-size";
 import { CardsLayout } from "@/components/layouts/cards-layout";
+import NotFound from "@/components/not-found";
 import { fetchPublicBookmarks } from "@/queries/share-folder.queries";
 import useLayoutStore from "@/stores/layout.store";
 import type { Bookmark } from "@/types/bookmark";
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import clsx from "clsx";
 import { Suspense } from "react";
+
+const folderQueryOptions = (folderId: string) =>
+  queryOptions({
+    queryKey: ["public-folder", folderId],
+    queryFn: async () => await fetchPublicBookmarks(folderId),
+  });
 
 export const Route = createFileRoute("/_public/$uname/folder/$id")({
   component: RouteComponent,
@@ -23,13 +30,12 @@ function RouteComponent() {
   const params = Route.useParams();
   const layout = useLayoutStore((s) => s.layout);
 
-  const { data, isFetching, isFetched } = useQuery({
-    queryKey: ["public-folder", params.id],
-    queryFn: async () => await fetchPublicBookmarks(params.id),
-  });
+  const { data, isFetching, isFetched } = useQuery(
+    folderQueryOptions(params.id)
+  );
 
   if (isFetched && !data) {
-    return null;
+    return <NotFound />;
   }
 
   return (
