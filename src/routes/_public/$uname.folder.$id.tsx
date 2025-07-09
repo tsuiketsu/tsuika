@@ -3,9 +3,9 @@ import {
   BookmarkSkeleton,
   BookmarkSkeletons,
 } from "../_authenticated/bookmarks/-components/bookmark-cards/skeletions";
-import Header from "./-components/Header";
 import PublicDetails from "./-components/PublicDetails";
 import Footer from "./-components/footer";
+import Header from "./-components/header";
 import ContainerSize from "@/components/dev/container-size";
 import { CardsLayout } from "@/components/layouts/cards-layout";
 import NotFound from "@/components/not-found";
