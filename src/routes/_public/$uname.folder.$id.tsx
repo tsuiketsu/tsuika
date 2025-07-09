@@ -5,6 +5,7 @@ import {
 } from "../_authenticated/bookmarks/-components/bookmark-cards/skeletions";
 import Header from "./-components/Header";
 import PublicDetails from "./-components/PublicDetails";
+import Footer from "./-components/footer";
 import ContainerSize from "@/components/dev/container-size";
 import { CardsLayout } from "@/components/layouts/cards-layout";
 import NotFound from "@/components/not-found";
@@ -39,7 +40,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className="@container/dash mx-auto w-full max-w-6xl space-y-4 px-4 pb-24 select-none">
+    <div className="@container/dash mx-auto w-full max-w-6xl space-y-4 px-4 select-none">
       <ContainerSize />
       <Header />
       <PublicDetails isFetching={isFetching} data={data} />
@@ -58,6 +59,7 @@ function RouteComponent() {
           bookmarksLength={data?.bookmarks.length ?? 9}
         />
       </CardsLayout>
+      <Footer />
     </div>
   );
 }
