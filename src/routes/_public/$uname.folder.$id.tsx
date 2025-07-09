@@ -32,10 +32,6 @@ function RouteComponent() {
     return null;
   }
 
-  if (!data) {
-    return null;
-  }
-
   return (
     <div className="@container/dash mx-auto w-full max-w-6xl space-y-4 px-4 pb-24 select-none">
       <ContainerSize />
@@ -53,7 +49,7 @@ function RouteComponent() {
         </Suspense>
         <BookmarkSkeletons
           isLoading={isFetching}
-          bookmarksLength={data?.bookmarks.length ?? 10}
+          bookmarksLength={data?.bookmarks.length ?? 9}
         />
       </CardsLayout>
     </div>

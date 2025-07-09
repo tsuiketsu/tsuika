@@ -69,12 +69,16 @@ const Note = ({ authorName, note }: { authorName: string; note: string }) => {
 
 interface PropsType {
   isFetching: boolean;
-  data: SharedFolderData;
+  data: SharedFolderData | undefined;
 }
 
 export default function PublicDetails({ isFetching, data }: PropsType) {
   if (isFetching) {
     return <PublicDetailsSkeletion />;
+  }
+
+  if (!data) {
+    return null;
   }
 
   return (
