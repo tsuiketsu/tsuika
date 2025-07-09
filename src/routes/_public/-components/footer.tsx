@@ -13,8 +13,15 @@ export default function Footer() {
         <span className="font-bold">Tsuika</span>
         <span className="bg-border mx-2 h-6 w-0.5"></span>
         {links.map((link, idx) => (
-          <Button variant="outline" size="icon" key={`social-icon-${idx}`}>
-            <link.icon />
+          <Button
+            variant="outline"
+            size="icon"
+            key={`social-icon-${idx}`}
+            asChild
+          >
+            <a href={link.href} target="_blank" rel="noreferrer">
+              <link.icon />
+            </a>
           </Button>
         ))}
       </div>
