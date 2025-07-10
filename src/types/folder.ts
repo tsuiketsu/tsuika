@@ -19,6 +19,7 @@ export type SharedFolder = {
   title: string;
   note: string;
   expiresAt: Date;
+  isLocked: boolean | null;
   isPublic: boolean;
   viewCount: number;
   lastViewdAt: Date;

@@ -78,7 +78,9 @@ const Modal = ({ children, open, onOpenChange, ...props }: ModalProps) => {
         <Comp className={clsx(childCount > 1 && "flex flex-col gap-4")}>
           {children}
         </Comp>
-        <DialogFooter className={clsx({ hidden: props.isFooterHidden })}>
+        <DialogFooter
+          className={clsx("pt-6", { hidden: props.isFooterHidden })}
+        >
           <DialogClose asChild>
             <Button variant="secondary" className="w-24">
               Close

@@ -8,10 +8,12 @@ import {
   FormField,
   FormControl,
 } from "@/components/ui/form";
+import { Switch } from "@/components/ui/switch";
+import { options } from "@/constants";
 import type { SharedFolder } from "@/types/folder";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { useForm, useFormState } from "react-hook-form";
+import { boolean, z } from "zod";
 
 const formSchema = z.object({
   title: z.string().optional(),
@@ -28,19 +30,30 @@ const formSchema = z.object({
       message: "You must pick date and time to continue",
     })
     .optional(),
+  isLocked: boolean(),
+  password: z.string().optional(),
 });
 
 export type ShareFolderFormSchema = z.infer<typeof formSchema>;
 
 interface PropsType {
-  data?: SharedFolder;
+  folder?: SharedFolder;
   onSubmit: (payload: ShareFolderFormSchema) => void;
 }
 
-export default function ShareFolderForm({ onSubmit }: PropsType) {
+export default function ShareFolderForm({ folder, onSubmit }: PropsType) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: folder?.title,
+      note: folder?.note,
+      isLocked: folder?.isLocked ?? false,
+    },
   });
+
+  const {
+    dirtyFields: { isLocked },
+  } = useFormState({ control: form.control, name: "isLocked" });
 
   return (
     <Form {...form}>
@@ -79,6 +92,37 @@ export default function ShareFolderForm({ onSubmit }: PropsType) {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="isLocked"
+          render={({ field: { value, onChange, ...field } }) => (
+            <FormItem>
+              <FormControl>
+                <div className="inline-flex items-center justify-between">
+                  <div className="text-sm">
+                    <span className="block font-medium">Password Protect?</span>
+                    <span className="text-muted-foreground">
+                      Protect published folder with password.
+                    </span>
+                  </div>
+                  <Switch
+                    checked={value}
+                    onCheckedChange={onChange}
+                    {...field}
+                  />
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {!folder?.isLocked && isLocked && (
+          <TextField
+            control={form.control}
+            placeholder={options.passwordPlaceholder}
+            fieldName="password"
+          />
+        )}
       </form>
     </Form>
   );
