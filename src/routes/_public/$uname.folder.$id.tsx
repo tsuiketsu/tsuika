@@ -1,5 +1,5 @@
 import BookmarkCards from "../_authenticated/bookmarks/-components/bookmark-cards";
-import { BookmarkSkeleton } from "../_authenticated/bookmarks/-components/bookmark-cards/skeletions";
+import { BookmarkSkeleton } from "../_authenticated/bookmarks/-components/bookmark-cards/skeletons";
 import Footer from "./-components/footer";
 import Header from "./-components/header";
 import LoadingSkeleton from "./-components/loading-skeleton";

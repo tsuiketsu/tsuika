@@ -1,6 +1,6 @@
 import { CardsLayout } from "@/components/layouts/cards-layout";
 import { Skeleton } from "@/components/ui/skeleton";
-import { BookmarkSkeletons } from "@/routes/_authenticated/bookmarks/-components/bookmark-cards/skeletions";
+import { BookmarkSkeletons } from "@/routes/_authenticated/bookmarks/-components/bookmark-cards/skeletons";
 import useLayoutStore from "@/stores/layout.store";
 
 const PublicDetailsSkeleton = () => (
