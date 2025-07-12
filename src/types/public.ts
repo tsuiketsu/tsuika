@@ -6,6 +6,7 @@ export interface SharedFolderData {
   title: string;
   note: string;
   expiresAt: Date;
+  isLocked: boolean;
   folder: Pick<Folder, "name" | "description">;
   author: Pick<User, "username" | "name">;
   createdAt: Date;

@@ -45,3 +45,18 @@ export const unpublishFolder = async (id: string) => {
     withCredentials: true,
   });
 };
+
+export const unlockFolder = async ({
+  id,
+  password,
+}: {
+  id: string;
+  password: string;
+}) => {
+  return axios<SuccessResponse<null>>({
+    method: "post",
+    url: `${options.ApiBaseUrl}/api/public/folder/${id}/unlock`,
+    data: { password },
+    withCredentials: true,
+  });
+};
