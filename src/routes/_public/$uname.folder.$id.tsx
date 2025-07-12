@@ -1,10 +1,8 @@
 import BookmarkCards from "../_authenticated/bookmarks/-components/bookmark-cards";
-import {
-  BookmarkSkeleton,
-  BookmarkSkeletons,
-} from "../_authenticated/bookmarks/-components/bookmark-cards/skeletions";
+import { BookmarkSkeleton } from "../_authenticated/bookmarks/-components/bookmark-cards/skeletions";
 import Footer from "./-components/footer";
 import Header from "./-components/header";
+import LoadingSkeleton from "./-components/loading-skeleton";
 import PublicDetails from "./-components/public-details";
 import UnlockContent from "./-components/unlock-content";
 import ContainerSize from "@/components/dev/container-size";
@@ -57,27 +55,31 @@ function RouteComponent() {
     return <NotFound />;
   }
 
+  // NOTE: This approach of showing loading skeletons is fine until infinity query is implemented
+
   return (
     <div className="@container/dash mx-auto w-full max-w-6xl space-y-4 px-4 select-none">
-      <ContainerSize />
       <Header folderId={params.id} queryKey={queryKey} />
-      <PublicDetails isFetching={isDataFetching} data={data} />
-      <CardsLayout
-        layout={layout}
-        className={clsx("relative", { "pb-20": isDataFetching })}
-      >
-        <Suspense fallback={<BookmarkSkeleton layout={layout} />}>
-          <BookmarkCards
-            bookmarks={(data?.bookmarks as Bookmark[]) ?? []}
-            showActions={false}
-          />
-        </Suspense>
-        <BookmarkSkeletons
-          isLoading={isDataFetching}
-          bookmarksLength={data?.bookmarks.length ?? 9}
-        />
-      </CardsLayout>
-      <Footer />
+      {isDataFetching ? (
+        <LoadingSkeleton />
+      ) : (
+        <>
+          <ContainerSize />
+          <PublicDetails data={data} />
+          <CardsLayout
+            layout={layout}
+            className={clsx("relative", { "pb-20": isDataFetching })}
+          >
+            <Suspense fallback={<BookmarkSkeleton layout={layout} />}>
+              <BookmarkCards
+                bookmarks={(data?.bookmarks as Bookmark[]) ?? []}
+                showActions={false}
+              />
+            </Suspense>
+          </CardsLayout>
+          <Footer />
+        </>
+      )}
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import Avatar from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import type { SharedFolderData } from "@/types/public";
 import clsx from "clsx";
 import { format } from "date-fns";
@@ -9,22 +8,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const ph =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrWCfadBOtUGta1YeOfW9xdamAgKFV3ZPI3Q&s";
-
-const PublicDetailsSkeletion = () => (
-  <div className="mx-auto flex w-full flex-col items-center space-y-4 border-b pt-30 pb-4">
-    <Skeleton className="size-26 rounded-full" />
-    <Skeleton className="h-11 w-full max-w-lg" />
-    <Skeleton className="h-6 w-full max-w-32" />
-    <Skeleton className="h-6 w-full max-w-68" />
-    <div className="flex h-36 w-full max-w-2xl flex-col justify-between gap-3 rounded-xl border p-3">
-      <Skeleton className="h-full w-full" />
-      <div className="inline-flex w-full items-end justify-between">
-        <Skeleton className="h-5 w-full max-w-38" />
-        <Skeleton className="h-8 w-28" />
-      </div>
-    </div>
-  </div>
-);
 
 const Note = ({ authorName, note }: { authorName: string; note: string }) => {
   const [isClamped, setIsClamped] = useState(false);
@@ -72,15 +55,10 @@ const Note = ({ authorName, note }: { authorName: string; note: string }) => {
 };
 
 interface PropsType {
-  isFetching: boolean;
   data: SharedFolderData | undefined;
 }
 
-export default function PublicDetails({ isFetching, data }: PropsType) {
-  if (isFetching) {
-    return <PublicDetailsSkeletion />;
-  }
-
+export default function PublicDetails({ data }: PropsType) {
   if (!data) {
     return null;
   }
