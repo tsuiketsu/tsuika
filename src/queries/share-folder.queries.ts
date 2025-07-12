@@ -60,3 +60,11 @@ export const unlockFolder = async ({
     withCredentials: true,
   });
 };
+
+export const relockFolder = async (id: string) => {
+  return axios<SuccessResponse<null>>({
+    method: "post",
+    url: `${options.ApiBaseUrl}/api/public/folder/${id}/lock`,
+    withCredentials: true,
+  });
+};

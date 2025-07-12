@@ -60,7 +60,7 @@ function RouteComponent() {
   return (
     <div className="@container/dash mx-auto w-full max-w-6xl space-y-4 px-4 select-none">
       <ContainerSize />
-      <Header />
+      <Header folderId={params.id} queryKey={queryKey} />
       <PublicDetails isFetching={isDataFetching} data={data} />
       <CardsLayout
         layout={layout}
