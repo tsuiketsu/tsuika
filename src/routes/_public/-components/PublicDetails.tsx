@@ -40,6 +40,10 @@ const Note = ({ authorName, note }: { authorName: string; note: string }) => {
     }
   }, [getLineClamp]);
 
+  if (!note || note.trim() === "") {
+    return null;
+  }
+
   return (
     <div className="bg-card w-full max-w-2xl space-y-3 rounded-xl border p-3 transition">
       <p ref={pRef} className={clsx({ "line-clamp-3": isClamped })}>
