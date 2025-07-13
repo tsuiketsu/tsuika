@@ -67,7 +67,7 @@ export function DateTimePicker({ value, onValueChange }: PropsType) {
           type="time"
           id="time"
           step="1"
-          defaultValue="10:30:00"
+          defaultValue={time}
           onInput={(e) => setTime(e.currentTarget.value)}
           className={clsx(
             "bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none",
