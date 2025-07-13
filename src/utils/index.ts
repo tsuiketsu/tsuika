@@ -80,7 +80,13 @@ export const mergeOnlyUpdatedFields = <T extends object>(
   return result;
 };
 
-export const combineDateAndTime = (date: string, time: string) => {
+export const combineDateAndTime = ({
+  date,
+  time,
+}: {
+  date: string;
+  time: string;
+}) => {
   const dateOnly = format(parseISO(date), "yyyy-MM-dd");
   return parse(`${dateOnly} ${time}`, "yyyy-MM-dd HH:mm:ss", new Date());
 };

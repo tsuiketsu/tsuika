@@ -80,11 +80,11 @@ export default function TaskForm({ type, data, onSubmit }: PropsType) {
   });
 
   const _onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (payload) => {
-    const { date, time } = payload.remindDate;
+    const dateObj = payload.remindDate;
 
     onSubmit({
       ...payload,
-      remindAt: combineDateAndTime(date, time).toISOString(),
+      remindAt: combineDateAndTime(dateObj).toISOString(),
     });
   };
 
