@@ -8,10 +8,11 @@ import { toast } from "sonner";
 
 interface PropsType {
   folderId: string;
+  isLocked: boolean;
   queryKey: string[];
 }
 
-export default function Header({ folderId, queryKey }: PropsType) {
+export default function Header({ folderId, isLocked, queryKey }: PropsType) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -28,14 +29,16 @@ export default function Header({ folderId, queryKey }: PropsType) {
     <div className="inline-flex w-full justify-between border-b py-4">
       <span className="text-lg font-bold">Tsuika</span>
       <div className="inline-flex items-center gap-2">
-        <Button
-          variant="outline"
-          onClick={() => mutation.mutate(folderId)}
-          isLoading={mutation.isPending}
-          className="min-w-26"
-        >
-          <LockIcon /> Re-Lock
-        </Button>
+        {folderId && isLocked && (
+          <Button
+            variant="outline"
+            onClick={() => mutation.mutate(folderId)}
+            isLoading={mutation.isPending}
+            className="min-w-26"
+          >
+            <LockIcon /> Re-Lock
+          </Button>
+        )}
         <LayoutPicker />
         <ThemeToggle />
       </div>

@@ -59,7 +59,11 @@ function RouteComponent() {
 
   return (
     <div className="@container/dash mx-auto w-full max-w-6xl space-y-4 px-4 select-none">
-      <Header folderId={params.id} queryKey={queryKey} />
+      <Header
+        folderId={params.id}
+        isLocked={data?.isLocked ?? false}
+        queryKey={queryKey}
+      />
       {isDataFetching ? (
         <LoadingSkeleton />
       ) : (
