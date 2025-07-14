@@ -8,6 +8,13 @@ const Fallback = () => (
   </div>
 );
 
-export default function LazyBoundary({ children }: { children: ReactNode }) {
-  return <Suspense fallback={<Fallback />}>{children}</Suspense>;
+interface PropsType {
+  children: ReactNode;
+  isVisible?: boolean;
 }
+
+const LazyBoundary = ({ children, isVisible = true }: PropsType) => {
+  return isVisible && <Suspense fallback={<Fallback />}>{children}</Suspense>;
+};
+
+export default LazyBoundary;

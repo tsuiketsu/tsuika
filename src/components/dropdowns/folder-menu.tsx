@@ -117,35 +117,25 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {openUpdate && (
-        <LazyBoundary>
-          <UpdateFolder
-            folder={folder}
-            open={openUpdate}
-            setOpen={setOpenUpdate}
-          />
-        </LazyBoundary>
-      )}
+      <LazyBoundary isVisible={openUpdate}>
+        <UpdateFolder
+          folder={folder}
+          open={openUpdate}
+          setOpen={setOpenUpdate}
+        />
+      </LazyBoundary>
 
-      {openDelete && (
-        <LazyBoundary>
-          <DeleteFolder
-            id={folder.id}
-            open={openDelete}
-            setOpen={setOpenDelete}
-          />
-        </LazyBoundary>
-      )}
+      <LazyBoundary isVisible={openDelete}>
+        <DeleteFolder
+          id={folder.id}
+          open={openDelete}
+          setOpen={setOpenDelete}
+        />
+      </LazyBoundary>
 
-      {openShare && (
-        <LazyBoundary>
-          <ShareFolder
-            folder={folder}
-            open={openShare}
-            setOpen={setOpenShare}
-          />
-        </LazyBoundary>
-      )}
+      <LazyBoundary isVisible={openShare}>
+        <ShareFolder folder={folder} open={openShare} setOpen={setOpenShare} />
+      </LazyBoundary>
     </Fragment>
   );
 };
