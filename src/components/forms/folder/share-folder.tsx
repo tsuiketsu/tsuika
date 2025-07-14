@@ -1,4 +1,9 @@
 import ShareFolderForm from "./share-folder-form";
+import {
+  usePublishMutation,
+  useUnpublishMutation,
+  useUpdateMutation,
+} from "./share-folder.mutations";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,15 +15,11 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { useSession } from "@/lib/auth-client";
-import {
-  fetchSharedFolderInfo,
-  shareFolder,
-  unpublishFolder,
-} from "@/queries/share-folder.queries";
+import { fetchSharedFolderInfo } from "@/queries/share-folder.queries";
 import type { Folder } from "@/types/folder";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { ClipboardIcon } from "lucide-react";
-import { type RefObject } from "react";
+import { useRef, type RefObject } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
@@ -27,6 +28,8 @@ interface PropsType {
 }
 
 export default function ShareFolder({ folder, ref }: PropsType) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+
   const { data } = useSession();
 
   const { data: sharedFolder } = useQuery({
@@ -35,39 +38,29 @@ export default function ShareFolder({ folder, ref }: PropsType) {
     enabled: folder.publicId != null,
   });
 
-  const mutation = useMutation({
-    mutationKey: ["publish-folder"],
-    mutationFn: shareFolder,
-    onSuccess: ({ status, data: { data, message } }) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to add folder");
-        return;
-      }
-
-      toast.success(data.publicId);
-    },
+  const publishMutation = usePublishMutation();
+  const unpublishMutation = useUnpublishMutation();
+  const updateMutation = useUpdateMutation({
+    onSuccessFunc: () => closeRef.current?.click(),
   });
 
-  const unpublishMutation = useMutation({
-    mutationKey: ["unpublish-folder"],
-    mutationFn: unpublishFolder,
-    onSuccess: ({ status, data: { data, message } }) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to add folder");
-        return;
-      }
+  const getPublicUrl = () => {
+    const host = import.meta.env.VITE_FRONTEND_BASE_URL;
+    const username = data?.user.username;
+    const id = folder.publicId;
 
-      toast.success(data.id);
-    },
-  });
-
-  // const btnLabel = sharedFolder?.isPublic ? "Unpublish" : "Publish";
-  const publicUrl = `${import.meta.env.VITE_FRONTEND_BASE_URL}/${data?.user.username}/folder/${folder.publicId}`;
+    return `${host}/${username}/folder/${id}`;
+  };
 
   const copyToClipboardHandler = async () => {
-    await navigator.clipboard.writeText(publicUrl);
+    await navigator.clipboard.writeText(getPublicUrl());
     toast.success("Copied public url to clipboard");
   };
+
+  const isPublish = !sharedFolder;
+  const isRepublish = sharedFolder && !sharedFolder.isPublic;
+  const isUpdate = sharedFolder && sharedFolder.isPublic;
+  const isUnpublish = isUpdate;
 
   return (
     <Dialog>
@@ -78,9 +71,14 @@ export default function ShareFolder({ folder, ref }: PropsType) {
         </DialogHeader>
         <ShareFolderForm
           folder={sharedFolder}
-          onSubmit={(payload) => mutation.mutate({ id: folder.id, payload })}
+          onSubmit={(payload) => {
+            if (sharedFolder?.isPublic) {
+              return updateMutation.mutate({ id: folder.id, payload });
+            }
+            return publishMutation.mutate({ id: folder.id, payload });
+          }}
         />
-        {folder.isPublic && folder.publicId && (
+        {sharedFolder?.isPublic && folder.publicId && (
           <div className="flex flex-col gap-1">
             <span className="text-sm font-medium">Copy &amp; Share</span>
             <Button
@@ -88,26 +86,48 @@ export default function ShareFolder({ folder, ref }: PropsType) {
               className="flex w-full justify-between transition-transform duration-500 hover:scale-97"
               onClick={copyToClipboardHandler}
             >
-              {publicUrl}
+              {getPublicUrl()}
               <ClipboardIcon />
             </Button>
           </div>
         )}
         <DialogFooter className="pt-6">
-          <DialogClose asChild>
+          <DialogClose ref={closeRef} asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
 
-          {sharedFolder && sharedFolder.isPublic && (
+          {isUnpublish && (
             <Button
               variant="destructive"
               isLoading={unpublishMutation.isPending}
               onClick={() => unpublishMutation.mutate(sharedFolder.id)}
+              className="min-w-25"
             >
               Unpublish
             </Button>
           )}
-          <Button>{sharedFolder?.isPublic ? "Update" : "Publish"}</Button>
+
+          {isUpdate && (
+            <Button
+              type="submit"
+              form="share-folder-form"
+              className="min-w-25"
+              isLoading={updateMutation.isPending}
+            >
+              Update
+            </Button>
+          )}
+
+          {(isPublish || isRepublish) && (
+            <Button
+              isLoading={publishMutation.isPending}
+              type="submit"
+              form="share-folder-form"
+              className="min-w-28"
+            >
+              {isPublish ? "Publish" : "Re-Publish"}
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

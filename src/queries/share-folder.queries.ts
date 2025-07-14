@@ -5,14 +5,14 @@ import type { Folder, SharedFolder } from "@/types/folder";
 import type { SharedFolderData } from "@/types/public";
 import axios from "axios";
 
-export const shareFolder = async ({
+export const publishFolder = async ({
   id,
   payload,
 }: {
   id: Folder["id"];
   payload: ShareFolderFormSchema;
 }) => {
-  return axios<SuccessResponse<{ isPublic: boolean; publicId: string }>>({
+  return axios<SuccessResponse<SharedFolder>>({
     url: `${options.ApiBaseUrl}/api/v1/shared-folders`,
     method: "post",
     data: Object.assign({}, payload, {
@@ -41,7 +41,7 @@ export const fetchSharedFolderInfo = async (publicId: string) => {
 export const unpublishFolder = async (id: string) => {
   return axios<SuccessResponse<{ id: string }>>({
     method: "patch",
-    url: `${options.ApiBaseUrl}/api/v1/shared-folders/${id}`,
+    url: `${options.ApiBaseUrl}/api/v1/shared-folders/${id}/unpublish`,
     withCredentials: true,
   });
 };

@@ -86,7 +86,7 @@ export const combineDateAndTime = ({
 }: {
   date: string;
   time: string;
-}) => {
+}): Date => {
   const dateOnly = format(parseISO(date), "yyyy-MM-dd");
   return parse(`${dateOnly} ${time}`, "yyyy-MM-dd HH:mm:ss", new Date());
 };

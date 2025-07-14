@@ -11,6 +11,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { options } from "@/constants";
 import type { SharedFolder } from "@/types/folder";
+import { combineDateAndTime, splitDateAndTime } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFormState } from "react-hook-form";
 import { boolean, z } from "zod";
@@ -18,7 +19,7 @@ import { boolean, z } from "zod";
 const formSchema = z.object({
   title: z.string().optional(),
   note: z.string().optional(),
-  expires_at: z
+  expiresAt: z
     .object(
       {
         date: z.string(),
@@ -34,7 +35,10 @@ const formSchema = z.object({
   password: z.string().optional(),
 });
 
-export type ShareFolderFormSchema = z.infer<typeof formSchema>;
+export interface ShareFolderFormSchema
+  extends Omit<z.infer<typeof formSchema>, "expiresAt"> {
+  expiresAt: string | null;
+}
 
 interface PropsType {
   folder?: SharedFolder;
@@ -45,9 +49,12 @@ export default function ShareFolderForm({ folder, onSubmit }: PropsType) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: folder?.title,
-      note: folder?.note,
+      title: folder?.title ?? undefined,
+      note: folder?.note ?? undefined,
       isLocked: folder?.isLocked ?? false,
+      expiresAt: folder?.expiresAt
+        ? splitDateAndTime(folder.expiresAt.toString())
+        : undefined,
     },
   });
 
@@ -59,7 +66,14 @@ export default function ShareFolderForm({ folder, onSubmit }: PropsType) {
     <Form {...form}>
       <form
         id="share-folder-form"
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit((data) =>
+          onSubmit({
+            ...data,
+            expiresAt: data.expiresAt
+              ? combineDateAndTime(data.expiresAt).toISOString()
+              : null,
+          })
+        )}
         className="space-y-4"
       >
         <TextField
@@ -78,7 +92,7 @@ export default function ShareFolderForm({ folder, onSubmit }: PropsType) {
         />
         <FormField
           control={form.control}
-          name="expires_at"
+          name="expiresAt"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Expiry Time</FormLabel>
