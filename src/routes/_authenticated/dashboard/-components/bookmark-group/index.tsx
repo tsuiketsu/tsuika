@@ -1,5 +1,5 @@
 import BookmarkList from "./list";
-import BookmarkGroupListSkeletions from "./skeletions";
+import BookmarkGroupListSkeletons from "./skeletons";
 import FallbackScreen from "@/components/fallback";
 import { Button } from "@/components/ui/button";
 import {
@@ -46,7 +46,7 @@ export default function BookmarkGroup({
       </CardHeader>
       <CardContent className="h-full space-y-3 px-0">
         {isFetching ? (
-          <BookmarkGroupListSkeletions uniqueKey={kebabCase(title)} />
+          <BookmarkGroupListSkeletons uniqueKey={kebabCase(title)} />
         ) : bookmarks.length > 0 ? (
           <BookmarkList bookmarks={bookmarks} />
         ) : (

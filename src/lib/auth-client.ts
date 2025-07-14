@@ -1,9 +1,13 @@
-import { emailOTPClient, twoFactorClient } from "better-auth/client/plugins";
+import {
+  emailOTPClient,
+  twoFactorClient,
+  usernameClient,
+} from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  plugins: [emailOTPClient(), twoFactorClient()],
+  plugins: [emailOTPClient(), twoFactorClient(), usernameClient()],
 });
 
 export const {

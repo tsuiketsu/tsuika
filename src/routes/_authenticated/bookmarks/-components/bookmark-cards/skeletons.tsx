@@ -32,7 +32,7 @@ export const BookmarkSkeletons = ({
     );
   }
 
-  return Array.from({ length: 16 }).map((_, idx) => (
+  return Array.from({ length: bookmarksLength || 16 }).map((_, idx) => (
     <BookmarkSkeleton key={`bookmark-skeleton-${idx}`} layout={layout} />
   ));
 };

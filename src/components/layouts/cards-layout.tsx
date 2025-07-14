@@ -31,6 +31,7 @@ function CardsLayout({
     isLoading?: boolean;
   }) {
   const Comp = asChild ? Slot : "div";
+
   return (
     <Comp
       className={cn(cardsLayoutVariant({ layout, className }))}

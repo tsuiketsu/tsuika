@@ -4,9 +4,10 @@ import type { Bookmark } from "@/types/bookmark";
 
 interface PropsType {
   bookmarks: Bookmark[];
+  showActions?: boolean;
 }
 
-const BookmarkCards = ({ bookmarks }: PropsType) => {
+const BookmarkCards = ({ bookmarks, showActions = true }: PropsType) => {
   const isEditEnabled = useToolbarStore((s) => s.isBulkEdit);
 
   return bookmarks.map((bookmark) => (
@@ -14,6 +15,7 @@ const BookmarkCards = ({ bookmarks }: PropsType) => {
       key={bookmark.id}
       bookmark={bookmark}
       enableCheckbox={isEditEnabled}
+      showActions={showActions}
     />
   ));
 };

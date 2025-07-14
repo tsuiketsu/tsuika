@@ -25,6 +25,7 @@ import { Route as AuthenticatedBookmarksSlugImport } from './routes/_authenticat
 import { Route as AuthenticatedSettingsProfileIndexImport } from './routes/_authenticated/settings/profile/index'
 import { Route as AuthenticatedSettingsAppearanceIndexImport } from './routes/_authenticated/settings/appearance/index'
 import { Route as AuthenticatedSettingsAccountIndexImport } from './routes/_authenticated/settings/account/index'
+import { Route as PublicUnameFolderIdImport } from './routes/_public/$uname.folder.$id'
 
 // Create/Update Routes
 
@@ -122,6 +123,12 @@ const AuthenticatedSettingsAccountIndexRoute =
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
 
+const PublicUnameFolderIdRoute = PublicUnameFolderIdImport.update({
+  id: '/_public/$uname/folder/$id',
+  path: '/$uname/folder/$id',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -202,6 +209,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings/'
       preLoaderRoute: typeof AuthenticatedSettingsIndexImport
       parentRoute: typeof AuthenticatedSettingsRouteImport
+    }
+    '/_public/$uname/folder/$id': {
+      id: '/_public/$uname/folder/$id'
+      path: '/$uname/folder/$id'
+      fullPath: '/$uname/folder/$id'
+      preLoaderRoute: typeof PublicUnameFolderIdImport
+      parentRoute: typeof rootRoute
     }
     '/_authenticated/settings/account/': {
       id: '/_authenticated/settings/account/'
@@ -296,6 +310,7 @@ export interface FileRoutesByFullPath {
   '/verify-2fa': typeof AuthVerify2faIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/$uname/folder/$id': typeof PublicUnameFolderIdRoute
   '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
@@ -311,6 +326,7 @@ export interface FileRoutesByTo {
   '/verify-2fa': typeof AuthVerify2faIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/$uname/folder/$id': typeof PublicUnameFolderIdRoute
   '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
@@ -329,6 +345,7 @@ export interface FileRoutesById {
   '/_auth/verify-2fa/': typeof AuthVerify2faIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/_public/$uname/folder/$id': typeof PublicUnameFolderIdRoute
   '/_authenticated/settings/account/': typeof AuthenticatedSettingsAccountIndexRoute
   '/_authenticated/settings/appearance/': typeof AuthenticatedSettingsAppearanceIndexRoute
   '/_authenticated/settings/profile/': typeof AuthenticatedSettingsProfileIndexRoute
@@ -347,6 +364,7 @@ export interface FileRouteTypes {
     | '/verify-2fa'
     | '/dashboard'
     | '/settings/'
+    | '/$uname/folder/$id'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/profile'
@@ -361,6 +379,7 @@ export interface FileRouteTypes {
     | '/verify-2fa'
     | '/dashboard'
     | '/settings'
+    | '/$uname/folder/$id'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/profile'
@@ -377,6 +396,7 @@ export interface FileRouteTypes {
     | '/_auth/verify-2fa/'
     | '/_authenticated/dashboard/'
     | '/_authenticated/settings/'
+    | '/_public/$uname/folder/$id'
     | '/_authenticated/settings/account/'
     | '/_authenticated/settings/appearance/'
     | '/_authenticated/settings/profile/'
@@ -387,12 +407,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  PublicUnameFolderIdRoute: typeof PublicUnameFolderIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  PublicUnameFolderIdRoute: PublicUnameFolderIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -407,7 +429,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_auth",
-        "/_authenticated"
+        "/_authenticated",
+        "/_public/$uname/folder/$id"
       ]
     },
     "/": {
@@ -467,6 +490,9 @@ export const routeTree = rootRoute
     "/_authenticated/settings/": {
       "filePath": "_authenticated/settings/index.tsx",
       "parent": "/_authenticated/settings"
+    },
+    "/_public/$uname/folder/$id": {
+      "filePath": "_public/$uname.folder.$id.tsx"
     },
     "/_authenticated/settings/account/": {
       "filePath": "_authenticated/settings/account/index.tsx",

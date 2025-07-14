@@ -1,3 +1,4 @@
+import NotFound from "@/components/not-found";
 import { QueryClient } from "@tanstack/react-query";
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
@@ -10,6 +11,7 @@ interface RootRouterContext {
 
 export const Route = createRootRouteWithContext<RootRouterContext>()({
   component: RootComponent,
+  notFoundComponent: NotFound,
 });
 
 function RootComponent() {

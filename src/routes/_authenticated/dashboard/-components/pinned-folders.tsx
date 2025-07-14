@@ -8,7 +8,7 @@ import { Link } from "@tanstack/react-router";
 import { FolderIcon } from "lucide-react";
 import { useMemo } from "react";
 
-const Skeletions = () =>
+const Skeletons = () =>
   Array.from({ length: 6 }).map((_, idx) => (
     <Skeleton key={`folder-${idx}`} className="h-[52px]" />
   ));
@@ -56,7 +56,7 @@ export default function PinnedFolders() {
     <div className="w-full space-y-4">
       <h4 className="font-bold">Pinned Folders</h4>
       <div className="grid grid-cols-3 gap-2 overflow-hidden @2xl:grid-cols-6 @6xl:grid-cols-3">
-        {isFetching ? <Skeletions /> : <Folders folders={data?.data ?? []} />}
+        {isFetching ? <Skeletons /> : <Folders folders={data?.data ?? []} />}
       </div>
     </div>
   );

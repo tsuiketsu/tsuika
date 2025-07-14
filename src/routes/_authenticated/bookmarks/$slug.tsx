@@ -1,7 +1,7 @@
 import {
   BookmarkSkeleton,
   BookmarkSkeletons,
-} from "./-components/bookmark-cards/skeletions";
+} from "./-components/bookmark-cards/skeletons";
 import BookmarkContextProvider from "./-components/context/context-provider";
 import BookmarksPageHeader from "./-components/header";
 import SecureFolder from "./-components/secure-folder";

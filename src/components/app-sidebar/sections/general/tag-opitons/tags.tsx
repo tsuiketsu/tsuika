@@ -18,7 +18,7 @@ const TagSkeletion = () => (
   </SidebarMenuItem>
 );
 
-const TagSkeletions = ({ isVisible }: { isVisible?: boolean }) => {
+const TagSkeletons = ({ isVisible }: { isVisible?: boolean }) => {
   if (!isVisible) return null;
 
   return Array.from({ length: 5 }).map((_, idx) => (
@@ -62,7 +62,7 @@ export default function TagItems() {
       {tags.map((tag) => (
         <TagItem key={tag.id} tag={tag} />
       ))}
-      <TagSkeletions isVisible={isFetching} />
+      <TagSkeletons isVisible={isFetching} />
       <Show when={shouldFetchNext}>
         <span ref={sneakyRef} className="h-0.5" />
       </Show>

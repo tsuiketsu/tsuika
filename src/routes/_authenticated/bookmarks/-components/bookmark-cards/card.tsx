@@ -1,8 +1,8 @@
-import BookmarkActions from "./actions";
 import BookmarkCheckbox from "./checkbox";
 import BookmarkExtras from "./extras";
 import BookmarkThumbnail from "./thumbnail";
 import Show from "@/components/show";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import useLayoutStore, {
   cardLayout,
@@ -12,14 +12,18 @@ import type { Bookmark } from "@/types/bookmark";
 import { isDefaultFolder } from "@/utils";
 import { useRouterState } from "@tanstack/react-router";
 import clsx from "clsx";
+import { lazy, Suspense } from "react";
+
+const BookmarkActions = lazy(() => import("./actions"));
 
 interface PropsType {
   bookmark: Bookmark;
   enableCheckbox: boolean;
+  showActions?: boolean;
 }
 
 export default function BookmarkCard(props: PropsType) {
-  const { bookmark, enableCheckbox = false } = props;
+  const { bookmark, enableCheckbox = false, showActions = true } = props;
   const layout = useLayoutStore((s) => s.layout);
   const {
     location: { pathname },
@@ -53,7 +57,11 @@ export default function BookmarkCard(props: PropsType) {
             folderId={bookmark.folderId}
             createdAt={bookmark.createdAt}
           />
-          <BookmarkActions bookmark={bookmark} />
+          {showActions && (
+            <Suspense fallback={<Skeleton className="size-6" />}>
+              <BookmarkActions bookmark={bookmark} />
+            </Suspense>
+          )}
         </div>
       </div>
       <span
