@@ -67,7 +67,7 @@ export default function PublicDetails({ data }: PropsType) {
     <div className="mx-auto flex w-full flex-col items-center space-y-4 border-b pt-30 pb-4">
       <Avatar src={ph} className="size-26" />
       <h1 className="max-w-xl text-center text-5xl font-bold">
-        This is a big title, must be something important
+        {data?.title ?? ""}
       </h1>
       <span className="text-lg">
         by <b>{data?.author.name || data?.author.username}</b>
