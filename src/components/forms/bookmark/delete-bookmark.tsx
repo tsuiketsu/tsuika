@@ -11,24 +11,28 @@ import {
 import { Button } from "@/components/ui/button";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { deleteInfQueryData } from "@/lib/query.utils";
+import type { Setter } from "@/lib/utils";
 import { deleteBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark } from "@/types/bookmark";
-import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState, type RefObject } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
   id: Bookmark["id"];
-  ref: RefObject<HTMLButtonElement | null>;
   query: string;
+  open: boolean;
+  setOpen: Setter<boolean>;
 }
 
-export default function DeleteBookmark({ id, ref, query }: PropsType) {
+export default function DeleteBookmark({
+  id,
+  query,
+  open,
+  setOpen,
+}: PropsType) {
   const { slug } = useBookmarPathSlug();
   const { isSecured } = useSecuredFolders();
 
-  const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -57,7 +61,6 @@ export default function DeleteBookmark({ id, ref, query }: PropsType) {
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger ref={ref} className="hidden" />
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

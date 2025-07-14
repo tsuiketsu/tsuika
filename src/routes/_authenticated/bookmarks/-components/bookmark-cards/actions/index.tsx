@@ -3,9 +3,6 @@ import { setFlag } from "./api";
 import { getBookmarkFlagInfo } from "./constants";
 import { useBookmarkFlagActionsReducer } from "./reducer";
 import type { DefaultAction } from "./types";
-import DeleteBookmark from "@/components/forms/bookmark/delete-bookmark";
-import UpdateBookmark from "@/components/forms/bookmark/update-bookmark";
-import InsertTask from "@/components/forms/task/insert-task";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,12 +17,23 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useLoaderData } from "@tanstack/react-router";
 import clsx from "clsx";
 import { CircleCheck, Edit, Ellipsis, Trash2 } from "lucide-react";
-import React, { useRef } from "react";
+import React, { lazy, useState } from "react";
+
+const InsertTask = lazy(() => import("@/components/forms/task/insert-task"));
+
+const DeleteBookmark = lazy(
+  () => import("@/components/forms/bookmark/delete-bookmark")
+);
+
+const UpdateBookmark = lazy(
+  () => import("@/components/forms/bookmark/update-bookmark")
+);
 
 export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
-  const editButtonRef = useRef<HTMLButtonElement>(null);
-  const deleteButtonRef = useRef<HTMLButtonElement>(null);
-  const insertTaskRef = useRef<HTMLButtonElement>(null);
+  const [openUpdateForm, setOpenUpdateForm] = useState(false);
+  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
+  const [openTaskForm, setOpenTaskForm] = useState(false);
+
   const queryClient = useQueryClient();
   const { query } = useBookmarkContext();
   const { slug } = useLoaderData({ from: "/_authenticated/bookmarks/$slug" });
@@ -35,17 +43,17 @@ export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
 
   const onTaskAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
-    insertTaskRef.current?.click();
+    setOpenTaskForm(true);
   };
 
   const onEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
-    editButtonRef.current?.click();
+    setOpenUpdateForm(true);
   };
 
   const onDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    deleteButtonRef.current?.click();
+    setOpenDeleteConfirmation(true);
   };
 
   return (
@@ -106,12 +114,27 @@ export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <DeleteBookmark id={bookmark.id} query={query} ref={deleteButtonRef} />
-      <UpdateBookmark bookmark={bookmark} query={query} ref={editButtonRef} />
+
       <InsertTask
         contentType="bookmark"
         contentId={bookmark.id}
-        triggerRef={insertTaskRef}
+        isButtonHidden
+        open={openTaskForm}
+        setOpen={setOpenTaskForm}
+      />
+
+      <UpdateBookmark
+        bookmark={bookmark}
+        query={query}
+        open={openUpdateForm}
+        setOpen={setOpenUpdateForm}
+      />
+
+      <DeleteBookmark
+        id={bookmark.id}
+        query={query}
+        open={openDeleteConfirmation}
+        setOpen={setOpenDeleteConfirmation}
       />
     </div>
   );

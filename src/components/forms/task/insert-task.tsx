@@ -2,30 +2,31 @@ import TaskForm from "./task-form";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import { insertInfQueryData } from "@/lib/query.utils";
+import type { Setter } from "@/lib/utils";
 import { insertTask } from "@/queries/task.queries";
 import type { Task, TaskType } from "@/types/task";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import clsx from "clsx";
 import { Plus } from "lucide-react";
-import { useRef, type RefObject } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
   contentType: TaskType;
   contentId: string;
   customTrigger?: React.ReactNode;
-  triggerRef?: RefObject<HTMLButtonElement | null>;
+  open: boolean;
+  setOpen: Setter<boolean>;
+  isButtonHidden?: boolean;
 }
 
 export default function InsertTask({
   contentType,
   contentId,
   customTrigger,
-  triggerRef,
+  open,
+  setOpen,
+  isButtonHidden = false,
 }: PropsType) {
   const queryClient = useQueryClient();
-  const localRef = useRef<HTMLButtonElement>(null);
-  const ref = triggerRef ?? localRef;
 
   const mutation = useMutation({
     mutationKey: ["insert-task", contentType],
@@ -37,7 +38,7 @@ export default function InsertTask({
       );
 
       toast.success("Successfully added task");
-      ref.current?.click();
+      setOpen(false);
     },
 
     onError: (error) => {
@@ -51,17 +52,15 @@ export default function InsertTask({
       form="task-form"
       title="Create Task"
       desc="When you're happy with it, just hit the Create button"
+      open={open}
+      onOpenChange={setOpen}
       triggerButton={
-        customTrigger ?? (
-          <Button
-            variant="ghost"
-            size="icon"
-            className={clsx({ hidden: triggerRef })}
-            ref={ref}
-          >
+        customTrigger ??
+        (!isButtonHidden ? (
+          <Button variant="ghost" size="icon" onClick={() => setOpen(true)}>
             <Plus size={20} />
           </Button>
-        )
+        ) : null)
       }
       isPending={mutation.isPending}
       btnTxt="Create Task"

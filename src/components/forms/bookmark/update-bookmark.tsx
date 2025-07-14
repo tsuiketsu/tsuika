@@ -3,19 +3,25 @@ import { useBookmarPathSlug } from "./use-slug.hook";
 import Modal from "@/components/ui/modal";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { deleteInfQueryData, updateInfQueryData } from "@/lib/query.utils";
+import type { Setter } from "@/lib/utils";
 import { editBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark, BookmarkFormSchemaType } from "@/types/bookmark";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
 import { toast } from "sonner";
 
-interface PropsType extends Pick<React.ComponentProps<"button">, "ref"> {
+interface PropsType {
   bookmark: Bookmark;
   query: string;
+  open: boolean;
+  setOpen: Setter<boolean>;
 }
 
-export default function UpdateBookmark({ bookmark, ref, query }: PropsType) {
-  const [open, setOpen] = useState(false);
+export default function UpdateBookmark({
+  bookmark,
+  query,
+  open,
+  setOpen,
+}: PropsType) {
   const queryClient = useQueryClient();
   const { slug } = useBookmarPathSlug();
   const { folderId, isSecured } = useSecuredFolders();
@@ -66,7 +72,6 @@ export default function UpdateBookmark({ bookmark, ref, query }: PropsType) {
       title="Update bookmark"
       desc="When you're happy with it, just hit the save button"
       isPending={mutation.isPending}
-      triggerButton={<button ref={ref} type="button" className="hidden" />}
       btnTxt="Save"
     >
       <BookmarkForm
