@@ -7,7 +7,6 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogTrigger,
   DialogTitle,
   DialogHeader,
   DialogContent,
@@ -15,21 +14,20 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { useSession } from "@/lib/auth-client";
+import type { Setter } from "@/lib/utils";
 import { fetchSharedFolderInfo } from "@/queries/share-folder.queries";
 import type { Folder } from "@/types/folder";
 import { useQuery } from "@tanstack/react-query";
 import { ClipboardIcon } from "lucide-react";
-import { useRef, type RefObject } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
   folder: Folder;
-  ref: RefObject<HTMLButtonElement | null>;
+  open: boolean;
+  setOpen: Setter<boolean>;
 }
 
-export default function ShareFolder({ folder, ref }: PropsType) {
-  const closeRef = useRef<HTMLButtonElement>(null);
-
+export default function ShareFolder({ folder, open, setOpen }: PropsType) {
   const { data } = useSession();
 
   const { data: sharedFolder } = useQuery({
@@ -41,7 +39,7 @@ export default function ShareFolder({ folder, ref }: PropsType) {
   const publishMutation = usePublishMutation();
   const unpublishMutation = useUnpublishMutation();
   const updateMutation = useUpdateMutation({
-    onSuccessFunc: () => closeRef.current?.click(),
+    onSuccessFunc: () => setOpen(false),
   });
 
   const getPublicUrl = () => {
@@ -63,8 +61,7 @@ export default function ShareFolder({ folder, ref }: PropsType) {
   const isUnpublish = isUpdate;
 
   return (
-    <Dialog>
-      <DialogTrigger ref={ref} className="hidden" />
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Share Folder</DialogTitle>
@@ -92,7 +89,7 @@ export default function ShareFolder({ folder, ref }: PropsType) {
           </div>
         )}
         <DialogFooter className="pt-6">
-          <DialogClose ref={closeRef} asChild>
+          <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
 

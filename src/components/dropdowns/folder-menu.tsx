@@ -1,6 +1,4 @@
-import DeleteFolder from "../forms/folder/delete-folder";
-import ShareFolder from "../forms/folder/share-folder";
-import UpdateFolder from "../forms/folder/update-folder";
+import LazyBoundary from "../lazy-boundary";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -15,8 +13,12 @@ import {
 import type { Folder } from "@/types/folder";
 import clsx from "clsx";
 import { Ellipsis } from "lucide-react";
-import React, { Fragment, useRef } from "react";
+import React, { Fragment, lazy, useState } from "react";
 import { toast } from "sonner";
+
+const UpdateFolder = lazy(() => import("../forms/folder/update-folder"));
+const ShareFolder = lazy(() => import("../forms/folder/share-folder"));
+const DeleteFolder = lazy(() => import("../forms/folder/delete-folder"));
 
 interface PropsType {
   folder: Folder;
@@ -35,9 +37,9 @@ const toastMessages = {
 };
 
 const FolderMenu = ({ folder, triggerButton }: PropsType) => {
-  const editButtonRef = useRef<HTMLButtonElement>(null);
-  const deleteButtonRef = useRef<HTMLButtonElement>(null);
-  const shareButtonRef = useRef<HTMLButtonElement>(null);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openShare, setOpenShare] = useState(false);
 
   const { profile, isFolderPinned, setPreferences } = useUserProfileStore();
 
@@ -97,26 +99,53 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
                 : "Pin to Dashboard"}
             </span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => editButtonRef.current?.click()}>
+          <DropdownMenuItem onClick={() => setOpenUpdate(true)}>
             <span>Edit Folder</span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => shareButtonRef.current?.click()}
+            onClick={() => setOpenShare(true)}
             className={clsx({ hidden: folder.keyDerivation })}
           >
             <span>Share Folder</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             variant="destructive"
-            onClick={() => deleteButtonRef.current?.click()}
+            onClick={() => setOpenDelete(true)}
           >
             <span>Delete Folder</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <UpdateFolder folder={folder} ref={editButtonRef} />
-      <DeleteFolder id={folder.id} ref={deleteButtonRef} />
-      <ShareFolder folder={folder} ref={shareButtonRef} />
+
+      {openUpdate && (
+        <LazyBoundary>
+          <UpdateFolder
+            folder={folder}
+            open={openUpdate}
+            setOpen={setOpenUpdate}
+          />
+        </LazyBoundary>
+      )}
+
+      {openDelete && (
+        <LazyBoundary>
+          <DeleteFolder
+            id={folder.id}
+            open={openDelete}
+            setOpen={setOpenDelete}
+          />
+        </LazyBoundary>
+      )}
+
+      {openShare && (
+        <LazyBoundary>
+          <ShareFolder
+            folder={folder}
+            open={openShare}
+            setOpen={setOpenShare}
+          />
+        </LazyBoundary>
+      )}
     </Fragment>
   );
 };

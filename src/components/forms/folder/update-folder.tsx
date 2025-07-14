@@ -1,18 +1,19 @@
 import FolderForm from "./folder-form";
 import Modal from "@/components/ui/modal";
 import { updateInfQueryData } from "@/lib/query.utils";
+import type { Setter } from "@/lib/utils";
 import { updateFolder } from "@/queries/folder.queries";
 import type { Folder, FolderInsertSchemaType } from "@/types/folder";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { type RefObject } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
   folder: Folder;
-  ref: RefObject<HTMLButtonElement | null>;
+  open: boolean;
+  setOpen: Setter<boolean>;
 }
 
-export default function UpdateFolder({ folder, ref }: PropsType) {
+export default function UpdateFolder({ folder, open, setOpen }: PropsType) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -36,17 +37,18 @@ export default function UpdateFolder({ folder, ref }: PropsType) {
       );
 
       toast.success(message || "Successfully updated folder");
-      ref.current?.click();
+      setOpen(false);
     },
   });
 
   return (
     <Modal
+      open={open}
+      onOpenChange={setOpen}
       form="folder-form"
       title="Edit Folder"
       desc="When you're happy with it, just hit the save button"
       isPending={mutation.isPending}
-      triggerButton={<button ref={ref} type="button" className="hidden" />}
       btnTxt="Save"
     >
       <FolderForm

@@ -9,21 +9,19 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { deleteInfQueryData } from "@/lib/query.utils";
+import type { Setter } from "@/lib/utils";
 import { deleteFolder } from "@/queries/folder.queries";
 import type { Folder } from "@/types/folder";
-import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState, type RefObject } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
-  ref: RefObject<HTMLButtonElement | null>;
   id: Folder["id"];
+  open: boolean;
+  setOpen: Setter<boolean>;
 }
 
-export default function DeleteFolder({ id, ref }: PropsType) {
-  const [open, setOpen] = useState(false);
-
+export default function DeleteFolder({ id, open, setOpen }: PropsType) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -47,7 +45,6 @@ export default function DeleteFolder({ id, ref }: PropsType) {
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger ref={ref} className="hidden" />
       <AlertDialogContent className="select-none">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
