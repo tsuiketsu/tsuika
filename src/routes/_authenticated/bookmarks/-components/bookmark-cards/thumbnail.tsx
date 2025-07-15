@@ -1,6 +1,9 @@
 import { options, type Alphabet } from "@/constants";
 import { cn } from "@/lib/utils";
-import useLayoutStore, { cardLayout } from "@/stores/layout.store";
+import useLayoutStore, {
+  cardLayout,
+  type CardsLayoutKey,
+} from "@/stores/layout.store";
 import { getAspectRatio, getRandomAspectRatio } from "@/utils";
 import clsx from "clsx";
 import { LoaderCircle } from "lucide-react";
@@ -27,6 +30,7 @@ interface PropsType {
   image: string | undefined;
   width: number | undefined;
   height: number | undefined;
+  layout?: CardsLayoutKey;
 }
 
 export default function BookmarkThumbnail({
@@ -34,9 +38,12 @@ export default function BookmarkThumbnail({
   image,
   width,
   height,
+  ...props
 }: PropsType) {
   const titleChar = title[0].toUpperCase() as Alphabet;
-  const layout = useLayoutStore((s) => s.layout);
+  const selectedLayout = useLayoutStore((s) => s.layout);
+  const layout = props.layout ?? selectedLayout;
+
   const [loading, setLoading] = useState(true);
   const [aspact, setAspact] = useState({ width: 0, height: 0 });
 
