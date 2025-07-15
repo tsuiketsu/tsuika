@@ -1,16 +1,14 @@
 import { Button } from "./button";
+import { DialogTrigger } from "./dialog";
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./dialog";
-import { Slot } from "@radix-ui/react-slot";
-import clsx from "clsx";
+  Sheet,
+  SheetTitle,
+  SheetHeader,
+  SheetFooter,
+  SheetDescription,
+  SheetContent,
+  SheetClose,
+} from "./sheet";
 import React from "react";
 
 interface ModalProps {
@@ -62,34 +60,23 @@ const Modal = ({ children, open, onOpenChange, ...props }: ModalProps) => {
       <DialogTrigger asChild>{triggerButton}</DialogTrigger>
     ) : null;
 
-  const childCount = React.Children.count(children);
-  const Comp = childCount > 1 ? "div" : Slot;
-
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Sheet open={open} onOpenChange={onOpenChange}>
       <TriggerButton />
-      <DialogContent className="select-none">
-        <DialogHeader
-          className={clsx("text-left", { hidden: props?.isHeaderHidden })}
-        >
-          <DialogTitle className="capitalize">{title}</DialogTitle>
-          <DialogDescription>{desc}</DialogDescription>
-        </DialogHeader>
-        <Comp className={clsx(childCount > 1 && "flex flex-col gap-4")}>
-          {children}
-        </Comp>
-        <DialogFooter
-          className={clsx("pt-6", { hidden: props.isFooterHidden })}
-        >
-          <DialogClose asChild>
-            <Button variant="secondary" className="w-24">
-              Close
-            </Button>
-          </DialogClose>
+      <SheetContent className="w-full max-w-sm overflow-y-auto">
+        <SheetHeader>
+          <SheetTitle className="capitalize">{title}</SheetTitle>
+          <SheetDescription>{desc}</SheetDescription>
+        </SheetHeader>
+        <div className="grid flex-1 auto-rows-min gap-6 px-4">{children}</div>
+        <SheetFooter>
           <SuccessButton />
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          <SheetClose asChild>
+            <Button variant="outline">Close</Button>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 };
 
