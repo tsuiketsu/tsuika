@@ -9,17 +9,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { options } from "@/constants";
-import { searchTagsByName } from "@/queries/tags.queries";
+import { useTagsData } from "@/hooks/use-tag";
 import type { BookmarkFormSchemaType } from "@/types/bookmark";
 import type { Tag, TagInsertSchemaWithId } from "@/types/tag";
-import { useQuery } from "@tanstack/react-query";
-import { useDebounce } from "@uidotdev/usehooks";
 import clsx from "clsx";
-import isEqual from "lodash.isequal";
+import fuzzy from "fuzzysort";
 import kebabCase from "lodash.kebabcase";
 import { LoaderCircle } from "lucide-react";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import type { Control } from "react-hook-form";
+import { shallow } from "zustand/shallow";
 
 // Lazy Imports
 const TagList = lazy(() => import("./tag-list"));
@@ -39,17 +38,27 @@ interface PropsType {
 
 export default function TagOptions({ control }: PropsType) {
   const [query, setQuery] = useState("");
-  const debouncedQuery = useDebounce(query, 200);
   const [randomColor, setRandomColor] = useState("");
   const [randomTag, setRandomTag] = useState<TagInsertSchemaWithId | null>(
     null
   );
 
-  const { data: tags, isFetching } = useQuery({
-    queryKey: ["tags", debouncedQuery],
-    queryFn: () => searchTagsByName(debouncedQuery),
-    enabled: debouncedQuery.trim() !== "",
-  });
+  const { data, isFetching } = useTagsData();
+
+  const prepedTags = useMemo(() => {
+    return data?.map((t) => ({ name: fuzzy.prepare(t.name), entry: t })) ?? [];
+  }, [data]);
+
+  const tags = useMemo(() => {
+    return (
+      fuzzy
+        .go(query, prepedTags, {
+          all: false,
+          key: "name",
+        })
+        .map((t) => t.obj.entry) ?? []
+    );
+  }, [prepedTags, query]);
 
   useEffect(() => {
     if (!randomColor) {
@@ -58,22 +67,22 @@ export default function TagOptions({ control }: PropsType) {
   }, [randomColor]);
 
   useEffect(() => {
-    if (debouncedQuery) {
+    if (query && tags.length === 0) {
       setRandomTag((prev) => {
         const newObj = {
           id: defaultTagId,
-          name: kebabCase(debouncedQuery),
+          name: kebabCase(query),
           color: randomColor,
         };
 
-        if (!prev || (debouncedQuery && !isEqual(prev, newObj))) {
+        if (!prev || (query && !shallow(prev, newObj))) {
           return newObj;
         }
 
         return prev;
       });
     }
-  }, [debouncedQuery, randomColor]);
+  }, [query, randomColor, tags.length]);
 
   return (
     <FormField
@@ -100,10 +109,14 @@ export default function TagOptions({ control }: PropsType) {
                 </div>
               </div>
               <Suspense fallback={<SuggestionBoxFallback />}>
-                {query !== "" && tags && (
+                {query !== "" && (
                   <SuggestionBox
                     field={field}
-                    tags={tags.length === 0 ? ([randomTag] as Tag[]) : tags}
+                    tags={
+                      tags.length === 0
+                        ? ((randomTag ? [randomTag] : []) as Tag[])
+                        : tags
+                    }
                     setQuery={setQuery}
                     setTag={setRandomTag}
                   />

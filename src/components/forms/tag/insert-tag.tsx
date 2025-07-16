@@ -12,7 +12,9 @@ interface PropsType {
 export default function InsertTag({ customTrigger }: PropsType) {
   const ref = useRef<HTMLButtonElement>(null);
 
-  const mutation = useTagInsertMutation(ref);
+  const mutation = useTagInsertMutation({
+    onSuccess: () => ref.current?.click(),
+  });
 
   return (
     <Modal

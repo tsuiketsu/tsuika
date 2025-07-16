@@ -51,9 +51,9 @@ export default function BookmarksPageHeader({ slug }: PropsType) {
   const query = splits[splits.length - 1];
 
   const { folders, isFetching: isFoldersFetching } = useFoldersData();
-  const { tags, isFetching: isTagsFetching } = useTagsData();
+  const { data: tags, isFetching: isTagsFetching } = useTagsData();
 
-  const selectedTag = tags.find(({ id }) => id === query);
+  const selectedTag = tags?.find(({ id }) => id === query);
   const selectedFolder = folders.find(({ id }) => id === query);
   const defaultFolder = getDefaultFolder(splits[1]);
 

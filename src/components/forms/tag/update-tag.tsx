@@ -1,6 +1,5 @@
 import TagForm from "./tag-form";
 import Modal from "@/components/ui/modal";
-import { updateInfQueryData } from "@/lib/query.utils";
 import { updateTag } from "@/queries/tags.queries";
 import type { Tag, TagInsertSchemaWithId } from "@/types/tag";
 import type { TagInsertSchemaType } from "@/types/tag";
@@ -26,14 +25,14 @@ export default function UpdateTag({ tag, ref, onChange }: PropsType) {
       id: Tag["id"];
       payload: TagInsertSchemaType;
     }) => await updateTag(id, payload),
-    onSuccess: ({ status, data: { data, message } }) => {
+    onSuccess: ({ status, data: { data, message } }, { id }) => {
       if (status !== 200) {
         toast.error(message || "Failed to add tag");
         return;
       }
 
-      queryClient.setQueryData<{ pages: { data: Tag[] }[] }>(["tags"], (old) =>
-        updateInfQueryData(old, data, (old) => old.id)
+      queryClient.setQueryData<Tag[]>(["tags"], (old) =>
+        old?.map((t) => (t.id === id ? data : t))
       );
 
       toast.success(message || "Successfully updated tag");

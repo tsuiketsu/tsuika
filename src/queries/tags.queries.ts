@@ -1,36 +1,16 @@
 import { options } from "@/constants";
-import type {
-  PaginatedResponse,
-  PaginatedSuccessResponse,
-  SuccessResponse,
-} from "@/types";
+import type { SuccessResponse } from "@/types";
 import type { Tag, TagInsertSchemaType } from "@/types/tag";
 import axios from "axios";
 
 export const baseQuery = `${options.ApiBaseUrl}/api/v1/tags`;
 
-export const fetchAllTags = async ({
-  pageParam,
-}: {
-  pageParam: number;
-}): PaginatedResponse<Tag[]> => {
-  const query = `${baseQuery}?page=${pageParam}&limit=30&orderBy=desc`;
-
-  const {
-    data: { data: tags, pagination },
-    status,
-  } = await axios<PaginatedSuccessResponse<Tag[]>>({
+export const fetchAllTags = async () => {
+  return await axios<SuccessResponse<Tag[]>>({
     method: "get",
-    url: query,
+    url: baseQuery,
     withCredentials: true,
-  });
-
-  if (status !== 200) throw Error;
-
-  return {
-    data: tags,
-    nextCursor: pagination.hasMore ? pageParam + 1 : null,
-  };
+  }).then(({ data: { data } }) => data);
 };
 
 export const fetchTotalTagsCount = async (): Promise<{

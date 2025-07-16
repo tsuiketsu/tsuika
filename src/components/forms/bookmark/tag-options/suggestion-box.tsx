@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { defaultTagId } from "./constants";
 import { Button, buttonVariants } from "@/components/ui/button";
 import useTagInsertMutation from "@/hooks/insert-tag-mutation.hook";
@@ -24,24 +26,21 @@ const SuggestionBox = ({ field, tags, setQuery, setTag }: PropsType) => {
     tags ?? []
   );
 
+  useEffect(() => {
+    setTagsState(tags ?? []);
+  }, [tags]);
+
   const editButtonRef = useRef<HTMLButtonElement>(null);
-  const mutation = useTagInsertMutation();
+  const mutation = useTagInsertMutation({
+    onSuccess: (tag) =>
+      setTagsState((prev) =>
+        prev.map((t) => (t.id === defaultTagId ? tag : t))
+      ),
+  });
 
   const addTagHandler = (tag: TagInsertSchemaWithId) => () => {
     mutation.mutate(tag);
   };
-
-  useEffect(() => {
-    if (!mutation.isPending && mutation.isSuccess && mutation.data) {
-      const {
-        data: { data: tag },
-      } = mutation.data;
-
-      setTagsState((prev) =>
-        prev.map((t) => (t.id === defaultTagId ? tag : t))
-      );
-    }
-  }, [mutation.data, mutation.isPending, mutation.isSuccess]);
 
   const selectTagHandler = (tag: TagInsertSchemaWithId) => () => {
     if (tag.id === defaultTagId) return;

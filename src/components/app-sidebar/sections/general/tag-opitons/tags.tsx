@@ -1,5 +1,4 @@
 import TagItem from "./tag-item";
-import Show from "@/components/show";
 import {
   SidebarMenuButton,
   SidebarMenuItem,
@@ -51,21 +50,18 @@ const TagsFallback = () => {
 };
 
 export default function TagItems() {
-  const { ref: sneakyRef, tags, isFetching, shouldFetchNext } = useTagsData();
+  const { data: tags, isFetching } = useTagsData();
 
-  if (!isFetching && tags.length === 0) {
+  if (!isFetching && tags?.length === 0) {
     return <TagsFallback />;
   }
 
   return (
     <SidebarMenuSub className="felx felx-col gap-1 select-none">
-      {tags.map((tag) => (
+      {tags?.map((tag) => (
         <TagItem key={tag.id} tag={tag} />
       ))}
       <TagSkeletons isVisible={isFetching} />
-      <Show when={shouldFetchNext}>
-        <span ref={sneakyRef} className="h-0.5" />
-      </Show>
     </SidebarMenuSub>
   );
 }
