@@ -58,6 +58,7 @@ function Bookmarks() {
     slug,
     enabled:
       !isSecured &&
+      slug.split("/")[0] !== "tag" &&
       !["all", "archived", "unsorted", "favorites"].includes(
         slug.split("/")[1]
       ),
