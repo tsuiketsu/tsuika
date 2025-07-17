@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import type { Bookmark } from "@/types/bookmark";
 import clsx from "clsx";
-import { Ellipsis, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { parse } from "tldts";
 
 interface PropsType {
@@ -23,9 +23,6 @@ export default function BookmarkListItem({ bookmark }: PropsType) {
         <span className="text-muted-foreground text-xs">{domain}</span>
       </div>
       <div className="ml-auto flex space-x-2">
-        <Button variant="ghost" size="icon" className="size-6">
-          <Ellipsis />
-        </Button>
         <a href={bookmark.url} target="_blank" rel="noreferrer">
           <Button variant="ghost" size="icon" className="size-6">
             <ArrowUpRight className="transition-transform group-hover:rotate-45" />
