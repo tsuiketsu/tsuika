@@ -6,13 +6,13 @@ import {
 } from "./share-folder.mutations";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogTitle,
-  DialogHeader,
-  DialogContent,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog";
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { useSession } from "@/lib/auth-client";
 import type { Setter } from "@/lib/utils";
 import { fetchSharedFolderInfo } from "@/queries/share-folder.queries";
@@ -61,37 +61,47 @@ export default function ShareFolder({ folder, open, setOpen }: PropsType) {
   const isUnpublish = isUpdate;
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Share Folder</DialogTitle>
-        </DialogHeader>
-        <ShareFolderForm
-          folder={sharedFolder}
-          onSubmit={(payload) => {
-            if (sharedFolder?.isPublic) {
-              return updateMutation.mutate({ id: folder.id, payload });
-            }
-            return publishMutation.mutate({ id: folder.id, payload });
-          }}
-        />
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Share Folder</SheetTitle>
+        </SheetHeader>
+        <div className="px-4">
+          <ShareFolderForm
+            folder={sharedFolder}
+            onSubmit={(payload) => {
+              if (sharedFolder?.isPublic) {
+                return updateMutation.mutate({ id: folder.id, payload });
+              }
+              return publishMutation.mutate({ id: folder.id, payload });
+            }}
+          />
+        </div>
         {sharedFolder?.isPublic && folder.publicId && (
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 px-4">
             <span className="text-sm font-medium">Copy &amp; Share</span>
             <Button
               variant="outline"
-              className="flex w-full justify-between transition-transform duration-500 hover:scale-97"
+              className="flex w-full justify-between overflow-hidden transition-transform duration-500 hover:scale-97"
               onClick={copyToClipboardHandler}
             >
-              {getPublicUrl()}
+              <span className="truncate">{getPublicUrl()}</span>
               <ClipboardIcon />
             </Button>
           </div>
         )}
-        <DialogFooter className="pt-6">
-          <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DialogClose>
+
+        <SheetFooter className="pt-6">
+          {isUpdate && (
+            <Button
+              type="submit"
+              form="share-folder-form"
+              className="min-w-25"
+              isLoading={updateMutation.isPending}
+            >
+              Update
+            </Button>
+          )}
 
           {isUnpublish && (
             <Button
@@ -101,17 +111,6 @@ export default function ShareFolder({ folder, open, setOpen }: PropsType) {
               className="min-w-25"
             >
               Unpublish
-            </Button>
-          )}
-
-          {isUpdate && (
-            <Button
-              type="submit"
-              form="share-folder-form"
-              className="min-w-25"
-              isLoading={updateMutation.isPending}
-            >
-              Update
             </Button>
           )}
 
@@ -125,8 +124,12 @@ export default function ShareFolder({ folder, open, setOpen }: PropsType) {
               {isPublish ? "Publish" : "Re-Publish"}
             </Button>
           )}
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+
+          <SheetClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 }
