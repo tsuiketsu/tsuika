@@ -13,7 +13,7 @@ export const publishFolder = async ({
   payload: ShareFolderFormSchema;
 }) => {
   return axios<SuccessResponse<SharedFolder>>({
-    url: `${options.ApiBaseUrl}/api/v1/shared-folders`,
+    url: `${options.apiBaseUrl}/api/v1/shared-folders`,
     method: "post",
     data: Object.assign({}, payload, {
       folderId: id,
@@ -25,7 +25,7 @@ export const publishFolder = async ({
 export const fetchPublicBookmarks = async (folderId: string) => {
   return axios<SuccessResponse<SharedFolderData>>({
     method: "get",
-    url: `${options.ApiBaseUrl}/api/public/folder/${folderId}`,
+    url: `${options.apiBaseUrl}/api/public/folder/${folderId}`,
     withCredentials: true,
   }).then(({ data: { data } }) => data);
 };
@@ -33,7 +33,7 @@ export const fetchPublicBookmarks = async (folderId: string) => {
 export const fetchSharedFolderInfo = async (publicId: string) => {
   return axios<SuccessResponse<SharedFolder>>({
     method: "get",
-    url: `${options.ApiBaseUrl}/api/v1/shared-folders/${publicId}`,
+    url: `${options.apiBaseUrl}/api/v1/shared-folders/${publicId}`,
     withCredentials: true,
   }).then(({ data: { data } }) => data);
 };
@@ -41,7 +41,7 @@ export const fetchSharedFolderInfo = async (publicId: string) => {
 export const unpublishFolder = async (id: string) => {
   return axios<SuccessResponse<{ id: string }>>({
     method: "patch",
-    url: `${options.ApiBaseUrl}/api/v1/shared-folders/${id}/unpublish`,
+    url: `${options.apiBaseUrl}/api/v1/shared-folders/${id}/unpublish`,
     withCredentials: true,
   });
 };
@@ -55,7 +55,7 @@ export const unlockFolder = async ({
 }) => {
   return axios<SuccessResponse<null>>({
     method: "post",
-    url: `${options.ApiBaseUrl}/api/public/folder/${id}/unlock`,
+    url: `${options.apiBaseUrl}/api/public/folder/${id}/unlock`,
     data: { password },
     withCredentials: true,
   });
@@ -64,7 +64,7 @@ export const unlockFolder = async ({
 export const relockFolder = async (id: string) => {
   return axios<SuccessResponse<null>>({
     method: "post",
-    url: `${options.ApiBaseUrl}/api/public/folder/${id}/lock`,
+    url: `${options.apiBaseUrl}/api/public/folder/${id}/lock`,
     withCredentials: true,
   });
 };

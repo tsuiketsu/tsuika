@@ -10,12 +10,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../ui/sidebar";
-import { signOut, useSession } from "@/lib/auth-client";
+import useUserProfile from "@/hooks/user-profile.hook";
+import { signOut } from "@/lib/auth-client";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ChevronUp, LoaderCircle, User2 } from "lucide-react";
 
 export default function UserProfile() {
-  const { data: session, isPending } = useSession();
+  const { data: user, isFetching } = useUserProfile();
 
   const navigate = useNavigate();
 
@@ -32,14 +33,14 @@ export default function UserProfile() {
       <SidebarMenu>
         <SidebarMenuItem>
           <DropdownMenu>
-            {isPending ? (
+            {isFetching ? (
               <SidebarMenuButton>
-                <LoaderCircle className="animate-spin" /> Username
+                <LoaderCircle className="animate-spin" /> Loading...
               </SidebarMenuButton>
             ) : (
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <User2 /> {session?.user.name}
+                  <User2 /> {user?.name}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>

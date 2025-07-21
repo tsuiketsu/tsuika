@@ -14,7 +14,7 @@ import type { Folder } from "@/types/folder";
 import { encryptBookmarks } from "@/utils/encryption.utils";
 import axios, { type AxiosResponse } from "axios";
 
-const baseQuery = `${options.ApiBaseUrl}/api/v1/bookmarks`;
+const baseQuery = `${options.apiBaseUrl}/api/v1/bookmarks`;
 
 interface FetchBookmarksArgs {
   pageParam: number;

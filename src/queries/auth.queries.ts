@@ -3,7 +3,7 @@ import type { ProfileFormSchema } from "@/routes/_authenticated/settings/profile
 import type { SuccessResponse } from "@/types";
 import axios from "axios";
 
-export const baseQuery = `${options.ApiBaseUrl}/api`;
+export const baseQuery = `${options.apiBaseUrl}/api`;
 
 export const getUserVerificationEmail = async (id: string) =>
   axios<SuccessResponse<{ email: string }>>({
@@ -15,7 +15,7 @@ export const getUserVerificationEmail = async (id: string) =>
 export const updateUserProfile = async (payload: ProfileFormSchema) => {
   return axios<SuccessResponse<ProfileFormSchema & { image: string }>>({
     method: "patch",
-    url: `${baseQuery}/user/update`,
+    url: `${baseQuery}/user`,
     data: payload,
     headers: {
       "Content-Type": "multipart/form-data",

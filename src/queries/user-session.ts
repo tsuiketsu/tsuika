@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const fetchUserSession = async () => {
   try {
-    const response = await axios.get(`${options.ApiBaseUrl}/api/session`, {
+    const response = await axios.get(`${options.apiBaseUrl}/api/session`, {
       withCredentials: true,
     });
 

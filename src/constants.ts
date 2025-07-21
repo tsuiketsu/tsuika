@@ -1,5 +1,5 @@
 export const options = {
-  ApiBaseUrl: import.meta.env.VITE_API_BASE_URL,
+  apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
   alphabetColors: {
     A: { color: "#DC2626", bg: "#FECACA" },
     B: { color: "#EA580C", bg: "#FED7AA" },

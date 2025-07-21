@@ -12,7 +12,7 @@ import type {
 import { runDeriveKeyWorker } from "@/workers/derive-key/worker.run";
 import axios from "axios";
 
-export const baseQuery = `${options.ApiBaseUrl}/api/v1/folders`;
+export const baseQuery = `${options.apiBaseUrl}/api/v1/folders`;
 
 export const fetchFolders = async ({
   pageParam,

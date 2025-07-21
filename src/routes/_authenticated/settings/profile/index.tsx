@@ -2,7 +2,8 @@ import ProfileImageForm from "./-profile-image-form";
 import TextField from "@/components/primitives/form/text-field";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useSession } from "@/lib/auth-client";
+import { Skeleton } from "@/components/ui/skeleton";
+import useUserProfile from "@/hooks/user-profile.hook";
 import { updateUserProfile } from "@/queries/auth.queries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -37,7 +38,7 @@ export type ProfileFormSchema = z.infer<typeof formSchema>;
 function ProfileComponent() {
   const [_, setIsUsernameAvailable] = useState(true);
 
-  const { data: session } = useSession();
+  const { data: user, refetch, isFetching } = useUserProfile();
 
   const form = useForm<ProfileFormSchema>({
     resolver: zodResolver(formSchema),
@@ -48,9 +49,9 @@ function ProfileComponent() {
   });
 
   useEffect(() => {
-    form.setValue("name", session?.user.name ?? "");
-    form.setValue("username", session?.user.username ?? "");
-  }, [form, session]);
+    form.setValue("name", user?.name ?? "");
+    form.setValue("username", user?.username ?? "");
+  }, [form, user]);
 
   const mutation = useMutation({
     mutationKey: ["update-user-profile"],
@@ -61,6 +62,7 @@ function ProfileComponent() {
         setIsUsernameAvailable(false);
         toast.error("Username taken!");
       } else {
+        refetch();
         toast.success("Successfully updated profile");
       }
     },
@@ -73,26 +75,35 @@ function ProfileComponent() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        {session?.user.image}
-        <ProfileImageForm
-          defaultValue={session?.user.image?.split("|")[1] ?? ""}
-          control={form.control}
-        />
+        {isFetching ? (
+          <div className="flex items-center gap-2 pb-6">
+            <Skeleton className="size-20 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-34" />
+              <Skeleton className="h-7 w-28" />
+            </div>
+          </div>
+        ) : (
+          user && <ProfileImageForm user={user} control={form.control} />
+        )}
         <TextField
           control={form.control}
           fieldName="username"
-          placeholder="e.g. John Wick"
+          placeholder={isFetching ? "Loading..." : "e.g. johnwick"}
           className="lowercase"
+          disabled={isFetching}
         />
         <TextField
           control={form.control}
           fieldName="name"
-          placeholder="e.g. John Wick"
+          placeholder={isFetching ? "Loading..." : "e.g. John Wick"}
+          disabled={isFetching}
         />
         <Button
           type="submit"
           isLoading={mutation.isPending}
           className="w-full @lg/dash:w-38"
+          disabled={isFetching}
         >
           Save Profile
         </Button>

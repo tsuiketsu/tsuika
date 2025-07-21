@@ -17,6 +17,7 @@ export default function TextField<T extends FieldValues>({
   control,
   placeholder,
   className,
+  disabled,
 }: {
   type?: "input" | "textarea";
   isHidden?: boolean;
@@ -24,6 +25,7 @@ export default function TextField<T extends FieldValues>({
   placeholder: string;
   fieldName: Path<T>;
   className?: string;
+  disabled?: boolean;
 }) {
   const Comp = type === "input" ? Input : Textarea;
 
@@ -35,6 +37,7 @@ export default function TextField<T extends FieldValues>({
     <FormField
       control={control}
       name={fieldName}
+      disabled={disabled}
       render={({ field: { value, ...field } }) => (
         <FormItem>
           <FormLabel className="capitalize">{String(fieldName)}</FormLabel>

@@ -3,7 +3,7 @@ import type { SuccessResponse } from "@/types";
 import type { Tag, TagInsertSchemaType } from "@/types/tag";
 import axios from "axios";
 
-export const baseQuery = `${options.ApiBaseUrl}/api/v1/tags`;
+export const baseQuery = `${options.apiBaseUrl}/api/v1/tags`;
 
 export const fetchAllTags = async () => {
   return await axios<SuccessResponse<Tag[]>>({

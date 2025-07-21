@@ -3,7 +3,7 @@ import type { PaginatedSuccessResponse, SuccessResponse } from "@/types";
 import type { Task, TaskInsertSchema, TaskStatus } from "@/types/task";
 import axios from "axios";
 
-const baseUrl = `${options.ApiBaseUrl}/api/v1/tasks`;
+const baseUrl = `${options.apiBaseUrl}/api/v1/tasks`;
 
 export const fetchTasks = async ({
   pageParam,

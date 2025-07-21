@@ -3,7 +3,7 @@ import type { SuccessResponse } from "@/types";
 import type { Preferences, Profile } from "@/types/profile";
 import axios from "axios";
 
-export const baseQuery = `${options.ApiBaseUrl}/api/v1/profiles`;
+export const baseQuery = `${options.apiBaseUrl}/api/v1/profiles`;
 
 export const fetchProfile = async (): Promise<SuccessResponse<Profile>> => {
   return axios({

@@ -12,13 +12,11 @@ import { Slot } from "@radix-ui/react-slot";
 import type { Control } from "react-hook-form";
 
 interface PropsType {
-  defaultValue: string;
+  user: ProfileFormSchema & { image: string };
   control: Control<ProfileFormSchema>;
 }
 
-const avatarPlaceholder = "https://placehold.co/100x100";
-
-export default function ProfileImageForm({ defaultValue, control }: PropsType) {
+export default function ProfileImageForm({ user, control }: PropsType) {
   return (
     <FormField
       control={control}
@@ -28,17 +26,18 @@ export default function ProfileImageForm({ defaultValue, control }: PropsType) {
           <FormControl>
             <div className="flex gap-4 pb-6">
               <Avatar
-                src={
-                  getPreviewUrl(field.value) ||
-                  defaultValue ||
-                  avatarPlaceholder
-                }
+                src={getPreviewUrl(field.value) || user.image}
                 fallback="Ray"
                 className="size-20"
               />
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col justify-center gap-2">
                 <div>
-                  <span className="font-bold">Profile Photo</span>
+                  <span className="inline-flex items-center text-sm font-medium">
+                    {user.name}{" "}
+                    <span className="text-muted-foreground">
+                      &#40;&#64;{user.username}&#41;
+                    </span>
+                  </span>
                   <FormMessage />
                 </div>
                 <Slot className="w-28">
