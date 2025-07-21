@@ -22,7 +22,12 @@ export const Route = createFileRoute("/_authenticated")({
         throw new Error("No session");
       }
 
-      return { session };
+      return {
+        session: {
+          ...session,
+          user: { ...session.user, image: session.user.image?.split("|")[1] },
+        },
+      };
     } catch {
       throw redirect({
         to: "/login",
