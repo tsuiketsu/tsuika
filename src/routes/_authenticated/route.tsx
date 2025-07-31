@@ -29,6 +29,9 @@ export const Route = createFileRoute("/_authenticated")({
         },
       };
     } catch {
+      // NOTE: As if now it's fine, but maybe implement offline token verification
+      if (!navigator.onLine) return;
+
       throw redirect({
         to: "/login",
         search: {
