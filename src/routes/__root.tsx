@@ -1,4 +1,5 @@
 import NotFound from "@/components/not-found";
+import PWAUpdatePrompt from "@/components/pwa/update-prompt";
 import { QueryClient } from "@tanstack/react-query";
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
@@ -19,6 +20,7 @@ function RootComponent() {
     <React.Fragment>
       <Toaster />
       <Outlet />
+      <PWAUpdatePrompt />
       <TanStackRouterDevtools position="bottom-right" />
     </React.Fragment>
   );

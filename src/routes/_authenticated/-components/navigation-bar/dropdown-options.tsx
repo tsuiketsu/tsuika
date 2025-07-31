@@ -6,7 +6,8 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
-import { PlusCircle } from "lucide-react";
+import clsx from "clsx";
+import { PlusIcon } from "lucide-react";
 import { lazy, Suspense, useRef } from "react";
 
 const InsertFolder = lazy(
@@ -34,9 +35,12 @@ export default function DropdownOptions() {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger
-          className={buttonVariants({ variant: "outline", size: "icon" })}
+          className={clsx(
+            buttonVariants({ variant: "outline", size: "icon" }),
+            "mr-0"
+          )}
         >
-          <PlusCircle />
+          <PlusIcon />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="mr-2.5">
           {!isLocked && (
