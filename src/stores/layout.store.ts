@@ -8,7 +8,7 @@ export type CardsLayoutKey = keyof typeof layoutVariants;
 
 export const cardsLayout = {
   grid: { label: "grid", icon: LayoutGrid },
-  masonry: { label: "Memory Cards", icon: LayoutDashboard },
+  masonry: { label: "Masonry", icon: LayoutDashboard },
   compact: { label: "Compact", icon: LayoutList },
 } satisfies Record<CardsLayoutKey, { label: string; icon: LucideIconElement }>;
 

@@ -1,9 +1,7 @@
 import BulkEdit from "./bulk-edit";
 import LayoutPicker from "./layout-picker";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import clsx from "clsx";
-import { Search } from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 interface PropsType {
@@ -44,9 +42,6 @@ export default function ActionBar({ slug, total, onQueryChange }: PropsType) {
             setValueAs: (v) => encodeURI(v),
           })}
         />
-        <Button type="submit" variant="outline" size="icon">
-          <Search />
-        </Button>
       </form>
       <div className="inline-flex w-full items-center justify-between">
         <span className={"whitespace-nowrap sm:hidden"}>

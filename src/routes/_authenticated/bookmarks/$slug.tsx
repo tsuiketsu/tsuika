@@ -1,7 +1,4 @@
-import {
-  BookmarkSkeleton,
-  BookmarkSkeletons,
-} from "./-components/bookmark-cards/skeletons";
+import { BookmarkSkeletons } from "./-components/bookmark-cards/skeletons";
 import BookmarkContextProvider from "./-components/context/context-provider";
 import BookmarksPageHeader from "./-components/header";
 import SecureFolder from "./-components/secure-folder";
@@ -143,19 +140,9 @@ function Bookmarks() {
     return <SecureFolder key={slug} folder={selectedSecuredFolder} />;
   }
 
-  if (!isFetching && isFetched && isNoData) {
-    return (
-      <FallbackScreen
-        title="No bookmarks found"
-        description="Add a bookmark to see here"
-        icon={Ghost}
-      />
-    );
-  }
-
   return (
     <div className="flex size-full flex-col">
-      <div className="space-y-6">
+      <div className="border-foreground/15 mb-4 space-y-6 border-b">
         <BookmarksPageHeader slug={slug} />
         <ActionBar
           slug={slug}
@@ -163,21 +150,36 @@ function Bookmarks() {
           onQueryChange={(value) => setQuery(value)}
         />
       </div>
-      <CardsLayout
-        layout={layout}
-        className={clsx("relative", { "pb-20": isFetching })}
-      >
-        <BookmarkContextProvider query={query}>
-          <Suspense fallback={<BookmarkSkeleton layout={layout} />}>
-            <BookmarkCards bookmarks={bookmarks} />
-          </Suspense>
-        </BookmarkContextProvider>
-        <BookmarkSkeletons
-          isLoading={isFetching}
-          bookmarksLength={bookmarks.length}
+      {!isFetching && isFetched && isNoData ? (
+        <FallbackScreen
+          title="No bookmarks found"
+          description="Add a bookmark to see here"
+          icon={Ghost}
         />
-        <span ref={sneakyRef} className="h-1" />
-      </CardsLayout>
+      ) : (
+        <CardsLayout
+          layout={layout}
+          className={clsx("relative", { "pb-20": isFetching })}
+        >
+          <BookmarkContextProvider query={query}>
+            <Suspense
+              fallback={
+                <BookmarkSkeletons
+                  isLoading={true}
+                  bookmarksLength={bookmarks.length ?? 9}
+                />
+              }
+            >
+              <BookmarkCards bookmarks={bookmarks} />
+            </Suspense>
+          </BookmarkContextProvider>
+          <BookmarkSkeletons
+            isLoading={isFetching}
+            bookmarksLength={bookmarks.length}
+          />
+          <span ref={sneakyRef} className="h-1" />
+        </CardsLayout>
+      )}
     </div>
   );
 }

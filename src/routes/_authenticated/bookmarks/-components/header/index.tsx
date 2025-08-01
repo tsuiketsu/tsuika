@@ -1,12 +1,9 @@
-import TagIcon from "./tag-icon";
 import { defaultFolders } from "@/components/app-sidebar/sections/general/bookmark-options/constants";
 import FolderMenu from "@/components/dropdowns/folder-menu";
 import TagMenu from "@/components/dropdowns/tag-menu";
-import Show from "@/components/show";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFoldersData } from "@/hooks/use-folder";
 import { useTagsData } from "@/hooks/use-tag";
-import { Folder as FolderIcon } from "lucide-react";
 
 interface PropsType {
   slug: string;
@@ -23,7 +20,6 @@ const getDefaultFolder = (url: string) => {
 const Title = ({
   title,
   isLoading,
-  pageType,
 }: {
   title: string;
   isLoading: boolean;
@@ -33,12 +29,8 @@ const Title = ({
     return <Skeleton className="h-7 w-3/6 @3xl:w-2/6 @4xl:w-1/3 @5xl:w-1/6" />;
   }
 
-  const Icon =
-    getDefaultFolder(title)?.icon ?? (pageType !== "tag" && FolderIcon);
-
   return (
     <h2 className="inline-flex items-center gap-2 text-2xl font-bold capitalize">
-      {Icon && <Icon />}
       {title}
     </h2>
   );
@@ -64,7 +56,9 @@ export default function BookmarksPageHeader({ slug }: PropsType) {
         <Skeleton className="h-4 w-2/3 @3xl:w-2/6 @4xl:w-1/5 @5xl:w-2/6" />
       </div>
     ) : (
-      <p>{selectedFolder?.description || defaultFolder?.description}</p>
+      <p className="text-muted-foreground">
+        {selectedFolder?.description || defaultFolder?.description}
+      </p>
     );
 
   const Actions =
@@ -88,9 +82,6 @@ export default function BookmarksPageHeader({ slug }: PropsType) {
     <div className="inline-flex w-full items-start justify-between">
       <div className="w-full">
         <div className="inline-flex w-full items-center gap-2">
-          <Show when={pageType === "tag"}>
-            <TagIcon isLoading={isTagsFetching} color={selectedTag?.color} />
-          </Show>
           <Title title={title} isLoading={isLoading} pageType={pageType} />
         </div>
         {pageType !== "tag" && description}
