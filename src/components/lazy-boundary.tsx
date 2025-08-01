@@ -1,6 +1,5 @@
-import type { ReactNode } from "@tanstack/react-router";
 import { LoaderCircle } from "lucide-react";
-import { Suspense } from "react";
+import { Suspense, type ReactNode } from "react";
 
 const Fallback = () => (
   <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/60 backdrop-blur-sm">

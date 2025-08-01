@@ -8,240 +8,317 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteRouteImport } from './routes/_auth/route'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
+import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
+import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
+import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard/index'
+import { Route as AuthVerify2faIndexRouteImport } from './routes/_auth/verify-2fa/index'
+import { Route as AuthEmailVerificationIndexRouteImport } from './routes/_auth/email-verification/index'
+import { Route as AuthenticatedBookmarksSlugRouteImport } from './routes/_authenticated/bookmarks/$slug'
+import { Route as AuthenticatedSettingsProfileIndexRouteImport } from './routes/_authenticated/settings/profile/index'
+import { Route as AuthenticatedSettingsAppearanceIndexRouteImport } from './routes/_authenticated/settings/appearance/index'
+import { Route as AuthenticatedSettingsAccountIndexRouteImport } from './routes/_authenticated/settings/account/index'
+import { Route as PublicUnameFolderIdRouteImport } from './routes/_public/$uname.folder.$id'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated/route'
-import { Route as AuthRouteImport } from './routes/_auth/route'
-import { Route as IndexImport } from './routes/index'
-import { Route as AuthRegisterImport } from './routes/_auth/register'
-import { Route as AuthLoginImport } from './routes/_auth/login'
-import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings/route'
-import { Route as AuthenticatedSettingsIndexImport } from './routes/_authenticated/settings/index'
-import { Route as AuthenticatedDashboardIndexImport } from './routes/_authenticated/dashboard/index'
-import { Route as AuthVerify2faIndexImport } from './routes/_auth/verify-2fa/index'
-import { Route as AuthEmailVerificationIndexImport } from './routes/_auth/email-verification/index'
-import { Route as AuthenticatedBookmarksSlugImport } from './routes/_authenticated/bookmarks/$slug'
-import { Route as AuthenticatedSettingsProfileIndexImport } from './routes/_authenticated/settings/profile/index'
-import { Route as AuthenticatedSettingsAppearanceIndexImport } from './routes/_authenticated/settings/appearance/index'
-import { Route as AuthenticatedSettingsAccountIndexImport } from './routes/_authenticated/settings/account/index'
-import { Route as PublicUnameFolderIdImport } from './routes/_public/$uname.folder.$id'
-
-// Create/Update Routes
-
-const AuthenticatedRouteRoute = AuthenticatedRouteImport.update({
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthRouteRoute = AuthRouteImport.update({
+const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/_auth',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthRegisterRoute = AuthRegisterImport.update({
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/register',
   path: '/register',
   getParentRoute: () => AuthRouteRoute,
 } as any)
-
-const AuthLoginRoute = AuthLoginImport.update({
+const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AuthRouteRoute,
 } as any)
-
-const AuthenticatedSettingsRouteRoute = AuthenticatedSettingsRouteImport.update(
-  {
+const AuthenticatedSettingsRouteRoute =
+  AuthenticatedSettingsRouteRouteImport.update({
     id: '/settings',
     path: '/settings',
     getParentRoute: () => AuthenticatedRouteRoute,
-  } as any,
-)
-
-const AuthenticatedSettingsIndexRoute = AuthenticatedSettingsIndexImport.update(
-  {
+  } as any)
+const AuthenticatedSettingsIndexRoute =
+  AuthenticatedSettingsIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
-  } as any,
-)
-
+  } as any)
 const AuthenticatedDashboardIndexRoute =
-  AuthenticatedDashboardIndexImport.update({
+  AuthenticatedDashboardIndexRouteImport.update({
     id: '/dashboard/',
     path: '/dashboard/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
-const AuthVerify2faIndexRoute = AuthVerify2faIndexImport.update({
+const AuthVerify2faIndexRoute = AuthVerify2faIndexRouteImport.update({
   id: '/verify-2fa/',
   path: '/verify-2fa/',
   getParentRoute: () => AuthRouteRoute,
 } as any)
-
-const AuthEmailVerificationIndexRoute = AuthEmailVerificationIndexImport.update(
-  {
+const AuthEmailVerificationIndexRoute =
+  AuthEmailVerificationIndexRouteImport.update({
     id: '/email-verification/',
     path: '/email-verification/',
     getParentRoute: () => AuthRouteRoute,
-  } as any,
-)
-
-const AuthenticatedBookmarksSlugRoute = AuthenticatedBookmarksSlugImport.update(
-  {
+  } as any)
+const AuthenticatedBookmarksSlugRoute =
+  AuthenticatedBookmarksSlugRouteImport.update({
     id: '/bookmarks/$slug',
     path: '/bookmarks/$slug',
     getParentRoute: () => AuthenticatedRouteRoute,
-  } as any,
-)
-
+  } as any)
 const AuthenticatedSettingsProfileIndexRoute =
-  AuthenticatedSettingsProfileIndexImport.update({
+  AuthenticatedSettingsProfileIndexRouteImport.update({
     id: '/profile/',
     path: '/profile/',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
-
 const AuthenticatedSettingsAppearanceIndexRoute =
-  AuthenticatedSettingsAppearanceIndexImport.update({
+  AuthenticatedSettingsAppearanceIndexRouteImport.update({
     id: '/appearance/',
     path: '/appearance/',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
-
 const AuthenticatedSettingsAccountIndexRoute =
-  AuthenticatedSettingsAccountIndexImport.update({
+  AuthenticatedSettingsAccountIndexRouteImport.update({
     id: '/account/',
     path: '/account/',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
-
-const PublicUnameFolderIdRoute = PublicUnameFolderIdImport.update({
+const PublicUnameFolderIdRoute = PublicUnameFolderIdRouteImport.update({
   id: '/_public/$uname/folder/$id',
   path: '/$uname/folder/$id',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
+  '/email-verification': typeof AuthEmailVerificationIndexRoute
+  '/verify-2fa': typeof AuthVerify2faIndexRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/$uname/folder/$id': typeof PublicUnameFolderIdRoute
+  '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
+  '/settings/appearance': typeof AuthenticatedSettingsAppearanceIndexRoute
+  '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
+  '/email-verification': typeof AuthEmailVerificationIndexRoute
+  '/verify-2fa': typeof AuthVerify2faIndexRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/$uname/folder/$id': typeof PublicUnameFolderIdRoute
+  '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
+  '/settings/appearance': typeof AuthenticatedSettingsAppearanceIndexRoute
+  '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteRouteWithChildren
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_authenticated/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/register': typeof AuthRegisterRoute
+  '/_authenticated/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
+  '/_auth/email-verification/': typeof AuthEmailVerificationIndexRoute
+  '/_auth/verify-2fa/': typeof AuthVerify2faIndexRoute
+  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/_public/$uname/folder/$id': typeof PublicUnameFolderIdRoute
+  '/_authenticated/settings/account/': typeof AuthenticatedSettingsAccountIndexRoute
+  '/_authenticated/settings/appearance/': typeof AuthenticatedSettingsAppearanceIndexRoute
+  '/_authenticated/settings/profile/': typeof AuthenticatedSettingsProfileIndexRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/settings'
+    | '/login'
+    | '/register'
+    | '/bookmarks/$slug'
+    | '/email-verification'
+    | '/verify-2fa'
+    | '/dashboard'
+    | '/settings/'
+    | '/$uname/folder/$id'
+    | '/settings/account'
+    | '/settings/appearance'
+    | '/settings/profile'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/bookmarks/$slug'
+    | '/email-verification'
+    | '/verify-2fa'
+    | '/dashboard'
+    | '/settings'
+    | '/$uname/folder/$id'
+    | '/settings/account'
+    | '/settings/appearance'
+    | '/settings/profile'
+  id:
+    | '__root__'
+    | '/'
+    | '/_auth'
+    | '/_authenticated'
+    | '/_authenticated/settings'
+    | '/_auth/login'
+    | '/_auth/register'
+    | '/_authenticated/bookmarks/$slug'
+    | '/_auth/email-verification/'
+    | '/_auth/verify-2fa/'
+    | '/_authenticated/dashboard/'
+    | '/_authenticated/settings/'
+    | '/_public/$uname/folder/$id'
+    | '/_authenticated/settings/account/'
+    | '/_authenticated/settings/appearance/'
+    | '/_authenticated/settings/profile/'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  PublicUnameFolderIdRoute: typeof PublicUnameFolderIdRoute
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_auth': {
       id: '/_auth'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthRouteRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRoute
-    }
-    '/_authenticated/settings': {
-      id: '/_authenticated/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_auth/login': {
-      id: '/_auth/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof AuthLoginImport
-      parentRoute: typeof AuthRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_auth/register': {
       id: '/_auth/register'
       path: '/register'
       fullPath: '/register'
-      preLoaderRoute: typeof AuthRegisterImport
-      parentRoute: typeof AuthRouteImport
+      preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof AuthRouteRoute
     }
-    '/_authenticated/bookmarks/$slug': {
-      id: '/_authenticated/bookmarks/$slug'
-      path: '/bookmarks/$slug'
-      fullPath: '/bookmarks/$slug'
-      preLoaderRoute: typeof AuthenticatedBookmarksSlugImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRouteRoute
     }
-    '/_auth/email-verification/': {
-      id: '/_auth/email-verification/'
-      path: '/email-verification'
-      fullPath: '/email-verification'
-      preLoaderRoute: typeof AuthEmailVerificationIndexImport
-      parentRoute: typeof AuthRouteImport
-    }
-    '/_auth/verify-2fa/': {
-      id: '/_auth/verify-2fa/'
-      path: '/verify-2fa'
-      fullPath: '/verify-2fa'
-      preLoaderRoute: typeof AuthVerify2faIndexImport
-      parentRoute: typeof AuthRouteImport
-    }
-    '/_authenticated/dashboard/': {
-      id: '/_authenticated/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
       path: '/'
       fullPath: '/settings/'
-      preLoaderRoute: typeof AuthenticatedSettingsIndexImport
-      parentRoute: typeof AuthenticatedSettingsRouteImport
+      preLoaderRoute: typeof AuthenticatedSettingsIndexRouteImport
+      parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
-    '/_public/$uname/folder/$id': {
-      id: '/_public/$uname/folder/$id'
-      path: '/$uname/folder/$id'
-      fullPath: '/$uname/folder/$id'
-      preLoaderRoute: typeof PublicUnameFolderIdImport
-      parentRoute: typeof rootRoute
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/settings/account/': {
-      id: '/_authenticated/settings/account/'
-      path: '/account'
-      fullPath: '/settings/account'
-      preLoaderRoute: typeof AuthenticatedSettingsAccountIndexImport
-      parentRoute: typeof AuthenticatedSettingsRouteImport
+    '/_auth/verify-2fa/': {
+      id: '/_auth/verify-2fa/'
+      path: '/verify-2fa'
+      fullPath: '/verify-2fa'
+      preLoaderRoute: typeof AuthVerify2faIndexRouteImport
+      parentRoute: typeof AuthRouteRoute
     }
-    '/_authenticated/settings/appearance/': {
-      id: '/_authenticated/settings/appearance/'
-      path: '/appearance'
-      fullPath: '/settings/appearance'
-      preLoaderRoute: typeof AuthenticatedSettingsAppearanceIndexImport
-      parentRoute: typeof AuthenticatedSettingsRouteImport
+    '/_auth/email-verification/': {
+      id: '/_auth/email-verification/'
+      path: '/email-verification'
+      fullPath: '/email-verification'
+      preLoaderRoute: typeof AuthEmailVerificationIndexRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_authenticated/bookmarks/$slug': {
+      id: '/_authenticated/bookmarks/$slug'
+      path: '/bookmarks/$slug'
+      fullPath: '/bookmarks/$slug'
+      preLoaderRoute: typeof AuthenticatedBookmarksSlugRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/profile/': {
       id: '/_authenticated/settings/profile/'
       path: '/profile'
       fullPath: '/settings/profile'
-      preLoaderRoute: typeof AuthenticatedSettingsProfileIndexImport
-      parentRoute: typeof AuthenticatedSettingsRouteImport
+      preLoaderRoute: typeof AuthenticatedSettingsProfileIndexRouteImport
+      parentRoute: typeof AuthenticatedSettingsRouteRoute
+    }
+    '/_authenticated/settings/appearance/': {
+      id: '/_authenticated/settings/appearance/'
+      path: '/appearance'
+      fullPath: '/settings/appearance'
+      preLoaderRoute: typeof AuthenticatedSettingsAppearanceIndexRouteImport
+      parentRoute: typeof AuthenticatedSettingsRouteRoute
+    }
+    '/_authenticated/settings/account/': {
+      id: '/_authenticated/settings/account/'
+      path: '/account'
+      fullPath: '/settings/account'
+      preLoaderRoute: typeof AuthenticatedSettingsAccountIndexRouteImport
+      parentRoute: typeof AuthenticatedSettingsRouteRoute
+    }
+    '/_public/$uname/folder/$id': {
+      id: '/_public/$uname/folder/$id'
+      path: '/$uname/folder/$id'
+      fullPath: '/$uname/folder/$id'
+      preLoaderRoute: typeof PublicUnameFolderIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-// Create and export the route tree
 
 interface AuthRouteRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
@@ -299,213 +376,12 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof AuthenticatedRouteRouteWithChildren
-  '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
-  '/login': typeof AuthLoginRoute
-  '/register': typeof AuthRegisterRoute
-  '/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
-  '/email-verification': typeof AuthEmailVerificationIndexRoute
-  '/verify-2fa': typeof AuthVerify2faIndexRoute
-  '/dashboard': typeof AuthenticatedDashboardIndexRoute
-  '/settings/': typeof AuthenticatedSettingsIndexRoute
-  '/$uname/folder/$id': typeof PublicUnameFolderIdRoute
-  '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
-  '/settings/appearance': typeof AuthenticatedSettingsAppearanceIndexRoute
-  '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof AuthenticatedRouteRouteWithChildren
-  '/login': typeof AuthLoginRoute
-  '/register': typeof AuthRegisterRoute
-  '/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
-  '/email-verification': typeof AuthEmailVerificationIndexRoute
-  '/verify-2fa': typeof AuthVerify2faIndexRoute
-  '/dashboard': typeof AuthenticatedDashboardIndexRoute
-  '/settings': typeof AuthenticatedSettingsIndexRoute
-  '/$uname/folder/$id': typeof PublicUnameFolderIdRoute
-  '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
-  '/settings/appearance': typeof AuthenticatedSettingsAppearanceIndexRoute
-  '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/_auth': typeof AuthRouteRouteWithChildren
-  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/_authenticated/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
-  '/_auth/login': typeof AuthLoginRoute
-  '/_auth/register': typeof AuthRegisterRoute
-  '/_authenticated/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
-  '/_auth/email-verification/': typeof AuthEmailVerificationIndexRoute
-  '/_auth/verify-2fa/': typeof AuthVerify2faIndexRoute
-  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
-  '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
-  '/_public/$uname/folder/$id': typeof PublicUnameFolderIdRoute
-  '/_authenticated/settings/account/': typeof AuthenticatedSettingsAccountIndexRoute
-  '/_authenticated/settings/appearance/': typeof AuthenticatedSettingsAppearanceIndexRoute
-  '/_authenticated/settings/profile/': typeof AuthenticatedSettingsProfileIndexRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | ''
-    | '/settings'
-    | '/login'
-    | '/register'
-    | '/bookmarks/$slug'
-    | '/email-verification'
-    | '/verify-2fa'
-    | '/dashboard'
-    | '/settings/'
-    | '/$uname/folder/$id'
-    | '/settings/account'
-    | '/settings/appearance'
-    | '/settings/profile'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | ''
-    | '/login'
-    | '/register'
-    | '/bookmarks/$slug'
-    | '/email-verification'
-    | '/verify-2fa'
-    | '/dashboard'
-    | '/settings'
-    | '/$uname/folder/$id'
-    | '/settings/account'
-    | '/settings/appearance'
-    | '/settings/profile'
-  id:
-    | '__root__'
-    | '/'
-    | '/_auth'
-    | '/_authenticated'
-    | '/_authenticated/settings'
-    | '/_auth/login'
-    | '/_auth/register'
-    | '/_authenticated/bookmarks/$slug'
-    | '/_auth/email-verification/'
-    | '/_auth/verify-2fa/'
-    | '/_authenticated/dashboard/'
-    | '/_authenticated/settings/'
-    | '/_public/$uname/folder/$id'
-    | '/_authenticated/settings/account/'
-    | '/_authenticated/settings/appearance/'
-    | '/_authenticated/settings/profile/'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  PublicUnameFolderIdRoute: typeof PublicUnameFolderIdRoute
-}
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   PublicUnameFolderIdRoute: PublicUnameFolderIdRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/_auth",
-        "/_authenticated",
-        "/_public/$uname/folder/$id"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/_auth": {
-      "filePath": "_auth/route.tsx",
-      "children": [
-        "/_auth/login",
-        "/_auth/register",
-        "/_auth/email-verification/",
-        "/_auth/verify-2fa/"
-      ]
-    },
-    "/_authenticated": {
-      "filePath": "_authenticated/route.tsx",
-      "children": [
-        "/_authenticated/settings",
-        "/_authenticated/bookmarks/$slug",
-        "/_authenticated/dashboard/"
-      ]
-    },
-    "/_authenticated/settings": {
-      "filePath": "_authenticated/settings/route.tsx",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/settings/",
-        "/_authenticated/settings/account/",
-        "/_authenticated/settings/appearance/",
-        "/_authenticated/settings/profile/"
-      ]
-    },
-    "/_auth/login": {
-      "filePath": "_auth/login.tsx",
-      "parent": "/_auth"
-    },
-    "/_auth/register": {
-      "filePath": "_auth/register.tsx",
-      "parent": "/_auth"
-    },
-    "/_authenticated/bookmarks/$slug": {
-      "filePath": "_authenticated/bookmarks/$slug.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_auth/email-verification/": {
-      "filePath": "_auth/email-verification/index.tsx",
-      "parent": "/_auth"
-    },
-    "/_auth/verify-2fa/": {
-      "filePath": "_auth/verify-2fa/index.tsx",
-      "parent": "/_auth"
-    },
-    "/_authenticated/dashboard/": {
-      "filePath": "_authenticated/dashboard/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/settings/": {
-      "filePath": "_authenticated/settings/index.tsx",
-      "parent": "/_authenticated/settings"
-    },
-    "/_public/$uname/folder/$id": {
-      "filePath": "_public/$uname.folder.$id.tsx"
-    },
-    "/_authenticated/settings/account/": {
-      "filePath": "_authenticated/settings/account/index.tsx",
-      "parent": "/_authenticated/settings"
-    },
-    "/_authenticated/settings/appearance/": {
-      "filePath": "_authenticated/settings/appearance/index.tsx",
-      "parent": "/_authenticated/settings"
-    },
-    "/_authenticated/settings/profile/": {
-      "filePath": "_authenticated/settings/profile/index.tsx",
-      "parent": "/_authenticated/settings"
-    }
-  }
-}
-ROUTE_MANIFEST_END */

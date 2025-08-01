@@ -1,3 +1,4 @@
+import CommandWindow from "./-components/command-window";
 import NavigationBar from "./-components/navigation-bar";
 import { AppSidebar } from "@/components/app-sidebar/index";
 import ContainerSize from "@/components/dev/container-size";
@@ -48,6 +49,7 @@ function DashboardLayout() {
   return (
     <SidebarProvider>
       <AppSidebar />
+      <CommandWindow />
       <div className="flex w-full flex-col">
         <div className="sticky top-0 z-20 pb-4">
           <Suspense>
