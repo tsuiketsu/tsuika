@@ -95,7 +95,7 @@ const Title = ({
     <a href={bookmark.url} target="_blank" rel="noreferrer">
       <h3
         className={cn(
-          ["line-clamp-2 w-[98cqw]"],
+          ["line-clamp-1 w-[98cqw]"],
           ["transition-transform duration-200"],
           ["underline-offset-2 hover:underline"],
           { truncate: layout === cardLayout.COMPACT }
