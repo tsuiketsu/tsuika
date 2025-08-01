@@ -1,3 +1,4 @@
+import { Skeleton } from "@/components/ui/skeleton";
 import { options, type Alphabet } from "@/constants";
 import { cn } from "@/lib/utils";
 import useLayoutStore, {
@@ -6,7 +7,6 @@ import useLayoutStore, {
 } from "@/stores/layout.store";
 import { getAspectRatio, getRandomAspectRatio } from "@/utils";
 import clsx from "clsx";
-import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const BookmarkImageFallback = ({ char }: { char: Alphabet }) => (
@@ -85,7 +85,7 @@ export default function BookmarkThumbnail({
           { hidden: !loading }
         )}
       >
-        <LoaderCircle className="animate-spin" />
+        <Skeleton className="size-full" />
       </div>
       <img
         src={image}

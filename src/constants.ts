@@ -1,5 +1,6 @@
 export const options = {
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
+  pwaUpdateCheckInterval: 30 * 60 * 1000,
   alphabetColors: {
     A: { color: "#DC2626", bg: "#FECACA" },
     B: { color: "#EA580C", bg: "#FED7AA" },

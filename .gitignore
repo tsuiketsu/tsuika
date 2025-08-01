@@ -31,3 +31,6 @@ dist
 *.njsproj
 *.sln
 *.sw?
+
+# Images
+*.png
