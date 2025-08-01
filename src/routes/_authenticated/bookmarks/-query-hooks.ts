@@ -19,7 +19,6 @@ export const usePinnedBookmarks = ({ slug, query, enabled }: Args) => {
         filter: bookmarkFilters.PINNED,
       }),
     initialPageParam: 1,
-    retry: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     enabled: enabled,
   });
@@ -37,7 +36,6 @@ export const useBookmarks = ({ slug, query, enabled }: Args) => {
         query,
       }),
     initialPageParam: 1,
-    retry: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     enabled: enabled,
   });
@@ -58,7 +56,6 @@ export const useEncyptedBookmarks = ({
         filter: bookmarkFilters.ENCRYPTED,
       }),
     initialPageParam: 1,
-    retry: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     enabled: enabled,
   });

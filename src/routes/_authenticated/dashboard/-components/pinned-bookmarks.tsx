@@ -15,7 +15,6 @@ export default function PinnedBookmarks() {
         filter: bookmarkFilters.PINNED,
       }),
     initialPageParam: 1,
-    retry: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 
