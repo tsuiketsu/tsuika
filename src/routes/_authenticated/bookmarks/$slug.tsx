@@ -142,7 +142,7 @@ function Bookmarks() {
 
   return (
     <div className="flex size-full flex-col">
-      <div className="border-foreground/15 mb-4 space-y-6 border-b">
+      <div className="border-foreground/15 space-y-6">
         <BookmarksPageHeader slug={slug} />
         <ActionBar
           slug={slug}
@@ -150,6 +150,7 @@ function Bookmarks() {
           onQueryChange={(value) => setQuery(value)}
         />
       </div>
+      <hr className="mb-4" />
       {!isFetching && isFetched && isNoData ? (
         <FallbackScreen
           title="No bookmarks found"

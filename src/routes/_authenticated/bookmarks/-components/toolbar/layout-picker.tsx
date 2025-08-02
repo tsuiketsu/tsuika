@@ -18,7 +18,6 @@ export default function LayoutPicker() {
   const setLayout = useLayoutStore((s) => s.setLayout);
   const selectedLayout = cardsLayout?.[layout];
   const Icon = selectedLayout?.icon ?? LayoutGrid;
-  const label = selectedLayout?.label;
 
   if (isBulkEdit) {
     return null;
@@ -27,8 +26,8 @@ export default function LayoutPicker() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="capitalize">
-          <Icon /> {label}
+        <Button variant="outline" size="icon">
+          <Icon />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
