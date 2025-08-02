@@ -7,13 +7,17 @@ import {
   CommandGroup,
   CommandEmpty,
 } from "@/components/ui/command";
-import useCmdkToggle from "@/hooks/cmdk-toggle.hook";
 import { useFoldersData } from "@/hooks/use-folder";
+import type { Setter } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight, ChevronRight, FolderIcon } from "lucide-react";
 
-export default function CommandWindow() {
-  const [open, setOpen] = useCmdkToggle();
+interface PropsType {
+  open: boolean;
+  setOpen: Setter<boolean>;
+}
+
+export default function CommandWindow({ open, setOpen }: PropsType) {
   const navigate = useNavigate();
 
   const run = (command: () => void) => () => {
