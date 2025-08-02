@@ -1,4 +1,5 @@
 import { commandLinks } from "./links";
+import { useTheme } from "@/components/theme/context/use-theme";
 import {
   CommandDialog,
   CommandList,
@@ -10,7 +11,14 @@ import {
 import { useFoldersData } from "@/hooks/use-folder";
 import type { Setter } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowRight, ChevronRight, FolderIcon } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronRight,
+  FolderIcon,
+  LaptopMinimal,
+  Moon,
+  Sun,
+} from "lucide-react";
 
 interface PropsType {
   open: boolean;
@@ -19,6 +27,7 @@ interface PropsType {
 
 export default function CommandWindow({ open, setOpen }: PropsType) {
   const navigate = useNavigate();
+  const { setTheme } = useTheme();
 
   const run = (command: () => void) => () => {
     setOpen(false);
@@ -81,6 +90,22 @@ export default function CommandWindow({ open, setOpen }: PropsType) {
             ))}
           </CommandGroup>
         )}
+
+        {/* THEMES */}
+        <CommandGroup heading="Theme">
+          <CommandItem onSelect={run(() => setTheme("light"))}>
+            <Sun />
+            Light
+          </CommandItem>
+          <CommandItem onSelect={run(() => setTheme("dark"))}>
+            <Moon />
+            Dark
+          </CommandItem>
+          <CommandItem onSelect={run(() => setTheme("system"))}>
+            <LaptopMinimal />
+            System
+          </CommandItem>
+        </CommandGroup>
       </CommandList>
     </CommandDialog>
   );
