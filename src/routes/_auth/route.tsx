@@ -13,8 +13,7 @@ export const Route = createFileRoute("/_auth")({
         return;
       } else {
         return redirect({
-          to: "/bookmarks/$slug",
-          params: { slug: "folder/unsorted" },
+          to: "/dashboard",
         });
       }
     } catch (error) {

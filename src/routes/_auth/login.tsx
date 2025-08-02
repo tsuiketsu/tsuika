@@ -61,10 +61,7 @@ function Login() {
 
       toast.success(`Welcome back ${data.user.name}!`);
 
-      navigate({
-        to: "/bookmarks/$slug",
-        params: { slug: "folder/unsorted" },
-      });
+      navigate({ to: "/dashboard" });
     },
   });
 
