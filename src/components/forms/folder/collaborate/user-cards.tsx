@@ -5,9 +5,10 @@ import React from "react";
 
 interface PropsType {
   users: Collaborator[];
+  folderId: string;
 }
 
-export default function UserCards({ users }: PropsType) {
+export default function UserCards({ users, folderId }: PropsType) {
   const { data: owner } = useUserProfile();
 
   return (
@@ -18,6 +19,7 @@ export default function UserCards({ users }: PropsType) {
           username={owner.username ?? ""}
           image={owner.image ?? ""}
           role={userRoles.OWNER}
+          folderId={folderId}
         />
       )}
       <hr />
@@ -28,6 +30,7 @@ export default function UserCards({ users }: PropsType) {
             name={user.name}
             username={user.username ?? ""}
             role={user.permissionLevel}
+            folderId={folderId}
           />
           {users.length - 1 !== idx && <hr />}
         </React.Fragment>

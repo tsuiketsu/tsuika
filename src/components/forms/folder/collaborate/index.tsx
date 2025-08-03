@@ -43,7 +43,7 @@ export default function CollaborateFolder(props: PropsType) {
             folderId={props.folderId}
             queryKey={queryKey}
           />
-          <UserCards users={users ?? []} />
+          <UserCards users={users ?? []} folderId={props.folderId} />
         </div>
         <SheetFooter className="pt-6">
           <SheetClose asChild>

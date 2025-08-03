@@ -6,40 +6,69 @@ import {
   SelectItem,
   SelectContent,
 } from "@/components/ui/select";
+import {
+  changeMemberRole,
+  invalidateCollaboratorsData,
+} from "@/queries/collab-folder.queries";
 import { type UserRole, userRoles } from "@/types/folder";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { username } from "better-auth/plugins/username";
+import { useId } from "react";
 
-interface PropsType {
+interface UserCardProps {
   image: string;
   name: string;
   username: string;
   role: UserRole;
+  folderId: string;
 }
+
+type UserRolesProps = Pick<UserCardProps, "username" | "role" | "folderId">;
 
 const roles = Object.values(userRoles).filter(
   (role) => role !== userRoles.OWNER
 );
 
-const UserRoles = ({ role }: { role: UserRole }) => {
+const UserRoles = ({ username, role, folderId }: UserRolesProps) => {
+  const queryClient = useQueryClient();
+  const uniqueId = useId();
+
+  const mutation = useMutation({
+    mutationKey: ["change-user-role"],
+    mutationFn: changeMemberRole,
+    onSuccess: () => {
+      invalidateCollaboratorsData(queryClient, folderId);
+    },
+  });
+
+  const changeRoleHandler = (value: UserRole) =>
+    mutation.mutate({
+      folderId,
+      identifier: username,
+      role: value,
+    });
+
   if (role === userRoles.OWNER) {
     return <span className="ml-auto pr-3 text-sm font-medium">{role}</span>;
   }
 
   return (
-    <Select value={role}>
+    <Select defaultValue={role} onValueChange={changeRoleHandler}>
       <SelectTrigger size="sm" className="ml-auto w-28 cursor-pointer">
         <SelectValue placeholder="Role" />
       </SelectTrigger>
       <SelectContent>
-        {roles.map((role) => (
-          <SelectItem value={role}>{role}</SelectItem>
+        {roles.map((role, idx) => (
+          <SelectItem key={`${uniqueId}-${idx}`} value={role}>
+            {role}
+          </SelectItem>
         ))}
       </SelectContent>
     </Select>
   );
 };
 
-export default function UserCard(props: PropsType) {
+export default function UserCard(props: UserCardProps) {
   return (
     <div className="inline-flex w-full items-center gap-3 p-1">
       <Avatar
@@ -52,7 +81,11 @@ export default function UserCard(props: PropsType) {
         <span>{props.name}</span>
         <span className="text-muted-foreground">@{props.username}</span>
       </div>
-      <UserRoles role={props.role} />
+      <UserRoles
+        role={props.role}
+        username={props.username}
+        folderId={props.folderId}
+      />
     </div>
   );
 }
