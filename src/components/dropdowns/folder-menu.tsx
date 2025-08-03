@@ -1,3 +1,4 @@
+import CollaborateFolder from "../forms/folder/collaborate";
 import LazyBoundary from "../lazy-boundary";
 import { Button } from "../ui/button";
 import {
@@ -17,7 +18,7 @@ import React, { Fragment, lazy, useState } from "react";
 import { toast } from "sonner";
 
 const UpdateFolder = lazy(() => import("../forms/folder/update-folder"));
-const ShareFolder = lazy(() => import("../forms/folder/share-folder"));
+const SharedFolder = lazy(() => import("../forms/folder/share-folder"));
 const DeleteFolder = lazy(() => import("../forms/folder/delete-folder"));
 
 interface PropsType {
@@ -40,6 +41,7 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openShare, setOpenShare] = useState(false);
+  const [openCollab, setOpenCollab] = useState(false);
 
   const { profile, isFolderPinned, setPreferences } = useUserProfileStore();
 
@@ -99,20 +101,26 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
                 : "Pin to Dashboard"}
             </span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpenUpdate(true)}>
-            <span>Edit Folder</span>
+          <DropdownMenuItem
+            className={clsx({ hidden: folder.keyDerivation })}
+            onClick={() => setOpenCollab(true)}
+          >
+            <span>Collaborative</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => setOpenShare(true)}
             className={clsx({ hidden: folder.keyDerivation })}
           >
-            <span>Share Folder</span>
+            <span>Publish/Share</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setOpenUpdate(true)}>
+            <span>Edit</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             variant="destructive"
             onClick={() => setOpenDelete(true)}
           >
-            <span>Delete Folder</span>
+            <span>Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -134,8 +142,14 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
       </LazyBoundary>
 
       <LazyBoundary isVisible={openShare}>
-        <ShareFolder folder={folder} open={openShare} setOpen={setOpenShare} />
+        <SharedFolder folder={folder} open={openShare} setOpen={setOpenShare} />
       </LazyBoundary>
+
+      <CollaborateFolder
+        folderId={folder.id}
+        open={openCollab}
+        setOpen={setOpenCollab}
+      />
     </Fragment>
   );
 };

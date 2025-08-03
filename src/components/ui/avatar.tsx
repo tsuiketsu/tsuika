@@ -38,7 +38,9 @@ const Avatar = ({ src, alt = "", fallback, className }: PropsType) => {
       )}
     >
       <OverlayContainer className={[{ hidden: !isFallback }]}>
-        <span className="text-[30cqw] font-bold">{fallback}</span>
+        <span className="text-[50cqw] font-bold">
+          {fallback?.substring(0, 1)}
+        </span>
       </OverlayContainer>
       <img
         ref={imageRef}

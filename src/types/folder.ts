@@ -1,3 +1,4 @@
+import type { User } from "@/lib/auth-client";
 import type { KdfOptions } from "@/utils/noble";
 import { z } from "zod";
 
@@ -50,3 +51,17 @@ export const FolderInsertSchema = z
   });
 
 export type FolderInsertSchemaType = z.infer<typeof FolderInsertSchema>;
+
+export const userRoles = {
+  OWNER: "owner",
+  ADMIN: "admin",
+  VIEWER: "viewer",
+  EDITOR: "editor",
+};
+
+export type UserRole = (typeof userRoles)[keyof typeof userRoles];
+
+export interface Collaborator
+  extends Pick<User, "name" | "username" | "image"> {
+  permissionLevel: UserRole;
+}
