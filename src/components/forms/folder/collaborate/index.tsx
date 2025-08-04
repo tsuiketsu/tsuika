@@ -10,8 +10,7 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet";
 import type { Setter } from "@/lib/utils";
-import { getCollaborators } from "@/queries/collab-folder.queries";
-import { useQuery } from "@tanstack/react-query";
+import { useGetCollaboratorsQuery } from "@/queries/collab-folder.queries";
 
 interface PropsType {
   open: boolean;
@@ -22,15 +21,7 @@ interface PropsType {
 export default function CollaborateFolder(props: PropsType) {
   const { open, setOpen, folderId } = props;
 
-  const queryKey = ["get-collaborators", { folderId }];
-
-  const { data: users } = useQuery({
-    queryKey,
-    queryFn: () => getCollaborators(folderId),
-    refetchOnMount: true,
-    refetchOnReconnect: true,
-    staleTime: 0,
-  });
+  const { data: users } = useGetCollaboratorsQuery(folderId);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -39,10 +30,7 @@ export default function CollaborateFolder(props: PropsType) {
           <SheetTitle>Collaborate Folder</SheetTitle>
         </SheetHeader>
         <div className="space-y-4 px-4">
-          <AddCollaborativeUserForm
-            folderId={props.folderId}
-            queryKey={queryKey}
-          />
+          <AddCollaborativeUserForm folderId={props.folderId} />
           <UserCards users={users ?? []} folderId={props.folderId} />
         </div>
         <SheetFooter className="pt-6">

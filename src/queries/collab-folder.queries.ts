@@ -1,7 +1,7 @@
 import { options } from "@/constants";
 import type { SuccessResponse } from "@/types";
 import type { Collaborator, UserRole } from "@/types/folder";
-import type { QueryClient } from "@tanstack/react-query";
+import { QueryClient, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const baseEndpoint = `${options.apiBaseUrl}/api/v1/collab-folders`;
@@ -40,6 +40,16 @@ export const getCollaborators = async (folderId: string) => {
     url: `${baseEndpoint}/${folderId}`,
     withCredentials: true,
   }).then(({ data: { data } }) => data);
+};
+
+export const useGetCollaboratorsQuery = (folderId: string) => {
+  return useQuery({
+    queryKey: ["get-collaborators", { folderId }],
+    queryFn: () => getCollaborators(folderId),
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    staleTime: 0,
+  });
 };
 
 export const changeMemberRole = async (payload: CollabFolderInsert) => {

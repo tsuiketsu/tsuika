@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { addUserToFolder } from "@/queries/collab-folder.queries";
+import {
+  addUserToFolder,
+  invalidateCollaboratorsData,
+} from "@/queries/collab-folder.queries";
 import { userRoles } from "@/types/folder";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
@@ -9,11 +12,10 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
-  queryKey: unknown[];
   folderId: string;
 }
 
-const AddCollaborativeUserForm = ({ folderId, queryKey }: PropsType) => {
+const AddCollaborativeUserForm = ({ folderId }: PropsType) => {
   const [identifier, setIdentifier] = useState("");
 
   const queryClient = useQueryClient();
@@ -22,7 +24,7 @@ const AddCollaborativeUserForm = ({ folderId, queryKey }: PropsType) => {
     mutationKey: ["add-user-to-folder"],
     mutationFn: addUserToFolder,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey });
+      invalidateCollaboratorsData(queryClient, folderId);
     },
     onError: (error: AxiosError<{ code: string }>) => {
       if (error.response?.data.code === "CONFLICT") {
