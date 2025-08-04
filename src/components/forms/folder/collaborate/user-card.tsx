@@ -1,3 +1,4 @@
+import { SvgSpinners3DotsScale } from "@/components/icons/dots-loader";
 import Avatar from "@/components/ui/avatar";
 import {
   Select,
@@ -55,7 +56,11 @@ const UserRoles = ({ username, role, folderId }: UserRolesProps) => {
   return (
     <Select defaultValue={role} onValueChange={changeRoleHandler}>
       <SelectTrigger size="sm" className="ml-auto w-28 cursor-pointer">
-        <SelectValue placeholder="Role" />
+        {mutation.isPending ? (
+          <SvgSpinners3DotsScale />
+        ) : (
+          <SelectValue placeholder="Role" />
+        )}
       </SelectTrigger>
       <SelectContent>
         {roles.map((role, idx) => (
