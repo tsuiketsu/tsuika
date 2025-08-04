@@ -35,7 +35,7 @@ const UserRoles = ({ username, role, folderId }: UserRolesProps) => {
   const uniqueId = useId();
 
   const mutation = useMutation({
-    mutationKey: ["change-user-role"],
+    mutationKey: ["change-user-role", { folderId }],
     mutationFn: changeMemberRole,
     onSuccess: () => {
       invalidateCollaboratorsData(queryClient, folderId);
