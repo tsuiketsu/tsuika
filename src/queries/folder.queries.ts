@@ -1,18 +1,16 @@
+import type { FolderInsertSchemaType } from "@/components/forms/folder/types";
 import { options } from "@/constants";
 import type {
   PaginatedResponse,
   PaginatedSuccessResponse,
   SuccessResponse,
 } from "@/types";
-import type {
-  Folder,
-  FolderInsertSchemaType,
-  KeyDerivation,
-} from "@/types/folder";
+import type { Folder, KeyDerivation } from "@/types/folder";
 import { runDeriveKeyWorker } from "@/workers/derive-key/worker.run";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export const baseQuery = `${options.apiBaseUrl}/api/v1/folders`;
+export const baseEndpoint = `${options.apiBaseUrl}/api/v1/folders`;
 
 export const fetchFolders = async ({
   pageParam,
@@ -23,7 +21,7 @@ export const fetchFolders = async ({
   limit?: number;
   folderIds?: string[];
 }): PaginatedResponse<Folder[]> => {
-  let url = `${baseQuery}?page=${pageParam}&limit=${limit}&orderBy=desc`;
+  let url = `${baseEndpoint}?page=${pageParam}&limit=${limit}&orderBy=desc`;
 
   if (folderIds && folderIds.length > 0) {
     url = `${url}&id=${folderIds?.join("&id=")}`;
@@ -51,7 +49,7 @@ export const fetchTotalFoldersCount = async (): Promise<{
 }> => {
   return await axios({
     method: "get",
-    url: `${baseQuery}/total-count`,
+    url: `${baseEndpoint}/total-count`,
     withCredentials: true,
   }).then(({ data: { data } }) => data);
 };
@@ -71,7 +69,7 @@ export const insertFolder = async (payload: FolderInsertSchemaType) => {
 
   return await axios<SuccessResponse<Folder>>({
     method: "post",
-    url: baseQuery,
+    url: baseEndpoint,
     data: {
       ...payload,
       keyDerivation,
@@ -86,12 +84,30 @@ export const updateFolder = async (
 ) => {
   return await axios<SuccessResponse<Folder>>({
     method: "put",
-    url: `${baseQuery}/${id}`,
+    url: `${baseEndpoint}/${id}`,
     data: folder,
     withCredentials: true,
   });
 };
 
 export const deleteFolder = async (id: Folder["id"]) => {
-  return axios.delete(`${baseQuery}/${id}`, { withCredentials: true });
+  return axios.delete(`${baseEndpoint}/${id}`, { withCredentials: true });
+};
+
+export const getCollaborativeFolders = async () => {
+  return axios({
+    method: "get",
+    url: `${baseEndpoint}/collborative`,
+    withCredentials: true,
+  });
+};
+
+export const useCollaborativeFoldersData = () => {
+  return useQuery({
+    queryKey: ["collborative-folders"],
+    queryFn: getCollaborativeFolders,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    staleTime: 0,
+  });
 };
