@@ -7,6 +7,7 @@ import {
   SelectItem,
   SelectContent,
 } from "@/components/ui/select";
+import useUserProfile from "@/hooks/user-profile.hook";
 import {
   changeMemberRole,
   invalidateCollaboratorsData,
@@ -22,15 +23,21 @@ interface UserCardProps {
   username: string;
   role: UserRole;
   folderId: string;
+  isUserAuthorized: boolean;
 }
 
-type UserRolesProps = Pick<UserCardProps, "username" | "role" | "folderId">;
+type UserRolesProps = Pick<
+  UserCardProps,
+  "username" | "role" | "folderId" | "isUserAuthorized"
+>;
 
 const roles = Object.values(userRoles).filter(
   (role) => role !== userRoles.OWNER
 );
 
-const UserRoles = ({ username, role, folderId }: UserRolesProps) => {
+const UserRoles = (props: UserRolesProps) => {
+  const { username, role, folderId, isUserAuthorized } = props;
+
   const queryClient = useQueryClient();
   const uniqueId = useId();
 
@@ -49,7 +56,7 @@ const UserRoles = ({ username, role, folderId }: UserRolesProps) => {
       role: value,
     });
 
-  if (role === userRoles.OWNER) {
+  if (!isUserAuthorized || role === userRoles.OWNER) {
     return <span className="ml-auto pr-3 text-sm font-medium">{role}</span>;
   }
 
@@ -74,6 +81,8 @@ const UserRoles = ({ username, role, folderId }: UserRolesProps) => {
 };
 
 export default function UserCard(props: UserCardProps) {
+  const { data: user } = useUserProfile();
+
   return (
     <div className="inline-flex w-full items-center gap-3 p-1">
       <Avatar
@@ -83,13 +92,14 @@ export default function UserCard(props: UserCardProps) {
         className="size-10"
       />
       <div className="flex flex-col gap-1 text-sm">
-        <span>{props.name}</span>
+        <span>{user?.username === props.username ? "You" : props.name}</span>
         <span className="text-muted-foreground">@{props.username}</span>
       </div>
       <UserRoles
         role={props.role}
         username={props.username}
         folderId={props.folderId}
+        isUserAuthorized={props.isUserAuthorized}
       />
     </div>
   );

@@ -1,6 +1,4 @@
-import { createIDBPersister } from "./persister";
-import { QueryClient } from "@tanstack/react-query";
-import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type React from "react";
 
 const queryClient = new QueryClient({
@@ -15,8 +13,6 @@ const queryClient = new QueryClient({
   },
 });
 
-const persister = createIDBPersister("tsuika");
-
 // eslint-disable-next-line react-refresh/only-export-components
 export function getContext() {
   return {
@@ -26,11 +22,6 @@ export function getContext() {
 
 export function Provider({ children }: { children: React.ReactNode }) {
   return (
-    <PersistQueryClientProvider
-      client={queryClient}
-      persistOptions={{ persister }}
-    >
-      {children}
-    </PersistQueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }
