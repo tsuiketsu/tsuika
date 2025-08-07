@@ -20,12 +20,12 @@ interface PropsType {
   onSubmit: (payload: FolderInsertSchemaType) => void;
 }
 
-export default function FolderForm({ onSubmit }: PropsType) {
+export default function FolderForm({ data, onSubmit }: PropsType) {
   const form = useForm<FolderInsertSchemaType>({
     resolver: zodResolver(folderInsertSchema),
     defaultValues: {
-      name: "",
-      description: "",
+      name: data?.name ?? "",
+      description: data?.description ?? "",
       isEncrypted: false,
       password: "",
     },
