@@ -1,4 +1,5 @@
 import CollaborateFolder from "../forms/folder/collaborate";
+import { useCollaboratorForderStore } from "../forms/folder/collaborate/store";
 import LazyBoundary from "../lazy-boundary";
 import { Button } from "../ui/button";
 import {
@@ -41,7 +42,6 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openShare, setOpenShare] = useState(false);
-  const [openCollab, setOpenCollab] = useState(false);
 
   const { profile, isFolderPinned, setPreferences } = useUserProfileStore();
 
@@ -103,7 +103,7 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             className={clsx({ hidden: folder.keyDerivation })}
-            onClick={() => setOpenCollab(true)}
+            onClick={() => useCollaboratorForderStore.getState().toggleOpen()}
           >
             <span>Collaborative</span>
           </DropdownMenuItem>
@@ -144,12 +144,7 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
       <LazyBoundary isVisible={openShare}>
         <SharedFolder folder={folder} open={openShare} setOpen={setOpenShare} />
       </LazyBoundary>
-
-      <CollaborateFolder
-        folderId={folder.id}
-        open={openCollab}
-        setOpen={setOpenCollab}
-      />
+      <CollaborateFolder folderId={folder.id} />
     </Fragment>
   );
 };

@@ -1,3 +1,4 @@
+import { useCollaboratorForderStore } from "@/components/forms/folder/collaborate/store";
 import Avatar from "@/components/ui/avatar";
 import { useGetCollaboratorsQuery } from "@/queries/collab-folder.queries";
 import clsx from "clsx";
@@ -31,7 +32,19 @@ export default function CollboratorAvatars({ folderId }: { folderId: string }) {
   }, [users]);
 
   return (
-    <div className="relative inline-flex select-none">
+    <button
+      type="button"
+      onClick={() => useCollaboratorForderStore.getState().toggleOpen()}
+      disabled={isFetching}
+      className={clsx(
+        "select-non relative inline-flex rounded-md p-1",
+        !isFetching && "hover:bg-secondary transition-color cursor-pointer"
+      )}
+      style={{
+        width:
+          24 * ((slicedUsers?.length || 0) + (remainingUsers ? 1 : 0)) + 16,
+      }}
+    >
       {isFetching ? (
         <Skeletions />
       ) : (
@@ -57,6 +70,6 @@ export default function CollboratorAvatars({ folderId }: { folderId: string }) {
           +{remainingUsers}
         </span>
       )}
-    </div>
+    </button>
   );
 }

@@ -1,4 +1,5 @@
 import AddCollaborativeUserForm from "./form";
+import { useCollaboratorForderStore } from "./store";
 import UserCards from "./user-cards";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,19 +10,15 @@ import {
   SheetHeader,
   SheetFooter,
 } from "@/components/ui/sheet";
-import type { Setter } from "@/lib/utils";
 import { useGetCollaboratorsQuery } from "@/queries/collab-folder.queries";
 
 interface PropsType {
-  open: boolean;
-  setOpen: Setter<boolean>;
   folderId: string;
 }
 
-export default function CollaborateFolder(props: PropsType) {
-  const { open, setOpen, folderId } = props;
-
+export default function CollaborateFolder({ folderId }: PropsType) {
   const { data: users } = useGetCollaboratorsQuery(folderId);
+  const { open, setOpen } = useCollaboratorForderStore();
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -30,8 +27,8 @@ export default function CollaborateFolder(props: PropsType) {
           <SheetTitle>Collaborate Folder</SheetTitle>
         </SheetHeader>
         <div className="space-y-4 px-4">
-          <AddCollaborativeUserForm folderId={props.folderId} />
-          <UserCards users={users ?? []} folderId={props.folderId} />
+          <AddCollaborativeUserForm folderId={folderId} />
+          <UserCards users={users ?? []} folderId={folderId} />
         </div>
         <SheetFooter className="pt-6">
           <SheetClose asChild>
