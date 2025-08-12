@@ -9,9 +9,7 @@ export const useFoldersData = () => {
     queryFn: ({ pageParam }) => fetchFolders({ pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
-    refetchOnMount: true,
-    refetchOnReconnect: true,
-    staleTime: 2000,
+    staleTime: 1000 * 60 * 60 * 24,
   });
 
   const ref = useInfiniteScrollObserver(fetchNextPage, isFetching);
