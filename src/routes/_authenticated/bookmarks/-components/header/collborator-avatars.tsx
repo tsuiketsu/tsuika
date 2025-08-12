@@ -6,7 +6,7 @@ import { useMemo } from "react";
 export default function CollboratorAvatars({ folderId }: { folderId: string }) {
   const { data: users } = useGetCollaboratorsQuery(folderId);
 
-  const maxItems = 1;
+  const maxItems = 5;
 
   const slicedUsers = useMemo(() => {
     return users?.slice(0, maxItems);
