@@ -26,22 +26,32 @@ export default function InsertBookmark({ triggerRef }: PropsType) {
   const mutation = useMutation({
     mutationKey: ["addBookmark", slug, ""],
     mutationFn: addBookmark,
-    onSuccess: ({ status, data: { data, message } }) => {
+    onSuccess: ({ status, data: { data, message } }, bookmark) => {
       if (status !== 200) {
         toast.error(message || "Failed to add bookmark");
         return;
       }
 
-      const queryKey: unknown[] = ["bookmarks", slug, ""];
+      if (!slug.includes("tag")) {
+        const queryKey: unknown[] = [
+          "bookmarks",
+          slug.includes("folder")
+            ? bookmark.folderId
+              ? `folder/${bookmark.folderId}`
+              : "folder/unsorted"
+            : slug,
+          "",
+        ];
 
-      if (isSecured) {
-        queryKey.push({ isEncrypted: true });
+        if (isSecured) {
+          queryKey.push({ isEncrypted: true });
+        }
+
+        queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
+          queryKey,
+          (old) => insertInfQueryData(old, data)
+        );
       }
-
-      queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
-        queryKey,
-        (old) => insertInfQueryData(old, data)
-      );
 
       toast.success(message || "Successfully added bookmark");
       setOpen(false);
