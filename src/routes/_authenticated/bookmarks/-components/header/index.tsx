@@ -80,10 +80,10 @@ export default function BookmarksPageHeader({ slug }: { slug: string }) {
           {selectedFolder?.id && (
             <CollboratorAvatars folderId={selectedFolder?.id} />
           )}
-          {pageType !== "tag" && (
+          {pageType !== "tag" && selectedFolder?.description && (
             <Description
               slug={slug}
-              description={selectedFolder?.description ?? ""}
+              description={selectedFolder?.description}
               isLoading={isFoldersFetching}
             />
           )}
