@@ -53,9 +53,14 @@ const AddCollaborativeUserForm = ({ folderId }: PropsType) => {
     <form className="inline-flex w-full items-center gap-2" onSubmit={onSubmit}>
       <Input
         placeholder="Add members by e-mail or username"
-        onInput={(e) => setIdentifier(e.currentTarget.value)}
+        onInput={(e) => setIdentifier(e.currentTarget.value.trim())}
       />
-      <Button type="submit" size="icon" isLoading={mutation.isPending}>
+      <Button
+        type="submit"
+        size="icon"
+        isLoading={mutation.isPending}
+        disabled={!identifier || identifier.trim() === ""}
+      >
         <UserPlus />
       </Button>
     </form>
