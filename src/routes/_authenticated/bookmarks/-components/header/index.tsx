@@ -1,3 +1,4 @@
+import CollboratorAvatars from "./collborator-avatars";
 import { defaultFolders } from "@/components/app-sidebar/sections/general/bookmark-options/constants";
 import FolderMenu from "@/components/dropdowns/folder-menu";
 import TagMenu from "@/components/dropdowns/tag-menu";
@@ -5,26 +6,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useFoldersData } from "@/hooks/use-folder";
 import { useTagsData } from "@/hooks/use-tag";
 
-interface PropsType {
-  slug: string;
-}
-
-const getDefaultFolder = (url: string) => {
-  return defaultFolders.find((folder) => {
-    const { slug } = folder.link.params as { slug: string };
-    if (!slug) return false;
-    return slug.split("/").slice(-1).join("") === url;
-  });
-};
-
-const Title = ({
-  title,
-  isLoading,
-}: {
+interface TitleProps {
   title: string;
   isLoading: boolean;
   pageType: string;
-}) => {
+}
+
+interface DescriptionProps {
+  slug: string;
+  description: string;
+  isLoading: boolean;
+}
+
+const Title = ({ title, isLoading }: TitleProps) => {
   if (isLoading && !getDefaultFolder(title)) {
     return <Skeleton className="h-7 w-3/6 @3xl:w-2/6 @4xl:w-1/3 @5xl:w-1/6" />;
   }
@@ -36,7 +30,24 @@ const Title = ({
   );
 };
 
-export default function BookmarksPageHeader({ slug }: PropsType) {
+const Description = ({ slug, description, isLoading }: DescriptionProps) => {
+  const defaultFolder = getDefaultFolder(slug.split("/")[1]);
+
+  if (isLoading) {
+    <div className="space-y-2 pt-2">
+      <Skeleton className="h-4 w-4/5 @3xl:w-2/4 @4xl:w-1/2 @5xl:w-2/5" />
+      <Skeleton className="h-4 w-2/3 @3xl:w-2/6 @4xl:w-1/5 @5xl:w-2/6" />
+    </div>;
+  }
+
+  return (
+    <p className="text-muted-foreground">
+      {description || defaultFolder?.description}
+    </p>
+  );
+};
+
+export default function BookmarksPageHeader({ slug }: { slug: string }) {
   const splits = slug.split("/");
 
   const pageType = splits[0];
@@ -45,48 +56,54 @@ export default function BookmarksPageHeader({ slug }: PropsType) {
   const { folders, isFetching: isFoldersFetching } = useFoldersData();
   const { data: tags, isFetching: isTagsFetching } = useTagsData();
 
+  // Tag and Folder based on slug
   const selectedTag = tags?.find(({ id }) => id === query);
   const selectedFolder = folders.find(({ id }) => id === query);
-  const defaultFolder = getDefaultFolder(splits[1]);
-
-  const description =
-    isFoldersFetching && !defaultFolder?.description ? (
-      <div className="space-y-2 pt-2">
-        <Skeleton className="h-4 w-4/5 @3xl:w-2/4 @4xl:w-1/2 @5xl:w-2/5" />
-        <Skeleton className="h-4 w-2/3 @3xl:w-2/6 @4xl:w-1/5 @5xl:w-2/6" />
-      </div>
-    ) : (
-      <p className="text-muted-foreground">
-        {selectedFolder?.description || defaultFolder?.description}
-      </p>
-    );
-
-  const Actions =
-    pageType === "folder" && selectedFolder ? (
-      <FolderMenu folder={selectedFolder} />
-    ) : (
-      selectedTag && <TagMenu tag={selectedTag} />
-    );
 
   const isLoading = pageType === "tag" ? isTagsFetching : isFoldersFetching;
+
   const title = (() => {
     if (getDefaultFolder(splits[1])) {
       return splits[1];
     }
 
     if (pageType === "folder") return selectedFolder?.name ?? "";
+
     return selectedTag?.name ?? "";
   })();
 
   return (
     <div className="inline-flex w-full items-start justify-between">
       <div className="w-full">
-        <div className="inline-flex w-full items-center gap-2">
+        <div className="flex w-full flex-col justify-center gap-2">
           <Title title={title} isLoading={isLoading} pageType={pageType} />
+          {selectedFolder?.id && (
+            <CollboratorAvatars folderId={selectedFolder?.id} />
+          )}
+          {pageType !== "tag" && selectedFolder?.description && (
+            <Description
+              slug={slug}
+              description={selectedFolder?.description}
+              isLoading={isFoldersFetching}
+            />
+          )}
         </div>
-        {pageType !== "tag" && description}
       </div>
-      {Actions}
+      {pageType === "folder" && selectedFolder ? (
+        <FolderMenu folder={selectedFolder} />
+      ) : (
+        selectedTag && <TagMenu tag={selectedTag} />
+      )}
     </div>
   );
+}
+
+function getDefaultFolder(url: string) {
+  const folder = defaultFolders.find((folder) => {
+    const { slug } = folder.link.params as { slug: string };
+    if (!slug) return false;
+    return slug.split("/").slice(-1).join("") === url;
+  });
+
+  return folder;
 }

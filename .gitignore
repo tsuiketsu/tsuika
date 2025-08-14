@@ -16,6 +16,7 @@ dist
 
 # dotenv environment variable files
 .env
+.env.tunnel
 .env.development.local
 .env.test.local
 .env.production.local

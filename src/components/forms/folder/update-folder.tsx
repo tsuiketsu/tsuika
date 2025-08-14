@@ -1,9 +1,10 @@
 import FolderForm from "./folder-form";
+import type { FolderInsertSchemaType } from "./types";
 import Modal from "@/components/ui/modal";
 import { updateInfQueryData } from "@/lib/query.utils";
 import type { Setter } from "@/lib/utils";
 import { updateFolder } from "@/queries/folder.queries";
-import type { Folder, FolderInsertSchemaType } from "@/types/folder";
+import type { Folder } from "@/types/folder";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 

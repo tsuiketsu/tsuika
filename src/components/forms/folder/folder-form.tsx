@@ -1,3 +1,4 @@
+import { type FolderInsertSchemaType, folderInsertSchema } from "./types";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -9,11 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  FolderInsertSchema,
-  type Folder,
-  type FolderInsertSchemaType,
-} from "@/types/folder";
+import type { Folder } from "@/types/folder";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -23,12 +20,12 @@ interface PropsType {
   onSubmit: (payload: FolderInsertSchemaType) => void;
 }
 
-export default function FolderForm({ onSubmit }: PropsType) {
+export default function FolderForm({ data, onSubmit }: PropsType) {
   const form = useForm<FolderInsertSchemaType>({
-    resolver: zodResolver(FolderInsertSchema),
+    resolver: zodResolver(folderInsertSchema),
     defaultValues: {
-      name: "",
-      description: "",
+      name: data?.name ?? "",
+      description: data?.description ?? "",
       isEncrypted: false,
       password: "",
     },

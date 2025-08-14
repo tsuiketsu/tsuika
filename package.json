@@ -6,11 +6,13 @@
   "scripts": {
     "postinstall": "bunx lefthook install",
     "dev": "vite",
+    "dev:tunnel": "vite --mode tunnel",
     "build": "tsc -b && vite build",
     "format": "prettier --write 'src/**/*.{ts,tsx}' --plugin=prettier-plugin-tailwindcss",
     "lint": "eslint ./src/**/*.{ts,tsx}",
     "lint:commit": "commitlint --edit",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "vite start"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -94,6 +96,8 @@
     "vite-plugin-pwa": "^1.0.2"
   },
   "trustedDependencies": [
-    "@tailwindcss/oxide"
+    "@tailwindcss/oxide",
+    "esbuild",
+    "lefthook"
   ]
 }

@@ -1,5 +1,5 @@
+import type { User } from "@/lib/auth-client";
 import type { KdfOptions } from "@/utils/noble";
-import { z } from "zod";
 
 export type Folder = {
   id: string;
@@ -32,21 +32,16 @@ export interface KeyDerivation extends KdfOptions {
   mac: string;
 }
 
-export const FolderInsertSchema = z
-  .object({
-    name: z.string().min(1, { message: "Name is required" }).max(50),
-    description: z.string().max(200).optional(),
-    isEncrypted: z.boolean(),
-    password: z.string().optional(),
-  })
-  .superRefine((data, ctx) => {
-    if (data.isEncrypted && !data.password) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Password is required",
-        path: ["password"],
-      });
-    }
-  });
+export const userRoles = {
+  OWNER: "owner",
+  ADMIN: "admin",
+  VIEWER: "viewer",
+  EDITOR: "editor",
+};
 
-export type FolderInsertSchemaType = z.infer<typeof FolderInsertSchema>;
+export type UserRole = (typeof userRoles)[keyof typeof userRoles];
+
+export interface Collaborator
+  extends Pick<User, "name" | "username" | "image"> {
+  permissionLevel: UserRole;
+}

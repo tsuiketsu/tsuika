@@ -13,6 +13,7 @@ interface PropsType {
   alt?: string;
   fallback?: string;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 const OverlayContainer = ({ children, className }: OverlayContainerProps) => (
@@ -26,7 +27,7 @@ const OverlayContainer = ({ children, className }: OverlayContainerProps) => (
   </div>
 );
 
-const Avatar = ({ src, alt = "", fallback, className }: PropsType) => {
+const Avatar = ({ src, alt = "", fallback, className, style }: PropsType) => {
   const [isFallback, setIsFallback] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -36,9 +37,12 @@ const Avatar = ({ src, alt = "", fallback, className }: PropsType) => {
         "outline-accent relative aspect-square size-12 overflow-hidden rounded-full outline-2 outline-offset-2",
         className
       )}
+      style={style}
     >
       <OverlayContainer className={[{ hidden: !isFallback }]}>
-        <span className="text-[30cqw] font-bold">{fallback}</span>
+        <span className="text-[50cqw] font-bold">
+          {fallback?.substring(0, 1)}
+        </span>
       </OverlayContainer>
       <img
         ref={imageRef}
