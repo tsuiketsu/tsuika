@@ -66,12 +66,17 @@ const Content = ({ bookmark }: { bookmark: Bookmark | undefined }) => {
           className="size-full rounded-xl object-cover select-none"
         />
       </div>
-      <h2 className="mx-auto mb-4 max-w-11/12 text-center text-2xl font-bold">
+      <h2
+        className={clsx(
+          "mx-auto max-w-11/12 text-center text-2xl font-bold",
+          (bookmark?.tags?.length || 0) > 0 ? "mb-2" : "mb-6"
+        )}
+      >
         {bookmark?.title}
       </h2>
       <div
         className={clsx(
-          "mx-auto flex w-full max-w-3/4 flex-wrap justify-center gap-2",
+          "mx-auto flex w-full max-w-3/4 flex-wrap justify-center gap-2 pb-6",
           { hidden: bookmark?.tags?.length === 0 }
         )}
       >
