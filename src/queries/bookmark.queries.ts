@@ -56,6 +56,13 @@ export const fetchBookmarks = async ({
   };
 };
 
+export const fetchBookamrk = async (id: string): Promise<Bookmark> =>
+  await axios
+    .get(`${baseQuery}/${id}`, {
+      withCredentials: true,
+    })
+    .then(({ data: { data } }) => data);
+
 export const fetchRecentBookmarks = async (): Promise<Bookmark[]> => {
   return await axios({
     method: "get",

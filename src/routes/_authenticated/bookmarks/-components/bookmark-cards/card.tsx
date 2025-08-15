@@ -10,7 +10,7 @@ import useLayoutStore, {
 } from "@/stores/layout.store";
 import type { Bookmark } from "@/types/bookmark";
 import { isDefaultFolder } from "@/utils";
-import { useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import clsx from "clsx";
 import { lazy, Suspense } from "react";
 
@@ -36,12 +36,14 @@ export default function BookmarkCard(props: PropsType) {
         { "flex-row gap-2 p-1": layout === cardLayout.COMPACT }
       )}
     >
-      <BookmarkThumbnail
-        image={bookmark.thumbnail || undefined}
-        title={bookmark.title || "Untitled"}
-        height={bookmark.thumbnailHeight}
-        width={bookmark.thumbnailWidth}
-      />
+      <Link to="/bookmarks/b/$id" params={{ id: bookmark.id }}>
+        <BookmarkThumbnail
+          image={bookmark.thumbnail || undefined}
+          title={bookmark.title || "Untitled"}
+          height={bookmark.thumbnailHeight}
+          width={bookmark.thumbnailWidth}
+        />
+      </Link>
       <div className="@container flex h-full w-full flex-col justify-between space-y-3">
         <div className="flex w-full flex-col">
           <Title layout={layout} bookmark={bookmark} />

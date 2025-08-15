@@ -24,6 +24,7 @@ import { Route as AuthenticatedSettingsProfileIndexRouteImport } from './routes/
 import { Route as AuthenticatedSettingsAppearanceIndexRouteImport } from './routes/_authenticated/settings/appearance/index'
 import { Route as AuthenticatedSettingsAccountIndexRouteImport } from './routes/_authenticated/settings/account/index'
 import { Route as PublicUnameFolderIdRouteImport } from './routes/_public/$uname.folder.$id'
+import { Route as AuthenticatedBookmarksBookmarkBIdRouteImport } from './routes/_authenticated/bookmarks/_bookmark/b.$id'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -106,6 +107,12 @@ const PublicUnameFolderIdRoute = PublicUnameFolderIdRouteImport.update({
   path: '/$uname/folder/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedBookmarksBookmarkBIdRoute =
+  AuthenticatedBookmarksBookmarkBIdRouteImport.update({
+    id: '/bookmarks/_bookmark/b/$id',
+    path: '/bookmarks/b/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
+  '/bookmarks/b/$id': typeof AuthenticatedBookmarksBookmarkBIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -135,6 +143,7 @@ export interface FileRoutesByTo {
   '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceIndexRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
+  '/bookmarks/b/$id': typeof AuthenticatedBookmarksBookmarkBIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -153,6 +162,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/account/': typeof AuthenticatedSettingsAccountIndexRoute
   '/_authenticated/settings/appearance/': typeof AuthenticatedSettingsAppearanceIndexRoute
   '/_authenticated/settings/profile/': typeof AuthenticatedSettingsProfileIndexRoute
+  '/_authenticated/bookmarks/_bookmark/b/$id': typeof AuthenticatedBookmarksBookmarkBIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -170,6 +180,7 @@ export interface FileRouteTypes {
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/profile'
+    | '/bookmarks/b/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -184,6 +195,7 @@ export interface FileRouteTypes {
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/profile'
+    | '/bookmarks/b/$id'
   id:
     | '__root__'
     | '/'
@@ -201,6 +213,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/account/'
     | '/_authenticated/settings/appearance/'
     | '/_authenticated/settings/profile/'
+    | '/_authenticated/bookmarks/_bookmark/b/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -317,6 +330,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicUnameFolderIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/bookmarks/_bookmark/b/$id': {
+      id: '/_authenticated/bookmarks/_bookmark/b/$id'
+      path: '/bookmarks/b/$id'
+      fullPath: '/bookmarks/b/$id'
+      preLoaderRoute: typeof AuthenticatedBookmarksBookmarkBIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -365,12 +385,15 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedBookmarksSlugRoute: typeof AuthenticatedBookmarksSlugRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+  AuthenticatedBookmarksBookmarkBIdRoute: typeof AuthenticatedBookmarksBookmarkBIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedBookmarksSlugRoute: AuthenticatedBookmarksSlugRoute,
   AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+  AuthenticatedBookmarksBookmarkBIdRoute:
+    AuthenticatedBookmarksBookmarkBIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

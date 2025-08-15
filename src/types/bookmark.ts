@@ -1,3 +1,4 @@
+import type { Tag } from "./tag";
 import { z } from "zod";
 
 export interface Bookmark {
@@ -17,6 +18,7 @@ export interface Bookmark {
   thumbnailWidth?: number;
   createdAt: Date | string;
   updatedAt: Date | string;
+  tags?: Tag[];
 }
 
 export const BookmarkFormSchema = z.object({
