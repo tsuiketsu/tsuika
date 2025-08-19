@@ -6,7 +6,7 @@ import { deleteInfQueryData, updateInfQueryData } from "@/lib/query.utils";
 import type { Setter } from "@/lib/utils";
 import { editBookmark } from "@/queries/bookmark.queries";
 import BookmarkThumbnail from "@/routes/_authenticated/bookmarks/-components/bookmark-cards/thumbnail";
-import type { Bookmark, BookmarkFormSchemaType } from "@/types/bookmark";
+import type { Bookmark } from "@/types/bookmark";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -29,13 +29,7 @@ export default function UpdateBookmark({
 
   const mutation = useMutation({
     mutationKey: ["editBookmark"],
-    mutationFn: async ({
-      id,
-      payload,
-    }: {
-      id: Bookmark["id"];
-      payload: BookmarkFormSchemaType;
-    }) => await editBookmark(id, payload),
+    mutationFn: editBookmark,
     onSuccess: ({ status, data: { data, message } }, { payload }) => {
       if (status !== 200) {
         toast.error(message || "Failed to add bookmark");
@@ -58,6 +52,11 @@ export default function UpdateBookmark({
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
         queryKey,
         (old) => updateInfQueryData(old, data, (old) => old.id)
+      );
+
+      // Update dedicated bookmark pages information
+      queryClient.setQueryData<Bookmark>(["bookmark", bookmark.id], (old) =>
+        !old ? old : Object.assign({}, old, data)
       );
 
       toast.success(message || "Successfully updated bookmark");
