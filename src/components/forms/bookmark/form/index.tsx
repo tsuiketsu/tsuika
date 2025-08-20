@@ -1,3 +1,4 @@
+import ContentField from "./content-field.tsx";
 import TagOptions from "./tag-options";
 import TextField from "@/components/primitives/form/text-field.tsx";
 import { Form } from "@/components/ui/form";
@@ -73,13 +74,7 @@ export default function BookmarkForm({ data, onSubmit }: PropsType) {
           placeholder="e.g., The next generation anime platform"
           fieldName="title"
         />
-        <TextField
-          type="textarea"
-          isHidden={!isSecured && isFieldHidden("description")}
-          control={form.control}
-          placeholder="Keep track of your progress on-the-go with one of many AniList apps across iOS, Android, macOS, and Windows"
-          fieldName="description"
-        />
+        <ContentField control={form.control} description={data?.description} />
         {isSecured && (
           <TextField
             control={form.control}

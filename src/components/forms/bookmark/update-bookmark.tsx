@@ -1,4 +1,4 @@
-import BookmarkForm from "./bookmark-form";
+import BookmarkForm from "./form";
 import { useBookmarPathSlug } from "./use-slug.hook";
 import Modal from "@/components/ui/modal";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
