@@ -1,3 +1,4 @@
+import EditorToolbar from "@/components/editor/toolbar";
 import { Button } from "@/components/ui/button.tsx";
 import {
   FormControl,
@@ -10,16 +11,24 @@ import useDefaultEditor from "@/hooks/default-editor.hook.ts";
 import { type BookmarkFormSchemaType } from "@/types/bookmark";
 import { EditorContent } from "@tiptap/react";
 import clsx from "clsx";
-import { ChevronDown, EditIcon, ExpandIcon, ShrinkIcon } from "lucide-react";
+import {
+  ChevronDown,
+  EditIcon,
+  ExpandIcon,
+  SaveIcon,
+  ShrinkIcon,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { type Control } from "react-hook-form";
 
 export default function ContentField({
   description,
   control,
+  isLoading,
 }: {
   description: string | undefined;
   control: Control<BookmarkFormSchemaType>;
+  isLoading: boolean;
 }) {
   const [isExtended, setIsExtended] = useState(false);
   const [isTextExpand, setIsTextExpand] = useState(false);
@@ -51,10 +60,10 @@ export default function ContentField({
           <FormControl>
             <div
               className={clsx(
-                "bg-card rounded-lg border p-2",
+                "bg-card rounded-lg border",
                 isExtended
                   ? "fixed inset-0 z-10" + " overflow-y-auto"
-                  : "relative overflow-hidden"
+                  : "relative overflow-hidden p-3"
               )}
             >
               <div
@@ -67,7 +76,7 @@ export default function ContentField({
                   variant="secondary"
                   size="icon"
                   onClick={() => setIsTextExpand((prev) => !prev)}
-                  className={clsx("size-7 active:scale-none", {
+                  className={clsx("active:scale-none", {
                     hidden: !isShowMoreVisible || isExtended,
                   })}
                 >
@@ -80,7 +89,7 @@ export default function ContentField({
                 <Button
                   variant="secondary"
                   size="icon"
-                  className="size-7"
+                  className={clsx({ hidden: isExtended })}
                   onClick={() => {
                     setIsExtended((prev) => !prev);
                     if (isShowMoreVisible) {
@@ -88,31 +97,53 @@ export default function ContentField({
                     }
                   }}
                 >
-                  {isExtended ? (
-                    <ShrinkIcon />
-                  ) : isShowMoreVisible ? (
-                    <EditIcon />
-                  ) : (
-                    <ExpandIcon />
-                  )}
+                  {isShowMoreVisible ? <EditIcon /> : <ExpandIcon />}
                 </Button>
               </div>
-              <EditorContent
-                innerRef={editorRef}
-                value={value}
-                editor={editor}
-                onInput={() =>
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  onChange((editor.storage as any).markdown.getMarkdown())
-                }
+              <div
                 className={clsx(
-                  "min-h-30",
-                  isExtended
-                    ? "bg-secondary mx-auto mt-40 min-h-screen max-w-3xl rounded-xl border p-4"
-                    : !isTextExpand && isShowMoreVisible && "line-clamp-6"
+                  "mx-auto flex max-w-3xl flex-col gap-2",
+                  isExtended && "mt-40"
                 )}
-                {...field}
-              />
+              >
+                {isExtended && (
+                  <div className="bg-card sticky top-0.5 mx-1 inline-flex gap-2 overflow-x-auto rounded-lg p-2">
+                    <EditorToolbar editor={editor} />
+                    <Button
+                      variant="secondary"
+                      size="icon"
+                      className="ml-auto"
+                      onClick={() => setIsExtended(false)}
+                    >
+                      <ShrinkIcon />
+                    </Button>
+                    <Button
+                      type="submit"
+                      form="bookmark-form"
+                      size="icon"
+                      isLoading={isLoading}
+                    >
+                      <SaveIcon />
+                    </Button>
+                  </div>
+                )}
+                <EditorContent
+                  innerRef={editorRef}
+                  value={value}
+                  editor={editor}
+                  onInput={() =>
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    onChange((editor.storage as any).markdown.getMarkdown())
+                  }
+                  className={clsx(
+                    "min-h-30",
+                    isExtended
+                      ? "bg-secondary min-h-screen rounded-xl border p-4"
+                      : !isTextExpand && isShowMoreVisible && "line-clamp-6"
+                  )}
+                  {...field}
+                />
+              </div>
             </div>
           </FormControl>
           <FormMessage />

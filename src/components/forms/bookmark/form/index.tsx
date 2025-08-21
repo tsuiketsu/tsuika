@@ -19,9 +19,10 @@ const FolderOptions = lazy(() => import("./folder-options.tsx"));
 interface PropsType {
   data?: Bookmark;
   onSubmit: (payload: BookmarkFormSchemaType) => void;
+  isPending?: boolean;
 }
 
-export default function BookmarkForm({ data, onSubmit }: PropsType) {
+export default function BookmarkForm({ data, onSubmit, isPending }: PropsType) {
   const form = useForm<BookmarkFormSchemaType>({
     resolver: zodResolver(BookmarkFormSchema),
     defaultValues: data
@@ -74,7 +75,11 @@ export default function BookmarkForm({ data, onSubmit }: PropsType) {
           placeholder="e.g., The next generation anime platform"
           fieldName="title"
         />
-        <ContentField control={form.control} description={data?.description} />
+        <ContentField
+          control={form.control}
+          description={data?.description}
+          isLoading={isPending ?? false}
+        />
         {isSecured && (
           <TextField
             control={form.control}
