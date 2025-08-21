@@ -1,3 +1,4 @@
+import EditorToolbar from "@/components/editor/toolbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import useDefaultEditor from "@/hooks/default-editor.hook";
@@ -10,7 +11,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EditorContent } from "@tiptap/react";
 import clsx from "clsx";
 import { format } from "date-fns";
-import { EditIcon, EyeIcon, HashIcon, PencilLineIcon } from "lucide-react";
+import {
+  EditIcon,
+  EyeIcon,
+  HashIcon,
+  PencilLineIcon,
+  XIcon,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -105,6 +112,11 @@ export default function Content({ bookmark }: PropsType) {
     },
   });
 
+  const setEditableState = (state: boolean) => {
+    editor.setEditable(state);
+    setIsEditable(state);
+  };
+
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col">
       <div className="inline-flex w-full items-end pb-2 select-none">
@@ -140,10 +152,7 @@ export default function Content({ bookmark }: PropsType) {
         )}
         <Switch
           value={isEditable}
-          onChange={(state) => {
-            setIsEditable(state);
-            editor.setEditable(state);
-          }}
+          onChange={(state) => setEditableState(state)}
         />
       </div>
       <div className="mb-6 aspect-video" role="banner">
@@ -162,7 +171,24 @@ export default function Content({ bookmark }: PropsType) {
         {bookmark?.title}
       </h2>
       <Tags tags={bookmark?.tags ?? []} />
-      <EditorContent selected editor={editor} />
+      {isEditable && (
+        <div className="bg-card mb-2 inline-flex justify-between overflow-x-auto rounded-xl p-1">
+          <EditorToolbar editor={editor} />
+          <Button
+            variant="secondary"
+            size="icon"
+            className="hidden sm:inline-flex"
+            onClick={() => setEditableState(false)}
+          >
+            <XIcon />
+          </Button>
+        </div>
+      )}
+      <EditorContent
+        selected
+        editor={editor}
+        className={clsx(isEditable && "bg-card rounded-xl p-4")}
+      />
     </div>
   );
 }
