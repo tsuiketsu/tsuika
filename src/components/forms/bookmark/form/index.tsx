@@ -1,3 +1,4 @@
+import ContentField from "./content-field.tsx";
 import TagOptions from "./tag-options";
 import TextField from "@/components/primitives/form/text-field.tsx";
 import { Form } from "@/components/ui/form";
@@ -18,9 +19,10 @@ const FolderOptions = lazy(() => import("./folder-options.tsx"));
 interface PropsType {
   data?: Bookmark;
   onSubmit: (payload: BookmarkFormSchemaType) => void;
+  isPending?: boolean;
 }
 
-export default function BookmarkForm({ data, onSubmit }: PropsType) {
+export default function BookmarkForm({ data, onSubmit, isPending }: PropsType) {
   const form = useForm<BookmarkFormSchemaType>({
     resolver: zodResolver(BookmarkFormSchema),
     defaultValues: data
@@ -73,12 +75,10 @@ export default function BookmarkForm({ data, onSubmit }: PropsType) {
           placeholder="e.g., The next generation anime platform"
           fieldName="title"
         />
-        <TextField
-          type="textarea"
-          isHidden={!isSecured && isFieldHidden("description")}
+        <ContentField
           control={form.control}
-          placeholder="Keep track of your progress on-the-go with one of many AniList apps across iOS, Android, macOS, and Windows"
-          fieldName="description"
+          description={data?.description}
+          isLoading={isPending ?? false}
         />
         {isSecured && (
           <TextField

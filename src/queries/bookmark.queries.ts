@@ -108,10 +108,13 @@ export const addBookmark = async (payload: BookmarkFormSchemaType) => {
   });
 };
 
-export const editBookmark = async (
-  id: Bookmark["id"],
-  payload: BookmarkFormSchemaType
-) => {
+export const editBookmark = async ({
+  id,
+  payload,
+}: {
+  id: Bookmark["id"];
+  payload: BookmarkFormSchemaType;
+}) => {
   let _payload = payload;
 
   if (_payload.isEncrypted && _payload.folderId) {

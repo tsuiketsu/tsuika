@@ -53,7 +53,7 @@ export default function BookmarkCard(props: PropsType) {
             </p>
           </Show>
         </div>
-        <div className="flex w-full items-center justify-between">
+        <div className="flex w-full items-end justify-between">
           <BookmarkExtras
             url={bookmark.url}
             folderId={bookmark.folderId}

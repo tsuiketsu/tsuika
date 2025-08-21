@@ -25,7 +25,7 @@ export const BookmarkFormSchema = z.object({
   folderId: z.string().optional(),
   url: z.string().url(),
   title: z.string().max(255).optional(),
-  description: z.string().max(5000).optional(),
+  description: z.string().optional(),
   thumbnail: z.string().optional(),
   isEncrypted: z.boolean().optional(),
   nonce: z.string().optional(),

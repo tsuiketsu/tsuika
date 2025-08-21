@@ -12,7 +12,7 @@ import { Dot, Hash, LoaderCircle, Palette, Plus } from "lucide-react";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import type { ControllerRenderProps } from "react-hook-form";
 
-const UpdateTag = lazy(() => import("../../tag/update-tag"));
+const UpdateTag = lazy(() => import("@/components/forms/tag/update-tag"));
 
 interface PropsType {
   field: ControllerRenderProps<BookmarkFormSchemaType, "tags">;

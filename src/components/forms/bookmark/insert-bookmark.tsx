@@ -1,4 +1,4 @@
-import BookmarkForm from "./bookmark-form";
+import BookmarkForm from "./form";
 import { useBookmarPathSlug } from "./use-slug.hook";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
@@ -87,7 +87,10 @@ export default function InsertBookmark({ triggerRef }: PropsType) {
         isPending={mutation.isPending}
         btnTxt="Create"
       >
-        <BookmarkForm onSubmit={mutation.mutate} />
+        <BookmarkForm
+          onSubmit={mutation.mutate}
+          isPending={mutation.isPending}
+        />
       </Modal>
     </>
   );
