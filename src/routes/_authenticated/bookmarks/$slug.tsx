@@ -150,8 +150,8 @@ function Bookmarks() {
           onQueryChange={(value) => setQuery(value)}
         />
       </div>
-      <hr className="mb-4" />
-      {!isFetching && isFetched && isNoData ? (
+      <hr />
+      {isFetched && isNoData ? (
         <FallbackScreen
           title="No bookmarks found"
           description="Add a bookmark to see here"

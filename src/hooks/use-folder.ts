@@ -4,13 +4,15 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 export const useFoldersData = () => {
-  const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ["folders"],
-    queryFn: ({ pageParam }) => fetchFolders({ pageParam }),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    staleTime: 1000 * 60 * 60 * 24,
-  });
+  const { data, isFetching, fetchNextPage, hasNextPage, isFetched } =
+    useInfiniteQuery({
+      queryKey: ["folders"],
+      queryFn: ({ pageParam }) => fetchFolders({ pageParam }),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      staleTime: 1000 * 60 * 60 * 24,
+      retry: 0,
+    });
 
   const ref = useInfiniteScrollObserver(fetchNextPage, isFetching);
 
@@ -22,7 +24,15 @@ export const useFoldersData = () => {
     return data?.pages.flatMap(({ data }) => data) ?? [];
   }, [data]);
 
-  return { data, folders, isFetching, hasNextPage, shouldFetchNext, ref };
+  return {
+    data,
+    folders,
+    isFetching,
+    hasNextPage,
+    shouldFetchNext,
+    ref,
+    isFetched,
+  };
 };
 
 export const useFolderName = (id: string | undefined | null) => {

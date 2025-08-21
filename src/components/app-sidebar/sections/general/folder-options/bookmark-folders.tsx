@@ -56,10 +56,11 @@ export default function BookmarkFolders() {
     ref: sneakyRef,
     folders,
     isFetching,
+    isFetched,
     shouldFetchNext,
   } = useFoldersData();
 
-  if (!isFetching && folders.length === 0) {
+  if (isFetched && folders.length === 0) {
     return <FoldersFallback />;
   }
 
