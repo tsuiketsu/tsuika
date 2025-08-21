@@ -59,7 +59,7 @@ export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
   return (
     <div className="group top-2 right-2 z-10 space-x-2 rounded-full">
       <DropdownMenu>
-        <DropdownMenuTrigger className="pointer-cursor hover:scale-95" asChild>
+        <DropdownMenuTrigger className="cursor-pointer hover:scale-95" asChild>
           <Ellipsis size={18} />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="mr-4 w-[224px]">
