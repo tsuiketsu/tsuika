@@ -15,6 +15,7 @@ import {
   ChevronDown,
   EditIcon,
   ExpandIcon,
+  LoaderCircle,
   SaveIcon,
   ShrinkIcon,
 } from "lucide-react";
@@ -122,6 +123,7 @@ export default function ContentField({
                       form="bookmark-form"
                       size="icon"
                       isLoading={isLoading}
+                      customLoader={<LoaderCircle className="animate-spin" />}
                     >
                       <SaveIcon />
                     </Button>

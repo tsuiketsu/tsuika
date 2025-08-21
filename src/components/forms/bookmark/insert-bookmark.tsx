@@ -87,7 +87,10 @@ export default function InsertBookmark({ triggerRef }: PropsType) {
         isPending={mutation.isPending}
         btnTxt="Create"
       >
-        <BookmarkForm onSubmit={mutation.mutate} />
+        <BookmarkForm
+          onSubmit={mutation.mutate}
+          isPending={mutation.isPending}
+        />
       </Modal>
     </>
   );

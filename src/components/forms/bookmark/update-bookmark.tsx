@@ -93,6 +93,7 @@ export default function UpdateBookmark({
       <BookmarkForm
         data={bookmark}
         onSubmit={(payload) => mutation.mutate({ id: bookmark.id, payload })}
+        isPending={mutation.isPending}
       />
     </Modal>
   );
