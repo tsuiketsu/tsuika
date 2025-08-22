@@ -44,7 +44,11 @@ export default function TaskCheckbox({ task }: PropsType) {
 
   return (
     <>
-      <Checkbox checked={checked} onClick={() => setOpen(true)} />
+      <Checkbox
+        checked={checked}
+        onClick={() => setOpen(true)}
+        className="ml-auto"
+      />
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
