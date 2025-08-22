@@ -5,6 +5,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { useSession } from "@/lib/auth-client";
 import UserProfileProvider from "@/providers/user-profile.provider";
 import { fetchUserSession } from "@/queries/user-session";
+import { useSidebarStore } from "@/stores/sidebar.store";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 
@@ -44,9 +45,10 @@ export const Route = createFileRoute("/_authenticated")({
 
 function DashboardLayout() {
   const { data, isPending } = useSession();
+  const { open, setOpen } = useSidebarStore();
 
   return (
-    <SidebarProvider>
+    <SidebarProvider open={open} onOpenChange={setOpen}>
       <AppSidebar />
       <div className="flex w-full flex-col">
         <div className="sticky top-0 z-20 pb-4">

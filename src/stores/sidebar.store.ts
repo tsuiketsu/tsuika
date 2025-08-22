@@ -2,12 +2,16 @@ import { create, type StateCreator } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 interface SidebarStore {
+  open: boolean;
+  setOpen: (state: boolean) => void;
   expandedItems: number[];
   isExpanded: (id: number) => boolean;
   updateState: (id: number, isEnabled: boolean) => void;
 }
 
 const createSidebarStore: StateCreator<SidebarStore> = (set, get) => ({
+  open: false,
+  setOpen: (state) => set({ open: state }),
   expandedItems: [],
   isExpanded: (id) => get().expandedItems.includes(id),
   updateState: (id, isEnabled) => {
