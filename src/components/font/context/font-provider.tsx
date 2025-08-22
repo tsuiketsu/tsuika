@@ -14,7 +14,7 @@ export default function FontProvider({
   ...props
 }: FontProviderProps) {
   const [font, setFont] = useState<Font>(
-    () => (localStorage.getItem(storageKey) as Font) || defaultFont
+    () => (sessionStorage.getItem(storageKey) as Font) || defaultFont
   );
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function FontProvider({
   const value = {
     font,
     setFont: (font: Font) => {
-      localStorage.setItem(storageKey, font);
+      sessionStorage.setItem(storageKey, font);
       setFont(font);
     },
   };
