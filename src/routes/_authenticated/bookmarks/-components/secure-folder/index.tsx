@@ -1,22 +1,13 @@
 import type { WorkerRequest, WorkerResponse } from "./types";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Modal from "@/components/ui/modal";
-import { options } from "@/constants";
 import { useSecureFolderStore } from "@/stores/secure-folder.store";
 import type { Folder } from "@/types/folder";
 import { createTypedWorkerPost } from "@/utils";
-import clsx from "clsx";
-import { LockIcon } from "lucide-react";
+import { LoaderCircle, ShieldIcon, UnlockIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
 type Inputs = {
@@ -28,10 +19,10 @@ interface PropsType {
 }
 
 export default function SecureFolder({ folder }: PropsType) {
-  const [open, setOpen] = useState(true);
   const form = useForm<Inputs>();
   const [isLoading, setIsLoading] = useState(false);
   const workerRef = useRef<Worker>(null);
+  const watchPassword = useWatch({ control: form.control, name: "password" });
 
   useEffect(() => {
     workerRef.current = new Worker(new URL("./worker.ts", import.meta.url), {
@@ -75,57 +66,46 @@ export default function SecureFolder({ folder }: PropsType) {
   };
 
   return (
-    <>
-      <div
-        className={clsx(
-          "flex size-full flex-col items-center justify-center gap-4",
-          { hidden: open }
-        )}
-      >
-        <span className="bg-card rounded-full border p-5">
-          <LockIcon size={28} />
-        </span>
-        <Button
-          variant="outline"
-          className="rounded-full"
-          onClick={() => setOpen(true)}
+    <div className="flex size-full flex-col items-center justify-center gap-4">
+      <Form {...form}>
+        <form
+          className="bg-card flex flex-col items-center justify-center gap-4 rounded-xl border p-4"
+          onSubmit={form.handleSubmit(onSubmit)}
         >
-          Unlock
-        </Button>
-      </div>
-      <Modal
-        form="secure-folder-form"
-        title={`Unlock (${folder.name})`}
-        open={open}
-        onOpenChange={setOpen}
-        isPending={isLoading}
-        btnTxt="Unlock"
-      >
-        <Form {...form}>
-          <form
-            id="secure-folder-form"
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4"
+          <span className="bg-card mb-3 rounded-full border p-3">
+            <ShieldIcon />
+          </span>
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    type="password"
+                    className="min-w-58"
+                    placeholder="Enter your password..."
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            variant="outline"
+            className="rounded-full"
+            disabled={!watchPassword}
           >
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Folder Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder={options.passwordPlaceholder}
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-      </Modal>
-    </>
+            {isLoading ? (
+              <LoaderCircle className="animate-spin" />
+            ) : (
+              <UnlockIcon />
+            )}{" "}
+            {isLoading ? "Unlocking..." : "Unlock"}
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 }
