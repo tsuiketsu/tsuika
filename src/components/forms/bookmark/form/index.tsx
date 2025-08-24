@@ -9,8 +9,9 @@ import {
   BookmarkFormSchema,
   type BookmarkFormSchemaType,
 } from "@/types/bookmark";
-import { getFavIcon } from "@/utils";
+import { getFavIcon, objectPick } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouterState } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 import { useForm } from "react-hook-form";
 
@@ -23,13 +24,22 @@ interface PropsType {
 }
 
 export default function BookmarkForm({ data, onSubmit, isPending }: PropsType) {
+  const {
+    location: { pathname },
+  } = useRouterState();
+
   const form = useForm<BookmarkFormSchemaType>({
     resolver: zodResolver(BookmarkFormSchema),
-    defaultValues: data
-      ? Object.fromEntries(
-          Object.entries({ ...data }).filter(([_, value]) => value != null)
-        )
-      : {},
+    defaultValues: {
+      url: data?.url ?? "",
+      title: data?.title ?? "",
+      description: data?.description ?? "",
+      folderId:
+        data?.folderId ?? decodeURIComponent(pathname).split("/").slice(-1)[0],
+      tags:
+        data?.tags?.map((tag) => objectPick(tag, ["id", "name", "color"])) ??
+        [],
+    },
   });
 
   const { folderId: securedFolderId, isSecured } = useSecuredFolders();
