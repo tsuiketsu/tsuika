@@ -42,21 +42,3 @@ export const useBookmarks = ({ slug, query, enabled }: Args) => {
 
   return data;
 };
-
-export const useEncyptedBookmarks = ({
-  slug,
-  enabled,
-}: Omit<Args, "query">) => {
-  return useInfiniteQuery({
-    queryKey: ["bookmarks", slug, "", { isEncrypted: true }],
-    queryFn: ({ pageParam }) =>
-      fetchBookmarks({
-        pageParam,
-        slug,
-        filter: bookmarkFilters.ENCRYPTED,
-      }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    enabled: enabled,
-  });
-};

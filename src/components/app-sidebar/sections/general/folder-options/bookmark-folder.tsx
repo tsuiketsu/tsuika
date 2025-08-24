@@ -5,7 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Link } from "@tanstack/react-router";
+import { Link, type LinkProps } from "@tanstack/react-router";
 import { FolderIcon, LockIcon } from "lucide-react";
 import React from "react";
 
@@ -45,6 +45,10 @@ const BookmarkFolder = ({
   description,
   isLocked,
 }: BookmarkFolderProps) => {
+  const navigation: LinkProps = isLocked
+    ? { to: "/bookmarks/folder/s/$id", params: { id } }
+    : { to: "/bookmarks/$slug", params: { slug: `folder/${id}` } };
+
   return (
     <FolderTooltip
       text={description ?? ""}
@@ -52,9 +56,8 @@ const BookmarkFolder = ({
     >
       <SidebarMenuButton asChild>
         <Link
-          to="/bookmarks/$slug"
           className="[&.active]:bg-secondary active:scale-97"
-          params={{ slug: `folder/${id}` }}
+          {...navigation}
         >
           {isLocked ? <LockIcon className="text-green-600" /> : <FolderIcon />}
           <span>{name}</span>

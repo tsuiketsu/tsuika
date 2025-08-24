@@ -1,11 +1,11 @@
 import BookmarkForm from "./form";
-import { useBookmarPathSlug } from "./use-slug.hook";
 import Modal from "@/components/ui/modal";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { deleteInfQueryData, updateInfQueryData } from "@/lib/query.utils";
 import type { Setter } from "@/lib/utils";
 import { editBookmark } from "@/queries/bookmark.queries";
 import BookmarkThumbnail from "@/routes/_authenticated/bookmarks/-components/bookmark-cards/thumbnail";
+import useBookmarkContext from "@/routes/_authenticated/bookmarks/-components/context/use-context";
 import type { Bookmark } from "@/types/bookmark";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -24,7 +24,11 @@ export default function UpdateBookmark({
   setOpen,
 }: PropsType) {
   const queryClient = useQueryClient();
-  const { slug } = useBookmarPathSlug();
+  // const { slug } = useBookmarPathSlug();
+
+  // NOTE: This should not throw error as update should always be within
+  // bookmark context not otherwise
+  const { slug } = useBookmarkContext();
   const { folderId, isSecured } = useSecuredFolders();
 
   const mutation = useMutation({
@@ -37,7 +41,7 @@ export default function UpdateBookmark({
       }
 
       const queryKey = isSecured
-        ? ["bookmarks", slug, "", { isEncrypted: true }]
+        ? ["bookmarks", slug, { isEncrypted: true }]
         : ["bookmarks", slug, query];
 
       if (payload.folderId && folderId !== payload.folderId) {

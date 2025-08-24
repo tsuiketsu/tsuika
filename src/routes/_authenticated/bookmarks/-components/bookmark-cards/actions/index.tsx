@@ -14,7 +14,6 @@ import {
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import type { Bookmark, BookmarkFlag } from "@/types/bookmark";
 import { useQueryClient } from "@tanstack/react-query";
-import { useLoaderData } from "@tanstack/react-router";
 import clsx from "clsx";
 import { CircleCheck, Edit, Ellipsis, Trash2 } from "lucide-react";
 import React, { lazy, useState } from "react";
@@ -30,15 +29,20 @@ const UpdateBookmark = lazy(
 );
 
 export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
+  const queryClient = useQueryClient();
+
+  // States
   const [openUpdateForm, setOpenUpdateForm] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
   const [openTaskForm, setOpenTaskForm] = useState(false);
 
-  const queryClient = useQueryClient();
-  const { query } = useBookmarkContext();
-  const { slug } = useLoaderData({ from: "/_authenticated/bookmarks/$slug" });
+  // Context
+  const { query, slug } = useBookmarkContext();
+
+  // Folder hook
   const { isSecured } = useSecuredFolders();
 
+  // Flat reducer actions
   const [flagActions, dispatch] = useBookmarkFlagActionsReducer(bookmark, slug);
 
   const onTaskAdd = (e: React.MouseEvent) => {
