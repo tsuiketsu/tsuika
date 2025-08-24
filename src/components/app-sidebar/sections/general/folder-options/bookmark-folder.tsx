@@ -5,8 +5,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type { Folder } from "@/types/folder";
 import { Link, type LinkProps } from "@tanstack/react-router";
-import { FolderIcon, LockIcon } from "lucide-react";
+import { FolderIcon, GlobeIcon, LockIcon } from "lucide-react";
 import React from "react";
 
 interface FolderTooltipProps {
@@ -32,19 +33,13 @@ const FolderTooltip = ({ text, children, isDisabled }: FolderTooltipProps) => {
   );
 };
 
-interface BookmarkFolderProps {
-  id: string;
-  name: string;
-  description: string | undefined;
-  isLocked: boolean;
-}
+const BookmarkFolder = ({ folder }: { folder: Folder | undefined }) => {
+  if (!folder) return null;
 
-const BookmarkFolder = ({
-  id,
-  name,
-  description,
-  isLocked,
-}: BookmarkFolderProps) => {
+  const { id, name, description, isPublic } = folder;
+
+  const isLocked = !!folder.keyDerivation;
+
   const navigation: LinkProps = isLocked
     ? { to: "/bookmarks/folder/s/$id", params: { id } }
     : { to: "/bookmarks/$slug", params: { slug: `folder/${id}` } };
@@ -59,7 +54,7 @@ const BookmarkFolder = ({
           className="[&.active]:bg-secondary active:scale-97"
           {...navigation}
         >
-          {isLocked ? <LockIcon className="text-green-600" /> : <FolderIcon />}
+          {isLocked ? <LockIcon /> : isPublic ? <GlobeIcon /> : <FolderIcon />}
           <span>{name}</span>
         </Link>
       </SidebarMenuButton>
