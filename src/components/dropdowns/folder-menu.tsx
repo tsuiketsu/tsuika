@@ -8,6 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "../ui/dropdown-menu";
+import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import {
   updatePreferencesHandler,
   useUserProfileStore,
@@ -15,7 +16,7 @@ import {
 import type { Folder } from "@/types/folder";
 import clsx from "clsx";
 import { Ellipsis } from "lucide-react";
-import React, { Fragment, lazy, useState } from "react";
+import React, { Fragment, lazy, Suspense, useState } from "react";
 import { toast } from "sonner";
 
 const UpdateFolder = lazy(() => import("../forms/folder/update-folder"));
@@ -44,6 +45,7 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
   const [openShare, setOpenShare] = useState(false);
 
   const { profile, isFolderPinned, setPreferences } = useUserProfileStore();
+  const { isSecured: isFolderSecured } = useSecuredFolders();
 
   const setPinHandler = () => {
     const isPinned = isFolderPinned(folder.id);
@@ -144,7 +146,13 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
       <LazyBoundary isVisible={openShare}>
         <SharedFolder folder={folder} open={openShare} setOpen={setOpenShare} />
       </LazyBoundary>
-      <CollaborateFolder folderId={folder.id} />
+
+      {/* Load CollaborateFolder only if folder is not secured */}
+      {!isFolderSecured && (
+        <Suspense>
+          <CollaborateFolder folderId={folder.id} />
+        </Suspense>
+      )}
     </Fragment>
   );
 };

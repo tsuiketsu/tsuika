@@ -37,7 +37,7 @@ export default function CollboratorAvatars({ folderId }: { folderId: string }) {
       onClick={() => useCollaboratorForderStore.getState().toggleOpen()}
       disabled={isFetching}
       className={clsx(
-        "select-non relative inline-flex rounded-md p-1",
+        "relative inline-flex rounded-md p-1 select-none",
         !isFetching && "hover:bg-secondary transition-color cursor-pointer"
       )}
       style={{

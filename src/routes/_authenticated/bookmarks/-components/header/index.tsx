@@ -1,10 +1,14 @@
-import CollboratorAvatars from "./collborator-avatars";
+import CollboratorAvatarsSkeletions from "./collborator-avatars/skeletions";
 import { defaultFolders } from "@/components/app-sidebar/sections/general/bookmark-options/constants";
 import FolderMenu from "@/components/dropdowns/folder-menu";
 import TagMenu from "@/components/dropdowns/tag-menu";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { useFoldersData } from "@/hooks/use-folder";
 import { useTagsData } from "@/hooks/use-tag";
+import { lazy, Suspense } from "react";
+
+const CollboratorAvatars = lazy(() => import("./collborator-avatars"));
 
 interface TitleProps {
   title: string;
@@ -55,6 +59,7 @@ export default function BookmarksPageHeader({ slug }: { slug: string }) {
 
   const { folders, isFetching: isFoldersFetching } = useFoldersData();
   const { data: tags, isFetching: isTagsFetching } = useTagsData();
+  const { isSecured } = useSecuredFolders();
 
   // Tag and Folder based on slug
   const selectedTag = tags?.find(({ id }) => id === query);
@@ -77,8 +82,16 @@ export default function BookmarksPageHeader({ slug }: { slug: string }) {
       <div className="w-full">
         <div className="flex w-full flex-col justify-center gap-2">
           <Title title={title} isLoading={isLoading} pageType={pageType} />
-          {selectedFolder?.id && (
-            <CollboratorAvatars folderId={selectedFolder?.id} />
+          {!isSecured && selectedFolder?.id && (
+            <Suspense
+              fallback={
+                <div className="relative inline-flex rounded-md p-1 select-none">
+                  <CollboratorAvatarsSkeletions />
+                </div>
+              }
+            >
+              <CollboratorAvatars folderId={selectedFolder?.id} />
+            </Suspense>
           )}
           {pageType !== "tag" && selectedFolder?.description && (
             <Description
