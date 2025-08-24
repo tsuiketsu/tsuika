@@ -10,6 +10,7 @@ type SecureFolderStore = {
   folders: SecureFolder[];
   add: (v: SecureFolder) => void;
   getKey: (id: string) => string | undefined;
+  removeKey: (id: string) => void;
 };
 
 const createSecureFolderSlice: StateCreator<SecureFolderStore> = (
@@ -26,8 +27,14 @@ const createSecureFolderSlice: StateCreator<SecureFolderStore> = (
     }
   },
 
-  getKey: (folderId) => {
-    return get().folders.find((f) => f.folderId === folderId)?.key;
+  getKey: (id) => {
+    return get().folders.find((f) => f.folderId === id)?.key;
+  },
+
+  removeKey: (id) => {
+    set((prev) => ({
+      folders: prev.folders.filter((f) => f.folderId !== id),
+    }));
   },
 });
 

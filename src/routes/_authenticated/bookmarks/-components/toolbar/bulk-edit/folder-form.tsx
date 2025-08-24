@@ -20,19 +20,17 @@ import type { InfiniteQueryResponse as IQR } from "@/types";
 import type { Bookmark } from "@/types/bookmark";
 import type { Folder } from "@/types/folder";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useLoaderData } from "@tanstack/react-router";
 import clsx from "clsx";
 import { FolderInput, MoveRight } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
-export default function FolderForm() {
+export default function FolderForm({ slug }: { slug: string }) {
   const bookmarkIds = useToolbarStore((s) => s.bookmarkIds);
   const toggleEdit = useToolbarStore((s) => s.toggleBulkEdit);
 
   const dialogCloseRef = useRef<HTMLButtonElement>(null);
   const [folderId, setFolderId] = useState<string | null>(null);
-  const { slug } = useLoaderData({ from: "/_authenticated/bookmarks/$slug" });
 
   const queryClient = useQueryClient();
 
@@ -103,7 +101,7 @@ export default function FolderForm() {
         className={clsx({ hidden: bookmarkIds.length === 0 })}
         asChild
       >
-        <Button variant="outline">
+        <Button variant="outline" size="sm">
           <FolderInput /> Move
         </Button>
       </DialogTrigger>

@@ -1,8 +1,12 @@
 import BulkEdit from "./bulk-edit";
 import LayoutPicker from "./layout-picker";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useSecuredFolders } from "@/hooks/secured-folder.hook";
+import { useSecureFolderStore } from "@/stores/secure-folder.store";
+import { useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
-import { SearchIcon } from "lucide-react";
+import { LockIcon, SearchIcon } from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 interface PropsType {
@@ -22,12 +26,29 @@ export default function ActionBar({ slug, total, onQueryChange }: PropsType) {
     onQueryChange?.(data.query);
   };
 
+  const queryClient = useQueryClient();
+
+  const { folderId, ...folder } = useSecuredFolders();
+
+  const lockFolderHandler = () => {
+    // Remove key derivations of folder
+    useSecureFolderStore.getState().removeKey(folderId);
+
+    // Remove all bookmarks cache related to current folder
+    queryClient.removeQueries({
+      queryKey: ["bookmarks", `folder/${folderId}`, "", { isEncrypted: true }],
+    });
+  };
+
   return (
     <div className="flex items-center gap-4 pb-4">
+      <Button variant="secondary" size="sm" onClick={lockFolderHandler}>
+        <LockIcon /> Lock
+      </Button>
       <form
         className={clsx(
           "w-full gap-2",
-          slug.includes("tag") ? "hidden" : "inline-flex"
+          slug.includes("tag") || folder.isSecured ? "hidden" : "inline-flex"
         )}
         onSubmit={handleSubmit(onSubmit)}
       >
@@ -61,7 +82,7 @@ export default function ActionBar({ slug, total, onQueryChange }: PropsType) {
         Showing {total} results
       </span>
       <div className="ml-auto inline-flex w-full items-center justify-end space-x-2">
-        <BulkEdit />
+        <BulkEdit slug={slug} />
         <LayoutPicker />
       </div>
     </div>

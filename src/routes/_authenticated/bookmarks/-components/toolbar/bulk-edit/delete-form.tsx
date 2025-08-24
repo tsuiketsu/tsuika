@@ -9,23 +9,23 @@ import {
   AlertDialogHeader,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { deleteInfQueryDataInBulk } from "@/lib/query.utils";
 import { bulkDeleteBookmarks } from "@/queries/bookmark.queries";
 import { useToolbarStore } from "@/stores/toolbar.store";
 import type { InfiniteQueryResponse as IQR } from "@/types";
 import type { Bookmark } from "@/types/bookmark";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useLoaderData } from "@tanstack/react-router";
 import clsx from "clsx";
 import { Trash } from "lucide-react";
 import { useMemo, useRef } from "react";
 import { toast } from "sonner";
 
-export default function DeleteForm() {
+export default function DeleteForm({ slug }: { slug: string }) {
   const bookmarkIds = useToolbarStore((s) => s.bookmarkIds);
   const toggleEdit = useToolbarStore((s) => s.toggleBulkEdit);
   const dialogCloseRef = useRef<HTMLButtonElement>(null);
-  const { slug } = useLoaderData({ from: "/_authenticated/bookmarks/$slug" });
+  const folder = useSecuredFolders();
 
   const queryClient = useQueryClient();
 
@@ -33,7 +33,13 @@ export default function DeleteForm() {
     toast.error("Failed to delete bookmarks");
   };
 
-  const queryKey = useMemo(() => ["bookmarks", slug, ""], [slug]);
+  const queryKey = useMemo(
+    () =>
+      folder.isSecured
+        ? ["bookmarks", slug, "", { isEncrypted: true }]
+        : ["bookmarks", slug, ""],
+    [slug, folder.isSecured]
+  );
 
   const mutation = useMutation({
     mutationKey: ["delete-bookmarks"],
@@ -70,7 +76,7 @@ export default function DeleteForm() {
         className={clsx({ hidden: bookmarkIds.length === 0 })}
         asChild
       >
-        <Button variant="destructive">
+        <Button variant="destructive" size="sm">
           <Trash /> Delete
         </Button>
       </AlertDialogTrigger>

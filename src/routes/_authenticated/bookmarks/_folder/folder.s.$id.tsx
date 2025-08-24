@@ -43,7 +43,7 @@ function Bookmarks() {
     fetchNextPage,
     error,
   } = useInfiniteQuery({
-    queryKey: ["bookmarks", slug, { isEncrypted: true }],
+    queryKey: ["bookmarks", slug, "", { isEncrypted: true }],
     queryFn: ({ pageParam }) =>
       fetchBookmarks({
         pageParam,

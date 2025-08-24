@@ -34,6 +34,7 @@ export default function BookmarkForm({ data, onSubmit, isPending }: PropsType) {
       url: data?.url ?? "",
       title: data?.title ?? "",
       description: data?.description ?? "",
+      thumbnail: data?.thumbnail,
       folderId:
         data?.folderId ?? decodeURIComponent(pathname).split("/").slice(-1)[0],
       tags:

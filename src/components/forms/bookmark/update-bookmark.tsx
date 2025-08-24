@@ -40,9 +40,11 @@ export default function UpdateBookmark({
         return;
       }
 
-      const queryKey = isSecured
-        ? ["bookmarks", slug, { isEncrypted: true }]
-        : ["bookmarks", slug, query];
+      const queryKey: unknown[] = ["bookmarks", slug, query];
+
+      if (isSecured) {
+        queryKey.push({ isEncrypted: true });
+      }
 
       if (payload.folderId && folderId !== payload.folderId) {
         queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(

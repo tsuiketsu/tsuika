@@ -23,8 +23,7 @@ export const useSecuredFolders = (): ReturnType => {
   const [isLocked, setIsLocked] = useState(true);
 
   const folderId = decodeURIComponent(pathname).split("/").slice(-1)[0];
-
-  const { folders: sessionFolders } = useSecureFolderStore();
+  const sessionFolders = useSecureFolderStore((s) => s.folders);
 
   useEffect(() => {
     if (!isSecured || sessionFolders.some((f) => f.folderId === folderId)) {
@@ -55,7 +54,15 @@ export const useSecuredFolders = (): ReturnType => {
       setIsLocked(true);
       setIsSecured(true);
     };
-  }, [folderId, folders, isFetching, queryClient]);
+  }, [
+    folderId,
+    folders,
+    isFetching,
+    queryClient,
+
+    // To sync with useSecureFolderStore to reflect immediate changes
+    sessionFolders.length,
+  ]);
 
   return { folderId, isSecured, isLocked, folder, isFetching };
 };
