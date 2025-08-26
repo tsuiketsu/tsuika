@@ -112,3 +112,8 @@ export const isDefaultFolder = (slug: string): boolean => {
     decodeURIComponent(slug).split("/").slice(-1)[0] ?? ""
   );
 };
+
+export const firstAlpha = (str: string): string | null => {
+  const match = str.match(/[a-zA-Z]/);
+  return match ? match[0] : null;
+};

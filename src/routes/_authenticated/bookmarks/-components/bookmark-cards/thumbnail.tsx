@@ -5,7 +5,7 @@ import useLayoutStore, {
   cardLayout,
   type CardsLayoutKey,
 } from "@/stores/layout.store";
-import { getAspectRatio, getRandomAspectRatio } from "@/utils";
+import { firstAlpha, getAspectRatio, getRandomAspectRatio } from "@/utils";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 
@@ -40,7 +40,9 @@ export default function BookmarkThumbnail({
   height,
   ...props
 }: PropsType) {
-  const titleChar = title[0].toUpperCase() as Alphabet;
+  const titleChar = (
+    title && title.trim() !== "" ? (firstAlpha(title) ?? "T") : "T"
+  ) as Alphabet;
   const selectedLayout = useLayoutStore((s) => s.layout);
   const layout = props.layout ?? selectedLayout;
 
