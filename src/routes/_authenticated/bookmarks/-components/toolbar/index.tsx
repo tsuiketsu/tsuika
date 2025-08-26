@@ -42,9 +42,11 @@ export default function ActionBar({ slug, total, onQueryChange }: PropsType) {
 
   return (
     <div className="flex items-center gap-4 pb-4">
-      <Button variant="secondary" size="sm" onClick={lockFolderHandler}>
-        <LockIcon /> Lock
-      </Button>
+      {folder.isSecured && (
+        <Button variant="secondary" size="sm" onClick={lockFolderHandler}>
+          <LockIcon /> Lock
+        </Button>
+      )}
       <form
         className={clsx(
           "w-full gap-2",
