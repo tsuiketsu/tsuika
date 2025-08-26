@@ -35,3 +35,6 @@ dist
 
 # Images
 *.png
+.vercel
+
+tsconfig.tsbuildinfo
