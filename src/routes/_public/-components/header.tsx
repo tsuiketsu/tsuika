@@ -9,7 +9,7 @@ import { toast } from "sonner";
 interface PropsType {
   folderId: string;
   isLocked: boolean;
-  queryKey: string[];
+  queryKey: unknown[];
 }
 
 export default function Header({ folderId, isLocked, queryKey }: PropsType) {

@@ -22,10 +22,13 @@ export const publishFolder = async ({
   });
 };
 
-export const fetchPublicBookmarks = async (folderId: string) => {
+export const fetchPublicBookmarks = async (
+  username: string,
+  folderId: string
+) => {
   return axios<SuccessResponse<SharedFolderData>>({
     method: "get",
-    url: `${options.apiBaseUrl}/api/public/folder/${folderId}`,
+    url: `${options.apiBaseUrl}/api/public/${username}/folder/${folderId}`,
     withCredentials: true,
   }).then(({ data: { data } }) => data);
 };

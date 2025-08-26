@@ -24,7 +24,7 @@ export const Route = createFileRoute("/_public/$uname/folder/$id")({
 function RouteComponent() {
   const params = Route.useParams();
   const layout = useLayoutStore((s) => s.layout);
-  const queryKey = ["public-folder", params.id];
+  const queryKey = ["public-folder", params];
 
   const {
     data,
@@ -33,7 +33,7 @@ function RouteComponent() {
     error,
   } = useQuery({
     queryKey,
-    queryFn: async () => await fetchPublicBookmarks(params.id),
+    queryFn: async () => await fetchPublicBookmarks(params.uname, params.id),
   });
 
   const queryClient = useQueryClient();
@@ -54,8 +54,6 @@ function RouteComponent() {
   ) {
     return <NotFound />;
   }
-
-  // NOTE: This approach of showing loading skeletons is fine until infinity query is implemented
 
   return (
     <div className="@container/dash mx-auto w-full max-w-6xl space-y-4 px-4 select-none">
