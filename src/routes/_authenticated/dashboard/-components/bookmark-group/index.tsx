@@ -9,6 +9,7 @@ import kebabCase from "lodash.kebabcase";
 
 interface Fallback {
   title: string;
+  description: string;
   icon: LucideIconElement;
 }
 
@@ -39,9 +40,9 @@ export default function BookmarkGroup({
         ) : (
           <FallbackScreen
             title={fallback.title}
-            description=""
+            description={fallback.description ?? ""}
             icon={fallback.icon}
-            iconSize={36}
+            iconSize={38}
           />
         )}
       </CardContent>

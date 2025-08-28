@@ -56,7 +56,7 @@ export default function BookmarkExtras(props: PropsType) {
           rel="noreferrer"
           className={cn(
             buttonVariants({ variant: "info" }),
-            "h-6 px-2 text-xs"
+            "h-6 rounded-sm px-2 text-xs sm:h-6 sm:rounded-sm"
           )}
         >
           <span className={responsiveSpan}>{domain}</span>

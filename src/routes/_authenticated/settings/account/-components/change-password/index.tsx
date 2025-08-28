@@ -51,7 +51,7 @@ export default function ChangePassword() {
       <Show when={isDisabled}>
         <Button
           variant="secondary"
-          className="ml-auto min-w-36"
+          className="ml-auto w-full sm:max-w-38"
           onClick={() => {
             setIsDisabled(false);
             form.reset({

@@ -27,10 +27,9 @@ interface PropsType {
 
 const Tags = ({ tags }: { tags: Tag[] }) => (
   <div
-    className={clsx(
-      "mx-auto flex w-full max-w-3/4 flex-wrap justify-center gap-2 pb-6",
-      { hidden: tags?.length === 0 }
-    )}
+    className={clsx("mx-auto flex w-full flex-wrap gap-2 pb-6", {
+      hidden: tags?.length === 0,
+    })}
   >
     {tags?.map((tag, idx) => (
       <Badge
@@ -131,7 +130,8 @@ export default function Content({ bookmark }: PropsType) {
         {isEditable && (
           <Button
             variant="secondary"
-            className="mr-2 h-7"
+            size="sm"
+            className="mr-2"
             isLoading={mutaton.isPending}
             onClick={() =>
               mutaton.mutate({
@@ -164,7 +164,7 @@ export default function Content({ bookmark }: PropsType) {
       </div>
       <h2
         className={clsx(
-          "mx-auto max-w-11/12 text-center text-2xl font-bold",
+          "text-start text-xl font-bold @xl:text-2xl",
           (bookmark?.tags?.length || 0) > 0 ? "mb-2" : "mb-6"
         )}
       >
@@ -172,7 +172,7 @@ export default function Content({ bookmark }: PropsType) {
       </h2>
       <Tags tags={bookmark?.tags ?? []} />
       {isEditable && (
-        <div className="bg-card mb-2 inline-flex justify-between overflow-x-auto rounded-xl p-1">
+        <div className="bg-card mb-2 inline-flex justify-between overflow-x-auto rounded-lg p-1">
           <EditorToolbar editor={editor} />
           <Button
             variant="secondary"

@@ -41,13 +41,12 @@ function RouteComponent() {
           Select will be shown in most places, bookmarks, folders, tags..
         </p>
       </div>
-
       <Tooltip delayDuration={1000}>
         <TooltipTrigger asChild>
           <Button
             isLoading={mutation.isPending}
             onClick={() => mutation.mutate({ font: payloadFont.current })}
-            className="w-48"
+            className="w-full @lg/dash:w-46"
           >
             Save preferences
           </Button>

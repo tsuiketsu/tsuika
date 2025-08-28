@@ -15,7 +15,8 @@ export default function RecentBookmarks() {
       isFetching={isFetching}
       bookmarks={bookmarks ?? []}
       fallback={{
-        title: "No favorites",
+        title: "No Recents",
+        description: "Recently added bookmarks will appear here",
         icon: ClockFading,
       }}
     />

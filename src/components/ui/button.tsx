@@ -23,10 +23,11 @@ const buttonVariants = cva(
         info: "text-info-foreground bg-info/20 hover:bg-info/30",
       },
       size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
+        default:
+          "h-12 rounded-xl sm:h-10 sm:rounded-lg px-4 py-2 has-[>svg]:px-3",
+        sm: "xs:h-8 h-10 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
-        icon: "size-8",
+        icon: "size-10 sm:size-8 rounded-lg sm:rounded-md",
       },
     },
     defaultVariants: {

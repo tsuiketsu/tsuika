@@ -5,7 +5,7 @@ import { Markdown } from "tiptap-markdown";
 
 const style = clsx(
   // General
-  "prose max-w-full text-foreground text-sm focus:outline-none",
+  "prose max-w-full text-foreground text-sm min-h-30 focus:outline-none",
 
   // Colors
   "prose-headings:text-foreground",

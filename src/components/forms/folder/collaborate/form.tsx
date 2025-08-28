@@ -60,6 +60,7 @@ const AddCollaborativeUserForm = ({ folderId }: PropsType) => {
         size="icon"
         isLoading={mutation.isPending}
         disabled={!identifier || identifier.trim() === ""}
+        className="size-12 sm:size-8"
       >
         <UserPlus />
       </Button>

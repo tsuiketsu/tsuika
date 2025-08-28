@@ -13,6 +13,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useSession } from "@/lib/auth-client";
 import type { Setter } from "@/lib/utils";
 import { fetchSharedFolderInfo } from "@/queries/share-folder.queries";
@@ -30,7 +31,7 @@ interface PropsType {
 export default function ShareFolder({ folder, open, setOpen }: PropsType) {
   const { data } = useSession();
 
-  const { data: sharedFolder } = useQuery({
+  const { data: sharedFolder, isFetching } = useQuery({
     queryKey: ["shared-folder", folder.publicId],
     queryFn: async () => await fetchSharedFolderInfo(folder.publicId ?? ""),
     enabled: folder.publicId != null,
@@ -62,7 +63,7 @@ export default function ShareFolder({ folder, open, setOpen }: PropsType) {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent>
+      <SheetContent className="xs:max-w-sm w-full">
         <SheetHeader>
           <SheetTitle>Share Folder</SheetTitle>
         </SheetHeader>
@@ -77,18 +78,26 @@ export default function ShareFolder({ folder, open, setOpen }: PropsType) {
             }}
           />
         </div>
-        {sharedFolder?.isPublic && folder.publicId && (
-          <div className="flex flex-col gap-1 px-4">
-            <span className="text-sm font-medium">Copy &amp; Share</span>
-            <Button
-              variant="outline"
-              className="flex w-full justify-between overflow-hidden transition-transform duration-500 hover:scale-97"
-              onClick={copyToClipboardHandler}
-            >
-              <span className="truncate">{getPublicUrl()}</span>
-              <ClipboardIcon />
-            </Button>
+        {isFetching ? (
+          <div className="w-full space-y-2 px-4">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="xs:h-9 mx-auto h-12" />
           </div>
+        ) : (
+          sharedFolder?.isPublic &&
+          folder.publicId && (
+            <div className="flex flex-col gap-1 px-4">
+              <span className="text-sm font-medium">Copy &amp; Share</span>
+              <Button
+                variant="outline"
+                className="flex w-full justify-between overflow-hidden transition-transform duration-500 hover:scale-97"
+                onClick={copyToClipboardHandler}
+              >
+                <span className="truncate">{getPublicUrl()}</span>
+                <ClipboardIcon />
+              </Button>
+            </div>
+          )
         )}
 
         <SheetFooter className="pt-6">

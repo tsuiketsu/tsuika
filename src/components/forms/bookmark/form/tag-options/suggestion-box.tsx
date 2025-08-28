@@ -64,21 +64,21 @@ const SuggestionBox = ({ field, tags, setQuery, setTag }: PropsType) => {
             onClick={selectTagHandler(tag)}
           >
             <span
-              className={cn(
-                buttonVariants({ size: "icon" }),
-                "size-7 rounded-sm"
-              )}
+              className={cn(buttonVariants({ size: "icon" }))}
               style={{
                 backgroundColor: tag.color,
                 color: getTextColor(tag.color),
               }}
             >
-              <Hash />
+              <Hash className="size-5 sm:size-4" />
             </span>
-            <span className="block w-full text-start">{tag.name}</span>
+            <span className="block w-full text-start lowercase">
+              {tag.name}
+            </span>
             <Button
               variant="info"
-              className={clsx("size-7 rounded-sm p-0", {
+              size="icon"
+              className={clsx("shrink-0 p-0", {
                 hidden: tag.id !== defaultTagId,
               })}
               onClick={() => editButtonRef.current?.click()}
@@ -86,7 +86,8 @@ const SuggestionBox = ({ field, tags, setQuery, setTag }: PropsType) => {
               <Palette />
             </Button>
             <Button
-              className={clsx("size-7 rounded-sm p-0", {
+              size="icon"
+              className={clsx("p-0", {
                 hidden: tag.id !== defaultTagId,
               })}
               isLoading={mutation.isPending}

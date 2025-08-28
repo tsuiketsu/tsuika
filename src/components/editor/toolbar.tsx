@@ -57,7 +57,7 @@ export default function EditorToolbar({ editor, className }: PropsType) {
     <div className={cn("inline-flex gap-2", className)}>
       <Button
         size="icon"
-        variant="secondary"
+        variant="outline"
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editorState.canUndo}
       >
@@ -65,7 +65,7 @@ export default function EditorToolbar({ editor, className }: PropsType) {
       </Button>
       <Button
         size="icon"
-        variant="secondary"
+        variant="outline"
         onClick={() => editor.chain().focus().redo().run()}
         disabled={!editorState.canRedo}
       >
@@ -75,7 +75,7 @@ export default function EditorToolbar({ editor, className }: PropsType) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            variant={editorState.headingLevel ? "default" : "secondary"}
+            variant={editorState.headingLevel ? "default" : "outline"}
             size="icon"
           >
             <SelectedHeadingIcon level={editorState.headingLevel} />
@@ -114,14 +114,14 @@ export default function EditorToolbar({ editor, className }: PropsType) {
       </DropdownMenu>
       <Button
         size="icon"
-        variant={editorState.isBulletList ? "default" : "secondary"}
+        variant={editorState.isBulletList ? "default" : "outline"}
         onClick={() => editor.chain().focus().toggleBulletList().run()}
       >
         <ListIcon />
       </Button>
       <Button
         size="icon"
-        variant={editorState.isOrderedList ? "default" : "secondary"}
+        variant={editorState.isOrderedList ? "default" : "outline"}
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
       >
         <ListOrderedIcon />
@@ -129,7 +129,7 @@ export default function EditorToolbar({ editor, className }: PropsType) {
       <Separator />
       <Button
         size="icon"
-        variant={editorState.isBold ? "default" : "secondary"}
+        variant={editorState.isBold ? "default" : "outline"}
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editorState.canBold}
       >
@@ -137,7 +137,7 @@ export default function EditorToolbar({ editor, className }: PropsType) {
       </Button>
       <Button
         size="icon"
-        variant={editorState.isItalic ? "default" : "secondary"}
+        variant={editorState.isItalic ? "default" : "outline"}
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editorState.canItalic}
       >
@@ -145,7 +145,7 @@ export default function EditorToolbar({ editor, className }: PropsType) {
       </Button>
       <Button
         size="icon"
-        variant={editorState.isStrike ? "default" : "secondary"}
+        variant={editorState.isStrike ? "default" : "outline"}
         onClick={() => editor.chain().focus().toggleStrike().run()}
         disabled={!editorState.canStrike}
       >
@@ -153,7 +153,7 @@ export default function EditorToolbar({ editor, className }: PropsType) {
       </Button>
       <Button
         size="icon"
-        variant={editorState.isCode ? "default" : "secondary"}
+        variant={editorState.isCode ? "default" : "outline"}
         onClick={() => editor.chain().focus().toggleCode().run()}
         disabled={!editorState.canCode}
       >
@@ -162,14 +162,14 @@ export default function EditorToolbar({ editor, className }: PropsType) {
       <Separator />
       <Button
         size="icon"
-        variant={editorState.isCodeBlock ? "default" : "secondary"}
+        variant={editorState.isCodeBlock ? "default" : "outline"}
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
       >
         <CodeXmlIcon />
       </Button>
       <Button
         size="icon"
-        variant={editorState.isBlockquote ? "default" : "secondary"}
+        variant={editorState.isBlockquote ? "default" : "outline"}
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
       >
         <TextQuoteIcon />
@@ -177,14 +177,14 @@ export default function EditorToolbar({ editor, className }: PropsType) {
       <Separator />
       <Button
         size="icon"
-        variant="secondary"
+        variant="outline"
         onClick={() => editor.chain().focus().unsetAllMarks().run()}
       >
         <RotateCwIcon />
       </Button>
       <Button
         size="icon"
-        variant="secondary"
+        variant="outline"
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
       >
         <RulerDimensionLineIcon />

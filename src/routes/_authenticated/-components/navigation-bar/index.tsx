@@ -20,7 +20,7 @@ const CommandWindowComponent = () => {
       <Button
         variant="outline"
         size="sm"
-        className="w-58 justify-between pr-1 pl-2 shadow-sm hover:bg-inherit"
+        className="hidden w-58 justify-between pr-1 pl-2 shadow-sm hover:bg-inherit @xl/n:inline-flex"
         onClick={() => setOpen(true)}
       >
         <span className="text-muted-foreground inline-flex items-center gap-1 text-sm">
@@ -30,6 +30,14 @@ const CommandWindowComponent = () => {
         <Badge variant="secondary" className="gap-1">
           <CommandIcon style={{ width: 13 }} /> <span>+</span> <span>k</span>
         </Badge>
+      </Button>
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={() => setOpen(true)}
+        className="@xl/n:hidden"
+      >
+        <CommandIcon />
       </Button>
       <CommandWindow open={open} setOpen={setOpen} />
     </>
@@ -44,11 +52,11 @@ export default function NavigationBar() {
   const isMenuVisible = pathname.includes("folder") || pathname.includes("tag");
 
   return (
-    <div className="bg-background shadow-background flex h-[53px] items-center gap-2 pt-2 pl-2.5 shadow-xl">
+    <div className="bg-background shadow-background @container/n flex h-[53px] items-center gap-2 pt-2 pl-2.5 shadow-xl">
       <SidebarTrigger />
-      <span className="border-foreground/10 mx-2 h-6 border" />
+      <span className="border-foreground/10 mx-2 h-8 border @xl/n:h-6" />
       <CommandWindowComponent />
-      <div className="ml-auto inline-flex space-x-2 pr-4">
+      <div className="ml-auto inline-flex space-x-2 pr-3">
         <ThemeToggle />
         {isMenuVisible && (
           <Suspense

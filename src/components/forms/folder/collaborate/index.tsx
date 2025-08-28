@@ -22,9 +22,9 @@ export default function CollaborateFolder({ folderId }: PropsType) {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent>
+      <SheetContent className="xs:max-w-sm w-full">
         <SheetHeader>
-          <SheetTitle>Collaborate Folder</SheetTitle>
+          <SheetTitle>Share Folder</SheetTitle>
         </SheetHeader>
         <div className="space-y-4 px-4">
           <AddCollaborativeUserForm folderId={folderId} />

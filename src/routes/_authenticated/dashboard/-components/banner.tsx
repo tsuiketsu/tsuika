@@ -6,14 +6,13 @@ export default function Banner() {
   const { data: user, isFetching } = useUserProfile();
 
   if (isFetching) {
-    return <Skeleton className="rounded-xl" style={{ aspectRatio: "11/5" }} />;
+    return (
+      <Skeleton className="aspect-11/8 rounded-xl @3xl/dash:aspect-11/5" />
+    );
   }
 
   return (
-    <div
-      className="relative overflow-hidden rounded-md @7xl/dash:col-span-2"
-      style={{ aspectRatio: "11/5" }}
-    >
+    <div className="relative aspect-11/8 overflow-hidden rounded-md @3xl/dash:aspect-11/5 @7xl/dash:col-span-2">
       <img
         src="https://w.wallhaven.cc/full/47/wallhaven-47zo9v.jpg"
         alt="dashboard banner"

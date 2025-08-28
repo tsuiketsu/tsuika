@@ -31,6 +31,7 @@ export default function PinnedBookmarks() {
       }}
       fallback={{
         title: "No Pins",
+        description: "Pin a bookmark to view it here",
         icon: Pin,
       }}
       isFetching={isFetching}

@@ -46,6 +46,8 @@
   --font-geist: "Geist", sans-serif;
   --font-itim: "Itim", cursive;
   --font-space-mono: "Space Mono", monospace;
+
+  --breakpoint-xs: 30rem;
 }
 
 :root {

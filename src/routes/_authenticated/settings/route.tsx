@@ -40,7 +40,7 @@ const links = {
   appearance: {
     icon: SwatchBook,
     link: { to: "/settings/appearance" },
-    title: "Appearance",
+    title: "Theme",
     description:
       "Customize font and theme (light/dark) for a tailored visual experience",
   },
@@ -69,7 +69,7 @@ function SettingsRouteComponent() {
   }, [pathname]);
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-40">
       <SectionHeader
         title="Settings"
         description="Manage your account settings, profile, theme preferences etc."
@@ -80,7 +80,7 @@ function SettingsRouteComponent() {
               <Button
                 variant="ghost"
                 key={`option-nav-${idx}`}
-                className="w-32 font-normal @2xl/dash:w-58 @2xl/dash:justify-start"
+                className="min-w-28 font-normal @xl/dash:min-w-32 @2xl/dash:w-58 @2xl/dash:justify-start"
                 asChild
               >
                 <Link {...value.link} className="[&.active]:bg-secondary">

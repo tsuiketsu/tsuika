@@ -1,4 +1,5 @@
 import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -6,8 +7,9 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
+import { useWindowSize } from "@uidotdev/usehooks";
 import clsx from "clsx";
-import { PlusIcon } from "lucide-react";
+import { FolderPlusIcon, PlusIcon } from "lucide-react";
 import { lazy, Suspense, useRef } from "react";
 
 const InsertFolder = lazy(
@@ -31,24 +33,47 @@ export default function DropdownOptions() {
     folderButtonRef.current?.click();
   };
 
+  const { width } = useWindowSize();
+
   return (
     <>
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          className={clsx(
-            buttonVariants({ variant: "outline", size: "icon" }),
-            "mr-0"
-          )}
-        >
-          <PlusIcon />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="mr-2.5">
-          {!isLocked && (
-            <DropdownMenuItem onClick={onNewLink}>New Link</DropdownMenuItem>
-          )}
-          <DropdownMenuItem onClick={onNewFolder}>New Folder</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {(width ?? 0) > 480 ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            className={clsx(
+              buttonVariants({ variant: "outline", size: "icon" }),
+              "mr-0"
+            )}
+          >
+            <PlusIcon />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="mr-2.5">
+            {!isLocked && (
+              <DropdownMenuItem onClick={onNewLink}>New Link</DropdownMenuItem>
+            )}
+            <DropdownMenuItem onClick={onNewFolder}>
+              New Folder
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <div className="fixed right-0 bottom-0 z-10 inline-flex gap-2 p-4">
+          <Button
+            size="icon"
+            className="size-14 rounded-xl shadow-lg"
+            onClick={onNewFolder}
+          >
+            <FolderPlusIcon className="size-5" />
+          </Button>
+          <Button
+            size="icon"
+            className="size-14 rounded-xl shadow-lg"
+            onClick={onNewLink}
+          >
+            <PlusIcon className="size-5" />
+          </Button>
+        </div>
+      )}
       {!isLocked && (
         <Suspense>
           <AddBookmark triggerRef={linkButtonRef} />

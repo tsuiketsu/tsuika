@@ -58,7 +58,7 @@ export default function TaskCheckbox({ task }: PropsType) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="w-full">Cancel</AlertDialogCancel>
             <AlertDialogAction asChild>
               <Button
                 isLoading={mutation.isPending}

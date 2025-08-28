@@ -53,7 +53,7 @@ export default function BookmarkStats() {
   }, []);
 
   return (
-    <div className="grid w-full grid-cols-4 gap-4 pt-4 @sm/dash:grid-cols-2 @2xl/dash:grid-cols-4">
+    <div className="grid w-full grid-cols-2 gap-4 pt-4 @xl/dash:grid-cols-4">
       {Object.entries(stats).map(([label, item]) => (
         <IconCard
           key={`stat-${label}`}

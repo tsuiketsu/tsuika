@@ -63,7 +63,7 @@ const Modal = ({ children, open, onOpenChange, ...props }: ModalProps) => {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <TriggerButton />
-      <SheetContent className="w-full max-w-sm overflow-y-auto">
+      <SheetContent className="xs:max-w-sm w-full overflow-y-auto">
         <SheetHeader>
           <SheetTitle className="capitalize">{title}</SheetTitle>
           <SheetDescription>{desc}</SheetDescription>

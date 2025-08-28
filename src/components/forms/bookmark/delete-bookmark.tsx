@@ -70,7 +70,9 @@ export default function DeleteBookmark({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="w-24">Cancel</AlertDialogCancel>
+          <AlertDialogCancel className="w-full min-w-24">
+            Cancel
+          </AlertDialogCancel>
           <Button
             variant="destructive"
             onClick={() => mutation.mutate({ id })}

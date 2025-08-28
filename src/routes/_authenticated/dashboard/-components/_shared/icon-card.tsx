@@ -25,7 +25,7 @@ export default function IconCard(props: PropsType) {
         {props.label}
       </span>
       <span className="absolute top-2 right-2 rounded-sm border p-1.5">
-        <props.icon size={16} />
+        <props.icon size={20} />
       </span>
     </Comp>
   );
