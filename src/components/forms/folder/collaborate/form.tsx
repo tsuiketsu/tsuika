@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useSession } from "@/lib/auth-client";
 import {
   addUserToFolder,
   invalidateCollaboratorsData,
@@ -19,6 +20,7 @@ const AddCollaborativeUserForm = ({ folderId }: PropsType) => {
   const [identifier, setIdentifier] = useState("");
 
   const queryClient = useQueryClient();
+  const profile = useSession();
 
   const mutation = useMutation({
     mutationKey: ["add-user-to-folder"],
@@ -38,8 +40,21 @@ const AddCollaborativeUserForm = ({ folderId }: PropsType) => {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    const user = profile.data?.user;
+
+    if (!user) {
+      toast.error("Something went wrong, user not found");
+      return;
+    }
+
     if (!identifier) {
       toast.error("You must enter either e-mail or username");
+      return;
+    }
+
+    if ([user.username, user.email].includes(identifier)) {
+      toast.error("You can't add your self");
+      return;
     }
 
     mutation.mutate({
