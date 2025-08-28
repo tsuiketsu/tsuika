@@ -1,6 +1,12 @@
 import GeneralSection from "./sections/general";
 import UserProfile from "./user-profile";
-import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarMenuItem,
+  SidebarMenu,
+  SidebarFooter,
+} from "@/components/ui/sidebar";
 
 export function AppSidebar() {
   return (
@@ -8,7 +14,13 @@ export function AppSidebar() {
       <SidebarContent>
         <GeneralSection />
       </SidebarContent>
-      <UserProfile />
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <UserProfile />
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

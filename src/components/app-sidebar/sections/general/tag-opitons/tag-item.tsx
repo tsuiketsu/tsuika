@@ -13,7 +13,7 @@ const TagItem = ({ tag }: { tag: Tag }) => {
       <SidebarMenuButton className="[&.active]:bg-secondary pl-1" asChild>
         <Link to="/bookmarks/$slug" params={{ slug: `tag/${tag.id}` }}>
           <Hash size={14} style={{ color: tag.color }} />
-          <span>{tag.name} </span>
+          <span>{tag.name}</span>
         </Link>
       </SidebarMenuButton>
       <SidebarMenuBadge>{tag.useCount}</SidebarMenuBadge>
