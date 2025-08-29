@@ -6,9 +6,6 @@ import { format } from "date-fns";
 import { ChevronDownIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const ph =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrWCfadBOtUGta1YeOfW9xdamAgKFV3ZPI3Q&s";
-
 const Note = ({ authorName, note }: { authorName: string; note: string }) => {
   const [isClamped, setIsClamped] = useState(false);
   const pRef = useRef<HTMLParagraphElement>(null);
@@ -65,7 +62,11 @@ export default function PublicDetails({ data }: PropsType) {
 
   return (
     <div className="mx-auto flex w-full flex-col items-center space-y-4 border-b pt-30 pb-4">
-      <Avatar src={ph} className="size-26" />
+      <Avatar
+        src={data.author.image?.split("|")[1] ?? ""}
+        className="size-26"
+        fallback={data.author.name}
+      />
       <h1 className="max-w-xl text-center text-5xl font-bold">
         {data?.title ?? ""}
       </h1>

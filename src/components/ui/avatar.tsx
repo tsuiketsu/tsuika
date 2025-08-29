@@ -28,7 +28,7 @@ const OverlayContainer = ({ children, className }: OverlayContainerProps) => (
 );
 
 const Avatar = ({ src, alt = "", fallback, className, style }: PropsType) => {
-  const [isFallback, setIsFallback] = useState(false);
+  const [isFallback, setIsFallback] = useState(!src || src.trim() === "");
   const imageRef = useRef<HTMLImageElement>(null);
 
   return (

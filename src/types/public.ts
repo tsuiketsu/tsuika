@@ -8,7 +8,7 @@ export interface SharedFolderData {
   expiresAt: Date;
   isLocked: boolean;
   folder: Pick<Folder, "id" | "name" | "description">;
-  author: Pick<User, "username" | "name">;
+  author: Pick<User, "username" | "name" | "image">;
   createdAt: Date;
   updatedAt: Date;
   bookmarks: Omit<
