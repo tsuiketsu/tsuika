@@ -41,7 +41,7 @@ export type Task =
     })
   | (TaskCommon & {
       type: "note";
-      content: { title: string };
+      content: { title: string; description: string };
     });
 
 export interface TaskInsertSchema extends Omit<TaskCommon, "id" | "content"> {
