@@ -3,7 +3,7 @@ import StarterKit from "@tiptap/starter-kit";
 import clsx from "clsx";
 import { Markdown } from "tiptap-markdown";
 
-const style = clsx(
+export const markdownStyle = clsx(
   // General
   "prose max-w-full text-foreground text-sm min-h-30 focus:outline-none",
 
@@ -43,7 +43,7 @@ export default function useDefaultEditor(id: string, defaultText: string) {
     editorProps: {
       attributes: {
         id,
-        class: style,
+        class: markdownStyle,
       },
     },
   });

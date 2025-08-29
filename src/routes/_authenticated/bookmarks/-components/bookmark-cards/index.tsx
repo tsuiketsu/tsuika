@@ -1,14 +1,29 @@
 import BookmarkCard from "./card";
 import { useToolbarStore } from "@/stores/toolbar.store";
 import type { Bookmark } from "@/types/bookmark";
+import { useNavigate } from "@tanstack/react-router";
 
 interface PropsType {
   bookmarks: Bookmark[];
   showActions?: boolean;
+  onThumbnailClick?: (bookmark: Bookmark) => void;
 }
 
-const BookmarkCards = ({ bookmarks, showActions = true }: PropsType) => {
+export default function BookmarkCards({
+  bookmarks,
+  showActions = true,
+  ...props
+}: PropsType) {
   const isEditEnabled = useToolbarStore((s) => s.isBulkEdit);
+  const navigate = useNavigate();
+
+  const {
+    onThumbnailClick = (bookmark: Bookmark) =>
+      navigate({
+        to: "/bookmarks/b/$id",
+        params: { id: bookmark.id },
+      }),
+  } = props;
 
   return bookmarks.map((bookmark) => (
     <BookmarkCard
@@ -16,8 +31,7 @@ const BookmarkCards = ({ bookmarks, showActions = true }: PropsType) => {
       bookmark={bookmark}
       enableCheckbox={isEditEnabled}
       showActions={showActions}
+      onThumbnailClick={() => onThumbnailClick?.(bookmark)}
     />
   ));
-};
-
-export default BookmarkCards;
+}

@@ -26,7 +26,7 @@ export default function Header({ folderId, isLocked, queryKey }: PropsType) {
   });
 
   return (
-    <div className="inline-flex w-full justify-between border-b py-4">
+    <div className="inline-flex w-full items-center justify-between border-b py-4">
       <span className="text-lg font-bold">Tsuika</span>
       <div className="inline-flex items-center gap-2">
         {folderId && isLocked && (
@@ -34,9 +34,10 @@ export default function Header({ folderId, isLocked, queryKey }: PropsType) {
             variant="outline"
             onClick={() => mutation.mutate(folderId)}
             isLoading={mutation.isPending}
-            className="min-w-26"
+            size="sm"
+            className="min-w-20"
           >
-            <LockIcon /> Re-Lock
+            <LockIcon /> Lock
           </Button>
         )}
         <LayoutPicker />

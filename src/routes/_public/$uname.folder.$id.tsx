@@ -1,5 +1,6 @@
 import BookmarkCards from "../_authenticated/bookmarks/-components/bookmark-cards";
 import { BookmarkSkeleton } from "../_authenticated/bookmarks/-components/bookmark-cards/skeletons";
+import BookmarkView from "./-components/bookmark-view";
 import Footer from "./-components/footer";
 import Header from "./-components/header";
 import LoadingSkeleton from "./-components/loading-skeleton";
@@ -15,7 +16,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import type { AxiosError } from "axios";
 import clsx from "clsx";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 export const Route = createFileRoute("/_public/$uname/folder/$id")({
   component: RouteComponent,
@@ -25,6 +26,9 @@ function RouteComponent() {
   const params = Route.useParams();
   const layout = useLayoutStore((s) => s.layout);
   const queryKey = ["public-folder", params];
+  const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(
+    null
+  );
 
   const {
     data,
@@ -37,6 +41,22 @@ function RouteComponent() {
   });
 
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    function onPopState(e: PopStateEvent) {
+      if (!e.state.overlay) {
+        setSelectedBookmark(null);
+      }
+    }
+
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  const openOverlay = (bookmark: Bookmark) => {
+    setSelectedBookmark(bookmark);
+    history.pushState({ overlay: true }, "");
+  };
 
   if (isDataFetched && error && (error as AxiosError)?.status === 401) {
     return (
@@ -57,6 +77,12 @@ function RouteComponent() {
 
   return (
     <div className="@container/dash mx-auto w-full max-w-6xl space-y-4 px-4 select-none">
+      {selectedBookmark && (
+        <BookmarkView
+          bookmark={selectedBookmark}
+          setBookmark={setSelectedBookmark}
+        />
+      )}
       <Header
         folderId={params.id}
         isLocked={data?.isLocked ?? false}
@@ -76,6 +102,7 @@ function RouteComponent() {
               <BookmarkCards
                 bookmarks={(data?.bookmarks as Bookmark[]) ?? []}
                 showActions={false}
+                onThumbnailClick={openOverlay}
               />
             </Suspense>
           </CardsLayout>
