@@ -7,6 +7,7 @@ import { useSession } from "@/lib/auth-client";
 import UserProfileProvider from "@/providers/user-profile.provider";
 import { fetchProfile } from "@/queries/profile.queries";
 import { fetchUserSession } from "@/queries/user-session";
+import { useAuthStore } from "@/stores/auth.store";
 import { useSidebarStore } from "@/stores/sidebar.store";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect } from "react";
@@ -16,9 +17,26 @@ const VerificationReminder = lazy(
   () => import("./-components/verification-reminder")
 );
 
+function parseImage(img: string | undefined) {
+  return img?.split("|")[1];
+}
+
 export const Route = createFileRoute("/_authenticated")({
   component: DashboardLayout,
-  loader: async () => {
+  beforeLoad: async () => {
+    // Get session from state instead to avoid api call spam
+    if (useAuthStore.getState().isAuthenticated) {
+      const session = useAuthStore.getState().session;
+      return {
+        session: {
+          user: {
+            ...session,
+            image: parseImage(session?.user?.image ?? undefined),
+          },
+        },
+      };
+    }
+
     try {
       const session = await fetchUserSession();
 
@@ -26,10 +44,19 @@ export const Route = createFileRoute("/_authenticated")({
         throw new Error("No session");
       }
 
+      useAuthStore.setState({
+        isLoading: false,
+        isAuthenticated: true,
+        session: session,
+      });
+
       return {
         session: {
           ...session,
-          user: { ...session.user, image: session.user.image?.split("|")[1] },
+          user: {
+            ...session.user,
+            image: parseImage(session.user?.image ?? undefined),
+          },
         },
       };
     } catch {

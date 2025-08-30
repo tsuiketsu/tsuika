@@ -16,10 +16,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { signIn } from "@/lib/auth-client";
+import { signIn, type Session } from "@/lib/auth-client";
+import { useAuthStore } from "@/stores/auth.store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -59,7 +60,11 @@ function Login() {
         return;
       }
 
-      toast.success(`Welcome back ${data.user.name}!`);
+      useAuthStore.setState({
+        isLoading: false,
+        isAuthenticated: true,
+        session: data as unknown as Session,
+      });
 
       navigate({ to: "/dashboard" });
     },
@@ -126,9 +131,13 @@ function Login() {
         </Button>
         <span className="text-sm">
           Don't have an account yet? here{" "}
-          <Link to="/register" className="underline">
+          <Button
+            variant="link"
+            className="px-0 underline"
+            onClick={() => navigate({ to: "/register" })}
+          >
             Register
-          </Link>
+          </Button>
         </span>
       </CardFooter>
     </Card>

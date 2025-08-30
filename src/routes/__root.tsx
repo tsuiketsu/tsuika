@@ -2,7 +2,6 @@ import NotFound from "@/components/not-found";
 import PWAUpdatePrompt from "@/components/pwa/update-prompt";
 import { QueryClient } from "@tanstack/react-query";
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
-// import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import * as React from "react";
 import { Toaster } from "sonner";
 

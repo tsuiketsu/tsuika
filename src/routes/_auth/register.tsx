@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { emailOtp, signUp } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -191,9 +191,13 @@ function Register() {
         </Button>
         <span className="text-sm">
           Alreay have an account? go{" "}
-          <Link to="/login" className="underline">
+          <Button
+            variant="link"
+            className="px-0 underline"
+            onClick={() => navigate({ to: "/login" })}
+          >
             Login
-          </Link>
+          </Button>
         </span>
       </CardFooter>
     </Card>

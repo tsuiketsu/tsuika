@@ -33,6 +33,7 @@ export default function EmailVerificationForm({ email }: PropsType) {
       loading: `Verifying your email`,
       success: () => {
         setTimeout(() => window.location.reload(), 2000);
+
         return "Email verification successfull :)";
       },
       error: "Failed to verify email :(",
