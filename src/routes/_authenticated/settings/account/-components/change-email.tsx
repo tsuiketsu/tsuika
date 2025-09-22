@@ -8,12 +8,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { changeEmail } from "@/lib/auth-client";
+import { changeEmail, useSession } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { useLoaderData } from "@tanstack/react-router";
-import type { User } from "better-auth/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -27,9 +25,7 @@ type InputType = z.infer<typeof formScheme>;
 export default function ChangeEmail() {
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const { session }: { session: { user: User } } = useLoaderData({
-    from: "/_authenticated",
-  });
+  const { data } = useSession();
 
   const errorToast = (message: string | undefined) => {
     toast.error(message || "Failed to change email");
@@ -49,9 +45,9 @@ export default function ChangeEmail() {
         return;
       }
 
-      if (session.user.emailVerified) {
+      if (data?.user.emailVerified) {
         toast.success(
-          `Check your inbox at ${session.user.email} for a link to verify your account.`
+          `Check your inbox at ${data?.user.email} for a link to verify your account.`
         );
         return;
       }
@@ -63,12 +59,18 @@ export default function ChangeEmail() {
 
   const form = useForm<InputType>({
     resolver: zodResolver(formScheme),
-    defaultValues: { email: session.user.email },
+    defaultValues: { email: "" },
   });
 
   const onSubmit: SubmitHandler<InputType> = (data) => {
     mutation.mutate(data.email);
   };
+
+  useEffect(() => {
+    if (data?.user.email) {
+      form.setValue("email", data?.user.email);
+    }
+  }, [data?.user.email, form]);
 
   return (
     <Form {...form}>
