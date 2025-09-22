@@ -131,6 +131,12 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Tempuraty fix for shadcn/ui's react-alert-dialog & dialog which  */
+  /* on close dosen't  remove pointer-events: none style */
+  body {
+    pointer-events: auto !important;
+  }
 }
 
 /* Hide arrows for Chrome, Safari, Edge */
