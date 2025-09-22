@@ -51,7 +51,7 @@ export default function BookmarkActions({ bookmark }: { bookmark: Bookmark }) {
   const isMobile = useIsMobile();
 
   return (
-    <div className="group top-2 right-2 z-10 space-x-2 rounded-full">
+    <div className="inline-flex h-6 items-end">
       {!isActionsOpen && (
         <button
           type="button"
