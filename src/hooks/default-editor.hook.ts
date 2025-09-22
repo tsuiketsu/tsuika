@@ -14,10 +14,9 @@ export const markdownStyle = clsx(
   "prose-p:text-foreground/80",
 
   // Code
-  "prose-code:text-secondary-foreground",
+  "prose-code:text-white/90",
   "prose-code:font-normal",
   "prose-code:px-2",
-  "prose-code:text-foreground",
   "prose-code:before:content-['']",
   "prose-code:after:content-['']",
 

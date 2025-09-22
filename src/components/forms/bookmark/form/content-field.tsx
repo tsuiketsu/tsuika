@@ -1,4 +1,4 @@
-import EditorToolbar from "@/components/editor/toolbar";
+import LazyBoundary from "@/components/lazy-boundary";
 import { Button } from "@/components/ui/button.tsx";
 import {
   FormControl,
@@ -19,8 +19,11 @@ import {
   MinimizeIcon,
   SaveIcon,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { lazy, useEffect, useRef, useState } from "react";
 import { type Control } from "react-hook-form";
+
+// Lazy Imports
+const EditorToolbar = lazy(() => import("@/components/editor/toolbar"));
 
 export default function ContentField({
   description,
@@ -61,18 +64,18 @@ export default function ContentField({
           <FormControl>
             <div
               className={clsx(
-                "rounded-lg border",
+                "z-10 rounded-lg border",
                 isExtended
-                  ? "bg-secondary fixed inset-0 z-10" + " overflow-y-auto"
+                  ? "bg-secondary fixed inset-0 z-10 overflow-y-auto"
                   : "dark:bg-card relative overflow-hidden bg-transparent p-3"
               )}
             >
-              <div className="absolute top-1 right-1 inline-flex gap-1 transition-opacity duration-200">
+              <div className="absolute top-1 right-1 z-20 inline-flex gap-1 transition-opacity duration-200">
                 <Button
                   variant="secondary"
                   size="icon"
                   onClick={() => setIsTextExpand((prev) => !prev)}
-                  className={clsx("active:scale-none", {
+                  className={clsx("border active:scale-none", {
                     hidden: !isShowMoreVisible || isExtended,
                   })}
                 >
@@ -83,9 +86,9 @@ export default function ContentField({
                   />
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="secondary"
                   size="icon"
-                  className={clsx({ hidden: isExtended })}
+                  className={clsx({ hidden: isExtended }, "border")}
                   onClick={() => {
                     setIsExtended((prev) => !prev);
                     if (isShowMoreVisible) {
@@ -103,8 +106,10 @@ export default function ContentField({
                 )}
               >
                 {isExtended && (
-                  <div className="bg-secondary sticky top-0.5 mx-1 inline-flex gap-2 overflow-x-auto rounded-lg p-2">
-                    <EditorToolbar editor={editor} />
+                  <div className="bg-secondary sticky top-0.5 z-10 mx-1 inline-flex gap-2 overflow-x-auto rounded-lg p-2">
+                    <LazyBoundary>
+                      <EditorToolbar editor={editor} />
+                    </LazyBoundary>
                     <div className="bg-secondary fixed right-6 bottom-4 inline-flex gap-2 rounded-xl p-2 sm:relative sm:right-0 sm:bottom-0 sm:ml-auto sm:bg-none sm:p-0">
                       <Button
                         variant="outline"
