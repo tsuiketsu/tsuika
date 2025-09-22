@@ -89,9 +89,7 @@ export default function DeleteForm({ slug }: { slug: string }) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel ref={dialogCloseRef} className="w-full">
-            Cancel
-          </AlertDialogCancel>
+          <AlertDialogCancel ref={dialogCloseRef}>Cancel</AlertDialogCancel>
           <Button
             variant="destructive"
             isLoading={mutation.isPending}

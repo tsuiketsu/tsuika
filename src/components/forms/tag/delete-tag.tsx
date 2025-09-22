@@ -56,9 +56,7 @@ export default function Deletetag({ id, ref }: PropsType) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="w-full min-w-24">
-            Cancel
-          </AlertDialogCancel>
+          <AlertDialogCancel className="min-w-24">Cancel</AlertDialogCancel>
           <Button
             variant="destructive"
             onClick={() => mutation.mutate({ id })}

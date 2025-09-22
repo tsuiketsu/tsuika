@@ -62,11 +62,11 @@ export default function DeleteTask({ taskId }: PropsType) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="w-full">Cancel</AlertDialogCancel>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Button
             variant="destructive"
             isLoading={mutation.isPending}
-            className="w-full min-w-32"
+            className="min-w-32"
             onClick={(e) => {
               e.preventDefault();
               mutation.mutate({ id: taskId });

@@ -14,7 +14,7 @@ export default function Banner() {
   return (
     <div className="relative aspect-11/8 overflow-hidden rounded-md @3xl/dash:aspect-11/5 @7xl/dash:col-span-2">
       <img
-        src="https://w.wallhaven.cc/full/47/wallhaven-47zo9v.jpg"
+        src="https://ik.imagekit.io/s2uoi7msg/tsuika/dashboard-background.jpg?updatedAt=1758523741017"
         alt="dashboard banner"
         className="size-full object-cover"
       />
