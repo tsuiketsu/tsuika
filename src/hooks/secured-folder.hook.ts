@@ -1,4 +1,5 @@
 import { useFoldersData } from "./use-folder";
+import { DEFAULT_FOLDER_NAMES } from "@/constants";
 import { useSecureFolderStore } from "@/stores/secure-folder.store";
 import type { Folder } from "@/types/folder";
 import { useQueryClient } from "@tanstack/react-query";
@@ -24,16 +25,15 @@ export const useSecuredFolders = (): ReturnType => {
 
   const folderId = decodeURIComponent(pathname).split("/").slice(-1)[0];
   const sessionFolders = useSecureFolderStore((s) => s.folders);
+  const queryClient = useQueryClient();
+
+  const { folders, isFetching } = useFoldersData();
 
   useEffect(() => {
     if (!isSecured || sessionFolders.some((f) => f.folderId === folderId)) {
       setIsLocked(false);
     }
   }, [folderId, isSecured, sessionFolders]);
-
-  const queryClient = useQueryClient();
-
-  const { folders, isFetching } = useFoldersData();
 
   useEffect(() => {
     if (!isFetching && folders.length > 0) {
@@ -51,7 +51,7 @@ export const useSecuredFolders = (): ReturnType => {
     }
 
     return () => {
-      setIsLocked(true);
+      setIsLocked(!DEFAULT_FOLDER_NAMES.includes(folderId));
       setIsSecured(folders.length !== 0);
     };
   }, [

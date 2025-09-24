@@ -3,6 +3,7 @@ import TagOptions from "./tag-options";
 import TextField from "@/components/primitives/form/text-field.tsx";
 import { Form } from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { DEFAULT_FOLDER_NAMES } from "@/constants.ts";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import {
   type Bookmark,
@@ -49,6 +50,18 @@ export default function BookmarkForm({ data, onSubmit, isPending }: PropsType) {
     return !data && BookmarkFormSchema.shape[field].isOptional();
   };
 
+  const parseFolderId = (folderId: string | undefined) => {
+    if (!folderId || DEFAULT_FOLDER_NAMES.includes(folderId)) {
+      return undefined;
+    }
+
+    if (isSecured) {
+      return securedFolderId;
+    }
+
+    return folderId;
+  };
+
   return (
     <Form {...form}>
       <form
@@ -57,7 +70,7 @@ export default function BookmarkForm({ data, onSubmit, isPending }: PropsType) {
           onSubmit({
             ...v,
             isEncrypted: isSecured,
-            folderId: isSecured ? securedFolderId : v.folderId,
+            folderId: parseFolderId(v.folderId),
             faviconUrl: getFavIcon(v.url),
           })
         )}

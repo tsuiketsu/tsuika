@@ -48,3 +48,10 @@ export const options = {
 };
 
 export type Alphabet = keyof typeof options.alphabetColors;
+
+export const DEFAULT_FOLDER_NAMES = [
+  "all",
+  "favorites",
+  "archived",
+  "unsorted",
+];

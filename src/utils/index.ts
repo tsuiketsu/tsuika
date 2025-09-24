@@ -1,3 +1,4 @@
+import { DEFAULT_FOLDER_NAMES } from "@/constants";
 import type { Setter } from "@/lib/utils";
 import { getLuminance } from "color2k";
 import { format, parse, parseISO } from "date-fns";
@@ -108,7 +109,7 @@ export const getFavIcon = (url: string) => {
 };
 
 export const isDefaultFolder = (slug: string): boolean => {
-  return ["all", "favorites", "archived", "unsorted"].includes(
+  return DEFAULT_FOLDER_NAMES.includes(
     decodeURIComponent(slug).split("/").slice(-1)[0] ?? ""
   );
 };

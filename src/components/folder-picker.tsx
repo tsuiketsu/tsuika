@@ -42,6 +42,7 @@ export default function FolderPicker({ value, onChange }: PropsType) {
     ref: sneakyRef,
     folders,
     isFetching,
+    isFetched,
     shouldFetchNext,
   } = useFoldersData();
 
@@ -56,6 +57,14 @@ export default function FolderPicker({ value, onChange }: PropsType) {
 
   const { isSecured } = useSecuredFolders();
 
+  if (!isFetching && isFetched && folders.length === 0) {
+    return (
+      <Button variant="outline" className="justify-start" disabled>
+        Unsorted
+      </Button>
+    );
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -63,7 +72,7 @@ export default function FolderPicker({ value, onChange }: PropsType) {
           {isFetching
             ? "Loading...."
             : value
-              ? folders.find(({ id }) => id === value)?.name
+              ? folders.find(({ id }) => id === value)?.name || "Unsorted"
               : "Pick a folder..."}
         </Button>
       </DialogTrigger>
