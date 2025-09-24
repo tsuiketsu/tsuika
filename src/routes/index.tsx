@@ -1,22 +1,17 @@
-import { Button } from "@/components/ui/button";
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { LoaderCircle } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Home,
+  beforeLoad: () => {
+    throw redirect({ to: "/dashboard" });
+  },
 });
 
 function Home() {
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4">
-      <h1 className="text-4xl font-extrabold">Tsuika 🔖</h1>
-      <div className="grid w-80 grid-cols-2 gap-4">
-        <Button variant="outline" asChild>
-          <Link to="/register">Register</Link>
-        </Button>
-        <Button variant="outline" asChild>
-          <Link to="/login">Login</Link>
-        </Button>
-      </div>
+    <div className="fixed inset-0 flex items-center justify-center">
+      <LoaderCircle className="animate-spin" />
     </div>
   );
 }
