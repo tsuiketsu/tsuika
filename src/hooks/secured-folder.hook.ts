@@ -36,7 +36,7 @@ export const useSecuredFolders = (): ReturnType => {
   const { folders, isFetching } = useFoldersData();
 
   useEffect(() => {
-    if (!isFetching) {
+    if (!isFetching && folders.length > 0) {
       const current = folders.find((f) => f.id === folderId);
       if (current?.keyDerivation) {
         if (!useSecureFolderStore.getState().getKey(folderId)) {
@@ -52,7 +52,7 @@ export const useSecuredFolders = (): ReturnType => {
 
     return () => {
       setIsLocked(true);
-      setIsSecured(true);
+      setIsSecured(folders.length !== 0);
     };
   }, [
     folderId,
