@@ -29,6 +29,14 @@ const manifestOptions: VitePWAOptions["manifest"] = {
       sizes: "192x192",
     },
   ],
+  share_target: {
+    action: "/save-bookmark/",
+    method: "GET",
+    params: {
+      text: "text",
+      title: "title",
+    },
+  },
 };
 
 const pwaOptions: Partial<VitePWAOptions> = {

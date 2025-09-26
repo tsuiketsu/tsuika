@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
+import { Route as AuthenticatedSaveBookmarkRouteRouteImport } from './routes/_authenticated/save-bookmark/route'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard/index'
 import { Route as AuthVerify2faIndexRouteImport } from './routes/_auth/verify-2fa/index'
@@ -54,6 +55,12 @@ const AuthenticatedSettingsRouteRoute =
   AuthenticatedSettingsRouteRouteImport.update({
     id: '/settings',
     path: '/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSaveBookmarkRouteRoute =
+  AuthenticatedSaveBookmarkRouteRouteImport.update({
+    id: '/save-bookmark',
+    path: '/save-bookmark',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSettingsIndexRoute =
@@ -123,6 +130,7 @@ const AuthenticatedBookmarksFolderFolderSIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/save-bookmark': typeof AuthenticatedSaveBookmarkRouteRoute
   '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
@@ -140,6 +148,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/save-bookmark': typeof AuthenticatedSaveBookmarkRouteRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
@@ -159,6 +168,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_authenticated/save-bookmark': typeof AuthenticatedSaveBookmarkRouteRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
@@ -178,6 +188,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/save-bookmark'
     | '/settings'
     | '/login'
     | '/register'
@@ -195,6 +206,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/save-bookmark'
     | '/login'
     | '/register'
     | '/bookmarks/$slug'
@@ -213,6 +225,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/_authenticated'
+    | '/_authenticated/save-bookmark'
     | '/_authenticated/settings'
     | '/_auth/login'
     | '/_auth/register'
@@ -278,6 +291,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/save-bookmark': {
+      id: '/_authenticated/save-bookmark'
+      path: '/save-bookmark'
+      fullPath: '/save-bookmark'
+      preLoaderRoute: typeof AuthenticatedSaveBookmarkRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/': {
@@ -402,6 +422,7 @@ const AuthenticatedSettingsRouteRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedSaveBookmarkRouteRoute: typeof AuthenticatedSaveBookmarkRouteRoute
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedBookmarksSlugRoute: typeof AuthenticatedBookmarksSlugRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
@@ -410,6 +431,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedSaveBookmarkRouteRoute: AuthenticatedSaveBookmarkRouteRoute,
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedBookmarksSlugRoute: AuthenticatedBookmarksSlugRoute,
   AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,

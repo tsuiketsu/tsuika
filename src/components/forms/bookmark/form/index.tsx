@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 const FolderOptions = lazy(() => import("./folder-options.tsx"));
 
 interface PropsType {
-  data?: Bookmark;
+  data?: Partial<Bookmark>;
   onSubmit: (payload: BookmarkFormSchemaType) => void;
   isPending?: boolean;
 }
