@@ -1,3 +1,4 @@
+import FallbackScreen from "@/components/fallback";
 import BookmarkForm from "@/components/forms/bookmark/form";
 import { Button } from "@/components/ui/button";
 import { insertInfQueryData } from "@/lib/query.utils";
@@ -9,7 +10,7 @@ import {
   useNavigate,
   useRouterState,
 } from "@tanstack/react-router";
-import type { toast } from "sonner";
+import { UnlinkIcon } from "lucide-react";
 import { z } from "zod";
 
 const schema = z.object({
@@ -66,7 +67,14 @@ function RouteComponent() {
   };
 
   if (!shared?.text) {
-    return <div>Invalid URL</div>;
+    return (
+      <FallbackScreen
+        title="Shared URL is not valid"
+        description={""}
+        iconSize={36}
+        icon={UnlinkIcon}
+      />
+    );
   }
 
   return (
