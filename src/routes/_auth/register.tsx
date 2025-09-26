@@ -190,7 +190,7 @@ function Register() {
           Register
         </Button>
         <span className="text-sm">
-          Alreay have an account? go{" "}
+          Already have an account? Go{" "}
           <Button
             variant="link"
             className="px-0 underline"
