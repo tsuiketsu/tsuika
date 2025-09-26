@@ -66,7 +66,7 @@ export default function ContentField({
               className={clsx(
                 "z-10 rounded-lg border",
                 isExtended
-                  ? "bg-secondary fixed inset-0 z-10 overflow-y-auto"
+                  ? "bg-secondary fixed inset-0 z-20 overflow-y-auto"
                   : "dark:bg-card relative overflow-hidden bg-transparent p-3"
               )}
             >
