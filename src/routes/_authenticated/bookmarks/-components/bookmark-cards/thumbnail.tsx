@@ -14,11 +14,11 @@ const BookmarkImageFallback = ({ char }: { char: Alphabet }) => (
     <div
       className="relative aspect-video overflow-hidden rounded-sm accent-transparent"
       style={{
-        backgroundColor: options.alphabetColors[char].bg,
-        color: options.alphabetColors[char].color,
+        backgroundColor: options.alphabetColors[char]?.bg,
+        color: options.alphabetColors[char]?.color,
       }}
     >
-      <span className="font-cal-sans absolute bottom-[14%] left-[4%] size-full text-[74cqw] font-extrabold select-none">
+      <span className="font-cal-sans absolute bottom-[30%] -left-[30%] size-full text-[74cqw] font-extrabold select-none">
         {char}
       </span>
     </div>
@@ -60,7 +60,7 @@ export default function BookmarkThumbnail({
   }, [width, height]);
 
   if (!image) {
-    return <BookmarkImageFallback char={titleChar} />;
+    return <BookmarkImageFallback char={titleChar.toUpperCase() as Alphabet} />;
   }
 
   const aspectRatio = (() => {
