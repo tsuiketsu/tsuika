@@ -85,6 +85,8 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
     });
   };
 
+  const isEncrypted = folder.settings?.keyDerivation;
+
   return (
     <Fragment>
       <DropdownMenu>
@@ -104,14 +106,14 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
             </span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            className={clsx({ hidden: folder.keyDerivation })}
+            className={clsx({ hidden: isEncrypted })}
             onClick={() => useCollaboratorForderStore.getState().toggleOpen()}
           >
             <span>Collaborative</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => setOpenShare(true)}
-            className={clsx({ hidden: folder.keyDerivation })}
+            className={clsx({ hidden: isEncrypted })}
           >
             <span>Publish/Share</span>
           </DropdownMenuItem>

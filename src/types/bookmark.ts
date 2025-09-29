@@ -33,6 +33,7 @@ export const BookmarkFormSchema = z.object({
   tags: z
     .array(z.object({ id: z.string(), name: z.string(), color: z.string() }))
     .optional(),
+  isLinkPreview: z.boolean().optional(),
 });
 
 export type BookmarkFormSchemaType = z.infer<typeof BookmarkFormSchema>;

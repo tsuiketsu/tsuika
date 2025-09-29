@@ -1,4 +1,5 @@
 import BookmarkForm from "./form";
+import useMutationSubmit from "./hooks/use-mutation-submit";
 import { useBookmarPathSlug } from "./use-slug.hook";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
@@ -62,11 +63,14 @@ export default function InsertBookmark({ triggerRef }: PropsType) {
     },
   });
 
+  const onSubmit = useMutationSubmit(mutation.mutate);
+
   const title = isSecured ? "Create Bookmark (encrypted)" : "Create bookmark";
   const desc = isSecured
     ? "With a secured folder, metadata won't be fetched automatically via URL;" +
       " you must enter it manually, a known limitation"
     : "When you're happy with it, just hit the Create button";
+
   return (
     <>
       <Button
@@ -87,10 +91,7 @@ export default function InsertBookmark({ triggerRef }: PropsType) {
         isPending={mutation.isPending}
         btnTxt="Create"
       >
-        <BookmarkForm
-          onSubmit={mutation.mutate}
-          isPending={mutation.isPending}
-        />
+        <BookmarkForm onSubmit={onSubmit} isPending={mutation.isPending} />
       </Modal>
     </>
   );

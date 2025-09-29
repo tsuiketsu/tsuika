@@ -1,4 +1,5 @@
 import type { User } from "@/lib/auth-client";
+import type { CardsLayoutKey } from "@/stores/layout.store";
 import type { KdfOptions } from "@/utils/noble";
 
 export type Folder = {
@@ -11,7 +12,7 @@ export type Folder = {
   publicId: string | null;
   expiresAt: Date | null;
   viewCount: number | null;
-  keyDerivation: KeyDerivation | null;
+  settings: FolderSettings | null;
 };
 
 export type SharedFolder = {
@@ -30,6 +31,12 @@ export type SharedFolder = {
 export interface KeyDerivation extends KdfOptions {
   salt: string;
   mac: string;
+}
+
+export interface FolderSettings {
+  isLinkPreview?: boolean;
+  keyDerivation?: KeyDerivation;
+  defaultView: CardsLayoutKey;
 }
 
 export const userRoles = {

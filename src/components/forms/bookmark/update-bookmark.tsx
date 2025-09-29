@@ -1,4 +1,5 @@
 import BookmarkForm from "./form";
+import useMutationSubmit from "./hooks/use-mutation-submit";
 import Modal from "@/components/ui/modal";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { deleteInfQueryData, updateInfQueryData } from "@/lib/query.utils";
@@ -24,7 +25,6 @@ export default function UpdateBookmark({
   setOpen,
 }: PropsType) {
   const queryClient = useQueryClient();
-  // const { slug } = useBookmarPathSlug();
 
   // NOTE: This should not throw error as update should always be within
   // bookmark context not otherwise
@@ -70,6 +70,10 @@ export default function UpdateBookmark({
     },
   });
 
+  const onSubmit = useMutationSubmit((payload) =>
+    mutation.mutate({ id: bookmark.id, payload })
+  );
+
   return (
     <Modal
       open={open}
@@ -98,7 +102,7 @@ export default function UpdateBookmark({
       </div>
       <BookmarkForm
         data={bookmark}
-        onSubmit={(payload) => mutation.mutate({ id: bookmark.id, payload })}
+        onSubmit={onSubmit}
         isPending={mutation.isPending}
       />
     </Modal>

@@ -38,7 +38,7 @@ export const useSecuredFolders = (): ReturnType => {
   useEffect(() => {
     if (!isFetching && folders.length > 0) {
       const current = folders.find((f) => f.id === folderId);
-      if (current?.keyDerivation) {
+      if (current?.settings?.keyDerivation) {
         if (!useSecureFolderStore.getState().getKey(folderId)) {
           setIsLocked(true);
           setFolder(current);

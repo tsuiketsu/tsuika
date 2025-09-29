@@ -66,9 +66,9 @@ export default function BookmarkFolders() {
 
   return (
     <SidebarMenuSub>
-      {folders.map(({ keyDerivation, ...folder }) => (
+      {folders.map(({ settings, ...folder }) => (
         <SidebarMenuSubItem key={folder.id}>
-          <BookmarkFolder folder={{ ...folder, keyDerivation }} />
+          <BookmarkFolder folder={{ ...folder, settings }} />
         </SidebarMenuSubItem>
       ))}
       <BookmarkFoldersSkeletons isEnabled={isFetching} />

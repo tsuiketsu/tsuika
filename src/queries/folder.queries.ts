@@ -5,7 +5,7 @@ import type {
   PaginatedSuccessResponse,
   SuccessResponse,
 } from "@/types";
-import type { Folder, KeyDerivation } from "@/types/folder";
+import type { Folder, FolderSettings, KeyDerivation } from "@/types/folder";
 import { runDeriveKeyWorker } from "@/workers/derive-key/worker.run";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -72,7 +72,10 @@ export const insertFolder = async (payload: FolderInsertSchemaType) => {
     url: baseEndpoint,
     data: {
       ...payload,
-      keyDerivation,
+      settings: {
+        keyDerivation,
+        isLinkPreview: payload.isLinkPreview,
+      } satisfies Partial<FolderSettings>,
     },
     withCredentials: true,
   });
@@ -85,7 +88,12 @@ export const updateFolder = async (
   return await axios<SuccessResponse<Folder>>({
     method: "put",
     url: `${baseEndpoint}/${id}`,
-    data: folder,
+    data: {
+      ...folder,
+      settings: {
+        isLinkPreview: folder.isLinkPreview,
+      },
+    },
     withCredentials: true,
   });
 };

@@ -1,3 +1,4 @@
+import { fetchLinkPreview } from "@/api/fetch-link-preview";
 import { options } from "@/constants";
 import type {
   PaginatedResponse,
@@ -92,7 +93,18 @@ export const addBookmark = async (payload: BookmarkFormSchemaType) => {
   let _payload = payload;
 
   if (_payload.isEncrypted && _payload.folderId) {
-    const encrypted = await encryptBookmarks(payload);
+    if (payload.isLinkPreview) {
+      const linkPreview = await fetchLinkPreview(_payload.url);
+
+      _payload = {
+        ..._payload,
+        title: linkPreview?.title,
+        thumbnail: linkPreview?.images?.[0],
+      };
+    }
+
+    const encrypted = await encryptBookmarks(_payload);
+
     if (encrypted) {
       _payload = encrypted;
     } else {

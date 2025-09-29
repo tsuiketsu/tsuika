@@ -38,7 +38,7 @@ const BookmarkFolder = ({ folder }: { folder: Folder | undefined }) => {
 
   const { id, name, description, isPublic } = folder;
 
-  const isLocked = !!folder.keyDerivation;
+  const isLocked = !!folder.settings?.keyDerivation;
 
   const navigation: LinkProps = isLocked
     ? { to: "/bookmarks/folder/s/$id", params: { id } }

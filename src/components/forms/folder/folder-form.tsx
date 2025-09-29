@@ -9,6 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import type { Folder } from "@/types/folder";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,6 +29,7 @@ export default function FolderForm({ data, onSubmit }: PropsType) {
       description: data?.description ?? "",
       isEncrypted: false,
       password: "",
+      isLinkPreview: data?.settings?.isLinkPreview,
     },
   });
 
@@ -69,27 +71,31 @@ export default function FolderForm({ data, onSubmit }: PropsType) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="isEncrypted"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <div className="inline-flex items-center gap-2 text-sm">
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={(v) => {
-                      setIsEnabled(v as boolean);
-                      field.onChange(v);
-                    }}
-                  />
-                  Password Encryption
-                </div>
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        {isEnabled && (
+
+        {!data?.settings?.keyDerivation && (
+          <FormField
+            control={form.control}
+            name="isEncrypted"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <div className="inline-flex items-center gap-2 text-sm">
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(v) => {
+                        setIsEnabled(v as boolean);
+                        field.onChange(v);
+                      }}
+                    />
+                    Password Encryption
+                  </div>
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        )}
+
+        {isEnabled && !data?.settings?.keyDerivation && (
           <FormField
             disabled={!isEnabled}
             control={form.control}
@@ -103,6 +109,35 @@ export default function FolderForm({ data, onSubmit }: PropsType) {
                     placeholder={Array.from({ length: 32 }).fill("•").join(" ")}
                     {...field}
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
+        {(isEnabled || Boolean(data?.settings?.keyDerivation)) && (
+          <FormField
+            control={form.control}
+            name="isLinkPreview"
+            render={({ field: { value, onChange, ...field } }) => (
+              <FormItem>
+                <FormControl className="inline-flex w-full items-start justify-between text-sm font-medium">
+                  <div>
+                    <div>
+                      <span>Enable link preview</span>
+                      <p className="text-muted-foreground w-11/12 text-xs">
+                        Generates link previews using an external server. This
+                        does not break encryption but may go against strict
+                        end-to-end encryption philosophy.
+                      </p>
+                    </div>
+                    <Switch
+                      checked={value}
+                      onCheckedChange={onChange}
+                      {...field}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

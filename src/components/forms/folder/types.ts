@@ -6,6 +6,7 @@ export const folderInsertSchema = z
     description: z.string().max(200).optional(),
     isEncrypted: z.boolean(),
     password: z.string().optional(),
+    isLinkPreview: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
     if (data.isEncrypted && !data.password) {

@@ -58,9 +58,11 @@ export default function SecureFolder({ folder }: PropsType) {
   const postToWorker = createTypedWorkerPost<WorkerRequest>(workerRef.current!);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (data.password && folder.keyDerivation) {
+    const keyDerivation = folder.settings?.keyDerivation;
+
+    if (data.password && keyDerivation) {
       setIsLoading(true);
-      const { mac, salt, ...kdfOpts } = folder.keyDerivation;
+      const { mac, salt, ...kdfOpts } = keyDerivation;
       postToWorker({ password: data.password, mac, salt, kdfOpts });
     }
   };

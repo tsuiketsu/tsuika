@@ -82,7 +82,7 @@ export default function FolderPicker({ value, onChange }: PropsType) {
         </DialogHeader>
         <div className="bg-secondary/20 flex h-48 flex-col space-y-1 overflow-y-auto rounded-lg border p-2">
           {folders
-            .filter((f) => (f.keyDerivation != null) === isSecured)
+            .filter((f) => (f.settings?.keyDerivation != null) === isSecured)
             .map((folder, idx) => (
               <Button
                 variant={selectedId === folder.id ? "default" : "ghost"}
@@ -90,7 +90,7 @@ export default function FolderPicker({ value, onChange }: PropsType) {
                 key={`folder-option-${idx}`}
                 onClick={() => setSelectedId(folder.id)}
               >
-                {folder.keyDerivation ? <LockIcon /> : <FolderIcon />}{" "}
+                {folder.settings?.keyDerivation ? <LockIcon /> : <FolderIcon />}{" "}
                 {folder.name}
               </Button>
             ))}
