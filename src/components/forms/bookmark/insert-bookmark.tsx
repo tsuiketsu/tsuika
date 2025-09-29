@@ -40,7 +40,9 @@ export default function InsertBookmark({ triggerRef }: PropsType) {
             ? bookmark.folderId
               ? `folder/${bookmark.folderId}`
               : "folder/unsorted"
-            : slug,
+            : isSecured
+              ? `folder/${bookmark.folderId}`
+              : slug,
           "",
         ];
 

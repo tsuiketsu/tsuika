@@ -46,7 +46,7 @@ export default function DeleteBookmark({
       }
 
       const queryKey = isSecured
-        ? ["bookmarks", slug, "", { isEncrypted: true }]
+        ? ["bookmarks", `folder/${slug}`, "", { isEncrypted: true }]
         : ["bookmarks", slug, query];
 
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
