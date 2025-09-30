@@ -2,6 +2,7 @@ import type { KdfOptions } from "@/utils/noble";
 
 export interface WorkerRequest {
   password: string;
+  encryptionMethod?: KdfOptions;
 }
 
 export type WorkerSuccessMessage = {

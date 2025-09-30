@@ -3,7 +3,7 @@ import type { WorkerRequest, WorkerResponse } from "./types";
 import { Noble } from "@/utils/noble";
 
 self.onmessage = (e: MessageEvent<WorkerRequest>) => {
-  const crypto = new Noble();
+  const crypto = new Noble({ kdfOptions: e.data?.encryptionMethod });
   const secret = crypto.deriveKey({ password: e.data.password });
 
   const meta = Object.assign(

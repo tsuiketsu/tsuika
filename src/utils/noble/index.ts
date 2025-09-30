@@ -1,3 +1,4 @@
+import { encryptionPresets } from "./methods.list";
 import { xchacha20poly1305 } from "@noble/ciphers/chacha";
 import { argon2id } from "@noble/hashes/argon2";
 import { hmac } from "@noble/hashes/hmac";
@@ -7,16 +8,15 @@ import { randomBytes, utf8ToBytes } from "@noble/hashes/utils";
 const SESSION_KEY = "pwhash-key";
 const VERIFICATION_TEXT = "password-verify";
 
-const defaultKdfOptions = {
-  p: 4,
-  t: 3,
-  m: 65536,
-  dkLen: 32,
-};
-
 export type KdfOptions = Record<"p" | "t" | "m" | "dkLen", number>;
 
 export class Noble {
+  private kdfOptions: KdfOptions;
+
+  constructor(args?: { kdfOptions?: KdfOptions }) {
+    this.kdfOptions = args?.kdfOptions ?? encryptionPresets.standard.kdf;
+  }
+
   toBase64(bytes: Uint8Array): string {
     return btoa(String.fromCharCode(...bytes));
   }
@@ -59,7 +59,7 @@ export class Noble {
   } {
     const _pass = utf8ToBytes(args.password);
     const _salt = args.salt ? this.fromBase64(args.salt) : randomBytes(32);
-    const _opts = args.opts ?? defaultKdfOptions;
+    const _opts = args.opts ?? this.kdfOptions;
 
     const key = argon2id(_pass, _salt, { ..._opts });
     const mac = hmac(sha256, key, VERIFICATION_TEXT);

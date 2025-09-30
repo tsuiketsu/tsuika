@@ -6,6 +6,7 @@ import type {
   SuccessResponse,
 } from "@/types";
 import type { Folder, FolderSettings, KeyDerivation } from "@/types/folder";
+import { encryptionPresets } from "@/utils/noble/methods.list";
 import { runDeriveKeyWorker } from "@/workers/derive-key/worker.run";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -58,7 +59,10 @@ export const insertFolder = async (payload: FolderInsertSchemaType) => {
   let keyDerivation: KeyDerivation | undefined;
 
   if (payload.isEncrypted && payload.password) {
-    const data = await runDeriveKeyWorker({ password: payload.password });
+    const data = await runDeriveKeyWorker({
+      password: payload.password,
+      encryptionMethod: encryptionPresets[payload.encryptionPreset].kdf,
+    });
 
     if (data.status === "success") {
       keyDerivation = data.keyMetadata;

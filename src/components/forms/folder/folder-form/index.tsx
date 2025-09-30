@@ -1,4 +1,5 @@
-import { type FolderInsertSchemaType, folderInsertSchema } from "./types";
+import { type FolderInsertSchemaType, folderInsertSchema } from "../types";
+import EncryptionOptions from "./encryption-options";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -30,6 +31,7 @@ export default function FolderForm({ data, onSubmit }: PropsType) {
       isEncrypted: false,
       password: "",
       isLinkPreview: data?.settings?.isLinkPreview,
+      encryptionPreset: "standard",
     },
   });
 
@@ -96,24 +98,45 @@ export default function FolderForm({ data, onSubmit }: PropsType) {
         )}
 
         {isEnabled && !data?.settings?.keyDerivation && (
-          <FormField
-            disabled={!isEnabled}
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder={Array.from({ length: 32 }).fill("•").join(" ")}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <>
+            <hr />
+            <FormField
+              disabled={!isEnabled}
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder={Array.from({ length: 32 })
+                        .fill("•")
+                        .join(" ")}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="encryptionPreset"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <EncryptionOptions
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <hr />
+          </>
         )}
 
         {(isEnabled || Boolean(data?.settings?.keyDerivation)) && (
