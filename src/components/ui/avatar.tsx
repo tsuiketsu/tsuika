@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import clsx, { type ClassArray } from "clsx";
 import type React from "react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface OverlayContainerProps {
   children: React.ReactNode;
@@ -30,6 +30,10 @@ const OverlayContainer = ({ children, className }: OverlayContainerProps) => (
 const Avatar = ({ src, alt = "", fallback, className, style }: PropsType) => {
   const [isFallback, setIsFallback] = useState(!src || src.trim() === "");
   const imageRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    setIsFallback(!src || src.trim() === "");
+  }, [src]);
 
   return (
     <div
