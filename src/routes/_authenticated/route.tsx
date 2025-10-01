@@ -11,7 +11,6 @@ import { useAuthStore } from "@/stores/auth.store";
 import { useSidebarStore } from "@/stores/sidebar.store";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect } from "react";
-import { toast } from "sonner";
 
 const VerificationReminder = lazy(
   () => import("./-components/verification-reminder")
@@ -80,27 +79,20 @@ function DashboardLayout() {
 
   // Apply user preferences
   useEffect(() => {
+    const syncUserSettings = async () => {
+      try {
+        const profile = await fetchProfile();
+        const font = profile.data.preferencesJson.font;
+        if (font) setFont(font);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     if (typeof window !== "undefined" && window.sessionStorage) {
-      const font = sessionStorage.getItem("vite-ui-font");
-      if (font) return;
-
-      const promise = new Promise((resolve, reject) => {
-        (async () => {
-          try {
-            const profile = await fetchProfile();
-            const font = profile.data.preferencesJson.font;
-            if (font) setFont(font);
-            resolve({});
-          } catch (error) {
-            reject(error);
-          }
-        })();
-      });
-
-      toast.promise(promise, {
-        loading: "Syncing user settings...",
-        success: "Success",
-      });
+      if (!sessionStorage.getItem("vite-ui-font")) {
+        syncUserSettings();
+      }
     }
   }, [setFont]);
 
