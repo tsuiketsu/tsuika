@@ -21,7 +21,7 @@ export const Route = createFileRoute("/_auth")({
         return;
       } else {
         return redirect({
-          to: "/dashboard",
+          to: "/",
         });
       }
     } catch (error) {

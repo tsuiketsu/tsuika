@@ -7,7 +7,7 @@ import Tasks from "./-components/tasks";
 import { Button } from "@/components/ui/button";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_authenticated/dashboard/")({
+export const Route = createFileRoute("/_authenticated/_home/")({
   component: RouteComponent,
 });
 

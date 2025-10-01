@@ -11,7 +11,7 @@ export default function GeneralSection() {
       <SidebarGroupContent>
         <SidebarLink
           label="Dashboard"
-          navigate={{ to: "/dashboard" }}
+          navigate={{ to: "/" }}
           icon={LayoutDashboard}
           tooltip="Dashboard"
         />

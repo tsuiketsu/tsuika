@@ -66,7 +66,7 @@ function Login() {
         session: data as unknown as Session,
       });
 
-      navigate({ to: "/dashboard" });
+      navigate({ to: "/" });
     },
   });
 

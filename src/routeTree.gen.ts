@@ -11,13 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedSaveBookmarkRouteRouteImport } from './routes/_authenticated/save-bookmark/route'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
-import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard/index'
+import { Route as AuthenticatedHomeIndexRouteImport } from './routes/_authenticated/_home/index'
 import { Route as AuthVerify2faIndexRouteImport } from './routes/_auth/verify-2fa/index'
 import { Route as AuthEmailVerificationIndexRouteImport } from './routes/_auth/email-verification/index'
 import { Route as AuthenticatedBookmarksSlugRouteImport } from './routes/_authenticated/bookmarks/$slug'
@@ -34,11 +33,6 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 } as any)
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/_auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
@@ -69,12 +63,11 @@ const AuthenticatedSettingsIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
-const AuthenticatedDashboardIndexRoute =
-  AuthenticatedDashboardIndexRouteImport.update({
-    id: '/dashboard/',
-    path: '/dashboard/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
+const AuthenticatedHomeIndexRoute = AuthenticatedHomeIndexRouteImport.update({
+  id: '/_home/',
+  path: '/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthVerify2faIndexRoute = AuthVerify2faIndexRouteImport.update({
   id: '/verify-2fa/',
   path: '/verify-2fa/',
@@ -129,7 +122,6 @@ const AuthenticatedBookmarksFolderFolderSIdRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/save-bookmark': typeof AuthenticatedSaveBookmarkRouteRoute
   '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
@@ -137,7 +129,7 @@ export interface FileRoutesByFullPath {
   '/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
   '/email-verification': typeof AuthEmailVerificationIndexRoute
   '/verify-2fa': typeof AuthVerify2faIndexRoute
-  '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/': typeof AuthenticatedHomeIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/$uname/folder/$id': typeof PublicUnameFolderIdRoute
   '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
@@ -147,14 +139,13 @@ export interface FileRoutesByFullPath {
   '/bookmarks/folder/s/$id': typeof AuthenticatedBookmarksFolderFolderSIdRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/save-bookmark': typeof AuthenticatedSaveBookmarkRouteRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
   '/email-verification': typeof AuthEmailVerificationIndexRoute
   '/verify-2fa': typeof AuthVerify2faIndexRoute
-  '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/': typeof AuthenticatedHomeIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/$uname/folder/$id': typeof PublicUnameFolderIdRoute
   '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
@@ -165,7 +156,6 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/_authenticated/save-bookmark': typeof AuthenticatedSaveBookmarkRouteRoute
@@ -175,7 +165,7 @@ export interface FileRoutesById {
   '/_authenticated/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
   '/_auth/email-verification/': typeof AuthEmailVerificationIndexRoute
   '/_auth/verify-2fa/': typeof AuthVerify2faIndexRoute
-  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/_home/': typeof AuthenticatedHomeIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_public/$uname/folder/$id': typeof PublicUnameFolderIdRoute
   '/_authenticated/settings/account/': typeof AuthenticatedSettingsAccountIndexRoute
@@ -187,7 +177,6 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/save-bookmark'
     | '/settings'
     | '/login'
@@ -195,7 +184,7 @@ export interface FileRouteTypes {
     | '/bookmarks/$slug'
     | '/email-verification'
     | '/verify-2fa'
-    | '/dashboard'
+    | '/'
     | '/settings/'
     | '/$uname/folder/$id'
     | '/settings/account'
@@ -205,14 +194,13 @@ export interface FileRouteTypes {
     | '/bookmarks/folder/s/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/save-bookmark'
     | '/login'
     | '/register'
     | '/bookmarks/$slug'
     | '/email-verification'
     | '/verify-2fa'
-    | '/dashboard'
+    | '/'
     | '/settings'
     | '/$uname/folder/$id'
     | '/settings/account'
@@ -222,7 +210,6 @@ export interface FileRouteTypes {
     | '/bookmarks/folder/s/$id'
   id:
     | '__root__'
-    | '/'
     | '/_auth'
     | '/_authenticated'
     | '/_authenticated/save-bookmark'
@@ -232,7 +219,7 @@ export interface FileRouteTypes {
     | '/_authenticated/bookmarks/$slug'
     | '/_auth/email-verification/'
     | '/_auth/verify-2fa/'
-    | '/_authenticated/dashboard/'
+    | '/_authenticated/_home/'
     | '/_authenticated/settings/'
     | '/_public/$uname/folder/$id'
     | '/_authenticated/settings/account/'
@@ -243,7 +230,6 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   PublicUnameFolderIdRoute: typeof PublicUnameFolderIdRoute
@@ -263,13 +249,6 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof AuthRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/register': {
@@ -307,11 +286,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsIndexRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
-    '/_authenticated/dashboard/': {
-      id: '/_authenticated/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
+    '/_authenticated/_home/': {
+      id: '/_authenticated/_home/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedHomeIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_auth/verify-2fa/': {
@@ -425,7 +404,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSaveBookmarkRouteRoute: typeof AuthenticatedSaveBookmarkRouteRoute
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedBookmarksSlugRoute: typeof AuthenticatedBookmarksSlugRoute
-  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+  AuthenticatedHomeIndexRoute: typeof AuthenticatedHomeIndexRoute
   AuthenticatedBookmarksBookmarkBIdRoute: typeof AuthenticatedBookmarksBookmarkBIdRoute
   AuthenticatedBookmarksFolderFolderSIdRoute: typeof AuthenticatedBookmarksFolderFolderSIdRoute
 }
@@ -434,7 +413,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSaveBookmarkRouteRoute: AuthenticatedSaveBookmarkRouteRoute,
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedBookmarksSlugRoute: AuthenticatedBookmarksSlugRoute,
-  AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+  AuthenticatedHomeIndexRoute: AuthenticatedHomeIndexRoute,
   AuthenticatedBookmarksBookmarkBIdRoute:
     AuthenticatedBookmarksBookmarkBIdRoute,
   AuthenticatedBookmarksFolderFolderSIdRoute:
@@ -445,7 +424,6 @@ const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   PublicUnameFolderIdRoute: PublicUnameFolderIdRoute,
