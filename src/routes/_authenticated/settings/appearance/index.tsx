@@ -27,12 +27,14 @@ function RouteComponent() {
     }
   });
 
+  const fontName = pref?.font ?? sessionStorage.getItem("vite-ui-font");
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-2">
         <span className="ml-0.5 text-sm">Font</span>
         <FontOptions
-          value={pref?.font}
+          value={fontName as Font}
           onValueChange={(font) => {
             payloadFont.current = font;
           }}
