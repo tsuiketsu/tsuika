@@ -14,6 +14,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
+import useHostName from "@/hooks/use-hostname";
 import { useSession } from "@/lib/auth-client";
 import type { Setter } from "@/lib/utils";
 import { fetchSharedFolderInfo } from "@/queries/share-folder.queries";
@@ -29,6 +30,7 @@ interface PropsType {
 }
 
 export default function ShareFolder({ folder, open, setOpen }: PropsType) {
+  const hostname = useHostName();
   const { data } = useSession();
 
   const { data: sharedFolder, isFetching } = useQuery({
@@ -44,11 +46,10 @@ export default function ShareFolder({ folder, open, setOpen }: PropsType) {
   });
 
   const getPublicUrl = () => {
-    const host = import.meta.env.VITE_FRONTEND_BASE_URL;
     const username = data?.user.username;
     const id = folder.publicId;
 
-    return `${host}/${username}/folder/${id}`;
+    return `${hostname}/${username}/folder/${id}`;
   };
 
   const copyToClipboardHandler = async () => {

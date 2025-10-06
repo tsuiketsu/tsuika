@@ -9,7 +9,6 @@ interface ViteTypeOptions {
 
 interface ImportMetaEnv {
   readonly VITE_API_BASE_URL: string;
-  readonly VITE_FRONTEND_BASE_URL: string;
   readonly VITE_LINK_METADATA_API_URL: string;
   readonly VITE_LINK_METADATA_API_KEY: string;
 }
