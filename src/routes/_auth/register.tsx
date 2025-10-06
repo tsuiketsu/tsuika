@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { emailOtp, signUp } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -48,6 +48,13 @@ const SignUpSchema = z.object({
 
 export const Route = createFileRoute("/_auth/register")({
   component: Register,
+  beforeLoad: () => {
+    const host = window.location.hostname;
+
+    if (host.includes("demo")) {
+      return redirect({ to: "/login" });
+    }
+  },
 });
 
 function Register() {

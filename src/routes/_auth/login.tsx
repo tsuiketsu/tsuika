@@ -16,11 +16,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import useHostName from "@/hooks/use-hostname";
 import { signIn, type Session } from "@/lib/auth-client";
 import { useAuthStore } from "@/stores/auth.store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -36,6 +38,8 @@ export const Route = createFileRoute("/_auth/login")({
 
 function Login() {
   const navigate = useNavigate();
+  const hostname = useHostName();
+  const isDemo = hostname.includes("demo");
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -81,6 +85,32 @@ function Login() {
         <CardDescription>Let's get started with Tsuika</CardDescription>
       </CardHeader>
       <CardContent>
+        {isDemo && (
+          <div className="bg-secondary mb-3 space-y-3 rounded-xl border p-3">
+            <p className="text-sm">
+              Welcome to our demo site! Please note that API upload actions are
+              disabled here. To experience the full functionality, sign up at{" "}
+              <a
+                href="https://app.tsuika.space"
+                target="_blank"
+                rel="noreferror"
+                className="text-info hover:underline"
+              >
+                app.tsuika.space
+              </a>
+            </p>
+            <Button
+              className="w-full"
+              size="sm"
+              onClick={() => {
+                form.setValue("email", "demo@tsuika.space");
+                form.setValue("password", "demodemo");
+              }}
+            >
+              Login as demo user
+            </Button>
+          </div>
+        )}
         <Form {...form}>
           <form
             id="login-form"
@@ -129,7 +159,7 @@ function Login() {
         <Button type="submit" form="login-form" isLoading={mutation.isPending}>
           Login
         </Button>
-        <span className="text-sm">
+        <span className={clsx("text-sm", { hidden: isDemo })}>
           Don't have an account yet? here{" "}
           <Button
             variant="link"
