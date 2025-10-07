@@ -27,7 +27,7 @@ export const useSecuredFolders = (): ReturnType => {
   const sessionFolders = useSecureFolderStore((s) => s.folders);
   const queryClient = useQueryClient();
 
-  const { folders, isFetching, isFetched } = useFoldersData();
+  const { folders, isFetching } = useFoldersData();
 
   useEffect(() => {
     if (!isSecured || sessionFolders.some((f) => f.folderId === folderId)) {
