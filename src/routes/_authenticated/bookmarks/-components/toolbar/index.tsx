@@ -17,7 +17,7 @@ interface PropsType {
 export default function ActionBar({ slug, total, onQueryChange }: PropsType) {
   const queryClient = useQueryClient();
 
-  const { folderId, ...folder } = useSecuredFolders();
+  const { isFetching, folderId, ...folder } = useSecuredFolders();
 
   const lockFolderHandler = () => {
     // Remove key derivations of folder
@@ -31,7 +31,7 @@ export default function ActionBar({ slug, total, onQueryChange }: PropsType) {
 
   return (
     <div className="flex items-center gap-4 pb-4">
-      {folder.isSecured && (
+      {!isFetching && folder.isSecured && (
         <Button variant="secondary" size="sm" onClick={lockFolderHandler}>
           <LockIcon /> Lock
         </Button>

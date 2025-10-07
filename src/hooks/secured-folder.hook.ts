@@ -27,7 +27,7 @@ export const useSecuredFolders = (): ReturnType => {
   const sessionFolders = useSecureFolderStore((s) => s.folders);
   const queryClient = useQueryClient();
 
-  const { folders, isFetching } = useFoldersData();
+  const { folders, isFetching, isFetched } = useFoldersData();
 
   useEffect(() => {
     if (!isSecured || sessionFolders.some((f) => f.folderId === folderId)) {
@@ -52,7 +52,7 @@ export const useSecuredFolders = (): ReturnType => {
 
     return () => {
       setIsLocked(!DEFAULT_FOLDER_NAMES.includes(folderId));
-      setIsSecured(folders.length !== 0);
+      setIsSecured(isFetching ? true : folders.length !== 0);
     };
   }, [
     folderId,
