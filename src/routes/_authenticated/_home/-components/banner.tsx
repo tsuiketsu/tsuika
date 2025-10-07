@@ -19,12 +19,12 @@ export default function Banner() {
         className="size-full object-cover"
       />
       {user && (
-        <div className="bg-background/60 absolute bottom-4 left-4 inline-flex h-14 items-center gap-3 rounded-full p-2 pr-8 font-sans backdrop-blur-sm">
+        <div className="bg-background/60 absolute bottom-4 left-4 inline-flex items-center gap-3 rounded-full p-1 pr-8 font-sans backdrop-blur-sm">
           <Avatar
             src={user?.image}
-            fallback={user?.username?.substring(0, 1)}
+            fallback={user.username ?? user.name ?? ""}
             alt="dashboard avatar"
-            className="size-10 capitalize"
+            className="size-12 capitalize outline-none"
           />
           <div className="flex flex-col">
             <span className="text-sm font-bold">Welcome back!</span>
