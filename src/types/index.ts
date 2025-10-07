@@ -2,12 +2,19 @@ import type { LucideProps } from "lucide-react";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
 import type { FieldValues, FieldPath } from "react-hook-form";
 
-export interface SuccessResponse<T> {
-  success: true; // No point, for the sake of completeness
+interface APIResponse {
   code: string;
   source: string;
   message: string;
+}
+export interface SuccessResponse<T> extends APIResponse {
+  success: true;
   data: T;
+}
+
+export interface ErrorResponse extends APIResponse {
+  success: false;
+  data: null;
 }
 
 export type Pagination = {
