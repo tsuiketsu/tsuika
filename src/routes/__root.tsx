@@ -17,7 +17,7 @@ export const Route = createRootRouteWithContext<RootRouterContext>()({
 function RootComponent() {
   return (
     <React.Fragment>
-      <Toaster />
+      <Toaster position="top-center" />
       <Outlet />
       <PWAUpdatePrompt />
       {/* <TanStackRouterDevtools position="bottom-right" /> */}
