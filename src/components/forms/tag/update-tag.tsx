@@ -53,11 +53,11 @@ export default function UpdateTag({ tag, ref, onChange }: PropsType) {
         data={tag}
         onSubmit={(payload) => {
           if (onChange) {
-            onChange(payload as Tag);
+            onChange({ ...payload, id: tag.id } as Tag);
             ref.current?.click();
-            return;
+          } else {
+            mutation.mutate({ id: tag.id, payload });
           }
-          mutation.mutate({ id: tag.id, payload });
         }}
       />
     </Modal>
