@@ -96,7 +96,7 @@ const InfoDialog = () => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" className="size-6">
+        <Button variant="outline" className="size-6 sm:size-7">
           <AlertCircle size={20} />
         </Button>
       </AlertDialogTrigger>
