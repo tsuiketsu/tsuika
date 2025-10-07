@@ -65,7 +65,7 @@ export default function PublicDetails({ data }: PropsType) {
       <Avatar
         src={data.author.image?.split("|")[1] ?? ""}
         className="size-26"
-        fallback={data.author.name}
+        fallback={data.author.username ?? data.author.name}
       />
       <h1 className="max-w-xl text-center text-5xl font-bold">
         {data?.title ?? ""}

@@ -31,8 +31,8 @@ const ProfileMobileLayout = ({ user, isFetching, onLogOut }: PropsType) => {
         <div className="inline-flex items-center gap-4 border-b px-4 pb-4">
           <Avatar
             src={user?.image ?? ""}
-            alt={user?.username ?? ""}
-            fallback={user?.name}
+            alt={user?.username ?? user?.name ?? ""}
+            fallback={user?.username ?? user?.name}
           />
           <div className="flex flex-col">
             <span className="text-sm">{user?.name}</span>

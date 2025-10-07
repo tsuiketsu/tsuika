@@ -27,7 +27,7 @@ export default function ProfileImageForm({ user, control }: PropsType) {
             <div className="flex gap-4 pb-6">
               <Avatar
                 src={getPreviewUrl(field.value) || user.image}
-                fallback="Ray"
+                fallback={user.username ?? user.name}
                 className="size-20"
               />
               <div className="flex flex-col justify-center gap-2">

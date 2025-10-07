@@ -27,9 +27,13 @@ const OverlayContainer = ({ children, className }: OverlayContainerProps) => (
   </div>
 );
 
+const diceBear = (seed: string) =>
+  `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${seed}`;
+
 const Avatar = ({ src, alt = "", fallback, className, style }: PropsType) => {
   const [isFallback, setIsFallback] = useState(!src || src.trim() === "");
   const imageRef = useRef<HTMLImageElement>(null);
+  const isDev = !process.env.NODE_ENV || process.env.NODE_ENV !== "production";
 
   useEffect(() => {
     setIsFallback(!src || src.trim() === "");
@@ -44,9 +48,13 @@ const Avatar = ({ src, alt = "", fallback, className, style }: PropsType) => {
       style={style}
     >
       <OverlayContainer className={[{ hidden: !isFallback }]}>
-        <span className="text-[50cqw] font-bold">
-          {fallback?.substring(0, 1)}
-        </span>
+        {isDev && isFallback && fallback ? (
+          <img src={diceBear(fallback)} alt="" />
+        ) : (
+          <span className="text-[50cqw] font-bold">
+            {fallback?.substring(0, 1)}
+          </span>
+        )}
       </OverlayContainer>
       <img
         ref={imageRef}

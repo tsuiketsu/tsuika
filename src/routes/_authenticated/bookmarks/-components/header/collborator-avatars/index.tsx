@@ -52,7 +52,7 @@ export default function CollboratorAvatars({ folderId }: { folderId: string }) {
           <Avatar
             key={`collborator-${idx}`}
             src={user.image || ""}
-            fallback={user.name}
+            fallback={user.username ?? user.name}
             className={clsx(
               "size-9 shadow-sm outline-none",
               idx > 0 && "absolute left-6"
