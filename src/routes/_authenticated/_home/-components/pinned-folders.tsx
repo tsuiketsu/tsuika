@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchFolders } from "@/queries/folder.queries";
 import { useUserProfileStore } from "@/stores/user-profile.store";
@@ -15,19 +14,17 @@ const Skeletons = () =>
 
 const Folders = ({ folders }: { folders: Folder[] }) =>
   folders.map((folder) => (
-    <Button
-      variant="outline"
+    <Link
       key={folder.id}
-      className="inline-flex h-auto justify-between p-2 pl-4"
-      asChild
+      to="/bookmarks/$slug"
+      params={{ slug: `folder/${folder.id}` }}
+      className="bg-card inline-flex items-center justify-between rounded-xl border py-2 pr-2 pl-4"
     >
-      <Link to="/bookmarks/$slug" params={{ slug: `folder/${folder.id}` }}>
-        <span>{folder.name}</span>
-        <span className="rounded-md border p-2">
-          <FolderIcon />
-        </span>
-      </Link>
-    </Button>
+      <span className="truncate text-sm">{folder.name}</span>
+      <span className="rounded-md border p-2">
+        <FolderIcon />
+      </span>
+    </Link>
   ));
 
 export default function PinnedFolders() {
@@ -55,7 +52,7 @@ export default function PinnedFolders() {
   return (
     <div className="w-full space-y-4">
       <h4 className="font-bold">Pinned Folders</h4>
-      <div className="grid grid-cols-3 gap-2 overflow-hidden @2xl:grid-cols-6 @6xl:grid-cols-3">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-2 overflow-hidden">
         {isFetching ? <Skeletons /> : <Folders folders={data?.data ?? []} />}
       </div>
     </div>
