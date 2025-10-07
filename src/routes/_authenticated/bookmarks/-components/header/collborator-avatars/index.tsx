@@ -31,6 +31,10 @@ export default function CollboratorAvatars({ folderId }: { folderId: string }) {
     return users?.slice(maxItems, users.length ?? 0).length ?? 0;
   }, [users]);
 
+  if (!slicedUsers || slicedUsers?.length === 0) {
+    return null;
+  }
+
   return (
     <button
       type="button"
@@ -65,7 +69,7 @@ export default function CollboratorAvatars({ folderId }: { folderId: string }) {
       {users && remainingUsers > 0 && (
         <span
           className="bg-card absolute flex size-9 items-center justify-center rounded-full border text-xs shadow-sm"
-          style={{ left: 24 * maxItems }}
+          style={{ left: 24 * maxItems, zIndex: 10 }}
         >
           +{remainingUsers}
         </span>
