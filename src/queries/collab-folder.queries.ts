@@ -54,7 +54,10 @@ export const useGetCollaboratorsQuery = (folderId: string) => {
 
 export const changeMemberRole = async (payload: CollabFolderInsert) => {
   return axios<
-    SuccessResponse<{ id: string } & Collaborator["permissionLevel"]>
+    SuccessResponse<{
+      id: string;
+      permissionLevel: Collaborator["permissionLevel"];
+    }>
   >({
     method: "patch",
     url: `${baseEndpoint}/${payload.folderId}`,

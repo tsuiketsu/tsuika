@@ -12,10 +12,13 @@ import {
   changeMemberRole,
   invalidateCollaboratorsData,
 } from "@/queries/collab-folder.queries";
+import type { ErrorResponse } from "@/types";
 import { type UserRole, userRoles } from "@/types/folder";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 import { username } from "better-auth/plugins/username";
-import { useId } from "react";
+import { useId, useState } from "react";
+import { toast } from "sonner";
 
 interface UserCardProps {
   image: string;
@@ -36,6 +39,8 @@ const roles = Object.values(userRoles).filter(
 );
 
 const UserRoles = (props: UserRolesProps) => {
+  const [selectedRole, setSelectedRole] = useState<UserRole>(props.role);
+
   const { username, role, folderId, isUserAuthorized } = props;
 
   const queryClient = useQueryClient();
@@ -44,9 +49,12 @@ const UserRoles = (props: UserRolesProps) => {
   const mutation = useMutation({
     mutationKey: ["change-user-role", { folderId }],
     mutationFn: changeMemberRole,
-    onSuccess: () => {
+    onSuccess: ({ data }) => {
       invalidateCollaboratorsData(queryClient, folderId);
+      setSelectedRole(data.permissionLevel);
     },
+    onError: (error: AxiosError<ErrorResponse>) =>
+      toast.error(error.response?.data.message),
   });
 
   const changeRoleHandler = (value: UserRole) =>
@@ -61,7 +69,7 @@ const UserRoles = (props: UserRolesProps) => {
   }
 
   return (
-    <Select defaultValue={role} onValueChange={changeRoleHandler}>
+    <Select value={selectedRole} onValueChange={changeRoleHandler}>
       <SelectTrigger size="sm" className="ml-auto w-28 cursor-pointer">
         {mutation.isPending ? (
           <SvgSpinners3DotsScale />
@@ -87,7 +95,7 @@ export default function UserCard(props: UserCardProps) {
     <div className="inline-flex w-full items-center gap-3 p-1">
       <Avatar
         src={props.image}
-        fallback={props.name}
+        fallback={props.username ?? props.name}
         alt={`${username}-avatar`}
         className="size-10"
       />
