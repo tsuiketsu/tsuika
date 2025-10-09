@@ -78,7 +78,10 @@ const Switch = ({
 
 export default function Content({ bookmark }: PropsType) {
   const [isEditable, setIsEditable] = useState(false);
-  const editor = useDefaultEditor("tsuika-editor", bookmark?.description ?? "");
+  const { editor } = useDefaultEditor(
+    "tsuika-editor",
+    bookmark?.description ?? ""
+  );
   const queryClient = useQueryClient();
 
   useEffect(() => editor.setEditable(false), [editor]);

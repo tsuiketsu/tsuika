@@ -161,3 +161,12 @@ input[type="number"] {
     display: block;
   }
 }
+
+/* Editor Styles */
+p.is-editor-empty:first-child::before {
+  color: var(--muted-foreground);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

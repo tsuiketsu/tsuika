@@ -38,7 +38,7 @@ export default function ContentField({
   const [isTextExpand, setIsTextExpand] = useState(false);
   const [isShowMoreVisible, setIsShowMoreVisible] = useState(false);
 
-  const editor = useDefaultEditor(
+  const { editor, onValueChange: onEditorvalueChange } = useDefaultEditor(
     "bookmark-form-description",
     description || ""
   );
@@ -70,7 +70,7 @@ export default function ContentField({
                   : "dark:bg-card relative overflow-hidden bg-transparent p-3"
               )}
             >
-              <div className="absolute top-1 right-1 z-20 inline-flex gap-1 transition-opacity duration-200">
+              <div className="absolute right-1 bottom-1 z-20 inline-flex gap-1 transition-opacity duration-200">
                 <Button
                   variant="secondary"
                   size="icon"
@@ -135,10 +135,8 @@ export default function ContentField({
                   innerRef={editorRef}
                   value={value}
                   editor={editor}
-                  onInput={() =>
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    onChange((editor.storage as any).markdown.getMarkdown())
-                  }
+                  onPaste={onEditorvalueChange(onChange)}
+                  onInput={onEditorvalueChange(onChange)}
                   className={clsx(
                     isExtended
                       ? "bg-card min-h-screen rounded-xl border p-4"

@@ -1,4 +1,6 @@
-import { useEditor } from "@tiptap/react";
+import { Placeholder } from "@tiptap/extensions";
+import type { Transaction } from "@tiptap/pm/state";
+import { Editor, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import clsx from "clsx";
 import { Markdown } from "tiptap-markdown";
@@ -24,10 +26,23 @@ export const markdownStyle = clsx(
   "prose-a:text-info"
 );
 
-export default function useDefaultEditor(id: string, defaultText: string) {
-  return useEditor({
+export default function useDefaultEditor(
+  id: string,
+  defaultText: string,
+  onUpdate?: (args: {
+    editor: Editor;
+    transaction: Transaction;
+    appendedTransactions: Transaction[];
+  }) => void
+) {
+  const editor = useEditor({
+    onUpdate,
     extensions: [
       StarterKit,
+      Placeholder.configure({
+        placeholder:
+          "This is a placeholder description for Example Website. Replace this with a brief summary of the site's content or purpose.",
+      }),
       Markdown.configure({
         html: true,
         tightLists: true,
@@ -46,4 +61,11 @@ export default function useDefaultEditor(id: string, defaultText: string) {
       },
     },
   });
+
+  const onValueChange = (onChange: (value: string) => void) => () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onChange((editor.storage as any).markdown.getMarkdown());
+  };
+
+  return { editor, onValueChange };
 }
