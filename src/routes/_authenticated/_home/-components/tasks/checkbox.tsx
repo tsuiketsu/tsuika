@@ -12,9 +12,12 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { updateInfQueryData } from "@/lib/query.utils";
 import { updateTaskStatus } from "@/queries/task.queries";
+import type { ErrorResponse } from "@/types";
 import type { Task } from "@/types/task";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface PropsType {
   task: Task;
@@ -38,8 +41,13 @@ export default function TaskCheckbox({ task }: PropsType) {
       setOpen(false);
       setChecked(!checked);
     },
+    onError: (error: AxiosError<ErrorResponse>) => {
+      if (error.status === 403) {
+        toast.error(error.response?.data.message || "Failed to update task");
+      }
 
-    onError: console.error,
+      console.error(error);
+    },
   });
 
   return (

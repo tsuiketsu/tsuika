@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
-import { deleteInfQueryData } from "@/lib/query.utils";
+import { deleteInfQueryData, mutationError } from "@/lib/query.utils";
 import type { Setter } from "@/lib/utils";
 import { deleteBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark } from "@/types/bookmark";
@@ -39,12 +39,7 @@ export default function DeleteBookmark({
     mutationKey: ["deleteBookmark"],
     mutationFn: async ({ id }: Pick<Bookmark, "id">) =>
       await deleteBookmark(id),
-    onSuccess: ({ status, data: { message } }) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to delete bookmark");
-        return;
-      }
-
+    onSuccess: ({ data: { message } }) => {
       const queryKey = isSecured
         ? ["bookmarks", `folder/${slug}`, "", { isEncrypted: true }]
         : ["bookmarks", slug, query];
@@ -57,6 +52,7 @@ export default function DeleteBookmark({
       toast.success(message || "Successfully deleted bookmark");
       setOpen(false);
     },
+    onError: mutationError("Failed to remove bookmark"),
   });
 
   return (

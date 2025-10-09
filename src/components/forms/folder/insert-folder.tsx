@@ -1,7 +1,7 @@
 import FolderForm from "./folder-form";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
-import { insertInfQueryData } from "@/lib/query.utils";
+import { insertInfQueryData, mutationError } from "@/lib/query.utils";
 import { insertFolder } from "@/queries/folder.queries";
 import type { Folder } from "@/types/folder";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -23,12 +23,7 @@ export default function InsertFolder({ customTrigger, triggerRef }: PropsType) {
   const mutation = useMutation({
     mutationKey: ["insertFolder"],
     mutationFn: insertFolder,
-    onSuccess: ({ status, data: { data, message } }) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to add folder");
-        return;
-      }
-
+    onSuccess: ({ data: { data, message } }) => {
       queryClient.setQueryData<{ pages: { data: Folder[] }[] }>(
         ["folders"],
         (old) => insertInfQueryData(old, data)
@@ -37,6 +32,7 @@ export default function InsertFolder({ customTrigger, triggerRef }: PropsType) {
       toast.success(message || "Successfully added folder");
       ref.current?.click();
     },
+    onError: mutationError("Failed to add folder"),
   });
   return (
     <Modal

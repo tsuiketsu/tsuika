@@ -1,7 +1,7 @@
 import TaskForm from "./task-form";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
-import { updateInfQueryData } from "@/lib/query.utils";
+import { mutationError, updateInfQueryData } from "@/lib/query.utils";
 import { updateTask } from "@/queries/task.queries";
 import type { Task, TaskType } from "@/types/task";
 import { Slot } from "@radix-ui/react-slot";
@@ -40,11 +40,7 @@ export default function UpdateTask({
       toast.success("Successfully updated task");
       ref.current?.click();
     },
-
-    onError: (error) => {
-      console.error(error);
-      toast.error("Failed to updated task");
-    },
+    onError: mutationError("Failed to update task"),
   });
 
   return (

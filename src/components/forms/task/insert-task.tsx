@@ -1,7 +1,7 @@
 import TaskForm from "./task-form";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
-import { insertInfQueryData } from "@/lib/query.utils";
+import { insertInfQueryData, mutationError } from "@/lib/query.utils";
 import type { Setter } from "@/lib/utils";
 import { insertTask } from "@/queries/task.queries";
 import type { Task, TaskType } from "@/types/task";
@@ -40,11 +40,7 @@ export default function InsertTask({
       toast.success("Successfully added task");
       setOpen(false);
     },
-
-    onError: (error) => {
-      console.error(error);
-      toast.error("Failed to add task");
-    },
+    onError: mutationError("Failed to add task"),
   });
 
   return (

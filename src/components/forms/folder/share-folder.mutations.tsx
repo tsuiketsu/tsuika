@@ -1,8 +1,8 @@
+import { mutationError } from "@/lib/query.utils";
 import { unpublishFolder } from "@/queries/share-folder.queries";
 import { publishFolder } from "@/queries/share-folder.queries";
 import type { SharedFolder } from "@/types/folder";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 
 const getQueryKey = (id: string) => ["shared-folder", id];
 
@@ -17,12 +17,7 @@ export const usePublishMutation = () => {
   return useMutation({
     mutationKey: ["publish-folder"],
     mutationFn: publishFolder,
-    onSuccess: ({ status, data: { data, message } }) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to add folder");
-        return;
-      }
-
+    onSuccess: ({ data: { data } }) => {
       const queryKey = getQueryKey(data.id);
       const payload = queryClient.getQueryData(queryKey);
 
@@ -34,6 +29,7 @@ export const usePublishMutation = () => {
         }));
       }
     },
+    onError: mutationError("Failed publish folder"),
   });
 };
 
@@ -44,12 +40,7 @@ export const useUpdateMutation = ({ onSuccessFunc }: VoidFunc) => {
   return useMutation({
     mutationKey: ["update-published-folder"],
     mutationFn: publishFolder,
-    onSuccess: ({ status, data: { data, message } }) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to add folder");
-        return;
-      }
-
+    onSuccess: ({ data: { data } }) => {
       const queryKey = getQueryKey(data.id);
       const payload = queryClient.getQueryData(queryKey);
 
@@ -62,6 +53,7 @@ export const useUpdateMutation = ({ onSuccessFunc }: VoidFunc) => {
 
       onSuccessFunc?.();
     },
+    onError: mutationError("Failed to update folder"),
   });
 };
 
@@ -72,12 +64,7 @@ export const useUnpublishMutation = () => {
   return useMutation({
     mutationKey: ["unpublish-folder"],
     mutationFn: unpublishFolder,
-    onSuccess: ({ status, data: { message } }, folderId) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to add folder");
-        return;
-      }
-
+    onSuccess: (_, folderId) => {
       queryClient.setQueryData<SharedFolder>(
         getQueryKey(folderId),
         (old) =>
@@ -87,5 +74,6 @@ export const useUnpublishMutation = () => {
           }) as SharedFolder
       );
     },
+    onError: mutationError("Failed to un-publish folder"),
   });
 };

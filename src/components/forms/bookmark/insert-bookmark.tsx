@@ -4,14 +4,13 @@ import { useBookmarPathSlug } from "./use-slug.hook";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
-import { insertInfQueryData } from "@/lib/query.utils";
+import { insertInfQueryData, mutationError } from "@/lib/query.utils";
 import { addBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark } from "@/types/bookmark";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { BookmarkPlus } from "lucide-react";
 import { useState, type RefObject } from "react";
-import { toast } from "sonner";
 
 interface PropsType {
   triggerRef?: RefObject<HTMLButtonElement | null>;
@@ -27,12 +26,7 @@ export default function InsertBookmark({ triggerRef }: PropsType) {
   const mutation = useMutation({
     mutationKey: ["addBookmark", slug, ""],
     mutationFn: addBookmark,
-    onSuccess: ({ status, data: { data, message } }, bookmark) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to add bookmark");
-        return;
-      }
-
+    onSuccess: ({ data: { data } }, bookmark) => {
       if (!slug.includes("tag")) {
         const queryKey: unknown[] = [
           "bookmarks",
@@ -56,13 +50,9 @@ export default function InsertBookmark({ triggerRef }: PropsType) {
         );
       }
 
-      toast.success(message || "Successfully added bookmark");
       setOpen(false);
     },
-    onError: (error) => {
-      toast.error("Something went wrong! Failed to add bookmark");
-      console.error(error);
-    },
+    onError: mutationError("Something went wrong! Failed to add bookmark"),
   });
 
   const onSubmit = useMutationSubmit(mutation.mutate);

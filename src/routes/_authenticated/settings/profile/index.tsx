@@ -5,9 +5,11 @@ import { Form } from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton";
 import useUserProfile from "@/hooks/user-profile.hook";
 import { updateUserProfile } from "@/queries/auth.queries";
+import type { ErrorResponse } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import type { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
@@ -65,6 +67,10 @@ function ProfileComponent() {
         refetch();
         toast.success("Successfully updated profile");
       }
+    },
+    onError: (error: AxiosError<ErrorResponse>) => {
+      if (error.status === 403 && error.response?.data.message)
+        toast.error(error.response?.data.message);
     },
   });
 

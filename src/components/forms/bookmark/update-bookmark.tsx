@@ -2,7 +2,11 @@ import BookmarkForm from "./form";
 import useMutationSubmit from "./hooks/use-mutation-submit";
 import Modal from "@/components/ui/modal";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
-import { deleteInfQueryData, updateInfQueryData } from "@/lib/query.utils";
+import {
+  deleteInfQueryData,
+  mutationError,
+  updateInfQueryData,
+} from "@/lib/query.utils";
 import type { Setter } from "@/lib/utils";
 import { editBookmark } from "@/queries/bookmark.queries";
 import BookmarkThumbnail from "@/routes/_authenticated/bookmarks/-components/bookmark-cards/thumbnail";
@@ -34,12 +38,7 @@ export default function UpdateBookmark({
   const mutation = useMutation({
     mutationKey: ["editBookmark"],
     mutationFn: editBookmark,
-    onSuccess: ({ status, data: { data, message } }, { payload }) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to add bookmark");
-        return;
-      }
-
+    onSuccess: ({ data: { data, message } }, { payload }) => {
       const queryKey: unknown[] = ["bookmarks", slug, query];
 
       if (isSecured) {
@@ -68,6 +67,7 @@ export default function UpdateBookmark({
       toast.success(message || "Successfully updated bookmark");
       setOpen(false);
     },
+    onError: mutationError("Failed to update bookmark"),
   });
 
   const onSubmit = useMutationSubmit((payload) =>

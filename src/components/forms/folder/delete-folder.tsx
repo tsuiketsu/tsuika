@@ -8,7 +8,7 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { deleteInfQueryData } from "@/lib/query.utils";
+import { deleteInfQueryData, mutationError } from "@/lib/query.utils";
 import type { Setter } from "@/lib/utils";
 import { deleteFolder } from "@/queries/folder.queries";
 import type { Folder } from "@/types/folder";
@@ -27,12 +27,7 @@ export default function DeleteFolder({ id, open, setOpen }: PropsType) {
   const mutation = useMutation({
     mutationKey: ["deleteFolder"],
     mutationFn: async ({ id }: Pick<Folder, "id">) => await deleteFolder(id),
-    onSuccess: ({ status, data: { message } }) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to delete folder");
-        return;
-      }
-
+    onSuccess: ({ data: { message } }) => {
       queryClient.setQueryData<{ pages: { data: Folder[] }[] }>(
         ["folders"],
         (old) => deleteInfQueryData(old, id, (old) => old.id)
@@ -41,6 +36,7 @@ export default function DeleteFolder({ id, open, setOpen }: PropsType) {
       toast.success(message || "Successfully deleted folder");
       setOpen(false);
     },
+    onError: mutationError("Failed delete folder"),
   });
 
   return (

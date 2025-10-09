@@ -8,6 +8,7 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { mutationError } from "@/lib/query.utils";
 import { deleteTag } from "@/queries/tags.queries";
 import type { Tag } from "@/types/tag";
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
@@ -28,12 +29,7 @@ export default function Deletetag({ id, ref }: PropsType) {
   const mutation = useMutation({
     mutationKey: ["deleteTag"],
     mutationFn: async ({ id }: Pick<Tag, "id">) => await deleteTag(id),
-    onSuccess: ({ status, data: { message } }, { id }) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to delete tag");
-        return;
-      }
-
+    onSuccess: ({ data: { message } }, { id }) => {
       queryClient.setQueryData<Tag[]>(["tags"], (old) =>
         old?.filter((t) => t.id !== id)
       );
@@ -41,6 +37,7 @@ export default function Deletetag({ id, ref }: PropsType) {
       toast.success(message || "Successfully deleted tag");
       setOpen(false);
     },
+    onError: mutationError("Failed to remove tag"),
   });
 
   return (

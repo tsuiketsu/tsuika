@@ -1,7 +1,7 @@
 import FolderForm from "./folder-form";
 import type { FolderInsertSchemaType } from "./types";
 import Modal from "@/components/ui/modal";
-import { updateInfQueryData } from "@/lib/query.utils";
+import { mutationError, updateInfQueryData } from "@/lib/query.utils";
 import type { Setter } from "@/lib/utils";
 import { updateFolder } from "@/queries/folder.queries";
 import type { Folder } from "@/types/folder";
@@ -26,12 +26,7 @@ export default function UpdateFolder({ folder, open, setOpen }: PropsType) {
       id: Folder["id"];
       payload: FolderInsertSchemaType;
     }) => await updateFolder(id, payload),
-    onSuccess: ({ status, data: { data, message } }) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to add folder");
-        return;
-      }
-
+    onSuccess: ({ data: { data, message } }) => {
       queryClient.setQueryData<{ pages: { data: Folder[] }[] }>(
         ["folders"],
         (old) => updateInfQueryData(old, data, (old) => old.id)
@@ -40,6 +35,7 @@ export default function UpdateFolder({ folder, open, setOpen }: PropsType) {
       toast.success(message || "Successfully updated folder");
       setOpen(false);
     },
+    onError: mutationError("Failed to update folder"),
   });
 
   return (

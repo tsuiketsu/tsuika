@@ -1,3 +1,6 @@
+import { AxiosError } from "axios";
+import { toast } from "sonner";
+
 export function insertInfQueryData<T>(
   old:
     | {
@@ -152,3 +155,12 @@ export function findDataFromInfQuery<T>(
     p.data?.find((f) => idSelector(f) === id)
   )?.[0];
 }
+
+export const mutationError = (msg?: string) => (error: Error) => {
+  console.error(error);
+  if (error instanceof AxiosError && error.status === 403) {
+    toast.error(error.response?.data.message);
+  } else if (msg) {
+    toast.error(msg);
+  }
+};

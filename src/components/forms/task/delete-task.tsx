@@ -8,7 +8,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { deleteInfQueryData } from "@/lib/query.utils";
+import { deleteInfQueryData, mutationError } from "@/lib/query.utils";
 import { deleteTask } from "@/queries/task.queries";
 import type { Task } from "@/types/task";
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
@@ -38,8 +38,7 @@ export default function DeleteTask({ taskId }: PropsType) {
       setOpen(false);
       setChecked(!checked);
     },
-
-    onError: console.error,
+    onError: mutationError("Failed to delete task"),
   });
 
   return (

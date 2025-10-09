@@ -1,3 +1,4 @@
+import { mutationError } from "@/lib/query.utils";
 import { insertTag } from "@/queries/tags.queries";
 import type { Tag } from "@/types/tag";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
@@ -13,12 +14,7 @@ const useTagInsertMutation = ({
   const mutation = useMutation({
     mutationKey: ["insertTag"],
     mutationFn: insertTag,
-    onSuccess: ({ status, data: { data, message } }) => {
-      if (status !== 200) {
-        toast.error(message || "Failed to add tag");
-        return;
-      }
-
+    onSuccess: ({ data: { data, message } }) => {
       queryClient.setQueryData<Tag[]>(["tags"], (old) =>
         old && old.length > 0 ? [...old, data] : [data]
       );
@@ -26,6 +22,7 @@ const useTagInsertMutation = ({
       onSuccess(data);
       toast.success(message || "Successfully added tag");
     },
+    onError: mutationError("Failed to add tag"),
   });
 
   return mutation;
