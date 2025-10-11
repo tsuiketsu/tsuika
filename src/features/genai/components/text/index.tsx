@@ -1,5 +1,6 @@
 import { AI_FAILED_TEXT } from "./constants";
 import instructions from "./instructions.list";
+import type { SystemInstruction } from "./types";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Tooltip,
@@ -15,6 +16,7 @@ interface PropsType {
   prompt: string;
   variant?: VariantProps<typeof buttonVariants>["variant"];
   className?: string;
+  systemInstruction: SystemInstruction;
   onValueChange?: (value: string) => void;
   onClick?: () => void;
 }
@@ -44,7 +46,7 @@ export default function AIStreamWriter(props: PropsType) {
           model: "gemini-2.5-flash-lite",
           contents,
           config: {
-            systemInstruction: instructions.summarizer.directives,
+            systemInstruction: instructions[props.systemInstruction],
             thinkingConfig: { thinkingBudget: 0 },
             tools: [{ googleSearch: {} }],
             temperature: 0.1,

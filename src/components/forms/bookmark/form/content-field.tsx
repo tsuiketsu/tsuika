@@ -50,6 +50,7 @@ const AISummaryGenerator = ({
       render={({ field }) => (
         <AIStreamWriter
           variant={variant}
+          systemInstruction="summarizer"
           prompt={url}
           className={className}
           onClick={() => {
