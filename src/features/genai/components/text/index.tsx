@@ -1,3 +1,4 @@
+import { AI_FAILED_TEXT } from "./constants";
 import instructions from "./instructions.list";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -53,15 +54,16 @@ export default function AIStreamWriter(props: PropsType) {
         let responseText = "";
 
         for await (const chunk of response) {
-          if (chunk.text && !chunk.text.includes("FAILED")) {
+          if (chunk.text && !chunk.text.includes(AI_FAILED_TEXT)) {
             responseText += chunk.text;
             props.onValueChange?.(responseText);
           } else {
-            props.onValueChange?.("FAILED");
+            props.onValueChange?.(AI_FAILED_TEXT);
             break;
           }
         }
       } catch (error) {
+        props.onValueChange?.(AI_FAILED_TEXT);
         console.error(error);
         return null;
       }

@@ -8,6 +8,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import AIStreamWriter from "@/features/genai/components/text";
+import { AI_FAILED_TEXT } from "@/features/genai/components/text/constants";
 import useDefaultEditor from "@/hooks/default-editor.hook.ts";
 import { type BookmarkFormSchemaType } from "@/types/bookmark";
 import { isValidURL } from "@/utils";
@@ -61,7 +62,7 @@ const AISummaryGenerator = ({
               field.onChange(text);
             };
 
-            if (!value || value.includes("FAILED")) {
+            if (!value || value.includes(AI_FAILED_TEXT)) {
               toast.error(
                 "Couldn't summarize the content. Please try another URL."
               );
