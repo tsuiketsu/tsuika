@@ -51,6 +51,7 @@ const AISummaryGenerator = ({
         <AIStreamWriter
           variant={variant}
           systemInstruction="summarizer"
+          enableStreamingMode
           prompt={url}
           className={className}
           onClick={() => {

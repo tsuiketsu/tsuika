@@ -8,15 +8,19 @@ import {
   TooltipContent,
 } from "@/components/ui/tooltip";
 import useGenAI from "@/hooks/use-genai";
+import type { GenerateContentParameters } from "@google/genai";
 import { useMutation } from "@tanstack/react-query";
 import type { VariantProps } from "class-variance-authority";
 import { LoaderCircle, SparkleIcon } from "lucide-react";
 
+type PromptType = string;
+
 interface PropsType {
-  prompt: string;
+  prompt: PromptType;
   variant?: VariantProps<typeof buttonVariants>["variant"];
   className?: string;
   systemInstruction: SystemInstruction;
+  enableStreamingMode?: boolean;
   onValueChange?: (value: string) => void;
   onClick?: () => void;
 }
@@ -26,10 +30,13 @@ export default function AIStreamWriter(props: PropsType) {
 
   const mutation = useMutation({
     mutationKey: ["ai-summarizer"],
-    mutationFn: async (prompt: string) => {
+    mutationFn: async (prompt: PromptType) => {
       let contents: Array<object | string> = [prompt];
 
-      if (prompt.includes("youtube")) {
+      if (
+        prompt.split(",").filter(Boolean).length === 1 &&
+        prompt.includes("youtube")
+      ) {
         contents = [
           {
             fileData: {
@@ -41,28 +48,38 @@ export default function AIStreamWriter(props: PropsType) {
         ];
       }
 
+      // GenAI content parameters
+      const params: GenerateContentParameters = {
+        model: "gemini-2.5-flash-lite",
+        contents,
+        config: {
+          systemInstruction: instructions[props.systemInstruction],
+          thinkingConfig: { thinkingBudget: 0 },
+          tools: [{ googleSearch: {} }],
+          temperature: 0.1,
+        },
+      };
+
       try {
-        const response = await client.models.generateContentStream({
-          model: "gemini-2.5-flash-lite",
-          contents,
-          config: {
-            systemInstruction: instructions[props.systemInstruction],
-            thinkingConfig: { thinkingBudget: 0 },
-            tools: [{ googleSearch: {} }],
-            temperature: 0.1,
-          },
-        });
+        // Content streaming mode
+        if (props.enableStreamingMode) {
+          const response = await client.models.generateContentStream(params);
 
-        let responseText = "";
+          let responseText = "";
 
-        for await (const chunk of response) {
-          if (chunk.text && !chunk.text.includes(AI_FAILED_TEXT)) {
-            responseText += chunk.text;
-            props.onValueChange?.(responseText);
-          } else {
-            props.onValueChange?.(AI_FAILED_TEXT);
-            break;
+          for await (const chunk of response) {
+            if (chunk.text && !chunk.text.includes(AI_FAILED_TEXT)) {
+              responseText += chunk.text;
+              props.onValueChange?.(responseText);
+            } else {
+              props.onValueChange?.(AI_FAILED_TEXT);
+              break;
+            }
           }
+        } else {
+          // Content sync mode
+          const response = await client.models.generateContent(params);
+          props.onValueChange?.(response.text ?? AI_FAILED_TEXT);
         }
       } catch (error) {
         props.onValueChange?.(AI_FAILED_TEXT);
