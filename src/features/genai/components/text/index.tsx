@@ -8,7 +8,7 @@ import {
   TooltipContent,
 } from "@/components/ui/tooltip";
 import useGenAI from "@/hooks/use-genai";
-import type { GenerateContentParameters } from "@google/genai";
+import { type GenerateContentParameters } from "@google/genai";
 import { useMutation } from "@tanstack/react-query";
 import type { VariantProps } from "class-variance-authority";
 import { LoaderCircle, SparkleIcon, SparklesIcon } from "lucide-react";
@@ -32,27 +32,10 @@ export default function AITextWritter(props: PropsType) {
   const mutation = useMutation({
     mutationKey: ["ai-summarizer"],
     mutationFn: async (prompt: PromptType) => {
-      let contents: Array<object | string> = [prompt];
-
-      if (
-        (prompt.match(/https?:\/\//g) || []).length === 1 &&
-        prompt.includes("youtube")
-      ) {
-        contents = [
-          {
-            fileData: {
-              fileUri: prompt,
-              mime: "video/mp4",
-            },
-          },
-          "Write a short and engaging blog post based on this video",
-        ];
-      }
-
       // GenAI content parameters
       const params: GenerateContentParameters = {
         model: "gemini-2.5-flash-lite",
-        contents,
+        contents: prompt,
         config: {
           systemInstruction: instructions[props.systemInstruction],
           thinkingConfig: { thinkingBudget: 0 },
