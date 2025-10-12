@@ -17,11 +17,12 @@ import fuzzy from "fuzzysort";
 import kebabCase from "lodash.kebabcase";
 import { LoaderCircle } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
-import type { Control } from "react-hook-form";
+import { type Control } from "react-hook-form";
 import { shallow } from "zustand/shallow";
 
 // Lazy Imports
 const TagList = lazy(() => import("./tag-list"));
+const AIAutoTagger = lazy(() => import("./ai-auto-taggger"));
 const SuggestionBox = lazy(() => import("./suggestion-box"));
 
 export const SuggestionBoxFallback = () => (
@@ -90,16 +91,27 @@ export default function TagOptions({ control }: PropsType) {
       name="tags"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Tags</FormLabel>
+          <FormLabel>Tags </FormLabel>
           <FormControl>
             <div className="relative space-y-3">
               <div className="space-y-3">
                 <div className="relative flex items-center">
-                  <Input
-                    value={query}
-                    onChange={(e) => setQuery(e.currentTarget.value)}
-                    placeholder="Search for tags..."
-                  />
+                  <div className="relative w-full">
+                    <Input
+                      value={query}
+                      onChange={(e) => setQuery(e.currentTarget.value)}
+                      placeholder="Search for tags..."
+                    />
+                    {data && data?.length > 0 && (
+                      <Suspense
+                        fallback={
+                          <Skeleton className="absolute top-1.5 right-1.5 h-9 w-[68px] sm:top-1 sm:right-1 sm:h-7" />
+                        }
+                      >
+                        <AIAutoTagger tags={data} control={control} />
+                      </Suspense>
+                    )}
+                  </div>
                   <LoaderCircle
                     className={clsx("absolute right-2 animate-spin", {
                       hidden: !isFetching,

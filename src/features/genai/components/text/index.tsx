@@ -11,13 +11,14 @@ import useGenAI from "@/hooks/use-genai";
 import type { GenerateContentParameters } from "@google/genai";
 import { useMutation } from "@tanstack/react-query";
 import type { VariantProps } from "class-variance-authority";
-import { LoaderCircle, SparkleIcon } from "lucide-react";
+import { LoaderCircle, SparkleIcon, SparklesIcon } from "lucide-react";
 
 type PromptType = string;
 
-interface PropsType {
+interface PropsType extends Partial<VariantProps<typeof buttonVariants>> {
   prompt: PromptType;
-  variant?: VariantProps<typeof buttonVariants>["variant"];
+  btnText?: string;
+  tooltipTxt?: string;
   className?: string;
   systemInstruction: SystemInstruction;
   enableStreamingMode?: boolean;
@@ -34,7 +35,7 @@ export default function AIStreamWriter(props: PropsType) {
       let contents: Array<object | string> = [prompt];
 
       if (
-        prompt.split(",").filter(Boolean).length === 1 &&
+        (prompt.match(/https?:\/\//g) || []).length === 1 &&
         prompt.includes("youtube")
       ) {
         contents = [
@@ -99,7 +100,7 @@ export default function AIStreamWriter(props: PropsType) {
       <TooltipTrigger asChild>
         <Button
           variant={props.variant}
-          size="icon"
+          size={props.size ?? "icon"}
           isLoading={mutation.isPending}
           customLoader={<LoaderCircle className="animate-spin" />}
           className={props.className}
@@ -108,10 +109,15 @@ export default function AIStreamWriter(props: PropsType) {
             mutation.mutate(props.prompt);
           }}
         >
-          <SparkleIcon />
+          {props.btnText && props.btnText?.trim() !== "" ? (
+            <SparklesIcon />
+          ) : (
+            <SparkleIcon />
+          )}{" "}
+          {props.btnText}
         </Button>
       </TooltipTrigger>
-      <TooltipContent>Summarize with AI</TooltipContent>
+      <TooltipContent>{props.tooltipTxt || "Generate with AI"}</TooltipContent>
     </Tooltip>
   );
 }
