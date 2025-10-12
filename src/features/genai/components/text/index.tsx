@@ -26,7 +26,7 @@ interface PropsType extends Partial<VariantProps<typeof buttonVariants>> {
   onClick?: () => void;
 }
 
-export default function AIStreamWriter(props: PropsType) {
+export default function AITextWritter(props: PropsType) {
   const client = useGenAI();
 
   const mutation = useMutation({

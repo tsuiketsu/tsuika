@@ -1,4 +1,4 @@
-import AIStreamWriter from "@/features/genai/components/text";
+import AITextWritter from "@/features/genai/components/text";
 import type { BookmarkFormSchemaType } from "@/types/bookmark";
 import type { Tag } from "@/types/tag";
 import { isValidURL } from "@/utils";
@@ -29,7 +29,7 @@ export default function AIAutoTagger({ control, tags }: PropsType) {
       render={({ field }) => (
         <>
           {(field.value?.length === 0 || !isSameUrl()) && (
-            <AIStreamWriter
+            <AITextWritter
               className="absolute top-1.5 right-1.5 h-9 text-xs sm:top-1 sm:right-1 sm:h-7"
               btnText="Auto"
               variant="info"
