@@ -35,7 +35,7 @@ export default function GenaiFolderInfo({
     return <GenaiFolderInfoSkeletion />;
   }
 
-  if (isFetched && !bookmarkUrls) return null;
+  if (isFetched && (!bookmarkUrls || bookmarkUrls.length === 0)) return null;
 
   return (
     <div className="inline-flex w-full items-center justify-between border-y py-4">
@@ -49,7 +49,7 @@ export default function GenaiFolderInfo({
         variant="secondary"
         systemInstruction="content_descriptor"
         onValueChange={onGenerate}
-        prompt={[...(bookmarkUrls ?? [])]?.join(",")}
+        prompt={bookmarkUrls && bookmarkUrls?.length > 0 ? bookmarkUrls : []}
       />
     </div>
   );

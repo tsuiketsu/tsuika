@@ -35,13 +35,10 @@ export default function AIAutoTagger({ control, tags }: PropsType) {
               variant="info"
               size="sm"
               systemInstruction="metadata_tagger"
-              prompt={JSON.stringify({
+              prompt={{
                 query: url,
-                tags: tags.map((t) => ({
-                  tag_id: t.id,
-                  tag_name: t.name,
-                })),
-              })}
+                tags: tags.map((t) => ({ tag_id: t.id, tag_name: t.name })),
+              }}
               onValueChange={(value) => {
                 const tagIds = value.split("|");
                 if (tagIds.length > 0) {
