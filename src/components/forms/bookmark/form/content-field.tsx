@@ -1,5 +1,5 @@
 import LazyBoundary from "@/components/lazy-boundary";
-import { Button } from "@/components/ui/button.tsx";
+import { Button, buttonVariants } from "@/components/ui/button.tsx";
 import {
   FormControl,
   FormField,
@@ -7,9 +7,13 @@ import {
   FormMessage,
   FormLabel,
 } from "@/components/ui/form";
+import AITextWritter from "@/features/genai/components/text";
+import { AI_FAILED_TEXT } from "@/features/genai/components/text/constants";
 import useDefaultEditor from "@/hooks/default-editor.hook.ts";
 import { type BookmarkFormSchemaType } from "@/types/bookmark";
-import { EditorContent } from "@tiptap/react";
+import { isValidURL } from "@/utils";
+import { Editor, EditorContent } from "@tiptap/react";
+import type { VariantProps } from "class-variance-authority";
 import clsx from "clsx";
 import {
   ChevronDown,
@@ -20,10 +24,60 @@ import {
   SaveIcon,
 } from "lucide-react";
 import { lazy, useEffect, useRef, useState } from "react";
-import { type Control } from "react-hook-form";
+import { Controller, useWatch, type Control } from "react-hook-form";
+import { toast } from "sonner";
 
 // Lazy Imports
 const EditorToolbar = lazy(() => import("@/components/editor/toolbar"));
+
+const AISummaryGenerator = ({
+  editor,
+  control,
+  variant,
+  className,
+}: {
+  editor: Editor;
+  control: Control<BookmarkFormSchemaType>;
+  variant?: VariantProps<typeof buttonVariants>["variant"];
+  className?: string;
+}) => {
+  const url = useWatch({ control, name: "url" });
+
+  return (
+    <Controller
+      control={control}
+      name="description"
+      render={({ field }) => (
+        <AITextWritter
+          variant={variant}
+          systemInstruction="summarizer"
+          enableStreamingMode
+          prompt={url}
+          className={className}
+          onClick={() => {
+            editor.commands.setContent("");
+            field.onChange("");
+          }}
+          onValueChange={(value) => {
+            const setValue = (text: string) => {
+              editor.commands.setContent(text);
+              field.onChange(text);
+            };
+
+            if (!value || value.includes(AI_FAILED_TEXT)) {
+              toast.error(
+                "Couldn't summarize the content. Please try another URL."
+              );
+              setValue("");
+            } else {
+              setValue(value);
+            }
+          }}
+        />
+      )}
+    />
+  );
+};
 
 export default function ContentField({
   description,
@@ -43,6 +97,7 @@ export default function ContentField({
     description || ""
   );
 
+  const url = useWatch({ control, name: "url" });
   const editorRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -58,7 +113,7 @@ export default function ContentField({
     <FormField
       control={control}
       name="description"
-      render={({ field: { value, onChange, ...field } }) => (
+      render={({ field: { onChange, ...field } }) => (
         <FormItem className="group w-full">
           <FormLabel>Description</FormLabel>
           <FormControl>
@@ -85,6 +140,13 @@ export default function ContentField({
                     })}
                   />
                 </Button>
+                {isValidURL(url) && !isExtended && (
+                  <AISummaryGenerator
+                    variant="secondary"
+                    editor={editor}
+                    control={control}
+                  />
+                )}
                 <Button
                   variant="secondary"
                   size="icon"
@@ -111,6 +173,13 @@ export default function ContentField({
                       <EditorToolbar editor={editor} />
                     </LazyBoundary>
                     <div className="bg-secondary fixed right-6 bottom-4 inline-flex gap-2 rounded-xl p-2 sm:relative sm:right-0 sm:bottom-0 sm:ml-auto sm:bg-none sm:p-0">
+                      {isValidURL(url) && (
+                        <AISummaryGenerator
+                          variant="outline"
+                          editor={editor}
+                          control={control}
+                        />
+                      )}
                       <Button
                         variant="outline"
                         size="icon"
@@ -133,7 +202,6 @@ export default function ContentField({
                 )}
                 <EditorContent
                   innerRef={editorRef}
-                  value={value}
                   editor={editor}
                   onPaste={onEditorvalueChange(onChange)}
                   onInput={onEditorvalueChange(onChange)}

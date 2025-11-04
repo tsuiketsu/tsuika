@@ -7,7 +7,7 @@ import useLayoutStore, {
 } from "@/stores/layout.store";
 import { getRandomAspectRatio } from "@/utils";
 import clsx from "clsx";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface PropsType {
   isLoading: boolean;
@@ -18,9 +18,18 @@ export const BookmarkSkeletons = ({
   isLoading,
   bookmarksLength,
 }: PropsType) => {
+  const [isShown, setIsShown] = useState(false);
   const layout = useLayoutStore((s) => s.layout);
 
-  if (!isLoading) {
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setIsShown(true);
+    }, 200);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  if (!isLoading || !isShown) {
     return null;
   }
 

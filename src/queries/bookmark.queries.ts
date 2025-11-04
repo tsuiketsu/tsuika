@@ -57,6 +57,16 @@ export const fetchBookmarks = async ({
   };
 };
 
+export const fetchBookmarkUrls = async (
+  folderId: string
+): Promise<string[]> => {
+  return await axios<SuccessResponse<{ urls: string[] }>>({
+    method: "GET",
+    url: `${baseQuery}/urls?folderId=${folderId}`,
+    withCredentials: true,
+  }).then(({ data: { data } }) => data.urls);
+};
+
 export const fetchBookamrk = async (id: string): Promise<Bookmark> =>
   await axios
     .get(`${baseQuery}/${id}`, {

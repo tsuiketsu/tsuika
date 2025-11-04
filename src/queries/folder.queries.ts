@@ -109,14 +109,14 @@ export const deleteFolder = async (id: Folder["id"]) => {
 export const getCollaborativeFolders = async () => {
   return axios({
     method: "get",
-    url: `${baseEndpoint}/collborative`,
+    url: `${baseEndpoint}/collabs`,
     withCredentials: true,
   });
 };
 
 export const useCollaborativeFoldersData = () => {
   return useQuery({
-    queryKey: ["collborative-folders"],
+    queryKey: ["collab-folders"],
     queryFn: getCollaborativeFolders,
     refetchOnMount: true,
     refetchOnReconnect: true,

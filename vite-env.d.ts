@@ -11,6 +11,7 @@ interface ImportMetaEnv {
   readonly VITE_API_BASE_URL: string;
   readonly VITE_LINK_METADATA_API_URL: string;
   readonly VITE_LINK_METADATA_API_KEY: string;
+  readonly VITE_GENAI_API_KEY: string;
 }
 
 interface ImportMeta {

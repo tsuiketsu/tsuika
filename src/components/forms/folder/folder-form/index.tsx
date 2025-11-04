@@ -1,5 +1,6 @@
 import { type FolderInsertSchemaType, folderInsertSchema } from "../types";
 import EncryptionOptions from "./encryption-options";
+import GenaiFolderInfoSkeletion from "./genai-folder-info/skeletion";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -14,8 +15,11 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import type { Folder } from "@/types/folder";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
+
+// Lazy Imports
+const GenaiFolderInfo = lazy(() => import("./genai-folder-info"));
 
 interface PropsType {
   data?: Folder;
@@ -66,6 +70,7 @@ export default function FolderForm({ data, onSubmit }: PropsType) {
               <FormControl>
                 <Textarea
                   placeholder="e.g., Folder to store some project ideas"
+                  className="min-h-36"
                   {...field}
                 />
               </FormControl>
@@ -73,6 +78,17 @@ export default function FolderForm({ data, onSubmit }: PropsType) {
             </FormItem>
           )}
         />
+        {data?.id && (
+          <Suspense fallback={<GenaiFolderInfoSkeletion />}>
+            <GenaiFolderInfo
+              folderId={data.id}
+              onValueChange={({ name, desc }) => {
+                form.setValue("name", name);
+                form.setValue("description", desc);
+              }}
+            />
+          </Suspense>
+        )}
 
         {!data?.settings?.keyDerivation && (
           <FormField

@@ -118,3 +118,12 @@ export const firstAlpha = (str: string): string | null => {
   const match = str.match(/[a-zA-Z]/);
   return match ? match[0] : null;
 };
+
+export const isValidURL = (url: string) => {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
+};

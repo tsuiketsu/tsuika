@@ -62,10 +62,12 @@ export default function useDefaultEditor(
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getValue = () => (editor.storage as any).markdown.getMarkdown();
+
   const onValueChange = (onChange: (value: string) => void) => () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onChange((editor.storage as any).markdown.getMarkdown());
+    onChange(getValue());
   };
 
-  return { editor, onValueChange };
+  return { editor, getValue, onValueChange };
 }
