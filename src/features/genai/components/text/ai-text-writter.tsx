@@ -8,10 +8,11 @@ import {
   TooltipContent,
 } from "@/components/ui/tooltip";
 import useGenAI from "@/hooks/use-genai";
-import { type GenerateContentParameters } from "@google/genai";
+import { ApiError, type GenerateContentParameters } from "@google/genai";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle, SparkleIcon, SparklesIcon } from "lucide-react";
 import { useCallback } from "react";
+import { toast } from "sonner";
 
 export default function AITextWritterComponent({
   systemInstruction,
@@ -71,8 +72,16 @@ export default function AITextWritterComponent({
         onValueChange?.(response.text ?? AI_FAILED_TEXT);
       }
     } catch (error) {
-      onValueChange?.(AI_FAILED_TEXT);
       console.error(error);
+
+      if (!error) return null;
+
+      const parsed = JSON.parse((error as Error).message)?.error as ApiError;
+
+      if (parsed.status.toString() === "INVALID_ARGUMENT") {
+        toast.error(parsed.message);
+      }
+
       return null;
     }
   }, [
