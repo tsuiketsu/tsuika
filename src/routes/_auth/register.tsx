@@ -68,7 +68,7 @@ function Register() {
     mutationFn: async (payload: z.infer<typeof SignUpSchema>) => {
       return signUp.email(payload);
     },
-    onSuccess: ({ error }, { email }) => {
+    onSuccess: ({ error, data }, { email }) => {
       if (error) {
         toast.error(
           error.message || "Registration failed, something went wrong"
@@ -93,15 +93,19 @@ function Register() {
           });
       });
 
-      toast.promise(promise, {
-        loading: "Sending verification OTP to your email",
-        success: () => {
-          sessionStorage.setItem("pending_email", email);
-          navigate({ to: "/email-verification" });
-          return "Verification OTP sent to your email";
-        },
-        error: "Failed to send verification OTP",
-      });
+      if (!data.user.emailVerified) {
+        toast.promise(promise, {
+          loading: "Sending verification OTP to your email",
+          success: () => {
+            sessionStorage.setItem("pending_email", email);
+            navigate({ to: "/email-verification" });
+            return "Verification OTP sent to your email";
+          },
+          error: "Failed to send verification OTP",
+        });
+      } else {
+        navigate({ to: "/" });
+      }
     },
     onError: (error) => toast.error(error.message || "Something went wrong!"),
   });
