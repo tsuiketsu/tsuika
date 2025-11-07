@@ -1,4 +1,5 @@
 export const options = {
+  genaiApiKey: import.meta.env.VITE_GENAI_API_KEY || "afhahfhahfh",
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
   pwaUpdateCheckInterval: 30 * 60 * 1000,
   alphabetColors: {

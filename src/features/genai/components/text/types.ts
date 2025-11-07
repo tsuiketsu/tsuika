@@ -1,5 +1,7 @@
 import instructions from "./instructions.list";
+import type { buttonVariants } from "@/components/ui/button";
 import type { Tag } from "@/types/tag";
+import type { VariantProps } from "class-variance-authority";
 
 export type SystemInstruction = keyof typeof instructions;
 
@@ -22,3 +24,13 @@ export type InstructionPayload =
         }[];
       };
     };
+
+export type AITextWritterProps = InstructionPayload &
+  Partial<VariantProps<typeof buttonVariants>> & {
+    btnText?: string;
+    tooltipTxt?: string;
+    className?: string;
+    enableStreamingMode?: boolean;
+    onValueChange?: (value: string) => void;
+    onClick?: () => void;
+  };
