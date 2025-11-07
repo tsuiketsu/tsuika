@@ -1,3 +1,4 @@
+import { options } from "@/constants";
 import axios, { HttpStatusCode } from "axios";
 
 export type LinkPreview = {
@@ -26,20 +27,16 @@ export interface LinkPreviewResponsse {
 }
 
 export const fetchLinkPreview = async (
-  url: string
+  siteURL: string
 ): Promise<LinkPreview | null> => {
   try {
     const response = await axios<LinkPreviewResponsse>({
-      url: `${import.meta.env.VITE_LINK_METADATA_API_URL}/api/v1`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": import.meta.env.VITE_LINK_METADATA_API_KEY,
-      },
-      data: { url },
+      method: "get",
+      url: `${options.apiBaseUrl}/api/v1/utils/link-preview?url=${siteURL}`,
+      withCredentials: true,
     }).then(({ data }) => data);
 
-    return response.data as LinkPreview;
+    return response?.data ? (response.data as LinkPreview) : null;
   } catch (error) {
     console.error("Failed to fetch link preview:", error);
     return null;
