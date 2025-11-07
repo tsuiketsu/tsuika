@@ -11,6 +11,12 @@ COPY package.json bun.lock /temp/prod/
 RUN cd /temp/prod && bun install --frozen-lockfile \
     --production --ignore-scripts
 
+ARG VITE_API_BASE_URL
+ARG VITE_GENAI_API_KEY
+
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+ENV VITE_GENAI_API_KEY=${VITE_GENAI_API_KEY}
+
 FROM base AS prerelease
 COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
