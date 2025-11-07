@@ -1,3 +1,4 @@
+import ErrorComponent from "./components/error-component.tsx";
 import FontProvider from "./components/font/context/font-provider.tsx";
 import ThemeProvider from "./components/theme/context/theme-provider.tsx";
 import "./index.css";
@@ -16,6 +17,7 @@ const router = createRouter({
   scrollRestoration: true,
   defaultStructuralSharing: false,
   defaultPreloadStaleTime: 0,
+  defaultErrorComponent: ErrorComponent,
 });
 
 declare module "@tanstack/react-router" {
