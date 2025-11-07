@@ -57,15 +57,11 @@ function Bookmarks() {
 
   // Bookmark decryption process
   useEffect(() => {
-    if (!isLocked) {
+    if (!isLocked && encryptedData) {
       (async () => {
         const data = await decryptBookmarks(encryptedData, slug);
         setBookmarks(data);
       })();
-    } else {
-      setBookmarks(
-        (encryptedData?.pages.flatMap((b) => b.data) ?? []) as Bookmark[]
-      );
     }
   }, [encryptedData, isLocked, slug]);
 
