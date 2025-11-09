@@ -7,7 +7,7 @@ import {
   FormMessage,
   FormLabel,
 } from "@/components/ui/form";
-import AITextWritter from "@/features/genai/components/text";
+import AITextWriter from "@/features/genai/components/text";
 import { AI_FAILED_TEXT } from "@/features/genai/components/text/constants";
 import useDefaultEditor from "@/hooks/default-editor.hook.ts";
 import { type BookmarkFormSchemaType } from "@/types/bookmark";
@@ -48,7 +48,7 @@ const AISummaryGenerator = ({
       control={control}
       name="description"
       render={({ field }) => (
-        <AITextWritter
+        <AITextWriter
           variant={variant}
           systemInstruction="summarizer"
           enableStreamingMode

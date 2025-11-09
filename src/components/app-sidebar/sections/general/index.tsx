@@ -1,7 +1,7 @@
 import BookmarkOptions from "./bookmark-options";
 import FolderOptions from "./folder-options";
 import SidebarLink from "./sidebar-link";
-import TagOptions from "./tag-opitons";
+import TagOptions from "./tag-options";
 import { SidebarGroup, SidebarGroupContent } from "@/components/ui/sidebar";
 import { LayoutDashboard } from "lucide-react";
 

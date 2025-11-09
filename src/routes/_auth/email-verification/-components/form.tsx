@@ -34,7 +34,7 @@ export default function EmailVerificationForm({ email }: PropsType) {
       success: () => {
         setTimeout(() => window.location.reload(), 2000);
 
-        return "Email verification successfull :)";
+        return "Email verification successful :)";
       },
       error: "Failed to verify email :(",
     });

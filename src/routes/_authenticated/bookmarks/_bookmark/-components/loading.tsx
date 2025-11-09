@@ -1,8 +1,8 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {
-  const tagSkeletions = Array.from({ length: 5 }).map((_, idx) => (
-    <Skeleton className="h-6 w-18" key={`tag-skeletion-${idx}`} />
+  const tagSkeletons = Array.from({ length: 5 }).map((_, idx) => (
+    <Skeleton className="h-6 w-18" key={`tag-skeletons-${idx}`} />
   ));
 
   return (
@@ -13,7 +13,7 @@ export default function Loading() {
         <Skeleton className="mx-auto h-8 w-9/12" />
       </div>
       <div className="inline-flex w-full max-w-3/4 flex-wrap justify-center gap-1">
-        {tagSkeletions}
+        {tagSkeletons}
       </div>
       <div className="w-full space-y-3">
         <Skeleton className="h-4 w-full" />

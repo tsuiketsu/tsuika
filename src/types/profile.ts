@@ -8,5 +8,5 @@ export interface Preferences {
 export interface Profile {
   preferencesJson: Preferences;
   createdAt: Date;
-  udpatedAt: Date;
+  updatedAt: Date;
 }

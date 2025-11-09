@@ -4,7 +4,7 @@ import { useGetCollaboratorsQuery } from "@/queries/collab-folder.queries";
 import clsx from "clsx";
 import { useMemo } from "react";
 
-const Skeletions = () => {
+const Skeletons = () => {
   return Array.from({ length: 5 }).map((_, idx) => (
     <div
       className="bg-card size-9 shrink-0 rounded-full border"
@@ -50,7 +50,7 @@ export default function CollboratorAvatars({ folderId }: { folderId: string }) {
       }}
     >
       {isFetching ? (
-        <Skeletions />
+        <Skeletons />
       ) : (
         slicedUsers?.map((user, idx) => (
           <Avatar

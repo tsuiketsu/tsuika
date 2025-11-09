@@ -25,7 +25,7 @@ export type InstructionPayload =
       };
     };
 
-export type AITextWritterProps = InstructionPayload &
+export type AITextWriterProps = InstructionPayload &
   Partial<VariantProps<typeof buttonVariants>> & {
     btnText?: string;
     tooltipTxt?: string;

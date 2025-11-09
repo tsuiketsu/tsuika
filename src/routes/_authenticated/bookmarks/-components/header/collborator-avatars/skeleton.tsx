@@ -1,4 +1,4 @@
-export default function CollboratorAvatarsSkeletions() {
+export default function CollabAvatarsSkeleton() {
   return Array.from({ length: 5 }).map((_, idx) => (
     <div
       className="bg-card size-9 shrink-0 rounded-full border"

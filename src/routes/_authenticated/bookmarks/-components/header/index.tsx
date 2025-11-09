@@ -1,4 +1,4 @@
-import CollboratorAvatarsSkeletions from "./collborator-avatars/skeletions";
+import CollabAvatarsSkeleton from "./collborator-avatars/skeleton";
 import { defaultFolders } from "@/components/app-sidebar/sections/general/bookmark-options/constants";
 import FolderMenu from "@/components/dropdowns/folder-menu";
 import TagMenu from "@/components/dropdowns/tag-menu";
@@ -86,7 +86,7 @@ export default function BookmarksPageHeader({ slug }: { slug: string }) {
             <Suspense
               fallback={
                 <div className="relative inline-flex rounded-md p-1 select-none">
-                  <CollboratorAvatarsSkeletions />
+                  <CollabAvatarsSkeleton />
                 </div>
               }
             >

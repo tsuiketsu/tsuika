@@ -1,5 +1,5 @@
 import GenaiFolderInfoSkeletion from "./skeletion";
-import AITextWritter from "@/features/genai/components/text";
+import AITextWriter from "@/features/genai/components/text";
 import { fetchBookmarkUrls } from "@/queries/bookmark.queries";
 import { useQuery } from "@tanstack/react-query";
 
@@ -45,7 +45,7 @@ export default function GenaiFolderInfo({
           Generate title and description with AI
         </span>
       </div>
-      <AITextWritter
+      <AITextWriter
         variant="secondary"
         systemInstruction="content_descriptor"
         onValueChange={onGenerate}

@@ -1,6 +1,6 @@
 import { AI_FAILED_TEXT } from "./constants";
 import instructions from "./instructions.list";
-import type { AITextWritterProps } from "./types";
+import type { AITextWriterProps } from "./types";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -14,13 +14,13 @@ import { LoaderCircle, SparkleIcon, SparklesIcon } from "lucide-react";
 import { useCallback } from "react";
 import { toast } from "sonner";
 
-export default function AITextWritterComponent({
+export default function AITextWriterComponent({
   systemInstruction,
   prompt,
   onValueChange,
   enableStreamingMode,
   ...props
-}: AITextWritterProps) {
+}: AITextWriterProps) {
   const client = useGenAI();
 
   const generateTextHandler = useCallback(async () => {
