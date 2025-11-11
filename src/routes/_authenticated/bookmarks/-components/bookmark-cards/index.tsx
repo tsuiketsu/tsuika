@@ -2,6 +2,7 @@ import BookmarkCard from "./card";
 import { useToolbarStore } from "@/stores/toolbar.store";
 import type { Bookmark } from "@/types/bookmark";
 import { useNavigate } from "@tanstack/react-router";
+import { useId } from "react";
 
 interface PropsType {
   bookmarks: Bookmark[];
@@ -16,6 +17,7 @@ export default function BookmarkCards({
 }: PropsType) {
   const isEditEnabled = useToolbarStore((s) => s.isBulkEdit);
   const navigate = useNavigate();
+  const id = useId();
 
   const {
     onThumbnailClick = (bookmark: Bookmark) =>
@@ -27,7 +29,7 @@ export default function BookmarkCards({
 
   return bookmarks.map((bookmark) => (
     <BookmarkCard
-      key={bookmark.id}
+      key={`${bookmark.id}+${id}`}
       bookmark={bookmark}
       enableCheckbox={isEditEnabled}
       showActions={showActions}
