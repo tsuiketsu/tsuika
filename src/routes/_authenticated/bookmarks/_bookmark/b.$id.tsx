@@ -8,6 +8,9 @@ export const Route = createFileRoute(
   "/_authenticated/bookmarks/_bookmark/b/$id"
 )({
   component: Main,
+  loader: async ({ params }) => {
+    return params;
+  },
 });
 
 function Main() {

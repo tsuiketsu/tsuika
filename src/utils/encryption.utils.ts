@@ -43,6 +43,31 @@ export const encryptBookmarks = async (
   return payload;
 };
 
+export const decryptBookmark = async (bookmark: Bookmark, folderId: string) => {
+  const key = useSecureFolderStore.getState().getKey(folderId);
+  const cipher = new Noble();
+  const nonce = bookmark.nonce;
+  console.log(bookmark);
+
+  if (!key || !nonce) return bookmark;
+
+  const fieldsToBeDecrypted = [
+    "url",
+    "title",
+    "description",
+    "thumbnail",
+    "faviconUrl",
+  ] as (keyof Bookmark)[];
+
+  const decrypted = Object.fromEntries(
+    Object.entries(objectPick(bookmark, fieldsToBeDecrypted))
+      .filter(([_, v]) => v != null)
+      .map(([k, v]) => [k, cipher.decrypt(v as string, key, nonce)])
+  );
+
+  return Object.assign({}, bookmark, decrypted);
+};
+
 export const decryptBookmarks = async (
   encryptedData: InfiniteData<{ data: Bookmark[] }> | undefined,
   slug: string

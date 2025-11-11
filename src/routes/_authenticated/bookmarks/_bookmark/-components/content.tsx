@@ -11,6 +11,7 @@ import { updateInfQueryData } from "@/lib/query.utils";
 import { editBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark } from "@/types/bookmark";
 import type { Tag } from "@/types/tag";
+import { decryptBookmark } from "@/utils/encryption.utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { EditorContent } from "@tiptap/react";
@@ -117,16 +118,35 @@ export default function Content({ bookmark }: PropsType) {
 
   const createdAt = new Date(bookmark.createdAt);
 
+  const [decryptedContent, setDecryptedContent] = useState<Bookmark | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (bookmark) {
+      (async () => {
+        if (bookmark.isEncrypted && bookmark.folderId) {
+          const data = await decryptBookmark(bookmark, bookmark.folderId);
+          setDecryptedContent(data);
+        } else setDecryptedContent(bookmark);
+      })();
+    }
+  }, [bookmark]);
+
+  if (!decryptedContent) {
+    return null;
+  }
+
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col">
       <div className="inline-flex w-full items-end pb-2 select-none">
         <Popover>
-          <PopoverTrigger>
+          <PopoverTrigger asChild>
             <Button variant="secondary" size="sm">
-              {bookmark?.updatedAt && <CalendarClockIcon size={14} />}
-              {bookmark?.updatedAt
-                ? formatDate(bookmark.updatedAt)
-                : formatDate(bookmark?.createdAt)}
+              {decryptedContent?.updatedAt && <CalendarClockIcon size={14} />}
+              {decryptedContent?.updatedAt
+                ? formatDate(decryptedContent.updatedAt)
+                : formatDate(decryptedContent?.createdAt)}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="size-auto p-0">
@@ -137,7 +157,6 @@ export default function Content({ bookmark }: PropsType) {
             />
           </PopoverContent>
         </Popover>
-
         <span className="ml-auto" role="separator" />
         {isEditable && (
           <Button
@@ -147,10 +166,10 @@ export default function Content({ bookmark }: PropsType) {
             isLoading={mutaton.isPending}
             onClick={() =>
               mutaton.mutate({
-                id: bookmark.id,
+                id: decryptedContent.id,
                 payload: {
-                  url: bookmark.url,
-                  title: bookmark.title,
+                  url: decryptedContent.url,
+                  title: decryptedContent.title,
                   description:
                     // FIX: Add type declarations later
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -176,12 +195,12 @@ export default function Content({ bookmark }: PropsType) {
       <div className="mb-6 space-y-2">
         <div className="aspect-video" role="banner">
           <img
-            src={bookmark?.thumbnail}
-            alt={bookmark?.title}
+            src={decryptedContent?.thumbnail}
+            alt={decryptedContent?.title}
             className="size-full rounded-lg object-cover select-none"
           />
         </div>
-        <Tags tags={bookmark?.tags ?? []} />
+        <Tags tags={decryptedContent?.tags ?? []} />
       </div>
       {isEditable && (
         <div className="bg-card mb-2 inline-flex justify-between overflow-x-auto rounded-lg p-1">
