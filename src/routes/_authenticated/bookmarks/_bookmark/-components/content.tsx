@@ -1,4 +1,6 @@
+import TagsComponent from "./tags";
 import EditorToolbar from "@/components/editor/toolbar";
+import Image from "@/components/image";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -9,11 +11,10 @@ import {
 import useDefaultEditor from "@/hooks/default-editor.hook";
 import { updateInfQueryData } from "@/lib/query.utils";
 import { editBookmark } from "@/queries/bookmark.queries";
+import { useNavbarStore } from "@/stores/navbar.store";
 import type { Bookmark } from "@/types/bookmark";
-import type { Tag } from "@/types/tag";
 import { decryptBookmark } from "@/utils/encryption.utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
 import { EditorContent } from "@tiptap/react";
 import clsx from "clsx";
 import { format } from "date-fns";
@@ -22,55 +23,29 @@ import {
   CalendarClockIcon,
   PencilLineIcon,
   SaveIcon,
-  XIcon,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface PropsType {
   bookmark: Bookmark;
 }
 
-const Tags = ({ tags }: { tags: Tag[] }) => (
-  <div
-    className={clsx("mx-auto flex w-full flex-wrap gap-2", {
-      hidden: tags?.length === 0,
-    })}
-  >
-    {tags?.map((tag, idx) => (
-      <Button
-        variant="info"
-        size="sm"
-        key={`bookmar-details-tag-${idx}`}
-        className="h-7 gap-0.5 sm:h-7"
-        asChild
-      >
-        <Link
-          to="/bookmarks/$slug"
-          params={{
-            slug: `tag/${tag.id}`,
-          }}
-        >
-          {tag.name}
-        </Link>
-      </Button>
-    ))}
-  </div>
-);
-
 const Switch = ({
   value,
   onChange,
+  className,
 }: {
   value: boolean;
   onChange: (state: boolean) => void;
+  className?: string;
 }) => {
   return (
     <Button
-      variant="secondary"
+      variant="outline"
       size="icon"
       onClick={() => onChange(!value)}
-      className="size-8"
+      className={className}
     >
       {!value ? <PencilLineIcon /> : <BookOpenIcon />}
     </Button>
@@ -87,7 +62,7 @@ export default function Content({ bookmark }: PropsType) {
 
   useEffect(() => editor.setEditable(false), [editor]);
 
-  const mutaton = useMutation({
+  const mutation = useMutation({
     mutationKey: ["update-bookmark"],
     mutationFn: editBookmark,
     onSuccess: ({ data: { data } }) => {
@@ -111,119 +86,125 @@ export default function Content({ bookmark }: PropsType) {
     },
   });
 
-  const setEditableState = (state: boolean) => {
-    editor.setEditable(state);
-    setIsEditable(state);
-  };
+  const setEditableState = useCallback(
+    (state: boolean) => {
+      editor.setEditable(state);
+      setIsEditable(state);
+    },
+    [editor]
+  );
 
   const createdAt = new Date(bookmark.createdAt);
-
-  const [decryptedContent, setDecryptedContent] = useState<Bookmark | null>(
-    null
-  );
+  const [content, setContent] = useState<Bookmark | null>(null);
 
   useEffect(() => {
     if (bookmark) {
       (async () => {
         if (bookmark.isEncrypted && bookmark.folderId) {
           const data = await decryptBookmark(bookmark, bookmark.folderId);
-          setDecryptedContent(data);
-        } else setDecryptedContent(bookmark);
+          setContent(data);
+        } else setContent(bookmark);
       })();
     }
   }, [bookmark]);
 
-  if (!decryptedContent) {
+  const setNavbarModule = useNavbarStore((s) => s.setCustomModule);
+  const destroyNavbarModule = useNavbarStore((s) => s.destroyModule);
+
+  useEffect(() => {
+    setNavbarModule(
+      <Switch
+        value={isEditable}
+        onChange={(state) => setEditableState(state)}
+        className="size-8"
+      />
+    );
+
+    return () => destroyNavbarModule();
+  }, [destroyNavbarModule, isEditable, setEditableState, setNavbarModule]);
+
+  if (!content) {
     return null;
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col">
-      <div className="inline-flex w-full items-end pb-2 select-none">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="secondary" size="sm">
-              {decryptedContent?.updatedAt && <CalendarClockIcon size={14} />}
-              {decryptedContent?.updatedAt
-                ? formatDate(decryptedContent.updatedAt)
-                : formatDate(decryptedContent?.createdAt)}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="size-auto p-0">
-            <Calendar
-              mode="single"
-              defaultMonth={createdAt}
-              selected={createdAt}
-            />
-          </PopoverContent>
-        </Popover>
-        <span className="ml-auto" role="separator" />
-        {isEditable && (
-          <Button
-            variant="secondary"
-            size="sm"
-            className="mr-2"
-            isLoading={mutaton.isPending}
-            onClick={() =>
-              mutaton.mutate({
-                id: decryptedContent.id,
-                payload: {
-                  url: decryptedContent.url,
-                  title: decryptedContent.title,
-                  description:
-                    // FIX: Add type declarations later
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    (editor.storage as any).markdown.getMarkdown(),
-                },
-              })
-            }
-          >
-            <SaveIcon />
-            Save
-          </Button>
-        )}
-        {/* NOTE: Allow delete bookmark from here */}
-        {/* <Button variant="destructive" size="sm" className="mr-2"> */}
-        {/*   <TrashIcon /> */}
-        {/*   Delete Bookmark */}
-        {/* </Button> */}
-        <Switch
-          value={isEditable}
-          onChange={(state) => setEditableState(state)}
-        />
-      </div>
-      <div className="mb-6 space-y-2">
-        <div className="aspect-video" role="banner">
-          <img
-            src={decryptedContent?.thumbnail}
-            alt={decryptedContent?.title}
-            className="size-full rounded-lg object-cover select-none"
-          />
+    <div className="relative mx-auto flex w-full max-w-3xl flex-col">
+      <div className="space-y-2">
+        <h1 className="text-foreground/90 text-3xl font-bold">
+          {content.title}
+        </h1>
+        <div className="inline-flex items-center gap-2">
+          <Popover>
+            <div className="inline-flex items-center gap-2 font-medium">
+              <PopoverTrigger asChild>
+                <Button variant="secondary" size="icon" className="size-8">
+                  <CalendarClockIcon size={14} />
+                </Button>
+              </PopoverTrigger>
+              <span className="text-sm">
+                {content?.updatedAt
+                  ? formatDate(content.updatedAt)
+                  : formatDate(content?.createdAt)}
+              </span>
+            </div>
+            <PopoverContent className="size-auto p-0">
+              <Calendar
+                mode="single"
+                defaultMonth={createdAt}
+                selected={createdAt}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
-        <Tags tags={decryptedContent?.tags ?? []} />
+      </div>
+      <div className="mt-4 mb-4 space-y-2">
+        <Image src={content.thumbnail} alt={content.title} />
       </div>
       {isEditable && (
-        <div className="bg-card mb-2 inline-flex justify-between overflow-x-auto rounded-lg p-1">
+        <div className="bg-card sticky top-16 mb-2 inline-flex shrink-0 justify-between overflow-x-auto rounded-lg p-1 pr-0">
           <EditorToolbar editor={editor} />
-          <Button
-            variant="secondary"
-            size="icon"
-            className="hidden sm:inline-flex"
-            onClick={() => setEditableState(false)}
-          >
-            <XIcon />
-          </Button>
+          <div className="sticky right-0 ml-4 bg-inherit pr-1 pl-2">
+            <Button
+              variant="outline"
+              isLoading={mutation.isPending}
+              size="sm"
+              className="min-w-20"
+              onClick={() =>
+                mutation.mutate({
+                  id: content.id,
+                  payload: {
+                    url: content.url,
+                    title: content.title,
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    description: (editor.storage as any).markdown.getMarkdown(),
+                  },
+                })
+              }
+            >
+              <SaveIcon />
+              Save
+            </Button>
+          </div>
         </div>
       )}
-      <EditorContent
-        selected
-        editor={editor}
-        className={clsx(isEditable && "bg-card rounded-xl p-4")}
-      />
+
+      {bookmark.description?.trim() !== "" || isEditable ? (
+        <EditorContent
+          selected
+          editor={editor}
+          className={clsx("h-full", isEditable && "bg-card rounded-xl p-4")}
+        />
+      ) : (
+        <div className="text-muted-foreground text-center">
+          Content Description is not provided, add Description to view it here
+        </div>
+      )}
+      <hr className="my-4" />
+      <TagsComponent tags={content?.tags ?? []} />
     </div>
   );
 }
 
 function formatDate(timestamp: Date | string | undefined) {
-  return timestamp ? format(new Date(timestamp), "dd/MM hh:mm:ss") : "";
+  return timestamp ? format(new Date(timestamp), "dd/MM/yy hh:mm:ss") : "";
 }

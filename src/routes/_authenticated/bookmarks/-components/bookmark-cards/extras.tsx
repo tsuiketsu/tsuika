@@ -62,9 +62,11 @@ export default function BookmarkExtras(props: PropsType) {
           <span className={responsiveSpan}>{domain}</span>
         </a>
       )}
-      <BadgeComp variant="outline" className="text-muted-foreground text-xs">
-        <span>{format(new Date(props.createdAt), "dd/MM/yyyy")}</span>
-      </BadgeComp>
+      {props.createdAt && (
+        <BadgeComp variant="outline" className="text-muted-foreground text-xs">
+          <span>{format(new Date(props.createdAt), "dd/MM/yyyy")}</span>
+        </BadgeComp>
+      )}
     </div>
   );
 }
