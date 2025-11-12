@@ -1,16 +1,14 @@
 import NavigationBar from "./-components/navigation-bar";
 import { AppSidebar } from "@/components/app-sidebar/index";
 import ContainerSize from "@/components/dev/container-size";
-import { useFont } from "@/components/font/context/use-font";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useSession } from "@/lib/auth-client";
 import UserProfileProvider from "@/providers/user-profile.provider";
-import { fetchProfile } from "@/queries/profile.queries";
 import { fetchUserSession } from "@/queries/user-session";
 import { useAuthStore } from "@/stores/auth.store";
 import { useSidebarStore } from "@/stores/sidebar.store";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense } from "react";
 
 const VerificationReminder = lazy(
   () => import("./-components/verification-reminder")
@@ -75,26 +73,6 @@ export const Route = createFileRoute("/_authenticated")({
 function DashboardLayout() {
   const { data, isPending } = useSession();
   const { open, setOpen } = useSidebarStore();
-  const { setFont } = useFont();
-
-  // Apply user preferences
-  useEffect(() => {
-    const syncUserSettings = async () => {
-      try {
-        const profile = await fetchProfile();
-        const font = profile.data.preferencesJson.font;
-        if (font) setFont(font);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    if (typeof window !== "undefined" && window.sessionStorage) {
-      if (!sessionStorage.getItem("vite-ui-font")) {
-        syncUserSettings();
-      }
-    }
-  }, [setFont]);
 
   return (
     <SidebarProvider open={open} onOpenChange={setOpen}>

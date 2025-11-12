@@ -17,9 +17,10 @@ export const updatePreferences = async (payload: Preferences) => {
   return axios<SuccessResponse<Profile>>({
     method: "post",
     url: baseQuery,
-    data: {
-      preferencesJson: payload,
+    headers: {
+      "Content-Type": "multipart/form-data",
     },
+    data: payload,
     withCredentials: true,
   }).then((data) => data);
 };

@@ -1,11 +1,14 @@
 import Avatar from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import useUserProfile from "@/hooks/user-profile.hook";
+import { useUserProfileStore } from "@/stores/user-profile.store";
 
 export default function Banner() {
   const { data: user, isFetching } = useUserProfile();
+  const preferences = useUserProfileStore((s) => s.profile)?.preferencesJson;
+  const isLoading = useUserProfileStore((s) => s.isLoading);
 
-  if (isFetching) {
+  if (isFetching || isLoading) {
     return (
       <Skeleton className="aspect-11/8 rounded-xl @3xl/dash:aspect-11/5" />
     );
@@ -14,7 +17,10 @@ export default function Banner() {
   return (
     <div className="relative aspect-11/8 overflow-hidden rounded-md @3xl/dash:aspect-11/5 @7xl/dash:col-span-2">
       <img
-        src="https://ik.imagekit.io/s2uoi7msg/tsuika/dashboard-background.jpg?updatedAt=1758523741017"
+        src={
+          (preferences?.dashboardThumbnail as unknown as string) ??
+          "https://ik.imagekit.io/s2uoi7msg/tsuika/dashboard-background.jpg?updatedAt=1758523741017"
+        }
         alt="dashboard banner"
         className="size-full object-cover"
       />

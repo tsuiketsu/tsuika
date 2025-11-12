@@ -5,6 +5,7 @@ import { create } from "zustand";
 
 interface UserProfile {
   profile: Profile | undefined;
+  isLoading: boolean;
   setProfile: (value: Profile) => void;
   setPreferences: (value: Partial<Preferences>) => void;
   isFolderPinned: (id: string) => boolean;
@@ -12,6 +13,7 @@ interface UserProfile {
 
 export const useUserProfileStore = create<UserProfile>((set, get) => ({
   profile: undefined,
+  isLoading: true,
   setProfile: (profile) => set({ profile }),
   setPreferences: (pref) => {
     const prev = get().profile;

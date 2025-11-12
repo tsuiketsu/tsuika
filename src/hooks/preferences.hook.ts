@@ -37,7 +37,7 @@ export const usePreferencesMutation = (
       queryClient.setQueryData<Profile>(["profile"], (old) => data ?? old);
       toast.success(toastMessage.success);
 
-      setPreferences(preferences);
+      setPreferences(data.preferencesJson);
       onSuccess?.(preferences);
     },
     onError: (error) => {

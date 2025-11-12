@@ -10,6 +10,7 @@ interface ReturnType {
 
 interface PropsType extends VariantProps<typeof buttonVariants> {
   onValueChange: (value: ReturnType) => void;
+  className?: string;
 }
 
 const ImagePicker = ({ onValueChange, ...buttonProps }: PropsType) => {

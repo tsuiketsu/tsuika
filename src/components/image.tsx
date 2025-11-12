@@ -22,20 +22,28 @@ export default function Image({ src, alt = "", className }: PropsType) {
 
   return (
     <div className={cn("relative aspect-video", className)} role="banner">
-      {!isLoading && (!src || isError) && <Fallback alt={alt} />}
-      {isLoading && (
-        <div className="bg-background absolute size-full">
-          <Skeleton className="size-full" />
-        </div>
+      {isLoading ? (
+        // Show skeleton while loading (only if there's a src)
+        src?.trim() !== "" ? (
+          <div className="bg-background absolute size-full">
+            <Skeleton className="size-full" />
+          </div>
+        ) : (
+          <Fallback alt={alt} />
+        )
+      ) : isError || !src?.trim() ? (
+        // Show fallback on error or empty src
+        <Fallback alt={alt} />
+      ) : null}
+      {src && (
+        <img
+          src={src}
+          alt={alt}
+          onLoad={() => setIsLoading(false)}
+          onError={() => setIsError(true)}
+          className="size-full rounded-lg object-cover select-none"
+        />
       )}
-
-      <img
-        src={src}
-        alt={alt}
-        onLoad={() => setIsLoading(false)}
-        onError={() => setIsError(true)}
-        className="size-full rounded-lg object-cover select-none"
-      />
     </div>
   );
 }
