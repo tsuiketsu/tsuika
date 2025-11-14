@@ -57,6 +57,21 @@ export const fetchBookmarks = async ({
   };
 };
 
+export const searchBookmarks = async (
+  query: string,
+  folderId?: string
+): Promise<
+  (Pick<Bookmark, "url" | "title" | "thumbnail"> & { publicId: string })[]
+> => {
+  let url = `${baseQuery}/search?query=${query}`;
+
+  if (folderId) url += `&folderPublicId=${folderId}`;
+
+  return await axios({ method: "GET", url, withCredentials: true }).then(
+    ({ data: { data } }) => data
+  );
+};
+
 export const fetchBookmarkUrls = async (
   folderId: string
 ): Promise<string[]> => {

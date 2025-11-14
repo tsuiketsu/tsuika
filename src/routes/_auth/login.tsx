@@ -93,7 +93,7 @@ function Login() {
               <a
                 href="https://app.tsuika.space"
                 target="_blank"
-                rel="noreferror"
+                rel="noopener noreferrer"
                 className="text-info hover:underline"
               >
                 app.tsuika.space
