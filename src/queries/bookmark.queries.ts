@@ -37,7 +37,7 @@ export const fetchBookmarks = async ({
   let url = `${baseQuery}/?page=${pageParam}&limit=${limit}`;
 
   if (slugPath.split("/")?.slice(-1)?.[0] !== "all") {
-    url = `${baseQuery}${slugPath}?query=${query}&page=${pageParam}&limit=${limit}`;
+    url = `${baseQuery}${slugPath}?page=${pageParam}&limit=${limit}`;
   }
 
   const {
@@ -45,7 +45,7 @@ export const fetchBookmarks = async ({
     status,
   } = await axios<PaginatedSuccessResponse<Bookmark[]>>({
     method: "get",
-    url: `${url}&filter=${filter ?? ""}`,
+    url: `${url}&filter=${filter ?? ""}&query=${query}`,
     withCredentials: true,
   });
 
