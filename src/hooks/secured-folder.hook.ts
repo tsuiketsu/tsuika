@@ -48,6 +48,8 @@ export const useSecuredFolders = (): ReturnType => {
       } else {
         setIsSecured(false);
       }
+    } else {
+      setIsSecured(false);
     }
 
     return () => {
