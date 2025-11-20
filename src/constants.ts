@@ -2,6 +2,8 @@ export const options = {
   genaiApiKey: import.meta.env.VITE_GENAI_API_KEY || "afhahfhahfh",
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
   pwaUpdateCheckInterval: 30 * 60 * 1000,
+  dashboardFallback:
+    "https://ik.imagekit.io/s2uoi7msg/tsuika/dashboard-background.jpg?updatedAt=1758523741017",
   alphabetColors: {
     A: { color: "#DC2626", bg: "#FECACA" },
     B: { color: "#EA580C", bg: "#FED7AA" },

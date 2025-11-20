@@ -32,7 +32,7 @@ export default function DashboardThumbnail({ control }: PropsType) {
                   : field.value
                 : undefined
             }
-            alt=""
+            alt="dashboard-thumbnail"
             className="w-full @lg/dash:max-w-sm"
           />
           <FormControl>

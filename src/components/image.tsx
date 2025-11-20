@@ -1,12 +1,13 @@
 import { Skeleton } from "./ui/skeleton";
 import { cn } from "@/lib/utils";
 import { ImageOffIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface PropsType {
   src: string | undefined;
   alt: string | undefined;
   className?: string;
+  fallbackSrc?: string;
 }
 
 const Fallback = ({ alt }: { alt: PropsType["alt"] }) => (
@@ -16,32 +17,50 @@ const Fallback = ({ alt }: { alt: PropsType["alt"] }) => (
   </div>
 );
 
-export default function Image({ src, alt = "", className }: PropsType) {
+export default function Image({
+  src,
+  fallbackSrc,
+  alt = "",
+  className,
+}: PropsType) {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [currentSrc, setCurrentSrc] = useState(src);
+
+  useEffect(() => {
+    setCurrentSrc(src);
+    setIsLoading(true);
+    setIsError(false);
+  }, [src]);
+
+  const handleError = () => {
+    setIsLoading(false);
+
+    if (fallbackSrc && currentSrc !== fallbackSrc) {
+      setCurrentSrc(fallbackSrc);
+      setIsLoading(true);
+    } else {
+      setIsError(true);
+    }
+  };
 
   return (
     <div className={cn("relative aspect-video", className)} role="banner">
-      {isLoading ? (
-        // Show skeleton while loading (only if there's a src)
-        src?.trim() !== "" ? (
-          <div className="bg-background absolute size-full">
-            <Skeleton className="size-full" />
-          </div>
-        ) : (
-          <Fallback alt={alt} />
-        )
-      ) : isError || !src?.trim() ? (
-        // Show fallback on error or empty src
+      {isError || !currentSrc?.trim() ? (
         <Fallback alt={alt} />
+      ) : isLoading ? (
+        <div className="bg-background absolute size-full">
+          <Skeleton className="size-full" />
+        </div>
       ) : null}
+
       {src && (
         <img
-          src={src}
+          src={currentSrc}
           alt={alt}
           onLoad={() => setIsLoading(false)}
-          onError={() => setIsError(true)}
-          className="size-full rounded-lg object-cover select-none"
+          onError={handleError}
+          className="size-full rounded-lg object-cover text-transparent select-none"
         />
       )}
     </div>
