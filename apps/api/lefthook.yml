@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: formatting
+      glob: "src/**/*.{ts,tsx}"
+      run: bun run format --staged
+
+    - name: linting
+      glob: "*.{ts,tsx}"
+      run: bun run lint {staged_files}
+
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: bun run lint:commit
