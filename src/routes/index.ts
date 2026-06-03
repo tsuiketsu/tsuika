@@ -1,0 +1,13 @@
+export { default as asset } from "./asset.routes";
+export { default as auth } from "./auth.routes";
+export { default as authData } from "./auth-data.routes";
+export { default as bookmark } from "./bookmark.routes";
+export { default as bookmarkTag } from "./bookmark-tag.routes";
+export { default as collabFolder } from "./collab-folder.routes";
+export { default as folder } from "./folder.routes";
+export { default as profile } from "./profile.routes";
+export { default as share } from "./share.routes";
+export { default as sharedFolder } from "./shared-folder";
+export { default as tag } from "./tag.routes";
+export { default as task } from "./task.routes";
+export { default as util } from "./util.routes";

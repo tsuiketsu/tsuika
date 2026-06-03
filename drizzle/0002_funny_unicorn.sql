@@ -1,0 +1,1 @@
+ALTER TABLE "shared_folders" RENAME COLUMN "last_viewd_at" TO "last_viewed_at";
