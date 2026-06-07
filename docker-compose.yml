@@ -28,7 +28,9 @@ services:
       - 7700:7700
 
   api:
-    build: ./apps/api
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
     container_name: tsuika-api
     restart: always
     ports:
@@ -58,7 +60,8 @@ services:
 
   frontend:
     build:
-      context: ./apps/frontend
+      context: .
+      dockerfile: apps/frontend/Dockerfile
       args:
         VITE_API_BASE_URL: ${VITE_API_BASE_URL}
         VITE_GENAI_API_KEY: ${VITE_GENAI_API_KEY}

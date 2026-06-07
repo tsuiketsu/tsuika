@@ -2,7 +2,6 @@ declare namespace NodeJS {
   interface ProcessEnv {
     DATABASE_URL: string;
     DOMAIN: string;
-    BASE_URL: string;
     FRONTEND_ORIGIN: string;
     CORS_ORIGIN_HOPPSCOTCH: string;
     CORS_ORIGIN_BROWSER_EXTENSION: string;

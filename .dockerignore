@@ -1,0 +1,34 @@
+# dependencies
+node_modules
+**/node_modules
+
+# turbo cache
+.turbo
+**/.turbo
+
+# git
+.git
+
+# Project Data
+apps/frontend/dist
+apps/api/dist
+apps/api/data
+
+# build outputs
+dist
+build
+out
+
+# logs
+*.log
+
+# env
+.env
+.env.*
+
+# editor
+.vscode
+.idea
+
+# docs
+README.md

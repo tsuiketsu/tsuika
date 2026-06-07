@@ -60,7 +60,7 @@
     "start": "bun src/index.js",
     "dev": "NODE_ENV=development bun --hot src/index.ts",
     "build": "bun build src/index.ts --outdir ./dist --target bun",
-    "serve": "bun run db:migrate && bun dist/index.js",
+    "serve": "bun dist/index.js",
     "format": "biome format --write ./src",
     "lint": "biome check --write ./src",
     "db:migrate": "bun scripts/migrate.ts",

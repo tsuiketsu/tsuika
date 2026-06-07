@@ -1,5 +1,3 @@
-commitlint.config.js
-docker-compose.yml
 Dockerfile
 node_modules
 lefthook.yml

@@ -12,7 +12,7 @@ import * as sharedFolderSchema from "./schema/shared-folder.schema";
 import * as tagSchema from "./schema/tag.schema";
 import * as taskSchema from "./schema/task.schema";
 
-const pool = new Pool({
+export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
