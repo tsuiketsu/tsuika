@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 export const useInfiniteScrollObserver = (
   fetchFunc: () => void,
-  isFetching: boolean
+  isFetching: boolean,
 ) => {
   const [ref, entry] = useIntersectionObserver({
     threshold: 0,

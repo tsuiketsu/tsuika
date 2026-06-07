@@ -41,7 +41,6 @@
     "@types/ws": "^8.18.1",
     "drizzle-kit": "^0.31.1",
     "drizzle-seed": "^0.3.1",
-    "lefthook": "^1.11.13",
     "postgres": "^3.4.5"
   },
   "description": "Backend for tsuika build with 🔥, 🍞 and 🐘",
@@ -69,9 +68,5 @@
     "db:generate": "bun drizzle-kit generate --config=drizzle.config.ts",
     "build:container": "docker build -t tsuika-api ."
   },
-  "trustedDependencies": [
-    "@biomejs/biome",
-    "lefthook"
-  ],
   "type": "module"
 }

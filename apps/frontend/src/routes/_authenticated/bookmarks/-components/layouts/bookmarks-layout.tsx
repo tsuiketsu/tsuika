@@ -1,13 +1,13 @@
-import { BookmarkSkeletons } from "../bookmark-cards/skeletons";
-import BookmarkContextProvider from "../context/context-provider";
+import clsx from "clsx";
+import { GhostIcon } from "lucide-react";
+import { lazy, Suspense } from "react";
 import FallbackScreen from "@/components/fallback";
 import { CardsLayout } from "@/components/layouts/cards-layout";
 import { useInfiniteScrollObserver } from "@/hooks/infinite-scroll-observer";
 import useLayoutStore from "@/stores/layout.store";
 import type { Bookmark } from "@/types/bookmark";
-import clsx from "clsx";
-import { GhostIcon } from "lucide-react";
-import { lazy, Suspense } from "react";
+import { BookmarkSkeletons } from "../bookmark-cards/skeletons";
+import BookmarkContextProvider from "../context/context-provider";
 
 interface PropsType {
   isFetching: boolean;

@@ -1,4 +1,5 @@
-import NavigationBar from "./-components/navigation-bar";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { lazy, Suspense } from "react";
 import { AppSidebar } from "@/components/app-sidebar/index";
 import ContainerSize from "@/components/dev/container-size";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -7,11 +8,10 @@ import UserProfileProvider from "@/providers/user-profile.provider";
 import { fetchUserSession } from "@/queries/user-session";
 import { useAuthStore } from "@/stores/auth.store";
 import { useSidebarStore } from "@/stores/sidebar.store";
-import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
+import NavigationBar from "./-components/navigation-bar";
 
 const VerificationReminder = lazy(
-  () => import("./-components/verification-reminder")
+  () => import("./-components/verification-reminder"),
 );
 
 function parseImage(img: string | undefined) {
@@ -38,13 +38,12 @@ export const Route = createFileRoute("/_authenticated")({
 
     if (!session || !session.user) {
       throw redirect({
-        to: '/login',
+        to: "/login",
         search: {
           error: "unauthorized",
         },
-      })
+      });
     }
-
 
     useAuthStore.setState({
       isLoading: false,
@@ -53,11 +52,12 @@ export const Route = createFileRoute("/_authenticated")({
     });
 
     return {
-      ...session, user: {
+      ...session,
+      user: {
         ...session.user,
-        image: parseImage(session.user.image ?? undefined)
-      }
-    }
+        image: parseImage(session.user.image ?? undefined),
+      },
+    };
   },
 });
 

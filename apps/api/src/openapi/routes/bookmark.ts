@@ -1,3 +1,16 @@
+import { faker } from "@faker-js/faker";
+import { createRoute, z } from "@hono/zod-openapi";
+import { BOOKMARK_FILTERS } from "@/constants";
+import {
+  bookmarkSelectSchema,
+  bookmarkInsertSchema as InsertSchema,
+} from "@/db/schema/bookmark.schema";
+import { tagSelectSchema } from "@/db/schema/tag.schema";
+import { ERROR_DEFINITIONS } from "@/errors/codes";
+import { bookmarkExamples as examples } from "@/openapi/examples";
+import { bookmarkFlags } from "@/types/schema.types";
+import { omit } from "@/utils";
+import { addExamples } from "@/utils/zod-utils";
 import { paginationQuerySchema } from "../common/schema";
 import {
   createErrorObject,
@@ -8,17 +21,6 @@ import {
   jsonContentRequired,
 } from "../helpers";
 import { generateFakerNanoIds, generateFakerNanoid } from "../utils";
-import { BOOKMARK_FILTERS } from "@/constants";
-import { bookmark, bookmarkSelectSchema } from "@/db/schema/bookmark.schema";
-import { tagSelectSchema } from "@/db/schema/tag.schema";
-import { ERROR_DEFINITIONS } from "@/errors/codes";
-import { bookmarkExamples as examples } from "@/openapi/examples";
-import { bookmarkFlags } from "@/types/schema.types";
-import { omit } from "@/utils";
-import { addExamples } from "@/utils/zod-utils";
-import { faker } from "@faker-js/faker";
-import { createRoute, z } from "@hono/zod-openapi";
-import { createInsertSchema } from "drizzle-zod";
 
 const tags = ["Bookmarks"];
 
@@ -26,7 +28,7 @@ const sources = createSources("bookmarks");
 
 const SelectSchema = addExamples(
   bookmarkSelectSchema,
-  omit(examples, ["id"])
+  omit(examples, ["id"]),
 ).extend({
   id: z.string().openapi({ example: examples.publicId }),
   folderId: z.string().optional().openapi({ example: generateFakerNanoid() }),
@@ -34,18 +36,10 @@ const SelectSchema = addExamples(
     .array(
       tagSelectSchema
         .pick({ name: true, color: true })
-        .extend({ id: z.string() })
+        .extend({ id: z.string() }),
     )
     .optional()
     .openapi({ example: examples.tags }),
-});
-
-const InsertSchema = createInsertSchema(bookmark).omit({
-  id: true,
-  thumbnailHeight: true,
-  thumbnailWidth: true,
-  createdAt: true,
-  updatedAt: true,
 });
 
 // -----------------------------------------
@@ -153,7 +147,7 @@ export const getBookmarks = createRoute({
         query: z.string().optional(),
         filter: z.preprocess(
           (val) => (val === "" ? undefined : val),
-          z.enum(BOOKMARK_FILTERS).optional()
+          z.enum(BOOKMARK_FILTERS).optional(),
         ),
       })
       .extend(paginationQuerySchema.shape)
@@ -199,7 +193,7 @@ export const searchBookmarks = createRoute({
           thumbnail: true,
         }).extend({
           folderPublicId: z.string(),
-        })
+        }),
       ),
       message: "Successfully fetched results",
       isPagination: true,
@@ -318,7 +312,7 @@ export const getBookmarkById = createRoute({
       source: sources.get,
     }),
     [ERROR_DEFINITIONS.UNAUTHORIZED.status]: createUnauthorizedByRoleObject(
-      sources.get
+      sources.get,
     ),
     [ERROR_DEFINITIONS.NOT_FOUND.status]: createErrorObject({
       desc: "If bookmark not found by provided bookmark_id",
@@ -347,7 +341,7 @@ export const updateBookmark = createRoute({
       message: "Bookmark updated successfully 🔖",
     }),
     [ERROR_DEFINITIONS.UNAUTHORIZED.status]: createUnauthorizedByRoleObject(
-      sources.put
+      sources.put,
     ),
     [ERROR_DEFINITIONS.NOT_FOUND.status]: createErrorObject({
       message: "Bookmark not found",
@@ -375,7 +369,7 @@ export const deleteBookmarkInBulk = createRoute({
     body: jsonContentRequired(
       z.object({
         bookmarkIds: z.array(z.string()),
-      })
+      }),
     ),
   },
   responses: {
@@ -383,12 +377,12 @@ export const deleteBookmarkInBulk = createRoute({
       data: z.array(
         z.string().openapi({
           example: generateFakerNanoIds(5),
-        })
+        }),
       ),
       message: "Successfully deleted selected bookmarks",
     }),
     [ERROR_DEFINITIONS.UNAUTHORIZED.status]: createUnauthorizedByRoleObject(
-      sources.delete
+      sources.delete,
     ),
     [ERROR_DEFINITIONS.MISSING_PARAMETER.status]: createErrorObject({
       message: "Bookmark IDs are required",
@@ -414,7 +408,7 @@ export const deleteBookmarkById = createRoute({
       message: "Successfully deleted bookmark 🔖",
     }),
     [ERROR_DEFINITIONS.UNAUTHORIZED.status]: createUnauthorizedByRoleObject(
-      sources.delete
+      sources.delete,
     ),
     [ERROR_DEFINITIONS.INTERNAL_ERROR.status]: createErrorObject({
       message: "Failed to delete bookmark",
@@ -444,7 +438,7 @@ export const updateBookmarkThumbnail = createRoute({
       message: "Successfully updated thumbnail",
     }),
     [ERROR_DEFINITIONS.UNAUTHORIZED.status]: createUnauthorizedByRoleObject(
-      sources.patch
+      sources.patch,
     ),
     [ERROR_DEFINITIONS.REQUIRED_FIELD.status]: createErrorObject({
       message: "Thumbnail image file is required",
@@ -474,7 +468,7 @@ export const addBookmarksToFolder = createRoute({
     body: jsonContentRequired(
       z.object({
         bookmarkIds: z.array(z.string()),
-      })
+      }),
     ),
   },
   responses: {
@@ -509,7 +503,7 @@ export const toggleBookmarkFlag = createRoute({
     body: jsonContentRequired(
       z.object({
         state: z.boolean(),
-      })
+      }),
     ),
     params: z.object({
       id: z.string().openapi({
@@ -531,7 +525,7 @@ export const toggleBookmarkFlag = createRoute({
       source: sources.patch,
     }),
     [ERROR_DEFINITIONS.UNAUTHORIZED.status]: createUnauthorizedByRoleObject(
-      sources.patch
+      sources.patch,
     ),
     [ERROR_DEFINITIONS.MISSING_PARAMETER.status]: createErrorObject({
       message: "Bookmark ID is required",

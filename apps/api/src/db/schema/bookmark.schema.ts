@@ -82,7 +82,15 @@ export const bookmarkInsertSchema = createInsertSchema(bookmark, {
   faviconUrl: z.string().optional(),
   thumbnail: z.string().optional(),
 })
-  .omit({ userId: true, publicId: true })
+  .omit({
+    id: true,
+    thumbnailHeight: true,
+    thumbnailWidth: true,
+    createdAt: true,
+    updatedAt: true,
+    userId: true,
+    publicId: true,
+  })
   .extend({
     tags: z
       .array(

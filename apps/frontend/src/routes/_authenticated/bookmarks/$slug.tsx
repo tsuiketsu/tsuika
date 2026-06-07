@@ -1,9 +1,9 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
 import BookmarksPageHeader from "./-components/header";
 import BookmarksLayout from "./-components/layouts/bookmarks-layout";
 import ActionBar from "./-components/toolbar";
 import { useBookmarks, usePinnedBookmarks } from "./-query-hooks";
-import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/bookmarks/$slug")({
   component: Bookmarks,
@@ -30,7 +30,7 @@ function Bookmarks() {
     enabled:
       slug.split("/")[0] !== "tag" &&
       !["all", "archived", "unsorted", "favorites"].includes(
-        slug.split("/")[1]
+        slug.split("/")[1],
       ),
   });
 
