@@ -12,7 +12,10 @@ export default function Banner() {
 
   if (isFetching || isLoading) {
     return (
-      <Skeleton className="aspect-11/8 rounded-xl @3xl/dash:aspect-11/5" />
+      <div>
+        {String(isLoading)}
+        <Skeleton className="aspect-11/8 rounded-xl @3xl/dash:aspect-11/5" />
+      </div>
     );
   }
 

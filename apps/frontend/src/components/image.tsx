@@ -18,8 +18,8 @@ const Fallback = ({ alt }: { alt: PropsType["alt"] }) => (
 );
 
 export default function Image({
-  src,
   fallbackSrc,
+  src = fallbackSrc,
   alt = "",
   className,
 }: PropsType) {

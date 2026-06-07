@@ -5,13 +5,25 @@ import type { Preferences, Profile } from "@/types/profile";
 
 export const baseQuery = `${options.apiBaseUrl}/api/v1/profiles`;
 
-export const fetchProfile = async (): Promise<SuccessResponse<Profile>> => {
-  return axios({
-    method: "get",
-    url: baseQuery,
-    withCredentials: true,
-  }).then((response) => response.data);
-};
+export async function fetchProfile(): Promise<Profile | null> {
+  try {
+    const response = await fetch(baseQuery, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const result: SuccessResponse<Profile> = await response.json();
+
+    return result.data;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
 
 export const updatePreferences = async (payload: Preferences) => {
   return axios<SuccessResponse<Profile>>({

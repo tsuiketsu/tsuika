@@ -9,18 +9,15 @@ export default function UserProfileProvider() {
   const { setFont } = useFont();
 
   const setProfileHandler = useCallback(async () => {
-    try {
-      const response = await fetchProfile();
+    const response = await fetchProfile();
 
-      if (!response.success) {
-        console.error(response.message);
-      }
-
-      setProfile(response.data);
+    if (!response) {
       useUserProfileStore.setState({ isLoading: false });
-    } catch (error) {
-      console.error(error);
+      return;
     }
+
+    setProfile(response);
+    useUserProfileStore.setState({ isLoading: false });
   }, [setProfile]);
 
   useEffect(() => {
@@ -34,7 +31,7 @@ export default function UserProfileProvider() {
     const syncUserSettings = async () => {
       try {
         const profile = await fetchProfile();
-        const font = profile.data.preferencesJson.font;
+        const font = profile?.preferencesJson.font;
         if (font) setFont(font as Font);
       } catch (error) {
         console.error(error);
