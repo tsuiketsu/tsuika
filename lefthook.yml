@@ -2,11 +2,11 @@ pre-commit:
   parallel: true
   jobs:
     - name: formatting
-      run: bunx pretty-quick --staged
+      run: bunx --bun @biomejs/biome format --write {staged_files}
 
     - name: linting
       glob: "*.{ts,tsx}"
-      run: bun run eslint {staged_files}
+      run: bunx --bun @biomejs/biome lint --write {staged_files}
 
 commit-msg:
   jobs:

@@ -1,0 +1,58 @@
+import { Link } from "@tanstack/react-router";
+import { Bookmark, ChevronRight } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+} from "@/components/ui/sidebar";
+import { useSidebarStore } from "@/stores/sidebar.store";
+import { defaultFolders } from "./constants";
+
+const DefaultFolders = () => (
+  <SidebarMenuSub>
+    {defaultFolders.map((folder) => (
+      <SidebarMenuSubItem key={`folder-${folder.title}`}>
+        <SidebarMenuButton asChild>
+          <Link {...folder.link} className="[&.active]:bg-secondary">
+            <folder.icon />
+            {folder.title}
+          </Link>
+        </SidebarMenuButton>
+      </SidebarMenuSubItem>
+    ))}
+  </SidebarMenuSub>
+);
+
+export default function BookmarkOptions({ menuId }: { menuId: number }) {
+  const { isExpanded, updateState } = useSidebarStore();
+
+  return (
+    <SidebarMenu>
+      <Collapsible
+        defaultOpen={isExpanded(menuId)}
+        onOpenChange={(s) => updateState(menuId, s)}
+        className="group/collapsible"
+      >
+        <SidebarMenuItem>
+          <CollapsibleTrigger asChild>
+            <SidebarMenuButton tooltip="Default bookmark folders">
+              <Bookmark />
+              <span>Bookmark</span>
+              <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+            </SidebarMenuButton>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <DefaultFolders />
+          </CollapsibleContent>
+        </SidebarMenuItem>
+      </Collapsible>
+    </SidebarMenu>
+  );
+}

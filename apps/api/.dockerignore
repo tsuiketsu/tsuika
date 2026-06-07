@@ -1,0 +1,6 @@
+Dockerfile
+node_modules
+lefthook.yml
+README.md
+dist
+*.env

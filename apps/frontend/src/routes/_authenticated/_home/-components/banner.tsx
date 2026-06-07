@@ -1,0 +1,46 @@
+import Image from "@/components/image";
+import Avatar from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { options } from "@/constants";
+import useUserProfile from "@/hooks/user-profile.hook";
+import { useUserProfileStore } from "@/stores/user-profile.store";
+
+export default function Banner() {
+  const { data: user, isFetching } = useUserProfile();
+  const preferences = useUserProfileStore((s) => s.profile)?.preferencesJson;
+  const isLoading = useUserProfileStore((s) => s.isLoading);
+
+  if (isFetching || isLoading) {
+    return (
+      <div>
+        {String(isLoading)}
+        <Skeleton className="aspect-11/8 rounded-xl @3xl/dash:aspect-11/5" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative aspect-11/8 overflow-hidden rounded-md @3xl/dash:aspect-11/5 @7xl/dash:col-span-2">
+      <Image
+        src={preferences?.dashboardThumbnail as unknown as string}
+        alt="dashboard-banner"
+        fallbackSrc={options.dashboardFallback}
+        className="size-full object-cover"
+      />
+      {user && (
+        <div className="bg-background/60 absolute bottom-4 left-4 inline-flex items-center gap-3 rounded-full p-1 pr-8 font-sans backdrop-blur-sm">
+          <Avatar
+            src={user?.image}
+            fallback={user.username ?? user.name ?? ""}
+            alt="dashboard avatar"
+            className="size-12 capitalize outline-none"
+          />
+          <div className="flex flex-col">
+            <span className="text-sm font-bold">Welcome back!</span>
+            <span className="text-xs">{user?.name}</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

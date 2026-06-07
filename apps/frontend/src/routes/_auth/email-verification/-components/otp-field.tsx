@@ -1,0 +1,44 @@
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+import type { Control } from "react-hook-form";
+import type { z } from "zod";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import type { FormSchema } from "./schema";
+
+interface PropsType {
+  control: Control<z.infer<typeof FormSchema>>;
+}
+
+const OTPField = ({ control }: PropsType) => (
+  <FormField
+    control={control}
+    name="pin"
+    render={({ field }) => (
+      <FormItem>
+        <FormControl>
+          <InputOTP maxLength={6} {...field} pattern={REGEXP_ONLY_DIGITS}>
+            <InputOTPGroup className="space-x-3">
+              {Array.from({ length: 6 }).map((_, idx) => (
+                <InputOTPGroup key={`otp-input-${idx}`}>
+                  <InputOTPSlot index={idx} className="size-10" />
+                </InputOTPGroup>
+              ))}
+            </InputOTPGroup>
+          </InputOTP>
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    )}
+  />
+);
+
+export default OTPField;

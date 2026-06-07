@@ -1,0 +1,67 @@
+import { SquarePlus } from "lucide-react";
+import { lazy, Suspense } from "react";
+import {
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+} from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useTagsData } from "@/hooks/use-tag";
+import TagItem from "./tag-item";
+
+const InsertTag = lazy(() => import("@/components/forms/tag/insert-tag"));
+
+const TagSkeletion = () => (
+  <SidebarMenuItem>
+    <Skeleton className="h-8 w-full rounded-md" />
+  </SidebarMenuItem>
+);
+
+const TagSkeletons = ({ isVisible }: { isVisible?: boolean }) => {
+  if (!isVisible) return null;
+
+  return Array.from({ length: 5 }).map((_, idx) => (
+    <TagSkeletion key={`tag-ske-${idx}`} />
+  ));
+};
+
+const TagsFallback = () => {
+  return (
+    <Suspense
+      fallback={
+        <SidebarMenuSub>
+          <TagSkeletion />
+        </SidebarMenuSub>
+      }
+    >
+      <SidebarMenuSub>
+        <InsertTag
+          customTrigger={
+            <SidebarMenuButton>
+              <SquarePlus />
+              Create tag
+            </SidebarMenuButton>
+          }
+        />
+      </SidebarMenuSub>
+      <InsertTag />
+    </Suspense>
+  );
+};
+
+export default function TagItems() {
+  const { data: tags, isFetching } = useTagsData();
+
+  if (!isFetching && tags?.length === 0) {
+    return <TagsFallback />;
+  }
+
+  return (
+    <SidebarMenuSub className="felx felx-col gap-1 select-none">
+      {tags?.map((tag) => (
+        <TagItem key={tag.id} tag={tag} />
+      ))}
+      <TagSkeletons isVisible={isFetching} />
+    </SidebarMenuSub>
+  );
+}
