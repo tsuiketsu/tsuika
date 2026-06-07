@@ -8,6 +8,7 @@
   "files": {
     "ignoreUnknown": false,
     "includes": [
+      "turbo.json",
       "**/apps/api/src/**/*",
       "**/apps/frontend/src/**/*",
       "**/apps/frontend/.vscode/**/*",
