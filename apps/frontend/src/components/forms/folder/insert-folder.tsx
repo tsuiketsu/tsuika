@@ -1,14 +1,14 @@
-import FolderForm from "./folder-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
+import { Plus } from "lucide-react";
+import React, { type RefObject, useRef } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import { insertInfQueryData, mutationError } from "@/lib/query.utils";
 import { insertFolder } from "@/queries/folder.queries";
 import type { Folder } from "@/types/folder";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import clsx from "clsx";
-import { Plus } from "lucide-react";
-import React, { useRef, type RefObject } from "react";
-import { toast } from "sonner";
+import FolderForm from "./folder-form";
 
 interface PropsType {
   customTrigger?: React.ReactNode;
@@ -26,7 +26,7 @@ export default function InsertFolder({ customTrigger, triggerRef }: PropsType) {
     onSuccess: ({ data: { data, message } }) => {
       queryClient.setQueryData<{ pages: { data: Folder[] }[] }>(
         ["folders"],
-        (old) => insertInfQueryData(old, data)
+        (old) => insertInfQueryData(old, data),
       );
 
       toast.success(message || "Successfully added folder");

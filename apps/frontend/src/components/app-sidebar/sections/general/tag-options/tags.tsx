@@ -1,4 +1,5 @@
-import TagItem from "./tag-item";
+import { SquarePlus } from "lucide-react";
+import { lazy, Suspense } from "react";
 import {
   SidebarMenuButton,
   SidebarMenuItem,
@@ -6,8 +7,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTagsData } from "@/hooks/use-tag";
-import { SquarePlus } from "lucide-react";
-import { lazy, Suspense } from "react";
+import TagItem from "./tag-item";
 
 const InsertTag = lazy(() => import("@/components/forms/tag/insert-tag"));
 

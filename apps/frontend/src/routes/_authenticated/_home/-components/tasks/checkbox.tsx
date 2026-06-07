@@ -1,11 +1,15 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
+import { useState } from "react";
+import { toast } from "sonner";
 import {
   AlertDialog,
-  AlertDialogFooter,
-  AlertDialogHeader,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
@@ -14,10 +18,6 @@ import { updateInfQueryData } from "@/lib/query.utils";
 import { updateTaskStatus } from "@/queries/task.queries";
 import type { ErrorResponse } from "@/types";
 import type { Task } from "@/types/task";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { AxiosError } from "axios";
-import { useState } from "react";
-import { toast } from "sonner";
 
 interface PropsType {
   task: Task;
@@ -35,7 +35,7 @@ export default function TaskCheckbox({ task }: PropsType) {
     onSuccess: ({ data: { data } }) => {
       queryClient.setQueryData<{ pages: { data: Task[] }[] }>(
         ["tasks"],
-        (old) => updateInfQueryData(old, data as Task, (old) => old.id)
+        (old) => updateInfQueryData(old, data as Task, (old) => old.id),
       );
 
       setOpen(false);

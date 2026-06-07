@@ -1,8 +1,8 @@
-import TagItem from "./tag-item";
 import Show from "@/components/show";
 import { SidebarMenuItem, SidebarMenuSub } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Tag } from "@/types/tag";
+import TagItem from "./tag-item";
 
 interface PropsType {
   sneakyRef: (instance: Element | null) => void;

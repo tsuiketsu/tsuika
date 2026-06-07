@@ -1,8 +1,7 @@
-import { mutationError } from "@/lib/query.utils";
-import { unpublishFolder } from "@/queries/share-folder.queries";
-import { publishFolder } from "@/queries/share-folder.queries";
-import type { SharedFolder } from "@/types/folder";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { mutationError } from "@/lib/query.utils";
+import { publishFolder, unpublishFolder } from "@/queries/share-folder.queries";
+import type { SharedFolder } from "@/types/folder";
 
 const getQueryKey = (id: string) => ["shared-folder", id];
 
@@ -71,7 +70,7 @@ export const useUnpublishMutation = () => {
           ({
             ...old,
             isPublic: false,
-          }) as SharedFolder
+          }) as SharedFolder,
       );
     },
     onError: mutationError("Failed to un-publish folder"),

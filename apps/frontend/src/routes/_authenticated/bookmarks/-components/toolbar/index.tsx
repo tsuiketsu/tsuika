@@ -1,12 +1,12 @@
-import BulkEdit from "./bulk-edit";
-import LayoutPicker from "./layout-picker";
-import SearchInput from "./search-input";
-import { Button } from "@/components/ui/button";
-import { useSecuredFolders } from "@/hooks/secured-folder.hook";
-import { useSecureFolderStore } from "@/stores/secure-folder.store";
 import { useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { LockIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useSecuredFolders } from "@/hooks/secured-folder.hook";
+import { useSecureFolderStore } from "@/stores/secure-folder.store";
+import BulkEdit from "./bulk-edit";
+import LayoutPicker from "./layout-picker";
+import SearchInput from "./search-input";
 
 interface PropsType {
   slug: string;
@@ -46,7 +46,7 @@ export default function ActionBar({ slug, total, onQueryChange }: PropsType) {
           "bg-secondary rounded-sm px-3 py-1 text-sm whitespace-nowrap",
           {
             hidden: !slug.includes("tag"),
-          }
+          },
         )}
       >
         Showing {total} results

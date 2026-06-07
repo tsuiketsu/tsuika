@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { GitMergeIcon, MailIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const links = [
   { href: "https://github.com/ImRayy/tsuika", icon: GitMergeIcon },

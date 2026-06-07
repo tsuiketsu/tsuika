@@ -1,11 +1,11 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import { fetchFolders } from "@/queries/folder.queries";
-import { useUserProfileStore } from "@/stores/user-profile.store";
-import type { Folder } from "@/types/folder";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { FolderIcon } from "lucide-react";
 import { useMemo } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { fetchFolders } from "@/queries/folder.queries";
+import { useUserProfileStore } from "@/stores/user-profile.store";
+import type { Folder } from "@/types/folder";
 
 const Skeletons = () =>
   Array.from({ length: 6 }).map((_, idx) => (
@@ -32,7 +32,7 @@ export default function PinnedFolders() {
 
   const folderIds = useMemo(
     () => profile?.preferencesJson.pinnedFolders ?? [],
-    [profile?.preferencesJson.pinnedFolders]
+    [profile?.preferencesJson.pinnedFolders],
   );
 
   const { data, isFetching } = useQuery({

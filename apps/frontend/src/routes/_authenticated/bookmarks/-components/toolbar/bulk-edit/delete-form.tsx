@@ -1,12 +1,17 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
+import { Trash } from "lucide-react";
+import { useMemo, useRef } from "react";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogTitle,
-  AlertDialogTrigger,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
@@ -15,11 +20,6 @@ import { bulkDeleteBookmarks } from "@/queries/bookmark.queries";
 import { useToolbarStore } from "@/stores/toolbar.store";
 import type { InfiniteQueryResponse as IQR } from "@/types";
 import type { Bookmark } from "@/types/bookmark";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import clsx from "clsx";
-import { Trash } from "lucide-react";
-import { useMemo, useRef } from "react";
-import { toast } from "sonner";
 
 export default function DeleteForm({ slug }: { slug: string }) {
   const bookmarkIds = useToolbarStore((s) => s.bookmarkIds);
@@ -38,7 +38,7 @@ export default function DeleteForm({ slug }: { slug: string }) {
       folder.isSecured
         ? ["bookmarks", slug, "", { isEncrypted: true }]
         : ["bookmarks", slug, ""],
-    [slug, folder.isSecured]
+    [slug, folder.isSecured],
   );
 
   const mutation = useMutation({
@@ -54,7 +54,7 @@ export default function DeleteForm({ slug }: { slug: string }) {
       }
 
       queryClient.setQueryData<IQR<Bookmark>>(queryKey, (old) =>
-        deleteInfQueryDataInBulk(old, res.data, (old) => old.id)
+        deleteInfQueryDataInBulk(old, res.data, (old) => old.id),
       );
 
       dialogCloseRef.current?.click();

@@ -1,10 +1,10 @@
-import Avatar from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import type { SharedFolderData } from "@/types/public";
 import clsx from "clsx";
 import { format } from "date-fns";
 import { ChevronDownIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import Avatar from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import type { SharedFolderData } from "@/types/public";
 
 const Note = ({ authorName, note }: { authorName: string; note: string }) => {
   const [isClamped, setIsClamped] = useState(false);

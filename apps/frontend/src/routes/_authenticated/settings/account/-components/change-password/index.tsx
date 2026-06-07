@@ -1,19 +1,19 @@
-import ChangePasswordForm from "./form";
-import { usePasswordFormMutation } from "./mutation-hook";
-import {
-  passwordFormScheme as formSchema,
-  type PasswordFormType as FormSchema,
-} from "./schema";
-import Show from "@/components/show";
-import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Show from "@/components/show";
+import { Button } from "@/components/ui/button";
+import ChangePasswordForm from "./form";
+import { usePasswordFormMutation } from "./mutation-hook";
+import {
+  type PasswordFormType as FormSchema,
+  passwordFormScheme as formSchema,
+} from "./schema";
 
 const initialValues = {
   password: {
     currentPassword: (Array.from({ length: 24 }).fill("•") as string[]).join(
-      " "
+      " ",
     ),
     newPassword: "",
     confirmNewPassword: "",

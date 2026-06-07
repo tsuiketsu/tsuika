@@ -1,3 +1,8 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
+import { UserPlus } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSession } from "@/lib/auth-client";
@@ -6,11 +11,6 @@ import {
   invalidateCollaboratorsData,
 } from "@/queries/collab-folder.queries";
 import { userRoles } from "@/types/folder";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { AxiosError } from "axios";
-import { UserPlus } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
 
 interface PropsType {
   folderId: string;

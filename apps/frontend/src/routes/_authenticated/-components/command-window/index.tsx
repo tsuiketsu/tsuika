@@ -1,15 +1,3 @@
-import { commandLinks } from "./links";
-import { useTheme } from "@/components/theme/context/use-theme";
-import {
-  CommandDialog,
-  CommandList,
-  CommandItem,
-  CommandInput,
-  CommandGroup,
-  CommandEmpty,
-} from "@/components/ui/command";
-import { useFoldersData } from "@/hooks/use-folder";
-import type { Setter } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -19,6 +7,18 @@ import {
   Moon,
   Sun,
 } from "lucide-react";
+import { useTheme } from "@/components/theme/context/use-theme";
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { useFoldersData } from "@/hooks/use-folder";
+import type { Setter } from "@/lib/utils";
+import { commandLinks } from "./links";
 
 interface PropsType {
   open: boolean;
@@ -81,7 +81,7 @@ export default function CommandWindow({ open, setOpen }: PropsType) {
                   navigate({
                     to: "/bookmarks/$slug",
                     params: { slug: `folder/${folder.id}` },
-                  })
+                  }),
                 )}
               >
                 <FolderIcon />

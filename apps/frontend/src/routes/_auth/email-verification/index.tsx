@@ -1,4 +1,5 @@
-import EmailVerificationForm from "./-components/form";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,8 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getUserVerificationEmail } from "@/queries/auth.queries";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import EmailVerificationForm from "./-components/form";
 
 export const Route = createFileRoute("/_auth/email-verification/")({
   component: EmailVerification,

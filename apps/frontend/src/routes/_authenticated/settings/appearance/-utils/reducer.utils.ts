@@ -5,7 +5,7 @@ type PreferencesAction = { type: "SET_FONT"; payload: Font };
 
 export function preferencesReduces(
   state: Preferences,
-  action: PreferencesAction
+  action: PreferencesAction,
 ): Preferences {
   switch (action.type) {
     case "SET_FONT":

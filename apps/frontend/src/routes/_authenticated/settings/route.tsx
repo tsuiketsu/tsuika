@@ -1,15 +1,15 @@
-import SectionHeader from "@/components/section-header";
-import { Button } from "@/components/ui/button";
-import type { LucideIconElement } from "@/types";
 import {
   createFileRoute,
   Link,
+  type LinkComponentProps,
   Outlet,
   useRouterState,
-  type LinkComponentProps,
 } from "@tanstack/react-router";
 import { Shield, SwatchBook, User } from "lucide-react";
 import { useEffect, useState } from "react";
+import SectionHeader from "@/components/section-header";
+import { Button } from "@/components/ui/button";
+import type { LucideIconElement } from "@/types";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   component: SettingsRouteComponent,
@@ -50,7 +50,7 @@ type NavLinkKey = keyof typeof links;
 
 function SettingsRouteComponent() {
   const [currentPath, setCurrentPath] = useState<NavLinkKey | undefined>(
-    undefined
+    undefined,
   );
 
   const {

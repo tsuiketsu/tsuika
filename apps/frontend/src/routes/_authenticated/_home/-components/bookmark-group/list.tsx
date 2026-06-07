@@ -1,5 +1,5 @@
-import BookmarkListItem from "./list-item";
 import type { Bookmark } from "@/types/bookmark";
+import BookmarkListItem from "./list-item";
 
 interface PropsType {
   bookmarks: Bookmark[];

@@ -1,18 +1,18 @@
-import BookmarkCheckbox from "./checkbox";
-import BookmarkExtras from "./extras";
-import BookmarkThumbnail from "./thumbnail";
+import { useRouterState } from "@tanstack/react-router";
+import clsx from "clsx";
+import { lazy, Suspense } from "react";
 import Show from "@/components/show";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import useLayoutStore, {
-  cardLayout,
   type CardsLayoutKey,
+  cardLayout,
 } from "@/stores/layout.store";
 import type { Bookmark } from "@/types/bookmark";
 import { isDefaultFolder } from "@/utils";
-import { useRouterState } from "@tanstack/react-router";
-import clsx from "clsx";
-import { lazy, Suspense } from "react";
+import BookmarkCheckbox from "./checkbox";
+import BookmarkExtras from "./extras";
+import BookmarkThumbnail from "./thumbnail";
 
 const BookmarkActions = lazy(() => import("./actions"));
 
@@ -34,7 +34,7 @@ export default function BookmarkCard(props: PropsType) {
     <div
       className={cn(
         "bg-card group @container/main relative flex flex-col overflow-hidden rounded-md p-2 shadow-xs select-none",
-        { "flex-row gap-2 p-1": layout === cardLayout.COMPACT }
+        { "flex-row gap-2 p-1": layout === cardLayout.COMPACT },
       )}
     >
       <button
@@ -105,7 +105,7 @@ const Title = ({
           ["line-clamp-1 w-[98cqw]"],
           ["transition-transform duration-200"],
           ["underline-offset-2 hover:underline"],
-          { truncate: layout === cardLayout.COMPACT }
+          { truncate: layout === cardLayout.COMPACT },
         )}
       >
         {bookmark?.title}

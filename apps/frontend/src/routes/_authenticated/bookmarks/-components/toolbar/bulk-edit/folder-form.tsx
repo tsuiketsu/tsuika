@@ -1,3 +1,8 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
+import { FolderInput, MoveRight } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { toast } from "sonner";
 import FolderPicker from "@/components/folder-picker";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,11 +24,6 @@ import { useToolbarStore } from "@/stores/toolbar.store";
 import type { InfiniteQueryResponse as IQR } from "@/types";
 import type { Bookmark } from "@/types/bookmark";
 import type { Folder } from "@/types/folder";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import clsx from "clsx";
-import { FolderInput, MoveRight } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
-import { toast } from "sonner";
 
 export default function FolderForm({ slug }: { slug: string }) {
   const bookmarkIds = useToolbarStore((s) => s.bookmarkIds);
@@ -51,7 +51,7 @@ export default function FolderForm({ slug }: { slug: string }) {
     }) => {
       return await bulkMoveBookmarksToFolder(
         folderId,
-        bookmarks.map((b) => b.id)
+        bookmarks.map((b) => b.id),
       );
     },
     onSuccess: ({ status, statusText }, { bookmarks }) => {
@@ -61,12 +61,12 @@ export default function FolderForm({ slug }: { slug: string }) {
       }
 
       queryClient.setQueryData<IQR<Bookmark>>(queryKey, (old) =>
-        deleteInfQueryDataInBulk(old, bookmarkIds, (old) => old.id)
+        deleteInfQueryDataInBulk(old, bookmarkIds, (old) => old.id),
       );
 
       queryClient.setQueryData<IQR<Bookmark>>(
         [queryKey[0], `folder/${folderId}`, ""],
-        (old) => insertInfQueryDataInBulk(old, bookmarks)
+        (old) => insertInfQueryDataInBulk(old, bookmarks),
       );
 
       dialogCloseRef.current?.click();
@@ -89,7 +89,7 @@ export default function FolderForm({ slug }: { slug: string }) {
 
     const bookmarks =
       list?.pages?.flatMap(({ data }) =>
-        data.filter((b) => bookmarkIds.includes(b.id))
+        data.filter((b) => bookmarkIds.includes(b.id)),
       ) ?? [];
 
     mutation.mutate({ folderId, bookmarks });

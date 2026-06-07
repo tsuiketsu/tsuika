@@ -1,3 +1,6 @@
+import { Link, type LinkProps } from "@tanstack/react-router";
+import { FolderIcon, GlobeIcon, LockIcon } from "lucide-react";
+import type React from "react";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
 import {
   Tooltip,
@@ -6,9 +9,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { Folder } from "@/types/folder";
-import { Link, type LinkProps } from "@tanstack/react-router";
-import { FolderIcon, GlobeIcon, LockIcon } from "lucide-react";
-import React from "react";
 
 interface FolderTooltipProps {
   text: string;

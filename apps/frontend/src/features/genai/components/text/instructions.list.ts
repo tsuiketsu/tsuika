@@ -1,5 +1,5 @@
-import { AI_FAILED_TEXT } from "./constants";
 import type { GenerateContentConfig } from "@google/genai";
+import { AI_FAILED_TEXT } from "./constants";
 
 const instructions = {
   content_descriptor: {

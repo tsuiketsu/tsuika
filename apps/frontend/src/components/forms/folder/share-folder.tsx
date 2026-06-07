@@ -1,9 +1,6 @@
-import ShareFolderForm from "./share-folder-form";
-import {
-  usePublishMutation,
-  useUnpublishMutation,
-  useUpdateMutation,
-} from "./share-folder.mutations";
+import { useQuery } from "@tanstack/react-query";
+import { ClipboardIcon } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -19,9 +16,12 @@ import { useSession } from "@/lib/auth-client";
 import type { Setter } from "@/lib/utils";
 import { fetchSharedFolderInfo } from "@/queries/share-folder.queries";
 import type { Folder } from "@/types/folder";
-import { useQuery } from "@tanstack/react-query";
-import { ClipboardIcon } from "lucide-react";
-import { toast } from "sonner";
+import {
+  usePublishMutation,
+  useUnpublishMutation,
+  useUpdateMutation,
+} from "./share-folder.mutations";
+import ShareFolderForm from "./share-folder-form";
 
 interface PropsType {
   folder: Folder;
@@ -59,7 +59,7 @@ export default function ShareFolder({ folder, open, setOpen }: PropsType) {
 
   const isPublish = !sharedFolder;
   const isRepublish = sharedFolder && !sharedFolder.isPublic;
-  const isUpdate = sharedFolder && sharedFolder.isPublic;
+  const isUpdate = sharedFolder?.isPublic;
   const isUnpublish = isUpdate;
 
   return (

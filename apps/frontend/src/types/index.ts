@@ -1,6 +1,6 @@
 import type { LucideProps } from "lucide-react";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
-import type { FieldValues, FieldPath } from "react-hook-form";
+import type { FieldPath, FieldValues } from "react-hook-form";
 
 interface APIResponse {
   code: string;

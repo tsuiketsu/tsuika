@@ -1,8 +1,8 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { mutationError } from "@/lib/query.utils";
 import { insertTag } from "@/queries/tags.queries";
 import type { Tag } from "@/types/tag";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
 
 const useTagInsertMutation = ({
   onSuccess,
@@ -16,7 +16,7 @@ const useTagInsertMutation = ({
     mutationFn: insertTag,
     onSuccess: ({ data: { data, message } }) => {
       queryClient.setQueryData<Tag[]>(["tags"], (old) =>
-        old && old.length > 0 ? [...old, data] : [data]
+        old && old.length > 0 ? [...old, data] : [data],
       );
 
       onSuccess(data);

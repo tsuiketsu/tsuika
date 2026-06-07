@@ -1,16 +1,14 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import { defaultTagId } from "./constants";
+import clsx from "clsx";
+import { Dot, Hash, LoaderCircle, Palette, Plus } from "lucide-react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import type { ControllerRenderProps } from "react-hook-form";
 import { Button, buttonVariants } from "@/components/ui/button";
 import useTagInsertMutation from "@/hooks/insert-tag-mutation.hook";
 import { cn, type Setter } from "@/lib/utils";
 import type { BookmarkFormSchemaType } from "@/types/bookmark";
 import type { Tag, TagInsertSchemaWithId } from "@/types/tag";
 import { getTextColor } from "@/utils";
-import clsx from "clsx";
-import { Dot, Hash, LoaderCircle, Palette, Plus } from "lucide-react";
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
-import type { ControllerRenderProps } from "react-hook-form";
+import { defaultTagId } from "./constants";
 
 const UpdateTag = lazy(() => import("@/components/forms/tag/update-tag"));
 
@@ -23,7 +21,7 @@ interface PropsType {
 
 const SuggestionBox = ({ field, tags, setQuery, setTag }: PropsType) => {
   const [tagsState, setTagsState] = useState<TagInsertSchemaWithId[]>(
-    tags ?? []
+    tags ?? [],
   );
 
   useEffect(() => {
@@ -34,7 +32,7 @@ const SuggestionBox = ({ field, tags, setQuery, setTag }: PropsType) => {
   const mutation = useTagInsertMutation({
     onSuccess: (tag) =>
       setTagsState((prev) =>
-        prev.map((t) => (t.id === defaultTagId ? tag : t))
+        prev.map((t) => (t.id === defaultTagId ? tag : t)),
       ),
   });
 
@@ -59,7 +57,7 @@ const SuggestionBox = ({ field, tags, setQuery, setTag }: PropsType) => {
           <div
             className={cn(
               "hover:bg-secondary bg-card text-card-foreground inline-flex w-full items-center justify-start gap-2 rounded-md p-1 px-1 text-sm capitalize",
-              tag.id === defaultTagId && "hover:bg-card"
+              tag.id === defaultTagId && "hover:bg-card",
             )}
             onClick={selectTagHandler(tag)}
           >

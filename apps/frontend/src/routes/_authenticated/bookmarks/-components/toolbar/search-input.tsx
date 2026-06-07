@@ -1,13 +1,12 @@
-import SearchWindow from "./search-window";
-import { buttonVariants } from "@/components/ui/button";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useToolbarStore } from "@/stores/toolbar.store";
 import { useWindowSize } from "@uidotdev/usehooks";
 import clsx from "clsx";
 import { SearchIcon, SparklesIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useToolbarStore } from "@/stores/toolbar.store";
+import SearchWindow from "./search-window";
 
 type InputType = {
   query: string;
@@ -46,7 +45,7 @@ export default function SearchInput({
     <form
       className={clsx(
         "w-full gap-2",
-        slug.includes("tag") || isFolderSecured ? "hidden" : "inline-flex"
+        slug.includes("tag") || isFolderSecured ? "hidden" : "inline-flex",
       )}
       onSubmit={handleSubmit(onSubmit)}
     >

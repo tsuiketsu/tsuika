@@ -1,6 +1,6 @@
+import { Hash } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getTextColor } from "@/utils";
-import { Hash } from "lucide-react";
 
 const TagIcon = ({
   color,

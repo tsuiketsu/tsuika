@@ -1,13 +1,13 @@
-import TaskForm from "./task-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Plus } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import { insertInfQueryData, mutationError } from "@/lib/query.utils";
 import type { Setter } from "@/lib/utils";
 import { insertTask } from "@/queries/task.queries";
 import type { Task, TaskType } from "@/types/task";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
-import { toast } from "sonner";
+import TaskForm from "./task-form";
 
 interface PropsType {
   contentType: TaskType;
@@ -34,7 +34,7 @@ export default function InsertTask({
     onSuccess: ({ data: { data } }) => {
       queryClient.setQueryData<{ pages: { data: Task[] }[] }>(
         ["tasks", { type: contentType }],
-        (old) => insertInfQueryData(old, data)
+        (old) => insertInfQueryData(old, data),
       );
 
       toast.success("Successfully added task");

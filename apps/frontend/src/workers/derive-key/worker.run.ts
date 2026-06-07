@@ -1,7 +1,7 @@
 import type { WorkerRequest, WorkerResponse } from "./types";
 
 export function runDeriveKeyWorker(
-  data: WorkerRequest
+  data: WorkerRequest,
 ): Promise<WorkerResponse> {
   const worker = new Worker(new URL("./worker.ts", import.meta.url), {
     type: "module",

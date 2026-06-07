@@ -1,7 +1,7 @@
-import { markdownStyle } from "@/hooks/default-editor.hook";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Markdown } from "tiptap-markdown";
+import { markdownStyle } from "@/hooks/default-editor.hook";
 
 export default function MarkdownContent({ content }: { content: string }) {
   const editor = useEditor({

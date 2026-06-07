@@ -1,4 +1,4 @@
-import CollabAvatarsSkeleton from "./collborator-avatars/skeleton";
+import { lazy, Suspense } from "react";
 import { defaultFolders } from "@/components/app-sidebar/sections/general/bookmark-options/constants";
 import FolderMenu from "@/components/dropdowns/folder-menu";
 import TagMenu from "@/components/dropdowns/tag-menu";
@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { useFoldersData } from "@/hooks/use-folder";
 import { useTagsData } from "@/hooks/use-tag";
-import { lazy, Suspense } from "react";
+import CollabAvatarsSkeleton from "./collborator-avatars/skeleton";
 
 const CollboratorAvatars = lazy(() => import("./collborator-avatars"));
 

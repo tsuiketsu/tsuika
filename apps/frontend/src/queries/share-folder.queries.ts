@@ -1,9 +1,9 @@
+import axios from "axios";
 import type { ShareFolderFormSchema } from "@/components/forms/folder/share-folder-form";
 import { options } from "@/constants";
 import type { SuccessResponse } from "@/types";
 import type { Folder, SharedFolder } from "@/types/folder";
 import type { SharedFolderData } from "@/types/public";
-import axios from "axios";
 
 export const publishFolder = async ({
   id,
@@ -24,7 +24,7 @@ export const publishFolder = async ({
 
 export const fetchPublicBookmarks = async (
   username: string,
-  folderId: string
+  folderId: string,
 ) => {
   return axios<SuccessResponse<SharedFolderData>>({
     method: "get",

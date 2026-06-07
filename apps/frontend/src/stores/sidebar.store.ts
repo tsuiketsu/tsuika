@@ -34,5 +34,5 @@ const storage = {
 };
 
 export const useSidebarStore = create<SidebarStore>()(
-  persist(createSidebarStore, storage)
+  persist(createSidebarStore, storage),
 );

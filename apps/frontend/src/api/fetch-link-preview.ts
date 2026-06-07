@@ -1,5 +1,5 @@
+import axios, { type HttpStatusCode } from "axios";
 import { options } from "@/constants";
-import axios, { HttpStatusCode } from "axios";
 
 export type LinkPreview = {
   url: string;
@@ -27,7 +27,7 @@ export interface LinkPreviewResponsse {
 }
 
 export const fetchLinkPreview = async (
-  siteURL: string
+  siteURL: string,
 ): Promise<LinkPreview | null> => {
   try {
     const response = await axios<LinkPreviewResponsse>({

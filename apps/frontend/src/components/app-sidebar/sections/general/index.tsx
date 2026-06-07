@@ -1,9 +1,9 @@
+import { LayoutDashboard } from "lucide-react";
+import { SidebarGroup, SidebarGroupContent } from "@/components/ui/sidebar";
 import BookmarkOptions from "./bookmark-options";
 import FolderOptions from "./folder-options";
 import SidebarLink from "./sidebar-link";
 import TagOptions from "./tag-options";
-import { SidebarGroup, SidebarGroupContent } from "@/components/ui/sidebar";
-import { LayoutDashboard } from "lucide-react";
 
 export default function GeneralSection() {
   return (

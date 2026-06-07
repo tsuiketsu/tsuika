@@ -6,9 +6,10 @@ export function useIsMobile(breakpoint?: number) {
   const MOBILE_BREAKPOINT = breakpoint || DEFAULT_MOBILE_BREAKPOINT;
 
   const [isMobile, setIsMobile] = React.useState<boolean | undefined>(
-    undefined
+    undefined,
   );
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false
   React.useEffect(() => {
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
     const onChange = () => {

@@ -1,9 +1,9 @@
-import { checkForAppUpdate } from "./helpers";
-import { useSWStore } from "./store";
-import { options } from "@/constants";
+import { useRegisterSW } from "virtual:pwa-register/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { toast } from "sonner";
-import { useRegisterSW } from "virtual:pwa-register/react";
+import { options } from "@/constants";
+import { checkForAppUpdate } from "./helpers";
+import { useSWStore } from "./store";
 
 export default function PWAUpdatePrompt() {
   const period = options.pwaUpdateCheckInterval;
@@ -54,7 +54,7 @@ export default function PWAUpdatePrompt() {
 function registerPeriodicSync(
   period: number,
   swUrl: string,
-  r: ServiceWorkerRegistration
+  r: ServiceWorkerRegistration,
 ) {
   if (period <= 0) return;
 

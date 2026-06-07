@@ -7,7 +7,7 @@ export function insertInfQueryData<T>(
         pages: { data: T[] }[];
       }
     | undefined,
-  data: T
+  data: T,
 ) {
   if (!old || old.pages.length === 0) {
     return { pageParams: [0], pages: [{ data: [data] }] };
@@ -27,7 +27,7 @@ export function insertInfQueryDataInBulk<T>(
         pages: { data: T[] }[];
       }
     | undefined,
-  newData: T[]
+  newData: T[],
 ) {
   if (!old || old.pages.length === 0) {
     return { pageParams: [0], pages: [{ data: [...newData] }] };
@@ -65,7 +65,7 @@ export function updateInfQueryData<T>(
       }
     | undefined,
   data: T,
-  idSelector: (item: T) => number | string
+  idSelector: (item: T) => number | string,
 ) {
   if (!old) return old;
 
@@ -76,7 +76,7 @@ export function updateInfQueryData<T>(
       data: list.data.map((item) =>
         idSelector(item) === idSelector(data)
           ? Object.assign({}, item, data)
-          : item
+          : item,
       ),
     })),
   };
@@ -89,7 +89,7 @@ export function deleteInfQueryData<T>(
       }
     | undefined,
   id: number | string,
-  idSelector: (item: T) => number | string
+  idSelector: (item: T) => number | string,
 ) {
   if (!old) return old;
 
@@ -109,7 +109,7 @@ export function deleteInfQueryDataInBulk<T, K extends string | number>(
       }
     | undefined,
   ids: K[],
-  idSelector: (item: T) => K
+  idSelector: (item: T) => K,
 ) {
   if (!old) return old;
 
@@ -128,14 +128,14 @@ export function sortInfQueryDataByDate<T>(
         pages: { data: T[] }[];
       }
     | undefined,
-  dateField: (value: T) => string | Date
+  dateField: (value: T) => string | Date,
 ) {
   if (!old) return old;
   const [firstPage, ...rest] = old.pages;
 
   const sortedDate = firstPage.data.sort(
     (a, b) =>
-      new Date(dateField(b)).getTime() - new Date(dateField(a)).getTime()
+      new Date(dateField(b)).getTime() - new Date(dateField(a)).getTime(),
   );
 
   return {
@@ -149,10 +149,10 @@ export function findDataFromInfQuery<T>(
     pages: { data: T[] | undefined }[];
   },
   id: string | number,
-  idSelector: (v: T) => string | number
+  idSelector: (v: T) => string | number,
 ): T | undefined {
   return data?.pages?.flatMap((p) =>
-    p.data?.find((f) => idSelector(f) === id)
+    p.data?.find((f) => idSelector(f) === id),
   )?.[0];
 }
 

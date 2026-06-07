@@ -1,16 +1,16 @@
+import type { Control } from "react-hook-form";
 import Image from "@/components/image";
 import ImagePicker from "@/components/pickers/image-picker";
 import {
   FormControl,
+  FormDescription,
   FormField,
-  FormMessage,
   FormItem,
   FormLabel,
-  FormDescription,
+  FormMessage,
 } from "@/components/ui/form";
 import type { Preferences } from "@/types/profile";
 import { getPreviewUrl } from "@/utils";
-import type { Control } from "react-hook-form";
 
 interface PropsType {
   control: Control<Preferences>;

@@ -1,7 +1,7 @@
-import BookmarkGroup from "./bookmark-group";
-import { fetchRecentBookmarks } from "@/queries/bookmark.queries";
 import { useQuery } from "@tanstack/react-query";
 import { ClockFading } from "lucide-react";
+import { fetchRecentBookmarks } from "@/queries/bookmark.queries";
+import BookmarkGroup from "./bookmark-group";
 
 export default function RecentBookmarks() {
   const { data: bookmarks, isFetching } = useQuery({

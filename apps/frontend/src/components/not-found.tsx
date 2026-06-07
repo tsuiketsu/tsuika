@@ -1,6 +1,6 @@
-import { Button } from "./ui/button";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { Button } from "./ui/button";
 
 const msg = "This page doesn't exist or was removed!\nWe suggest you back to";
 

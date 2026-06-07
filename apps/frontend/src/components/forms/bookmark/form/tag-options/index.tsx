@@ -1,4 +1,10 @@
-import { defaultTagId } from "./constants";
+import clsx from "clsx";
+import fuzzy from "fuzzysort";
+import kebabCase from "lodash.kebabcase";
+import { LoaderCircle } from "lucide-react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import type { Control } from "react-hook-form";
+import { shallow } from "zustand/shallow";
 import {
   FormControl,
   FormField,
@@ -12,13 +18,7 @@ import { options } from "@/constants";
 import { useTagsData } from "@/hooks/use-tag";
 import type { BookmarkFormSchemaType } from "@/types/bookmark";
 import type { Tag, TagInsertSchemaWithId } from "@/types/tag";
-import clsx from "clsx";
-import fuzzy from "fuzzysort";
-import kebabCase from "lodash.kebabcase";
-import { LoaderCircle } from "lucide-react";
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
-import { type Control } from "react-hook-form";
-import { shallow } from "zustand/shallow";
+import { defaultTagId } from "./constants";
 
 // Lazy Imports
 const TagList = lazy(() => import("./tag-list"));
@@ -41,7 +41,7 @@ export default function TagOptions({ control }: PropsType) {
   const [query, setQuery] = useState("");
   const [randomColor, setRandomColor] = useState("");
   const [randomTag, setRandomTag] = useState<TagInsertSchemaWithId | null>(
-    null
+    null,
   );
 
   const { data, isFetching } = useTagsData();

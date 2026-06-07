@@ -1,4 +1,4 @@
-import { ZodString, z } from "zod";
+import { type ZodString, z } from "zod";
 
 const requiredString = (schema: ZodString, message = "Required") => {
   return schema.refine((val) => val !== "", { message });

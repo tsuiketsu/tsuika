@@ -1,5 +1,5 @@
-import { ThemeProviderContext, type Theme } from "./theme-context";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { type Theme, ThemeProviderContext } from "./theme-context";
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export default function ThemeProvider({
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
   );
 
   useEffect(() => {

@@ -1,12 +1,12 @@
-import DeleteForm from "./delete-form";
+import clsx from "clsx";
+import { SquareDashedMousePointer, X } from "lucide-react";
+import { lazy, Suspense } from "react";
 import Show from "@/components/show";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { useToolbarStore } from "@/stores/toolbar.store";
-import clsx from "clsx";
-import { SquareDashedMousePointer, X } from "lucide-react";
-import { lazy, Suspense } from "react";
+import DeleteForm from "./delete-form";
 
 const FolderForm = lazy(() => import("./folder-form"));
 

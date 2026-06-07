@@ -1,20 +1,20 @@
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Trash } from "lucide-react";
+import { useState } from "react";
 import {
   AlertDialog,
-  AlertDialogFooter,
-  AlertDialogHeader,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { deleteInfQueryData, mutationError } from "@/lib/query.utils";
 import { deleteTask } from "@/queries/task.queries";
 import type { Task } from "@/types/task";
-import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Trash } from "lucide-react";
-import { useState } from "react";
 
 interface PropsType {
   taskId: string;
@@ -32,7 +32,7 @@ export default function DeleteTask({ taskId }: PropsType) {
     onSuccess: ({ data: { data } }) => {
       queryClient.setQueryData<{ pages: { data: Task[] }[] }>(
         ["tasks"],
-        (old) => deleteInfQueryData(old, data.deletedId, (old) => old.id)
+        (old) => deleteInfQueryData(old, data.deletedId, (old) => old.id),
       );
 
       setOpen(false);

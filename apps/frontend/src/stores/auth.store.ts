@@ -1,5 +1,5 @@
-import type { Session } from "@/lib/auth-client";
 import { create } from "zustand";
+import type { Session } from "@/lib/auth-client";
 
 export type AuthState = {
   isLoading: boolean;

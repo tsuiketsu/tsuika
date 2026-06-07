@@ -1,9 +1,10 @@
-import TagForm from "./tag-form";
+import { Slot } from "@radix-ui/react-slot";
+import type React from "react";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import useTagInsertMutation from "@/hooks/insert-tag-mutation.hook";
-import { Slot } from "@radix-ui/react-slot";
-import React, { useRef } from "react";
+import TagForm from "./tag-form";
 
 interface PropsType {
   customTrigger?: React.ReactElement<React.ComponentProps<"button">>;

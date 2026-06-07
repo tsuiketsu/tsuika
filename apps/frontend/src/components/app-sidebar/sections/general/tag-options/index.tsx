@@ -1,4 +1,4 @@
-import TagList from "./tags";
+import { ChevronRight, Tag } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -6,11 +6,11 @@ import {
 } from "@/components/ui/collapsible";
 import {
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useSidebarStore } from "@/stores/sidebar.store";
-import { ChevronRight, Tag } from "lucide-react";
+import TagList from "./tags";
 
 export default function TagOptions({ menuId }: { menuId: number }) {
   const { isExpanded, updateState } = useSidebarStore();

@@ -1,6 +1,7 @@
-import { buttonVariants, Button } from "../ui/button";
 import type { VariantProps } from "class-variance-authority";
-import React, { useRef } from "react";
+import type React from "react";
+import { useRef } from "react";
+import { Button, type buttonVariants } from "../ui/button";
 
 interface ReturnType {
   file: File;

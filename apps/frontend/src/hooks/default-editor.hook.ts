@@ -1,6 +1,6 @@
 import { Placeholder } from "@tiptap/extensions";
 import type { Transaction } from "@tiptap/pm/state";
-import { Editor, useEditor } from "@tiptap/react";
+import { type Editor, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import clsx from "clsx";
 import { Markdown } from "tiptap-markdown";
@@ -23,7 +23,7 @@ export const markdownStyle = clsx(
   "prose-code:after:content-['']",
 
   // URL
-  "prose-a:text-info"
+  "prose-a:text-info",
 );
 
 export default function useDefaultEditor(
@@ -33,7 +33,7 @@ export default function useDefaultEditor(
     editor: Editor;
     transaction: Transaction;
     appendedTransactions: Transaction[];
-  }) => void
+  }) => void,
 ) {
   const editor = useEditor({
     onUpdate,
@@ -62,7 +62,6 @@ export default function useDefaultEditor(
     },
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getValue = () => (editor.storage as any).markdown.getMarkdown();
 
   const onValueChange = (onChange: (value: string) => void) => () => {

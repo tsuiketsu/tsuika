@@ -1,3 +1,9 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,12 +23,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { emailOtp, signUp } from "@/lib/auth-client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
 
 const SignUpSchema = z.object({
   name: z
@@ -71,7 +71,7 @@ function Register() {
     onSuccess: ({ error, data }, { email }) => {
       if (error) {
         toast.error(
-          error.message || "Registration failed, something went wrong"
+          error.message || "Registration failed, something went wrong",
         );
         console.error(error);
         return;

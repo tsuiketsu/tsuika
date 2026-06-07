@@ -1,15 +1,15 @@
-import type { ProfileFormSchema } from ".";
+import { Slot } from "@radix-ui/react-slot";
+import type { Control } from "react-hook-form";
 import ImagePicker from "@/components/pickers/image-picker";
 import Avatar from "@/components/ui/avatar";
 import {
+  FormControl,
   FormField,
   FormItem,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
 import { getPreviewUrl } from "@/utils";
-import { Slot } from "@radix-ui/react-slot";
-import type { Control } from "react-hook-form";
+import type { ProfileFormSchema } from ".";
 
 interface PropsType {
   user: ProfileFormSchema & { image: string };

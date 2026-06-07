@@ -1,12 +1,12 @@
-import type { TOTP } from "./two-factor-form/types";
-import LazyBoundary from "@/components/lazy-boundary";
-import Show from "@/components/show";
-import { Switch } from "@/components/ui/switch";
-import { twoFactor, useSession } from "@/lib/auth-client";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import { lazy, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import LazyBoundary from "@/components/lazy-boundary";
+import Show from "@/components/show";
+import { Switch } from "@/components/ui/switch";
+import { twoFactor, useSession } from "@/lib/auth-client";
+import type { TOTP } from "./two-factor-form/types";
 
 const TwoFactorForm = lazy(() => import("./two-factor-form"));
 const PasswordInput = lazy(() => import("@/components/password-input"));

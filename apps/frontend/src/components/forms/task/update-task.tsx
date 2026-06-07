@@ -1,15 +1,15 @@
-import TaskForm from "./task-form";
+import { Slot } from "@radix-ui/react-slot";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
+import { Plus } from "lucide-react";
+import { type RefObject, useRef } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import { mutationError, updateInfQueryData } from "@/lib/query.utils";
 import { updateTask } from "@/queries/task.queries";
 import type { Task, TaskType } from "@/types/task";
-import { Slot } from "@radix-ui/react-slot";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import clsx from "clsx";
-import { Plus } from "lucide-react";
-import { useRef, type RefObject } from "react";
-import { toast } from "sonner";
+import TaskForm from "./task-form";
 
 interface PropsType {
   task: Task;
@@ -34,7 +34,7 @@ export default function UpdateTask({
     onSuccess: ({ data: { data } }) => {
       queryClient.setQueryData<{ pages: { data: Task[] }[] }>(
         ["tasks"],
-        (old) => updateInfQueryData(old, data, (old) => old.id)
+        (old) => updateInfQueryData(old, data, (old) => old.id),
       );
 
       toast.success("Successfully updated task");

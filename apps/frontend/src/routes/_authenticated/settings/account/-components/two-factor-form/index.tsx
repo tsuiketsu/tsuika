@@ -1,9 +1,9 @@
+import { useState } from "react";
+import { Dialog } from "@/components/ui/dialog";
+import type { Setter } from "@/lib/utils";
 import BackupCodesTab from "./tabs/backupcodes.tab";
 import VerificationTab from "./tabs/verification.tab";
 import type { TOTP } from "./types";
-import { Dialog } from "@/components/ui/dialog";
-import type { Setter } from "@/lib/utils";
-import { useState } from "react";
 
 interface PropsType extends TOTP {
   open?: boolean;

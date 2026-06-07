@@ -1,8 +1,8 @@
+import { useCallback, useEffect } from "react";
 import type { Font } from "@/components/font/context/font-context";
 import { useFont } from "@/components/font/context/use-font";
 import { fetchProfile } from "@/queries/profile.queries";
 import { useUserProfileStore } from "@/stores/user-profile.store";
-import { useCallback, useEffect } from "react";
 
 export default function UserProfileProvider() {
   const { profile: prev, setProfile } = useUserProfileStore();

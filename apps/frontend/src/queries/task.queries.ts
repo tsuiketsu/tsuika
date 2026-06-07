@@ -1,7 +1,7 @@
+import axios from "axios";
 import { options } from "@/constants";
 import type { PaginatedSuccessResponse, SuccessResponse } from "@/types";
 import type { Task, TaskInsertSchema, TaskStatus } from "@/types/task";
-import axios from "axios";
 
 const baseUrl = `${options.apiBaseUrl}/api/v1/tasks`;
 

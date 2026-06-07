@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import type { Bookmark } from "@/types/bookmark";
 import clsx from "clsx";
 import { ArrowUpRight } from "lucide-react";
 import { parse } from "tldts";
+import { Button } from "@/components/ui/button";
+import type { Bookmark } from "@/types/bookmark";
 
 interface PropsType {
   bookmark: Bookmark;

@@ -1,22 +1,21 @@
-import { buttonVariants } from "@/components/ui/button";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { useWindowSize } from "@uidotdev/usehooks";
 import clsx from "clsx";
 import { FolderPlusIcon, PlusIcon } from "lucide-react";
 import { lazy, Suspense, useRef } from "react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 
 const InsertFolder = lazy(
-  () => import("@/components/forms/folder/insert-folder")
+  () => import("@/components/forms/folder/insert-folder"),
 );
 const AddBookmark = lazy(
-  () => import("@/components/forms/bookmark/insert-bookmark")
+  () => import("@/components/forms/bookmark/insert-bookmark"),
 );
 
 export default function DropdownOptions() {
@@ -42,7 +41,7 @@ export default function DropdownOptions() {
           <DropdownMenuTrigger
             className={clsx(
               buttonVariants({ variant: "outline", size: "icon" }),
-              "mr-0"
+              "mr-0",
             )}
           >
             <PlusIcon />

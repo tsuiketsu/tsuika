@@ -1,7 +1,7 @@
+import axios from "axios";
 import { options } from "@/constants";
 import type { ProfileFormSchema } from "@/routes/_authenticated/settings/profile";
 import type { SuccessResponse } from "@/types";
-import axios from "axios";
 
 export const baseQuery = `${options.apiBaseUrl}/api`;
 

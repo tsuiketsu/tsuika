@@ -1,12 +1,12 @@
-import FolderForm from "./folder-form";
-import type { FolderInsertSchemaType } from "./types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import Modal from "@/components/ui/modal";
 import { mutationError, updateInfQueryData } from "@/lib/query.utils";
 import type { Setter } from "@/lib/utils";
 import { updateFolder } from "@/queries/folder.queries";
 import type { Folder } from "@/types/folder";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import FolderForm from "./folder-form";
+import type { FolderInsertSchemaType } from "./types";
 
 interface PropsType {
   folder: Folder;
@@ -29,7 +29,7 @@ export default function UpdateFolder({ folder, open, setOpen }: PropsType) {
     onSuccess: ({ data: { data, message } }) => {
       queryClient.setQueryData<{ pages: { data: Folder[] }[] }>(
         ["folders"],
-        (old) => updateInfQueryData(old, data, (old) => old.id)
+        (old) => updateInfQueryData(old, data, (old) => old.id),
       );
 
       toast.success(message || "Successfully updated folder");

@@ -1,3 +1,5 @@
+import { Clipboard, ClipboardCheck, Printer, SaveAll } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DialogContent,
@@ -6,16 +8,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { copyCodes } from "@/utils";
-import { Clipboard, ClipboardCheck, Printer, SaveAll } from "lucide-react";
-import { useState } from "react";
 
 export default function BackupCodesTab({ codes }: { codes: string[] }) {
   const [showCheckMark, setShowCheckMark] = useState(false);
   const textContent = codes.join("\n");
 
   const downloadCodes = () => {
-    const textBlob =
-      "data:text/plain;charset=utf-8," + encodeURIComponent(textContent);
+    const textBlob = `data:text/plain;charset=utf-8,${encodeURIComponent(textContent)}`;
     const link = document.createElement("a");
     link.href = textBlob;
     link.download = `tsuika-backup-codes.txt`;
@@ -26,11 +25,11 @@ export default function BackupCodesTab({ codes }: { codes: string[] }) {
     const WinPrint = window.open(
       "",
       "",
-      "left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0"
+      "left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0",
     );
 
     if (WinPrint) {
-      WinPrint.document.write(`
+      WinPrint.document.writeln(`
       <html>
         <head><title>Backup Codes Print</title></head>
         <body style="font-size:18px;">
@@ -57,8 +56,13 @@ export default function BackupCodesTab({ codes }: { codes: string[] }) {
       <div className="space-y-2">
         <div className="bg-accent flex justify-evenly rounded-lg py-10">
           <ul className="columns-2 gap-8 text-sm">
-            {codes.map((code) => (
-              <li className="font-mono tracking-widest">{code}</li>
+            {codes.map((code, idx) => (
+              <li
+                key={`backup-codde-${idx}`}
+                className="font-mono tracking-widest"
+              >
+                {code}
+              </li>
             ))}
           </ul>
         </div>

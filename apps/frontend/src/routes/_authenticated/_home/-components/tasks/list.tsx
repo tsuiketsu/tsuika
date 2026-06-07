@@ -1,6 +1,6 @@
+import type { Task } from "@/types/task";
 import TaskListItem from "./item";
 import TaskItemSkeletion from "./skeleton";
-import type { Task } from "@/types/task";
 
 interface PropsType {
   tasks: Task[];

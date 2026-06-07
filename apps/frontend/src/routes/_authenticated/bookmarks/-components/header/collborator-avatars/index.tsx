@@ -1,8 +1,8 @@
+import clsx from "clsx";
+import { useMemo } from "react";
 import { useCollaboratorForderStore } from "@/components/forms/folder/collaborate/store";
 import Avatar from "@/components/ui/avatar";
 import { useGetCollaboratorsQuery } from "@/queries/collab-folder.queries";
-import clsx from "clsx";
-import { useMemo } from "react";
 
 const Skeletons = () => {
   return Array.from({ length: 5 }).map((_, idx) => (
@@ -42,7 +42,7 @@ export default function CollboratorAvatars({ folderId }: { folderId: string }) {
       disabled={isFetching}
       className={clsx(
         "relative inline-flex rounded-md p-1 select-none",
-        !isFetching && "hover:bg-secondary transition-color cursor-pointer"
+        !isFetching && "hover:bg-secondary transition-color cursor-pointer",
       )}
       style={{
         width:
@@ -59,7 +59,7 @@ export default function CollboratorAvatars({ folderId }: { folderId: string }) {
             fallback={user.username ?? user.name}
             className={clsx(
               "size-9 shadow-sm outline-none",
-              idx > 0 && "absolute left-6"
+              idx > 0 && "absolute left-6",
             )}
             style={{ left: idx > 0 ? 24 * idx : 0 }}
             alt=""

@@ -1,3 +1,6 @@
+import type { QueryClient } from "@tanstack/react-query";
+import type { ActionDispatch } from "react";
+import { toast } from "sonner";
 import {
   deleteInfQueryData,
   insertInfQueryData,
@@ -7,9 +10,6 @@ import {
 import { setBookmarkFlag } from "@/queries/bookmark.queries";
 import type { Bookmark, BookmarkFlag } from "@/types/bookmark";
 import { objectPick } from "@/utils";
-import { QueryClient } from "@tanstack/react-query";
-import type { ActionDispatch } from "react";
-import { toast } from "sonner";
 
 const getMessage = (flag: BookmarkFlag) => ({
   loading: `Setting as ${flag}`,
@@ -44,7 +44,7 @@ const handlePin = ({
 
   for (const queryKey of allQueryKeys) {
     const isPinnedQuery = queryKey.some(
-      (q) => typeof q === "object" && q.isPinned === true
+      (q) => typeof q === "object" && q.isPinned === true,
     );
 
     queryClient.setQueryData<InfiniteQueryType>(queryKey, (old) => {
@@ -84,7 +84,7 @@ const handleFavourite = ({
       : insertInfQueryData(old, {
           ...bookmark,
           isFavourite: !wasFavourite,
-        })
+        }),
   );
 
   queryClient.setQueryData<InfiniteQueryType>(
@@ -93,8 +93,8 @@ const handleFavourite = ({
       updateInfQueryData(
         old,
         { ...bookmark, isFavourite: !wasFavourite },
-        (old) => old.id
-      )
+        (old) => old.id,
+      ),
   );
 
   dispatch("favorite");
@@ -164,7 +164,7 @@ const updateQueryData = (props: Omit<SetFlagProps, "state">) => {
   switch (props.flag) {
     case "favorite":
       handleFavourite(
-        objectPick(props, ["bookmark", "queryClient", "dispatch"])
+        objectPick(props, ["bookmark", "queryClient", "dispatch"]),
       );
       break;
     case "archive":

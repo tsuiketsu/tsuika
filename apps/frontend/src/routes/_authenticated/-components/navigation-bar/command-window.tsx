@@ -1,8 +1,8 @@
-import CommandWindow from "../command-window";
+import { CommandIcon, SearchIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import useCmdkToggle from "@/hooks/cmdk-toggle.hook";
-import { CommandIcon, SearchIcon } from "lucide-react";
+import CommandWindow from "../command-window";
 
 export default function CommandWindowComponent() {
   const [open, setOpen] = useCmdkToggle();

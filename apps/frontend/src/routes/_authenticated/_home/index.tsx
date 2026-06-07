@@ -1,11 +1,11 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 import Banner from "./-components/banner";
 import BookmarkStats from "./-components/bookmark-stats";
 import PinnedBookmarks from "./-components/pinned-bookmarks";
 import PinnedFolders from "./-components/pinned-folders";
 import RecentBookmarks from "./-components/recent-bookmarks";
 import Tasks from "./-components/tasks";
-import { Button } from "@/components/ui/button";
-import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/_home/")({
   component: RouteComponent,

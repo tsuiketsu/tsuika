@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
-import type { WorkerRequest, WorkerResponse } from "./types";
+
 import { Noble } from "@/utils/noble";
+import type { WorkerRequest, WorkerResponse } from "./types";
 
 self.onmessage = (e: MessageEvent<WorkerRequest>) => {
   const crypto = new Noble();
@@ -19,5 +20,3 @@ self.onmessage = (e: MessageEvent<WorkerRequest>) => {
 
   self.postMessage(response);
 };
-
-export {};

@@ -1,14 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { unlockFolder } from "@/queries/share-folder.queries";
 import { useMutation } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import clsx from "clsx";
 import { ShieldBanIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { unlockFolder } from "@/queries/share-folder.queries";
 
 type Inputs = {
   password: string;

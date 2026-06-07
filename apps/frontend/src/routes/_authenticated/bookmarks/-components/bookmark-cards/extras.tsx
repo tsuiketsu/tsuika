@@ -1,14 +1,14 @@
-import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
-import { useFolderName } from "@/hooks/use-folder";
-import { cn } from "@/lib/utils";
-import useLayoutStore, { cardLayout } from "@/stores/layout.store";
 import { Slot } from "@radix-ui/react-slot";
 import { useRouterState } from "@tanstack/react-router";
 import { format } from "date-fns";
 import { Folder, Inbox } from "lucide-react";
 import { useMemo } from "react";
 import { parse } from "tldts";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+import { useFolderName } from "@/hooks/use-folder";
+import { cn } from "@/lib/utils";
+import useLayoutStore, { cardLayout } from "@/stores/layout.store";
 
 interface PropsType {
   url: string;
@@ -35,13 +35,13 @@ export default function BookmarkExtras(props: PropsType) {
   const responsiveSpan = cn(
     "max-w-20 truncate",
     "@lg/dash:max-w-58 @3xl/dash:max-w-28 @6xl/dash:max-w-24 @7xl/dash:max-w-48",
-    { "@xl/dash:max-w-20 @7xl/dash:max-w-38": layout !== cardLayout.COMPACT }
+    { "@xl/dash:max-w-20 @7xl/dash:max-w-38": layout !== cardLayout.COMPACT },
   );
 
   return (
     <div
       className={cn(
-        "text-foreground/60 inline-flex items-center space-x-2 font-medium"
+        "text-foreground/60 inline-flex items-center space-x-2 font-medium",
       )}
     >
       {isAll ? (
@@ -56,7 +56,7 @@ export default function BookmarkExtras(props: PropsType) {
           rel="noreferrer"
           className={cn(
             buttonVariants({ variant: "info" }),
-            "h-6 rounded-sm px-2 text-xs sm:h-6 sm:rounded-sm"
+            "h-6 rounded-sm px-2 text-xs sm:h-6 sm:rounded-sm",
           )}
         >
           <span className={responsiveSpan}>{domain}</span>

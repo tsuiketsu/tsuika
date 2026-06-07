@@ -1,9 +1,9 @@
-import ProfileDesktopLayout from "./layouts/desktop";
-import ProfileMobileLayout from "./layouts/mobile";
+import { useNavigate } from "@tanstack/react-router";
 import { useIsMobile } from "@/hooks/use-mobile";
 import useUserProfile from "@/hooks/user-profile.hook";
 import { signOut } from "@/lib/auth-client";
-import { useNavigate } from "@tanstack/react-router";
+import ProfileDesktopLayout from "./layouts/desktop";
+import ProfileMobileLayout from "./layouts/mobile";
 
 export default function UserProfile() {
   const { data: user, isFetching } = useUserProfile();

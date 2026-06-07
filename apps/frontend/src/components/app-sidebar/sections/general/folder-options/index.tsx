@@ -1,4 +1,4 @@
-import BookmarkFolders from "./bookmark-folders";
+import { ChevronRight, FolderOpen } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -6,11 +6,11 @@ import {
 } from "@/components/ui/collapsible";
 import {
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useSidebarStore } from "@/stores/sidebar.store";
-import { ChevronRight, FolderOpen } from "lucide-react";
+import BookmarkFolders from "./bookmark-folders";
 
 export default function FolderOptions({ menuId }: { menuId: number }) {
   const { isExpanded, updateState } = useSidebarStore();

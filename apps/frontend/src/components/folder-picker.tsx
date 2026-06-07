@@ -1,4 +1,6 @@
-import Show from "./show";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { FolderIcon, LockIcon } from "lucide-react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,9 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { useFoldersData } from "@/hooks/use-folder";
 import type { Folder } from "@/types/folder";
-import { DialogClose } from "@radix-ui/react-dialog";
-import { FolderIcon, LockIcon } from "lucide-react";
-import { useRef, useState } from "react";
+import Show from "./show";
 
 const FolderItemsSkeleton = ({ isVisible }: { isVisible: boolean }) => {
   if (!isVisible) return null;
@@ -35,7 +35,7 @@ interface PropsType {
 
 export default function FolderPicker({ value, onChange }: PropsType) {
   const [selectedId, setSelectedId] = useState<Folder["id"] | null>(
-    value ?? null
+    value ?? null,
   );
 
   const {

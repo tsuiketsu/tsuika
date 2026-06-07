@@ -1,9 +1,9 @@
-import IconCard from "./_shared/icon-card";
+import { Bookmark, Folders, Hash, Pin } from "lucide-react";
+import { useEffect, useReducer, useState } from "react";
 import { fetchTotalBookmarksCount } from "@/queries/bookmark.queries";
 import { fetchTotalFoldersCount } from "@/queries/folder.queries";
 import { fetchTotalTagsCount } from "@/queries/tags.queries";
-import { Bookmark, Folders, Pin, Hash } from "lucide-react";
-import { useEffect, useReducer, useState } from "react";
+import IconCard from "./_shared/icon-card";
 
 const initialStats = {
   bookmarks: { icon: Bookmark, count: 0 },
@@ -19,7 +19,7 @@ const statsReducer = (
   action: {
     flag: ActionFlag;
     payload: number;
-  }
+  },
 ) => {
   return {
     ...state,

@@ -1,10 +1,10 @@
+import { type LinkProps, useNavigate } from "@tanstack/react-router";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import type { LucideIconElement } from "@/types";
-import { useNavigate, type LinkProps } from "@tanstack/react-router";
 
 interface PropsType {
   label: string;

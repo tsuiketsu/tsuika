@@ -1,5 +1,5 @@
-import type { Tag } from "./tag";
 import { z } from "zod";
+import type { Tag } from "./tag";
 
 export interface Bookmark {
   id: string;

@@ -1,6 +1,6 @@
-import { options } from "@/constants";
 import { GoogleGenAI } from "@google/genai";
 import { useMemo } from "react";
+import { options } from "@/constants";
 
 export default function useGenAI() {
   return useMemo(() => {

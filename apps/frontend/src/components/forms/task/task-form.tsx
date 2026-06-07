@@ -1,3 +1,7 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
 import {
@@ -10,25 +14,21 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  taskPriorities,
-  taskStatus,
-  taskTypes,
   type Task,
   type TaskInsertSchema,
   type TaskPriority,
   type TaskStatus,
   type TaskType,
+  taskPriorities,
+  taskStatus,
+  taskTypes,
 } from "@/types/task";
 import { combineDateAndTime, splitDateAndTime } from "@/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import clsx from "clsx";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { z } from "zod";
 
 const formSchema = z.object({
   note: z.string(),
   priority: z.enum(
-    Object.values(taskPriorities) as [TaskPriority, ...TaskPriority[]]
+    Object.values(taskPriorities) as [TaskPriority, ...TaskPriority[]],
   ),
   status: z.enum(Object.values(taskStatus) as [TaskStatus, ...TaskStatus[]]),
   remindDate: z
@@ -37,7 +37,7 @@ const formSchema = z.object({
         date: z.string(),
         time: z.string(),
       },
-      { message: "You must pick date and time to continue" }
+      { message: "You must pick date and time to continue" },
     )
     .refine((v) => v.date !== "" && v.time !== "", {
       message: "You must pick date and time to continue",

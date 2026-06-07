@@ -1,24 +1,24 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Hash } from "lucide-react";
+import { HexColorPicker } from "react-colorful";
+import { useForm } from "react-hook-form";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import {
-  TagInsertSchema,
   type Tag,
+  TagInsertSchema,
   type TagInsertSchemaType,
 } from "@/types/tag";
 import { getTextColor } from "@/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Hash } from "lucide-react";
-import { HexColorPicker } from "react-colorful";
-import { useForm } from "react-hook-form";
 
 interface PropsType {
   data?: Tag;
@@ -30,7 +30,7 @@ export default function TagForm({ data, onSubmit }: PropsType) {
     resolver: zodResolver(TagInsertSchema),
     defaultValues: data
       ? Object.fromEntries(
-          Object.entries(data).filter(([_, value]) => value != null)
+          Object.entries(data).filter(([_, value]) => value != null),
         )
       : {},
   });
@@ -68,7 +68,7 @@ export default function TagForm({ data, onSubmit }: PropsType) {
                 <div
                   className={cn(
                     buttonVariants({ variant: "outline" }),
-                    "h-6 gap-1 rounded-full"
+                    "h-6 gap-1 rounded-full",
                   )}
                   style={{
                     backgroundColor: field.value,

@@ -1,13 +1,4 @@
-import { Button } from "../ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-  DropdownMenuContent,
-} from "../ui/dropdown-menu";
-import useEditorToolbarStates from "./hooks/editor-toolbar-states";
-import { cn } from "@/lib/utils";
-import { type Editor } from "@tiptap/react";
+import type { Editor } from "@tiptap/react";
 import {
   BoldIcon,
   CodeIcon,
@@ -27,6 +18,15 @@ import {
   TextQuoteIcon,
   UndoIcon,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import useEditorToolbarStates from "./hooks/editor-toolbar-states";
 
 const SelectedHeadingIcon = ({ level }: { level: number }) => {
   switch (level) {

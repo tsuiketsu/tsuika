@@ -1,5 +1,5 @@
+import { useEffect, useState } from "react";
 import type { Setter } from "@/lib/utils";
-import { useState, useEffect } from "react";
 
 export default function useCmdkToggle(): [boolean, Setter<boolean>] {
   const [open, setOpen] = useState(false);

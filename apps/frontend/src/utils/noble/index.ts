@@ -1,9 +1,9 @@
-import { encryptionPresets } from "./methods.list";
 import { xchacha20poly1305 } from "@noble/ciphers/chacha";
 import { argon2id } from "@noble/hashes/argon2";
 import { hmac } from "@noble/hashes/hmac";
 import { sha256 } from "@noble/hashes/sha2";
 import { randomBytes, utf8ToBytes } from "@noble/hashes/utils";
+import { encryptionPresets } from "./methods.list";
 
 const SESSION_KEY = "pwhash-key";
 const VERIFICATION_TEXT = "password-verify";
@@ -101,7 +101,7 @@ export class Noble {
   encrypt(data: string, key: string | Uint8Array, nonce: Uint8Array): string {
     const ciphertext = xchacha20poly1305(
       typeof key === "string" ? this.fromBase64(key) : key,
-      nonce
+      nonce,
     ).encrypt(utf8ToBytes(data));
 
     return this.toBase64(ciphertext);
@@ -110,7 +110,7 @@ export class Noble {
   decrypt(ciphertext: string, key: string, nonce: string): string {
     const decipher = xchacha20poly1305(
       this.fromBase64(key),
-      this.fromBase64(nonce)
+      this.fromBase64(nonce),
     );
     const deciphered = decipher.decrypt(this.fromBase64(ciphertext));
 

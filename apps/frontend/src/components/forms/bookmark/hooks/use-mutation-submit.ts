@@ -1,9 +1,9 @@
+import { useCallback } from "react";
 import { useFoldersData } from "@/hooks/use-folder";
 import type { BookmarkFormSchemaType } from "@/types/bookmark";
-import { useCallback } from "react";
 
 export default function useMutationSubmit(
-  mutate: (payload: BookmarkFormSchemaType) => void
+  mutate: (payload: BookmarkFormSchemaType) => void,
 ) {
   const { folders } = useFoldersData();
 
@@ -19,6 +19,6 @@ export default function useMutationSubmit(
           : true,
       });
     },
-    [folders, mutate]
+    [folders, mutate],
   );
 }

@@ -1,3 +1,5 @@
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import type { FolderInsertSchemaType } from "@/components/forms/folder/types";
 import { options } from "@/constants";
 import type {
@@ -8,8 +10,6 @@ import type {
 import type { Folder, FolderSettings, KeyDerivation } from "@/types/folder";
 import { encryptionPresets } from "@/utils/noble/methods.list";
 import { runDeriveKeyWorker } from "@/workers/derive-key/worker.run";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 export const baseEndpoint = `${options.apiBaseUrl}/api/v1/folders`;
 
@@ -87,7 +87,7 @@ export const insertFolder = async (payload: FolderInsertSchemaType) => {
 
 export const updateFolder = async (
   id: Folder["id"],
-  folder: FolderInsertSchemaType
+  folder: FolderInsertSchemaType,
 ) => {
   return await axios<SuccessResponse<Folder>>({
     method: "put",

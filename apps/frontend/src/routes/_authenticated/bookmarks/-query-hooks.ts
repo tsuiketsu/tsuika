@@ -1,6 +1,6 @@
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchBookmarks } from "@/queries/bookmark.queries";
 import { bookmarkFilters } from "@/types/bookmark";
-import { useInfiniteQuery } from "@tanstack/react-query";
 
 type Args = {
   slug: string;

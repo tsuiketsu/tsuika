@@ -1,11 +1,11 @@
-import { objectPick } from ".";
-import { Noble } from "./noble";
+import type { InfiniteData } from "@tanstack/react-query";
 import { useSecureFolderStore } from "@/stores/secure-folder.store";
 import type { Bookmark, BookmarkFormSchemaType } from "@/types/bookmark";
-import type { InfiniteData } from "@tanstack/react-query";
+import { objectPick } from ".";
+import { Noble } from "./noble";
 
 export const encryptBookmarks = async (
-  bookmark: BookmarkFormSchemaType
+  bookmark: BookmarkFormSchemaType,
 ): Promise<BookmarkFormSchemaType | null> => {
   if (!bookmark.folderId) {
     console.error("folderId is not defined");
@@ -47,7 +47,6 @@ export const decryptBookmark = async (bookmark: Bookmark, folderId: string) => {
   const key = useSecureFolderStore.getState().getKey(folderId);
   const cipher = new Noble();
   const nonce = bookmark.nonce;
-  console.log(bookmark);
 
   if (!key || !nonce) return bookmark;
 
@@ -62,7 +61,7 @@ export const decryptBookmark = async (bookmark: Bookmark, folderId: string) => {
   const decrypted = Object.fromEntries(
     Object.entries(objectPick(bookmark, fieldsToBeDecrypted))
       .filter(([_, v]) => v != null)
-      .map(([k, v]) => [k, cipher.decrypt(v as string, key, nonce)])
+      .map(([k, v]) => [k, cipher.decrypt(v as string, key, nonce)]),
   );
 
   return Object.assign({}, bookmark, decrypted);
@@ -70,7 +69,7 @@ export const decryptBookmark = async (bookmark: Bookmark, folderId: string) => {
 
 export const decryptBookmarks = async (
   encryptedData: InfiniteData<{ data: Bookmark[] }> | undefined,
-  slug: string
+  slug: string,
 ): Promise<Bookmark[]> => {
   const encrypted = encryptedData?.pages.flatMap((page) => page.data);
   const folderId = slug.split("/")[1];
@@ -92,7 +91,7 @@ export const decryptBookmarks = async (
       let decrypted: Partial<Bookmark> = Object.fromEntries(
         Object.entries(objectPick(item, fieldsToBeDecrypted))
           .filter(([_, v]) => v != null)
-          .map(([k, v]) => [k, cypher.decrypt(v as string, key, item.nonce!)])
+          .map(([k, v]) => [k, cypher.decrypt(v as string, key, item.nonce!)]),
       );
 
       decrypted = Object.assign({}, item, decrypted);

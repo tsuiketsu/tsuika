@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import type React from "react";
+import { cn } from "@/lib/utils";
 
 const layoutVariants = {
   grid: "grid w-full auto-rows-min gap-4 @xl/dash:grid-cols-2 @5xl/dash:grid-cols-3 @7xl/dash:grid-cols-4",
@@ -40,5 +40,4 @@ function CardsLayout({
   );
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export { CardsLayout, layoutVariants, cardsLayoutVariant };

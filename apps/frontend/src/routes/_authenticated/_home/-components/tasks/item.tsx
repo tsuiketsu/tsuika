@@ -1,17 +1,17 @@
-import TaskCheckbox from "./checkbox";
+import { format } from "date-fns";
+import { ChevronRight, Edit } from "lucide-react";
 import DeleteTask from "@/components/forms/task/delete-task";
 import UpdateTask from "@/components/forms/task/update-task";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { type Task } from "@/types/task";
-import { format } from "date-fns";
-import { Edit, ChevronRight } from "lucide-react";
+import type { Task } from "@/types/task";
+import TaskCheckbox from "./checkbox";
 
 interface PropsType {
   task: Task;
 }
 
-export default function TaskListItem({ task: task }: PropsType) {
+export default function TaskListItem({ task }: PropsType) {
   return (
     <li className="bg-card space-y-2 rounded-sm border p-1.5">
       <div className="flex items-start gap-2">

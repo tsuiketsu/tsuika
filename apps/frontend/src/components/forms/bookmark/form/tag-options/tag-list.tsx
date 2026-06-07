@@ -1,5 +1,5 @@
-import { getTextColor } from "@/utils";
 import { Hash } from "lucide-react";
+import { getTextColor } from "@/utils";
 
 const TagList = ({
   tags,

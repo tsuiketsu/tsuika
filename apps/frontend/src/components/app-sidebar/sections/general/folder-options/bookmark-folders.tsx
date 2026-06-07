@@ -1,4 +1,5 @@
-import BookmarkFolder from "./bookmark-folder";
+import { FolderPlus } from "lucide-react";
+import { lazy, Suspense } from "react";
 import Show from "@/components/show";
 import {
   SidebarMenuSub,
@@ -7,11 +8,10 @@ import {
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFoldersData } from "@/hooks/use-folder";
-import { FolderPlus } from "lucide-react";
-import { lazy, Suspense } from "react";
+import BookmarkFolder from "./bookmark-folder";
 
 const InsertFolder = lazy(
-  () => import("@/components/forms/folder/insert-folder")
+  () => import("@/components/forms/folder/insert-folder"),
 );
 
 const BookmarkFolderSkeleton = () => (

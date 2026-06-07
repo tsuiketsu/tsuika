@@ -1,13 +1,14 @@
-import CopyText from "../copy-text";
-import QrCode from "../qr-code";
+import { useMutation } from "@tanstack/react-query";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
+  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { DialogContent } from "@/components/ui/dialog";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import Hr from "@/components/ui/hr";
 import {
@@ -16,9 +17,8 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { twoFactor } from "@/lib/auth-client";
-import { useMutation } from "@tanstack/react-query";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { toast } from "sonner";
+import CopyText from "../copy-text";
+import QrCode from "../qr-code";
 
 interface InputType {
   otp: string;

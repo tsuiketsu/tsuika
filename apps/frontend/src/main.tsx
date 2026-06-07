@@ -2,11 +2,11 @@ import ErrorComponent from "./components/error-component.tsx";
 import FontProvider from "./components/font/context/font-provider.tsx";
 import ThemeProvider from "./components/theme/context/theme-provider.tsx";
 import "./index.css";
-import * as TanstackQuery from "./integrations/tanstack-query/root-provider.tsx";
-import { routeTree } from "./routeTree.gen.ts";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
+import * as TanstackQuery from "./integrations/tanstack-query/root-provider.tsx";
+import { routeTree } from "./routeTree.gen.ts";
 
 const router = createRouter({
   routeTree,
@@ -40,6 +40,6 @@ if (!rootElement.innerHTML) {
           </FontProvider>
         </ThemeProvider>
       </TanstackQuery.Provider>
-    </StrictMode>
+    </StrictMode>,
   );
 }

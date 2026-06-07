@@ -1,7 +1,7 @@
-import instructions from "./instructions.list";
+import type { VariantProps } from "class-variance-authority";
 import type { buttonVariants } from "@/components/ui/button";
 import type { Tag } from "@/types/tag";
-import type { VariantProps } from "class-variance-authority";
+import type instructions from "./instructions.list";
 
 export type SystemInstruction = keyof typeof instructions;
 

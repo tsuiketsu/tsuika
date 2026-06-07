@@ -1,12 +1,15 @@
-import TagForm from "./tag-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { RefObject } from "react";
+import { toast } from "sonner";
 import Modal from "@/components/ui/modal";
 import { mutationError } from "@/lib/query.utils";
 import { updateTag } from "@/queries/tags.queries";
-import type { Tag, TagInsertSchemaWithId } from "@/types/tag";
-import type { TagInsertSchemaType } from "@/types/tag";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { type RefObject } from "react";
-import { toast } from "sonner";
+import type {
+  Tag,
+  TagInsertSchemaType,
+  TagInsertSchemaWithId,
+} from "@/types/tag";
+import TagForm from "./tag-form";
 
 interface PropsType {
   tag: Tag;
@@ -28,7 +31,7 @@ export default function UpdateTag({ tag, ref, onChange }: PropsType) {
     }) => await updateTag(id, payload),
     onSuccess: ({ data: { data, message } }, { id }) => {
       queryClient.setQueryData<Tag[]>(["tags"], (old) =>
-        old?.map((t) => (t.id === id ? data : t))
+        old?.map((t) => (t.id === id ? data : t)),
       );
 
       toast.success(message || "Successfully updated tag");

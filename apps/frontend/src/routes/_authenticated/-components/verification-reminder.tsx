@@ -1,3 +1,8 @@
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import { AlertCircle } from "lucide-react";
+import { useMemo } from "react";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,11 +15,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { emailOtp, useSession } from "@/lib/auth-client";
-import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import { AlertCircle } from "lucide-react";
-import { useMemo } from "react";
-import { toast } from "sonner";
 
 export default function VerificationReminder() {
   return (
@@ -38,7 +38,7 @@ const Verify = () => {
 
   const errorToast = (message: string | undefined) =>
     toast.error(
-      message || "Failed to send verification OTP, place try again later"
+      message || "Failed to send verification OTP, place try again later",
     );
 
   const mutation = useMutation({
@@ -109,10 +109,7 @@ const InfoDialog = () => {
             verified, some sneaky goofball might sneak in and change the email
             ID associated with your account, locking you out or causing trouble!
             Oh, and heads-up: if you don’t verify your account
-            <b className="text-foreground">
-              {" "}
-              within 6 hours, it might vanish
-            </b>{" "}
+            <b className="text-foreground"> within 6 hours, it might vanish</b>{" "}
             faster than a popsicle in a microwave! So, let’s keep things cool,
             safe, and secure—verify your account now!
           </AlertDialogDescription>

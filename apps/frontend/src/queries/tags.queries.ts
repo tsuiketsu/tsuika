@@ -1,7 +1,7 @@
+import axios from "axios";
 import { options } from "@/constants";
 import type { SuccessResponse } from "@/types";
 import type { Tag, TagInsertSchemaType } from "@/types/tag";
-import axios from "axios";
 
 export const baseQuery = `${options.apiBaseUrl}/api/v1/tags`;
 

@@ -1,9 +1,9 @@
+import { Link, type LinkComponentProps } from "@tanstack/react-router";
 import {
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Link, type LinkComponentProps } from "@tanstack/react-router";
 
 interface PropsType extends LinkComponentProps {
   children: React.ReactNode;

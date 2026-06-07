@@ -1,20 +1,20 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { changeEmail, useSession } from "@/lib/auth-client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
 
 const formScheme = z.object({
   email: z.string().email(),
@@ -47,7 +47,7 @@ export default function ChangeEmail() {
 
       if (data?.user?.emailVerified) {
         toast.success(
-          `Check your inbox at ${data?.user.email} for a link to verify your account.`
+          `Check your inbox at ${data?.user.email} for a link to verify your account.`,
         );
         return;
       }

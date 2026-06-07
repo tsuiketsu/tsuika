@@ -1,8 +1,8 @@
+import { Link } from "@tanstack/react-router";
+import clsx from "clsx";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Tag } from "@/types/tag";
-import { Link } from "@tanstack/react-router";
-import clsx from "clsx";
 
 interface PropsType {
   tags: Tag[];

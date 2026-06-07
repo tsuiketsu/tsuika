@@ -1,13 +1,13 @@
+import clsx from "clsx";
+import { useEffect, useMemo, useState } from "react";
 import { SvgSpinners3DotsScale } from "@/components/icons/dots-loader";
 import Show from "@/components/show";
 import { Skeleton } from "@/components/ui/skeleton";
 import useLayoutStore, {
-  cardLayout,
   type CardsLayoutKey,
+  cardLayout,
 } from "@/stores/layout.store";
 import { getRandomAspectRatio } from "@/utils";
-import clsx from "clsx";
-import { useEffect, useMemo, useState } from "react";
 
 interface PropsType {
   isLoading: boolean;

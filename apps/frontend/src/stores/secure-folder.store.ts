@@ -15,7 +15,7 @@ type SecureFolderStore = {
 
 const createSecureFolderSlice: StateCreator<SecureFolderStore> = (
   set,
-  get
+  get,
 ) => ({
   folders: [],
 
@@ -44,5 +44,5 @@ const storage = {
 };
 
 export const useSecureFolderStore = create<SecureFolderStore>()(
-  persist(createSecureFolderSlice, storage)
+  persist(createSecureFolderSlice, storage),
 );

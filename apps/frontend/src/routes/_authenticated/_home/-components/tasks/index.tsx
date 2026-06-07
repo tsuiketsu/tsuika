@@ -1,10 +1,10 @@
-import TasksList from "./list";
-import FallbackScreen from "@/components/fallback";
-import { useInfiniteScrollObserver } from "@/hooks/infinite-scroll-observer";
-import { fetchTasks } from "@/queries/task.queries";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { AlarmClockCheck } from "lucide-react";
 import { useMemo } from "react";
+import FallbackScreen from "@/components/fallback";
+import { useInfiniteScrollObserver } from "@/hooks/infinite-scroll-observer";
+import { fetchTasks } from "@/queries/task.queries";
+import TasksList from "./list";
 
 export default function Tasks() {
   const { data, isFetching, isFetched, fetchNextPage, hasNextPage, error } =

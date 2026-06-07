@@ -1,4 +1,6 @@
-import { fonts, type Font } from "@/components/font/context/font-context";
+import clsx from "clsx";
+import { useState } from "react";
+import { type Font, fonts } from "@/components/font/context/font-context";
 import {
   Select,
   SelectContent,
@@ -6,8 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import clsx from "clsx";
-import { useState } from "react";
 
 interface PropsType {
   value?: Font;
@@ -27,7 +27,7 @@ const FontOptions = ({ value, onValueChange }: PropsType) => {
       <SelectTrigger
         className={clsx(
           "xs:max-w-[180px] data-[size=default]:xs:h-8 xs:text-sm w-full rounded-xl text-base data-[size=default]:h-12 sm:rounded-md",
-          `font-${_value}`
+          `font-${_value}`,
         )}
       >
         <SelectValue placeholder={value} />
@@ -39,7 +39,7 @@ const FontOptions = ({ value, onValueChange }: PropsType) => {
             value={font}
             className={clsx(
               font,
-              "xs:text-sm xs:rounded-sm xs:h-8 h-12 rounded-lg px-4 text-base"
+              "xs:text-sm xs:rounded-sm xs:h-8 h-12 rounded-lg px-4 text-base",
             )}
           >
             {font.split("-").slice(1).join(" ")}

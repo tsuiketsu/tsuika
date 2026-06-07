@@ -1,16 +1,16 @@
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { useGetCollaboratorsQuery } from "@/queries/collab-folder.queries";
 import AddCollaborativeUserForm from "./form";
 import { useCollaboratorForderStore } from "./store";
 import UserCards from "./user-cards";
-import { Button } from "@/components/ui/button";
-import {
-  SheetClose,
-  Sheet,
-  SheetContent,
-  SheetTitle,
-  SheetHeader,
-  SheetFooter,
-} from "@/components/ui/sheet";
-import { useGetCollaboratorsQuery } from "@/queries/collab-folder.queries";
 
 interface PropsType {
   folderId: string;

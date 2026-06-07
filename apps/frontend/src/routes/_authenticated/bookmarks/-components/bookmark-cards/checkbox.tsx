@@ -23,7 +23,7 @@ export default function BookmarkCheckbox(props: PropsType) {
         onCheckedChange={onCheck}
         className={cn(
           "data-[state=checked]:bg-destructive dark:data-[state=checked]:bg-destructive data-[state=checked]:border-desctructive border-destructive absolute top-4 left-4 z-2 size-5 border-2 bg-white dark:bg-white",
-          { "top-2 left-2": layout === cardLayout.COMPACT }
+          { "top-2 left-2": layout === cardLayout.COMPACT },
         )}
       />
       <button

@@ -1,5 +1,5 @@
-import type { ProfileFormSchema } from "@/routes/_authenticated/settings/profile";
 import { ChevronUp, LoaderCircle, User2 } from "lucide-react";
+import type { ProfileFormSchema } from "@/routes/_authenticated/settings/profile";
 
 interface PropsType {
   user: (ProfileFormSchema & { image: string }) | undefined;

@@ -1,13 +1,13 @@
+import type { Control } from "react-hook-form";
 import FolderPicker from "@/components/folder-picker";
 import {
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
 import type { BookmarkFormSchemaType } from "@/types/bookmark";
-import type { Control } from "react-hook-form";
 
 interface PropsType {
   control: Control<BookmarkFormSchemaType>;

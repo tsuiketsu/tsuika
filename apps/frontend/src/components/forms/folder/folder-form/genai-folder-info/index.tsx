@@ -1,7 +1,7 @@
-import GenaiFolderInfoSkeletion from "./skeletion";
+import { useQuery } from "@tanstack/react-query";
 import AITextWriter from "@/features/genai/components/text";
 import { fetchBookmarkUrls } from "@/queries/bookmark.queries";
-import { useQuery } from "@tanstack/react-query";
+import GenaiFolderInfoSkeletion from "./skeletion";
 
 interface PropsType {
   folderId: string;

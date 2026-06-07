@@ -2,7 +2,7 @@ import { toast } from "sonner";
 
 export async function checkForAppUpdate(
   swUrl: string,
-  r: ServiceWorkerRegistration
+  r: ServiceWorkerRegistration,
 ) {
   const toastId = crypto.randomUUID();
   toast.loading("Checking for updates...", { id: toastId });

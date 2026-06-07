@@ -1,14 +1,14 @@
+import { type QueryClient, useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { options } from "@/constants";
 import type { SuccessResponse } from "@/types";
 import type { Collaborator, UserRole } from "@/types/folder";
-import { QueryClient, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 const baseEndpoint = `${options.apiBaseUrl}/api/v1/collab-folders`;
 
 export function invalidateCollaboratorsData(
   queryClient: QueryClient,
-  folderId: string
+  folderId: string,
 ) {
   queryClient.invalidateQueries({
     queryKey: ["get-collaborators", { folderId }],

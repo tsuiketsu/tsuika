@@ -1,12 +1,12 @@
-import CommandWindowComponent from "./command-window";
+import { useRouterState } from "@tanstack/react-router";
+import clsx from "clsx";
+import { lazy, Suspense } from "react";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { buttonVariants } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNavbarStore } from "@/stores/navbar.store";
-import { useRouterState } from "@tanstack/react-router";
-import clsx from "clsx";
-import { lazy, Suspense } from "react";
+import CommandWindowComponent from "./command-window";
 
 const DropdownOptions = lazy(() => import("./dropdown-options"));
 
@@ -32,7 +32,7 @@ export default function NavigationBar() {
               <Skeleton
                 className={clsx(
                   "rounded-md",
-                  buttonVariants({ variant: "secondary", size: "icon" })
+                  buttonVariants({ variant: "secondary", size: "icon" }),
                 )}
               />
             }

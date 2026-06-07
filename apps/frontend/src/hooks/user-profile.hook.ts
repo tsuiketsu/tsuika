@@ -1,7 +1,7 @@
-import type { ProfileFormSchema } from "@/routes/_authenticated/settings/profile";
-import type { SuccessResponse } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import type { ProfileFormSchema } from "@/routes/_authenticated/settings/profile";
+import type { SuccessResponse } from "@/types";
 
 export default function useUserProfile() {
   return useQuery({

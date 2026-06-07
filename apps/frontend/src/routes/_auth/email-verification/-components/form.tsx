@@ -1,12 +1,12 @@
-import OTPField from "./otp-field";
-import { FormSchema } from "./schema";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { emailOtp } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { emailOtp } from "@/lib/auth-client";
+import OTPField from "./otp-field";
+import { FormSchema } from "./schema";
 
 interface PropsType {
   email: string;

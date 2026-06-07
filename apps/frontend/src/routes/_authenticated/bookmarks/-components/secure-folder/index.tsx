@@ -1,14 +1,14 @@
-import type { WorkerRequest, WorkerResponse } from "./types";
+import { LoaderCircle, ShieldIcon, UnlockIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { type SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useSecureFolderStore } from "@/stores/secure-folder.store";
 import type { Folder } from "@/types/folder";
 import { createTypedWorkerPost } from "@/utils";
-import { LoaderCircle, ShieldIcon, UnlockIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
-import { toast } from "sonner";
+import type { WorkerRequest, WorkerResponse } from "./types";
 
 type Inputs = {
   password: string;

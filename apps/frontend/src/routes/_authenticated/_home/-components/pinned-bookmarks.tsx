@@ -1,9 +1,9 @@
-import BookmarkGroup from "./bookmark-group";
-import { fetchBookmarks } from "@/queries/bookmark.queries";
-import { bookmarkFilters, type Bookmark } from "@/types/bookmark";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Pin } from "lucide-react";
 import { useMemo } from "react";
+import { fetchBookmarks } from "@/queries/bookmark.queries";
+import { type Bookmark, bookmarkFilters } from "@/types/bookmark";
+import BookmarkGroup from "./bookmark-group";
 
 export default function PinnedBookmarks() {
   const { data, isFetching } = useInfiniteQuery({

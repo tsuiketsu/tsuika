@@ -1,8 +1,7 @@
-import { setFlag } from "../api";
-import { getBookmarkFlagInfo } from "../constants";
-import { useBookmarkFlagActionsReducer } from "../reducer";
-import type { DefaultAction } from "../types";
-import type { BookmarkActionLayoutProps as PropsType } from "../types";
+import { useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
+import { CircleCheck, Edit, Ellipsis, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -12,10 +11,13 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import type { BookmarkFlag } from "@/types/bookmark";
-import { useQueryClient } from "@tanstack/react-query";
-import clsx from "clsx";
-import { CircleCheck, Edit, Ellipsis, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { setFlag } from "../api";
+import { getBookmarkFlagInfo } from "../constants";
+import { useBookmarkFlagActionsReducer } from "../reducer";
+import type {
+  DefaultAction,
+  BookmarkActionLayoutProps as PropsType,
+} from "../types";
 
 export default function BookmarkActionsMobileLayout({
   isVisible,
@@ -72,7 +74,7 @@ export default function BookmarkActionsMobileLayout({
                 {info.label}
               </Button>
             );
-          }
+          },
         )}
         <Button
           variant="ghost"

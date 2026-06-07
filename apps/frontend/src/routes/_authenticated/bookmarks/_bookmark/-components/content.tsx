@@ -1,19 +1,3 @@
-import TagsComponent from "./tags";
-import EditorToolbar from "@/components/editor/toolbar";
-import Image from "@/components/image";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
-import useDefaultEditor from "@/hooks/default-editor.hook";
-import { updateInfQueryData } from "@/lib/query.utils";
-import { editBookmark } from "@/queries/bookmark.queries";
-import { useNavbarStore } from "@/stores/navbar.store";
-import type { Bookmark } from "@/types/bookmark";
-import { decryptBookmark } from "@/utils/encryption.utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EditorContent } from "@tiptap/react";
 import clsx from "clsx";
@@ -26,6 +10,22 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
+import EditorToolbar from "@/components/editor/toolbar";
+import Image from "@/components/image";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import useDefaultEditor from "@/hooks/default-editor.hook";
+import { updateInfQueryData } from "@/lib/query.utils";
+import { editBookmark } from "@/queries/bookmark.queries";
+import { useNavbarStore } from "@/stores/navbar.store";
+import type { Bookmark } from "@/types/bookmark";
+import { decryptBookmark } from "@/utils/encryption.utils";
+import TagsComponent from "./tags";
 
 interface PropsType {
   bookmark: Bookmark;
@@ -56,7 +56,7 @@ export default function Content({ bookmark }: PropsType) {
   const [isEditable, setIsEditable] = useState(false);
   const { editor } = useDefaultEditor(
     "tsuika-editor",
-    bookmark?.description ?? ""
+    bookmark?.description ?? "",
   );
   const queryClient = useQueryClient();
 
@@ -67,13 +67,13 @@ export default function Content({ bookmark }: PropsType) {
     mutationFn: editBookmark,
     onSuccess: ({ data: { data } }) => {
       queryClient.setQueryData<Bookmark>(["bookmark", bookmark.id], (old) =>
-        !old ? old : Object.assign({}, old, data)
+        !old ? old : Object.assign({}, old, data),
       );
 
       if (bookmark.folderId) {
         queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
           ["bookmarks", `folder/${bookmark.folderId}`, ""],
-          (old) => updateInfQueryData(old, data, (item) => item.id)
+          (old) => updateInfQueryData(old, data, (item) => item.id),
         );
       }
 
@@ -91,7 +91,7 @@ export default function Content({ bookmark }: PropsType) {
       editor.setEditable(state);
       setIsEditable(state);
     },
-    [editor]
+    [editor],
   );
 
   const createdAt = new Date(bookmark.createdAt);
@@ -117,7 +117,7 @@ export default function Content({ bookmark }: PropsType) {
         value={isEditable}
         onChange={(state) => setEditableState(state)}
         className="size-8"
-      />
+      />,
     );
 
     return () => destroyNavbarModule();
@@ -175,7 +175,6 @@ export default function Content({ bookmark }: PropsType) {
                   payload: {
                     url: content.url,
                     title: content.title,
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     description: (editor.storage as any).markdown.getMarkdown(),
                   },
                 })

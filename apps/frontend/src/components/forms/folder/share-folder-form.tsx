@@ -1,20 +1,20 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, useFormState } from "react-hook-form";
+import { boolean, z } from "zod";
 import TextField from "@/components/primitives/form/text-field";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
 import {
   Form,
-  FormMessage,
-  FormLabel,
-  FormItem,
-  FormField,
   FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { options } from "@/constants";
 import type { SharedFolder } from "@/types/folder";
 import { combineDateAndTime, splitDateAndTime } from "@/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useFormState } from "react-hook-form";
-import { boolean, z } from "zod";
 
 const formSchema = z.object({
   title: z.string().optional(),
@@ -25,7 +25,7 @@ const formSchema = z.object({
         date: z.string(),
         time: z.string(),
       },
-      { message: "You must pick date and time to continue" }
+      { message: "You must pick date and time to continue" },
     )
     .refine((v) => v.date !== "" && v.time !== "", {
       message: "You must pick date and time to continue",
@@ -35,10 +35,8 @@ const formSchema = z.object({
   password: z.string().optional(),
 });
 
-export interface ShareFolderFormSchema extends Omit<
-  z.infer<typeof formSchema>,
-  "expiresAt"
-> {
+export interface ShareFolderFormSchema
+  extends Omit<z.infer<typeof formSchema>, "expiresAt"> {
   expiresAt: string | null;
 }
 
@@ -74,7 +72,7 @@ export default function ShareFolderForm({ folder, onSubmit }: PropsType) {
             expiresAt: data.expiresAt
               ? combineDateAndTime(data.expiresAt).toISOString()
               : null,
-          })
+          }),
         )}
         className="space-y-4"
       >

@@ -1,6 +1,6 @@
+import type { User } from "@/lib/auth-client";
 import type { Bookmark } from "./bookmark";
 import type { Folder } from "./folder";
-import type { User } from "@/lib/auth-client";
 
 export interface SharedFolderData {
   title: string;

@@ -1,10 +1,10 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { LockIcon } from "lucide-react";
+import { toast } from "sonner";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { relockFolder } from "@/queries/share-folder.queries";
 import LayoutPicker from "@/routes/_authenticated/bookmarks/-components/toolbar/layout-picker";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { LockIcon } from "lucide-react";
-import { toast } from "sonner";
 
 interface PropsType {
   folderId: string;

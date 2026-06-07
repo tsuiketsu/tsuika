@@ -1,12 +1,13 @@
-import { useBookmarPathSlug } from "./use-slug.hook";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
   AlertDialog,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogContent,
-  AlertDialogTitle,
-  AlertDialogDescription,
   AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
@@ -14,8 +15,7 @@ import { deleteInfQueryData, mutationError } from "@/lib/query.utils";
 import type { Setter } from "@/lib/utils";
 import { deleteBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark } from "@/types/bookmark";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useBookmarPathSlug } from "./use-slug.hook";
 
 interface PropsType {
   id: Bookmark["id"];
@@ -46,7 +46,7 @@ export default function DeleteBookmark({
 
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
         queryKey,
-        (old) => deleteInfQueryData(old, id, (old) => old.id)
+        (old) => deleteInfQueryData(old, id, (old) => old.id),
       );
 
       toast.success(message || "Successfully deleted bookmark");

@@ -1,13 +1,13 @@
-import ProfileInfo from "../profile-info";
-import type { User } from "../types";
+import { Link } from "@tanstack/react-router";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
   DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
-import { Link } from "@tanstack/react-router";
+import ProfileInfo from "../profile-info";
+import type { User } from "../types";
 
 interface PropsType {
   user: User | undefined;

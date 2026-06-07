@@ -1,9 +1,9 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { updatePreferences } from "@/queries/profile.queries";
 import { useUserProfileStore } from "@/stores/user-profile.store";
 import type { Preferences, Profile } from "@/types/profile";
 import { mergeOnlyUpdatedFields } from "@/utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 
 const toastMessage = {
   failed: "Failed to update preferences",
@@ -14,12 +14,12 @@ export const updatePreferencesHandler = async (preferences: Preferences) => {
   const prev = useUserProfileStore.getState().profile?.preferencesJson;
 
   return await updatePreferences(
-    mergeOnlyUpdatedFields(preferences, prev ?? {})
+    mergeOnlyUpdatedFields(preferences, prev ?? {}),
   );
 };
 
 export const usePreferencesMutation = (
-  onSuccess?: (value: Preferences) => void
+  onSuccess?: (value: Preferences) => void,
 ) => {
   const queryClient = useQueryClient();
   const setPreferences = useUserProfileStore((s) => s.setPreferences);

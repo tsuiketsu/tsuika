@@ -1,3 +1,4 @@
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import type { Setter } from "@/lib/utils";
-import { useForm, type SubmitHandler } from "react-hook-form";
 
 interface PropsType {
   open?: boolean;

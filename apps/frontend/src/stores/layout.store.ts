@@ -1,8 +1,8 @@
-import { layoutVariants } from "@/components/layouts/cards-layout";
-import type { LucideIconElement } from "@/types";
-import { LayoutGrid, LayoutDashboard, LayoutList } from "lucide-react";
+import { LayoutDashboard, LayoutGrid, LayoutList } from "lucide-react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { layoutVariants } from "@/components/layouts/cards-layout";
+import type { LucideIconElement } from "@/types";
 
 export type CardsLayoutKey = keyof typeof layoutVariants;
 
@@ -18,7 +18,7 @@ export const cardLayout = Object.keys(cardsLayout).reduce(
     acc[key.toUpperCase() as keyof typeof acc] = key as CardsLayoutKey;
     return acc;
   },
-  {} as Record<Uppercase<CardsLayoutKey>, CardsLayoutKey>
+  {} as Record<Uppercase<CardsLayoutKey>, CardsLayoutKey>,
 );
 
 export type cardsLayoutType = (typeof cardLayout)[keyof typeof cardLayout];
@@ -34,8 +34,8 @@ const useLayoutStore = create(
       layout: "grid",
       setLayout: (layout) => set({ layout }),
     }),
-    { name: "layout-store" }
-  )
+    { name: "layout-store" },
+  ),
 );
 
 export default useLayoutStore;

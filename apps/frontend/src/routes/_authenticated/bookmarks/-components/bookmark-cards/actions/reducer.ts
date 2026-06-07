@@ -1,11 +1,11 @@
+import { type ActionDispatch, useReducer } from "react";
+import type { Bookmark, BookmarkFlag } from "@/types/bookmark";
 import { initialFlagActions } from "./constants";
 import type { DefaultAction } from "./types";
-import type { Bookmark, BookmarkFlag } from "@/types/bookmark";
-import { useReducer, type ActionDispatch } from "react";
 
 export function bookmarkFlagReducer(
   state: { [key in BookmarkFlag]: DefaultAction },
-  flag: BookmarkFlag
+  flag: BookmarkFlag,
 ) {
   return {
     ...state,
@@ -18,7 +18,7 @@ export function bookmarkFlagReducer(
 
 export const useBookmarkFlagActionsReducer = (
   bookmark: Bookmark,
-  slug: string
+  slug: string,
 ): [
   { [key in BookmarkFlag]: DefaultAction },
   ActionDispatch<[flag: BookmarkFlag]>,
@@ -44,10 +44,10 @@ export const useBookmarkFlagActionsReducer = (
         {
           ...value,
           isVisible: keysToShow.includes(
-            key as keyof typeof initialFlagActions
+            key as keyof typeof initialFlagActions,
           ),
         },
-      ])
+      ]),
     );
   })();
 
@@ -59,8 +59,8 @@ export const useBookmarkFlagActionsReducer = (
         acc[k] = { ...value, isActive: bookmark[value.key], key: value.key };
         return acc;
       },
-      {} as { [key in BookmarkFlag]: DefaultAction }
-    )
+      {} as { [key in BookmarkFlag]: DefaultAction },
+    ),
   );
 
   return [actions, dispatch];

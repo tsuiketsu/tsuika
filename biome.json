@@ -34,10 +34,16 @@
   "linter": {
     "enabled": true,
     "rules": {
+      "a11y": {
+        "useSemanticElements": "off",
+        "noStaticElementInteractions": "off",
+        "useKeyWithClickEvents": "off"
+      },
       "recommended": true,
       "complexity": { "useArrowFunction": "off", "useLiteralKeys": "off" },
       "suspicious": {
         "noExplicitAny": "warn",
+        "noArrayIndexKey": "off",
         "noConsole": {
           "level": "warn",
           "options": {

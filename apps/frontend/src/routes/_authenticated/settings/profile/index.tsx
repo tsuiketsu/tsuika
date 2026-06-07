@@ -1,4 +1,11 @@
-import ProfileImageForm from "./-profile-image-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import type { AxiosError } from "axios";
+import { useEffect, useState } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 import TextField from "@/components/primitives/form/text-field";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -6,14 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import useUserProfile from "@/hooks/user-profile.hook";
 import { updateUserProfile } from "@/queries/auth.queries";
 import type { ErrorResponse } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import type { AxiosError } from "axios";
-import { useEffect, useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
+import ProfileImageForm from "./-profile-image-form";
 
 export const Route = createFileRoute("/_authenticated/settings/profile/")({
   component: ProfileComponent,

@@ -1,17 +1,17 @@
-import ProfileInfo from "../profile-info";
-import type { User } from "../types";
+import { Link } from "@tanstack/react-router";
+import { LogOutIcon, SettingsIcon } from "lucide-react";
 import Avatar from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
-  DrawerTrigger,
-  DrawerFooter,
-  DrawerContent,
   DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerTrigger,
 } from "@/components/ui/drawer";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
-import { Link } from "@tanstack/react-router";
-import { LogOutIcon, SettingsIcon } from "lucide-react";
+import ProfileInfo from "../profile-info";
+import type { User } from "../types";
 
 interface PropsType {
   user: User | undefined;

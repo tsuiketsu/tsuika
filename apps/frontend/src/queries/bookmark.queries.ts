@@ -1,3 +1,4 @@
+import axios, { type AxiosResponse } from "axios";
 import { fetchLinkPreview } from "@/api/fetch-link-preview";
 import { options } from "@/constants";
 import type {
@@ -7,13 +8,12 @@ import type {
 } from "@/types";
 import type {
   Bookmark,
-  BookmarkFlag,
   BookmarkFilter,
+  BookmarkFlag,
   BookmarkFormSchemaType,
 } from "@/types/bookmark";
 import type { Folder } from "@/types/folder";
 import { encryptBookmarks } from "@/utils/encryption.utils";
-import axios, { type AxiosResponse } from "axios";
 
 const baseQuery = `${options.apiBaseUrl}/api/v1/bookmarks`;
 
@@ -59,7 +59,7 @@ export const fetchBookmarks = async ({
 
 export const searchBookmarks = async (
   query: string,
-  folderId?: string
+  folderId?: string,
 ): Promise<
   (Pick<Bookmark, "url" | "title" | "thumbnail"> & { publicId: string })[]
 > => {
@@ -68,12 +68,12 @@ export const searchBookmarks = async (
   if (folderId) url += `&folderPublicId=${folderId}`;
 
   return await axios({ method: "GET", url, withCredentials: true }).then(
-    ({ data: { data } }) => data
+    ({ data: { data } }) => data,
   );
 };
 
 export const fetchBookmarkUrls = async (
-  folderId: string
+  folderId: string,
 ): Promise<string[]> => {
   return await axios<SuccessResponse<{ urls: string[] }>>({
     method: "GET",
@@ -98,7 +98,7 @@ export const fetchRecentBookmarks = async (): Promise<Bookmark[]> => {
 };
 
 export const fetchTotalBookmarksCount = async (
-  filter?: "pinned" | "archived" | "favorites"
+  filter?: "pinned" | "archived" | "favorites",
 ): Promise<{
   total: number;
 }> => {
@@ -173,7 +173,7 @@ export const editBookmark = async ({
 
 export const bulkMoveBookmarksToFolder = async (
   folderId: Folder["id"],
-  bookmarkIds: Bookmark["id"][]
+  bookmarkIds: Bookmark["id"][],
 ) => {
   return await axios({
     method: "patch",
@@ -201,7 +201,7 @@ export const deleteBookmark = async (id: Bookmark["id"]) => {
 export const setBookmarkFlag = async (
   bookmarkId: string,
   flagType: BookmarkFlag,
-  state: boolean
+  state: boolean,
 ): Promise<AxiosResponse> => {
   return axios({
     method: "patch",

@@ -1,18 +1,4 @@
-import LazyBoundary from "@/components/lazy-boundary";
-import { Button, buttonVariants } from "@/components/ui/button.tsx";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-  FormLabel,
-} from "@/components/ui/form";
-import AITextWriter from "@/features/genai/components/text";
-import { AI_FAILED_TEXT } from "@/features/genai/components/text/constants";
-import useDefaultEditor from "@/hooks/default-editor.hook.ts";
-import { type BookmarkFormSchemaType } from "@/types/bookmark";
-import { isValidURL } from "@/utils";
-import { Editor, EditorContent } from "@tiptap/react";
+import { type Editor, EditorContent } from "@tiptap/react";
 import type { VariantProps } from "class-variance-authority";
 import clsx from "clsx";
 import {
@@ -24,8 +10,22 @@ import {
   SaveIcon,
 } from "lucide-react";
 import { lazy, useEffect, useRef, useState } from "react";
-import { Controller, useWatch, type Control } from "react-hook-form";
+import { type Control, Controller, useWatch } from "react-hook-form";
 import { toast } from "sonner";
+import LazyBoundary from "@/components/lazy-boundary";
+import { Button, type buttonVariants } from "@/components/ui/button.tsx";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import AITextWriter from "@/features/genai/components/text";
+import { AI_FAILED_TEXT } from "@/features/genai/components/text/constants";
+import useDefaultEditor from "@/hooks/default-editor.hook.ts";
+import type { BookmarkFormSchemaType } from "@/types/bookmark";
+import { isValidURL } from "@/utils";
 
 // Lazy Imports
 const EditorToolbar = lazy(() => import("@/components/editor/toolbar"));
@@ -66,7 +66,7 @@ const AISummaryGenerator = ({
 
             if (!value || value.includes(AI_FAILED_TEXT)) {
               toast.error(
-                "Couldn't summarize the content. Please try another URL."
+                "Couldn't summarize the content. Please try another URL.",
               );
               setValue("");
             } else {
@@ -94,7 +94,7 @@ export default function ContentField({
 
   const { editor, onValueChange: onEditorvalueChange } = useDefaultEditor(
     "bookmark-form-description",
-    description || ""
+    description || "",
   );
 
   const url = useWatch({ control, name: "url" });
@@ -122,7 +122,7 @@ export default function ContentField({
                 "z-10 rounded-lg border",
                 isExtended
                   ? "bg-secondary fixed inset-0 z-20 overflow-y-auto"
-                  : "dark:bg-card relative overflow-hidden bg-transparent p-3"
+                  : "dark:bg-card relative overflow-hidden bg-transparent p-3",
               )}
             >
               <div className="absolute right-1 bottom-1 z-20 inline-flex gap-1 transition-opacity duration-200">
@@ -164,7 +164,7 @@ export default function ContentField({
               <div
                 className={clsx(
                   "mx-auto flex max-w-3xl flex-col gap-2",
-                  isExtended && "mt-40"
+                  isExtended && "mt-40",
                 )}
               >
                 {isExtended && (
@@ -208,7 +208,7 @@ export default function ContentField({
                   className={clsx(
                     isExtended
                       ? "bg-card min-h-screen rounded-xl border p-4"
-                      : !isTextExpand && isShowMoreVisible && "line-clamp-6"
+                      : !isTextExpand && isShowMoreVisible && "line-clamp-6",
                   )}
                   {...field}
                 />

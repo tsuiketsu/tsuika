@@ -1,6 +1,8 @@
-import DashboardThumbnail from "./-fields/-dashboard-thumbnail";
-import FontOptions from "./-font-options";
-import { type Font } from "@/components/font/context/font-context";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import type { Font } from "@/components/font/context/font-context";
 import { useFont } from "@/components/font/context/use-font";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,11 +21,9 @@ import {
 } from "@/components/ui/tooltip";
 import { usePreferencesMutation } from "@/hooks/preferences.hook";
 import { useUserProfileStore } from "@/stores/user-profile.store";
-import { PreferencesFormSchema, type Preferences } from "@/types/profile";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { type Preferences, PreferencesFormSchema } from "@/types/profile";
+import DashboardThumbnail from "./-fields/-dashboard-thumbnail";
+import FontOptions from "./-font-options";
 
 export const Route = createFileRoute("/_authenticated/settings/appearance/")({
   component: RouteComponent,

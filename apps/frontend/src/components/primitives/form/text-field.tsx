@@ -1,14 +1,14 @@
+import type { Control, FieldValues, Path } from "react-hook-form";
 import {
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import type { Control, FieldValues, Path } from "react-hook-form";
 
 export default function TextField<T extends FieldValues>({
   type = "input",

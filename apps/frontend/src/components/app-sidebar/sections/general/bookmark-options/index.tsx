@@ -1,4 +1,5 @@
-import { defaultFolders } from "./constants";
+import { Link } from "@tanstack/react-router";
+import { Bookmark, ChevronRight } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -12,8 +13,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { useSidebarStore } from "@/stores/sidebar.store";
-import { Link } from "@tanstack/react-router";
-import { ChevronRight, Bookmark } from "lucide-react";
+import { defaultFolders } from "./constants";
 
 const DefaultFolders = () => (
   <SidebarMenuSub>

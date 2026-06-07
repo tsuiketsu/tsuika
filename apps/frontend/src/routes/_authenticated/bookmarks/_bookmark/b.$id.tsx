@@ -1,11 +1,11 @@
-import Content from "./-components/content";
-import Loading from "./-components/loading";
-import { fetchBookamrk } from "@/queries/bookmark.queries";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { fetchBookamrk } from "@/queries/bookmark.queries";
+import Content from "./-components/content";
+import Loading from "./-components/loading";
 
 export const Route = createFileRoute(
-  "/_authenticated/bookmarks/_bookmark/b/$id"
+  "/_authenticated/bookmarks/_bookmark/b/$id",
 )({
   component: Main,
   loader: async ({ params }) => {

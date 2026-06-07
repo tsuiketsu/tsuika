@@ -1,23 +1,24 @@
-import CollaborateFolder from "../forms/folder/collaborate";
-import { useCollaboratorForderStore } from "../forms/folder/collaborate/store";
-import LazyBoundary from "../lazy-boundary";
-import { Button } from "../ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "../ui/dropdown-menu";
+import clsx from "clsx";
+import { Ellipsis } from "lucide-react";
+import type React from "react";
+import { Fragment, lazy, Suspense, useState } from "react";
+import { toast } from "sonner";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import {
   updatePreferencesHandler,
   useUserProfileStore,
 } from "@/stores/user-profile.store";
 import type { Folder } from "@/types/folder";
-import clsx from "clsx";
-import { Ellipsis } from "lucide-react";
-import React, { Fragment, lazy, Suspense, useState } from "react";
-import { toast } from "sonner";
+import CollaborateFolder from "../forms/folder/collaborate";
+import { useCollaboratorForderStore } from "../forms/folder/collaborate/store";
+import LazyBoundary from "../lazy-boundary";
+import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 const UpdateFolder = lazy(() => import("../forms/folder/update-folder"));
 const SharedFolder = lazy(() => import("../forms/folder/share-folder"));
@@ -72,7 +73,7 @@ const FolderMenu = ({ folder, triggerButton }: PropsType) => {
           }
 
           return reject();
-        }
+        },
       );
     });
 

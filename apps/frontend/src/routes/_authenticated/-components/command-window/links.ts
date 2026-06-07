@@ -1,6 +1,6 @@
+import type { LinkProps } from "@tanstack/react-router";
 import { defaultFolders } from "@/components/app-sidebar/sections/general/bookmark-options/constants";
 import type { LucideIconElement } from "@/types";
-import type { LinkProps } from "@tanstack/react-router";
 
 interface BaseItem {
   title: string;

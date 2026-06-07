@@ -1,9 +1,3 @@
-import FallbackScreen from "@/components/fallback";
-import BookmarkForm from "@/components/forms/bookmark/form";
-import { Button } from "@/components/ui/button";
-import { insertInfQueryData } from "@/lib/query.utils";
-import { addBookmark } from "@/queries/bookmark.queries";
-import type { Bookmark, BookmarkFormSchemaType } from "@/types/bookmark";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createFileRoute,
@@ -12,6 +6,12 @@ import {
 } from "@tanstack/react-router";
 import { UnlinkIcon } from "lucide-react";
 import { z } from "zod";
+import FallbackScreen from "@/components/fallback";
+import BookmarkForm from "@/components/forms/bookmark/form";
+import { Button } from "@/components/ui/button";
+import { insertInfQueryData } from "@/lib/query.utils";
+import { addBookmark } from "@/queries/bookmark.queries";
+import type { Bookmark, BookmarkFormSchemaType } from "@/types/bookmark";
 
 const schema = z.object({
   title: z.string().optional(),
@@ -43,7 +43,7 @@ function RouteComponent() {
 
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
         queryKey,
-        (old) => insertInfQueryData(old, data)
+        (old) => insertInfQueryData(old, data),
       );
 
       navigate({

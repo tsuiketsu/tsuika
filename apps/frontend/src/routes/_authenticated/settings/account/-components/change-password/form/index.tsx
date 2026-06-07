@@ -1,10 +1,10 @@
-import type { PasswordFormType as FormSchema } from "../schema";
-import PasswordField from "./password-field";
-import RevokeSessions from "./revoke-sessions-field";
+import type { SubmitHandler, UseFormReturn } from "react-hook-form";
 import Show from "@/components/show";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import type { SubmitHandler, UseFormReturn } from "react-hook-form";
+import type { PasswordFormType as FormSchema } from "../schema";
+import PasswordField from "./password-field";
+import RevokeSessions from "./revoke-sessions-field";
 
 export default function ChangePasswordForm({
   isDisabled,

@@ -1,10 +1,10 @@
-import { useFoldersData } from "./use-folder";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouterState } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { DEFAULT_FOLDER_NAMES } from "@/constants";
 import { useSecureFolderStore } from "@/stores/secure-folder.store";
 import type { Folder } from "@/types/folder";
-import { useQueryClient } from "@tanstack/react-query";
-import { useRouterState } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useFoldersData } from "./use-folder";
 
 interface ReturnType {
   folderId: string;
@@ -35,6 +35,7 @@ export const useSecuredFolders = (): ReturnType => {
     }
   }, [folderId, isSecured, sessionFolders]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false
   useEffect(() => {
     if (!isFetching && folders.length > 0) {
       const current = folders.find((f) => f.id === folderId);

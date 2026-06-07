@@ -1,4 +1,4 @@
-import { Editor, useEditorState } from "@tiptap/react";
+import { type Editor, useEditorState } from "@tiptap/react";
 
 const useEditorToolbarStates = (editor: Editor) => {
   return useEditorState({

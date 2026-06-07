@@ -1,21 +1,23 @@
-import { setFlag } from "../api";
-import { getBookmarkFlagInfo } from "../constants";
-import { useBookmarkFlagActionsReducer } from "../reducer";
-import type { DefaultAction } from "../types";
-import type { BookmarkActionLayoutProps as PropsType } from "../types";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
-} from "@/components/ui/dropdown-menu";
-import type { BookmarkFlag } from "@/types/bookmark";
 import { useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { CircleCheck, Edit, Ellipsis, Trash2 } from "lucide-react";
 import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import type { BookmarkFlag } from "@/types/bookmark";
+import { setFlag } from "../api";
+import { getBookmarkFlagInfo } from "../constants";
+import { useBookmarkFlagActionsReducer } from "../reducer";
+import type {
+  DefaultAction,
+  BookmarkActionLayoutProps as PropsType,
+} from "../types";
 
 export default function BookmarkActionsDesktopLayout({
   isVisible,
@@ -69,7 +71,7 @@ export default function BookmarkActionsDesktopLayout({
                 {info.label}
               </DropdownMenuItem>
             );
-          }
+          },
         )}
         {!isSecured && <DropdownMenuSeparator />}
         <DropdownMenuItem

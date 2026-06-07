@@ -1,11 +1,11 @@
-import LazyBoundary from "@/components/lazy-boundary";
-import { Button } from "@/components/ui/button";
-import type { Setter } from "@/lib/utils";
-import type { Bookmark } from "@/types/bookmark";
 import { useLockBodyScroll } from "@uidotdev/usehooks";
 import clsx from "clsx";
 import { ArrowRightIcon } from "lucide-react";
 import { lazy, useEffect, useRef, useState } from "react";
+import LazyBoundary from "@/components/lazy-boundary";
+import { Button } from "@/components/ui/button";
+import type { Setter } from "@/lib/utils";
+import type { Bookmark } from "@/types/bookmark";
 
 const MarkdownContent = lazy(() => import("./markdown-content"));
 
@@ -38,7 +38,7 @@ export default function BookmarkView({ bookmark, setBookmark }: PropsType) {
         "data-[state=true]:fade-in-0",
         isExtended
           ? "bg-background overflow-y-auto"
-          : "backdrop-blur-s bg-black/60"
+          : "backdrop-blur-s bg-black/60",
       )}
     >
       <div
@@ -52,7 +52,7 @@ export default function BookmarkView({ bookmark, setBookmark }: PropsType) {
           ],
           isExtended
             ? "h-full max-w-3xl bg-inherit p-6 transition-none duration-500"
-            : "bg-card max-w-96 rounded-xl p-4"
+            : "bg-card max-w-96 rounded-xl p-4",
         )}
       >
         <div className="aspect-video shrink-0 overflow-hidden rounded-md">
@@ -78,7 +78,7 @@ export default function BookmarkView({ bookmark, setBookmark }: PropsType) {
         <div
           className={clsx(
             "inline-flex w-full justify-end gap-2 pt-4",
-            isExtended && "bg-background fixed bottom-0 left-0 p-4"
+            isExtended && "bg-background fixed bottom-0 left-0 p-4",
           )}
         >
           <Button

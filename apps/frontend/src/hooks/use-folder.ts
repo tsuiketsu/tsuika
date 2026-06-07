@@ -1,7 +1,7 @@
-import { useInfiniteScrollObserver } from "./infinite-scroll-observer";
-import { fetchFolders } from "@/queries/folder.queries";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { fetchFolders } from "@/queries/folder.queries";
+import { useInfiniteScrollObserver } from "./infinite-scroll-observer";
 
 export const useFoldersData = () => {
   const { data, isFetching, fetchNextPage, hasNextPage, isFetched } =
@@ -40,7 +40,7 @@ export const useFolderName = (id: string | undefined | null) => {
 
   const folderName = useMemo(
     () => (id ? folders.find((folder) => folder.id === id)?.name : null),
-    [folders, id]
+    [folders, id],
   );
 
   return { folderName, isFetching };

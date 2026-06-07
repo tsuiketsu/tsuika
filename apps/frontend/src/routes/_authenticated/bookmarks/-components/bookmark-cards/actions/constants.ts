@@ -1,6 +1,6 @@
-import type { DefaultAction } from "./types";
+import { Archive, ArchiveRestore, Pin, PinOff, Star } from "lucide-react";
 import type { BookmarkFlag } from "@/types/bookmark";
-import { Star, Pin, ArchiveRestore, Archive, PinOff } from "lucide-react";
+import type { DefaultAction } from "./types";
 
 export const getBookmarkFlagInfo = (isActive: boolean) => {
   return {

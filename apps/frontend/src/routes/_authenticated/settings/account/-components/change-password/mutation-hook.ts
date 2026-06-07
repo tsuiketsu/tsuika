@@ -1,7 +1,7 @@
-import type { PasswordFormType as FormSchema } from "./schema";
-import { authClient } from "@/lib/auth-client";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { authClient } from "@/lib/auth-client";
+import type { PasswordFormType as FormSchema } from "./schema";
 
 const errorToast = (message: string | undefined) => {
   toast.error(message || "Something went wrong, please try again later");

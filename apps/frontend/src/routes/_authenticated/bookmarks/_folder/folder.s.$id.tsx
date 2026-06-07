@@ -1,17 +1,17 @@
-import BookmarksPageHeader from "../-components/header";
-import BookmarksLayout from "../-components/layouts/bookmarks-layout";
-import SecureFolder from "../-components/secure-folder";
-import ActionBar from "../-components/toolbar";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { fetchBookmarks } from "@/queries/bookmark.queries";
 import { type Bookmark, bookmarkFilters } from "@/types/bookmark";
 import { decryptBookmarks } from "@/utils/encryption.utils";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import BookmarksPageHeader from "../-components/header";
+import BookmarksLayout from "../-components/layouts/bookmarks-layout";
+import SecureFolder from "../-components/secure-folder";
+import ActionBar from "../-components/toolbar";
 
 export const Route = createFileRoute(
-  "/_authenticated/bookmarks/_folder/folder/s/$id"
+  "/_authenticated/bookmarks/_folder/folder/s/$id",
 )({
   component: Bookmarks,
   loader: async ({ params }) => {

@@ -1,18 +1,18 @@
-import { AI_FAILED_TEXT } from "./constants";
-import instructions from "./instructions.list";
-import type { AITextWriterProps } from "./types";
-import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "@/components/ui/tooltip";
-import useGenAI from "@/hooks/use-genai";
-import { ApiError, type GenerateContentParameters } from "@google/genai";
+import type { ApiError, GenerateContentParameters } from "@google/genai";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle, SparkleIcon, SparklesIcon } from "lucide-react";
 import { useCallback } from "react";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import useGenAI from "@/hooks/use-genai";
+import { AI_FAILED_TEXT } from "./constants";
+import instructions from "./instructions.list";
+import type { AITextWriterProps } from "./types";
 
 export default function AITextWriterComponent({
   systemInstruction,

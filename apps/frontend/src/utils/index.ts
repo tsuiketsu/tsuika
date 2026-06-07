@@ -1,8 +1,8 @@
-import { DEFAULT_FOLDER_NAMES } from "@/constants";
-import type { Setter } from "@/lib/utils";
 import { getLuminance } from "color2k";
 import { format, parse, parseISO } from "date-fns";
 import { toast } from "sonner";
+import { DEFAULT_FOLDER_NAMES } from "@/constants";
+import type { Setter } from "@/lib/utils";
 
 // Constants
 const aspectRatios = [
@@ -35,7 +35,7 @@ export function getAspectRatio(w: number, h: number): [number, number] {
 }
 
 export const getPreviewUrl = (
-  file: FileList | File | undefined
+  file: FileList | File | undefined,
 ): string | null => {
   if (file && file instanceof FileList && file[0] != null) {
     return URL.createObjectURL(file[0]);
@@ -60,14 +60,14 @@ export const copyCodes = async (text: string, setState?: Setter<boolean>) => {
 
 export const objectPick = <T, K extends keyof T>(
   obj: T,
-  keys: K[]
+  keys: K[],
 ): Pick<T, K> => {
   return Object.fromEntries(keys.map((key) => [key, obj[key]])) as Pick<T, K>;
 };
 
 export const mergeOnlyUpdatedFields = <T extends object>(
   update: Partial<T>,
-  current: T
+  current: T,
 ): Partial<T> => {
   const result: Partial<T> = { ...current };
   for (const key in update) {
@@ -110,7 +110,7 @@ export const getFavIcon = (url: string) => {
 
 export const isDefaultFolder = (slug: string): boolean => {
   return DEFAULT_FOLDER_NAMES.includes(
-    decodeURIComponent(slug).split("/").slice(-1)[0] ?? ""
+    decodeURIComponent(slug).split("/").slice(-1)[0] ?? "",
   );
 };
 

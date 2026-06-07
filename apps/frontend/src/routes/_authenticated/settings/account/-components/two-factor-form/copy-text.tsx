@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ClipboardCheck, Clipboard } from "lucide-react";
+import { Clipboard, ClipboardCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function CopyText({ text }: { text: string }) {
   const [showTick, setShowTick] = useState(false);

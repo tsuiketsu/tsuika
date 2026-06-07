@@ -1,12 +1,12 @@
-import GeneralSection from "./sections/general";
-import UserProfile from "./user-profile";
 import {
   Sidebar,
   SidebarContent,
-  SidebarMenuItem,
-  SidebarMenu,
   SidebarFooter,
+  SidebarMenu,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import GeneralSection from "./sections/general";
+import UserProfile from "./user-profile";
 
 export function AppSidebar() {
   return (

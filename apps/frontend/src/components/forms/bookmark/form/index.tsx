@@ -1,5 +1,7 @@
-import ContentField from "./content-field.tsx";
-import TagOptions from "./tag-options";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouterState } from "@tanstack/react-router";
+import { lazy, Suspense } from "react";
+import { useForm } from "react-hook-form";
 import TextField from "@/components/primitives/form/text-field.tsx";
 import { Form } from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
@@ -11,10 +13,8 @@ import {
   type BookmarkFormSchemaType,
 } from "@/types/bookmark";
 import { getFavIcon, objectPick } from "@/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouterState } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
-import { useForm } from "react-hook-form";
+import ContentField from "./content-field.tsx";
+import TagOptions from "./tag-options";
 
 const FolderOptions = lazy(() => import("./folder-options.tsx"));
 
@@ -73,7 +73,7 @@ export default function BookmarkForm({ data, onSubmit, isPending }: PropsType) {
             isEncrypted: isSecured,
             folderId: parseFolderId(v.folderId),
             faviconUrl: getFavIcon(v.url),
-          })
+          }),
         )}
         className="space-y-4"
       >

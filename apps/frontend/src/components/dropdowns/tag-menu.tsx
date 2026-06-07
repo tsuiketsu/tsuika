@@ -1,15 +1,16 @@
+import { Ellipsis } from "lucide-react";
+import type React from "react";
+import { Fragment, useRef } from "react";
+import type { Tag } from "@/types/tag";
 import Deletetag from "../forms/tag/delete-tag";
 import UpdateTag from "../forms/tag/update-tag";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import type { Tag } from "@/types/tag";
-import { Ellipsis } from "lucide-react";
-import React, { Fragment, useRef } from "react";
 
 interface PropsType {
   tag: Tag;

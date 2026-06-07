@@ -1,15 +1,14 @@
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { fetchUserSession } from "@/queries/user-session";
-import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth")({
   component: LayoutComponent,
   beforeLoad: async () => {
-    const session = await fetchUserSession()
+    const session = await fetchUserSession();
 
-    if (session && session?.user) {
-      throw redirect({ to: "/" })
+    if (session?.user) {
+      throw redirect({ to: "/" });
     }
-
   },
 });
 

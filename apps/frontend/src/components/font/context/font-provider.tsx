@@ -1,5 +1,5 @@
-import { FontProviderContext, fonts, type Font } from "./font-context";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { type Font, FontProviderContext, fonts } from "./font-context";
 
 type FontProviderProps = {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export default function FontProvider({
   ...props
 }: FontProviderProps) {
   const [font, setFont] = useState<Font>(
-    () => (sessionStorage.getItem(storageKey) as Font) || defaultFont
+    () => (sessionStorage.getItem(storageKey) as Font) || defaultFont,
   );
 
   useEffect(() => {

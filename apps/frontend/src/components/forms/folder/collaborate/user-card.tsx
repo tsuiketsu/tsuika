@@ -1,11 +1,16 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
+import { username } from "better-auth/plugins/username";
+import { useId, useState } from "react";
+import { toast } from "sonner";
 import { SvgSpinners3DotsScale } from "@/components/icons/dots-loader";
 import Avatar from "@/components/ui/avatar";
 import {
   Select,
-  SelectValue,
-  SelectTrigger,
-  SelectItem,
   SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import useUserProfile from "@/hooks/user-profile.hook";
 import {
@@ -14,11 +19,6 @@ import {
 } from "@/queries/collab-folder.queries";
 import type { ErrorResponse } from "@/types";
 import { type UserRole, userRoles } from "@/types/folder";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { AxiosError } from "axios";
-import { username } from "better-auth/plugins/username";
-import { useId, useState } from "react";
-import { toast } from "sonner";
 
 interface UserCardProps {
   image: string;
@@ -35,7 +35,7 @@ type UserRolesProps = Pick<
 >;
 
 const roles = Object.values(userRoles).filter(
-  (role) => role !== userRoles.OWNER
+  (role) => role !== userRoles.OWNER,
 );
 
 const UserRoles = (props: UserRolesProps) => {

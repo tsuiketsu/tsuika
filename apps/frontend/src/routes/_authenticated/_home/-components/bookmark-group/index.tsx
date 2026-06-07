@@ -1,11 +1,11 @@
-import BookmarkList from "./list";
-import BookmarkGroupListSkeletons from "./skeletons";
+import type { LinkProps } from "@tanstack/react-router";
+import kebabCase from "lodash.kebabcase";
 import FallbackScreen from "@/components/fallback";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { LucideIconElement } from "@/types";
 import type { Bookmark } from "@/types/bookmark";
-import { type LinkProps } from "@tanstack/react-router";
-import kebabCase from "lodash.kebabcase";
+import BookmarkList from "./list";
+import BookmarkGroupListSkeletons from "./skeletons";
 
 interface Fallback {
   title: string;

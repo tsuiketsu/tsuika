@@ -1,19 +1,20 @@
-import useBookmarkContext from "../../context/use-context";
+import { Ellipsis } from "lucide-react";
+import type React from "react";
+import { lazy, useState } from "react";
 import LazyBoundary from "@/components/lazy-boundary";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Bookmark } from "@/types/bookmark";
-import { Ellipsis } from "lucide-react";
-import React, { lazy, useState } from "react";
+import useBookmarkContext from "../../context/use-context";
 
 const InsertTask = lazy(() => import("@/components/forms/task/insert-task"));
 
 const DeleteBookmark = lazy(
-  () => import("@/components/forms/bookmark/delete-bookmark")
+  () => import("@/components/forms/bookmark/delete-bookmark"),
 );
 
 const UpdateBookmark = lazy(
-  () => import("@/components/forms/bookmark/update-bookmark")
+  () => import("@/components/forms/bookmark/update-bookmark"),
 );
 
 const BookmarkActionsMobileLayout = lazy(() => import("./layouts/mobile"));

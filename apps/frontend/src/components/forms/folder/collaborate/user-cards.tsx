@@ -1,8 +1,8 @@
-import UserCard from "./user-card";
-import useUserProfile from "@/hooks/user-profile.hook";
-import { userRoles, type Collaborator } from "@/types/folder";
-import { objectPick } from "@/utils";
 import React, { useMemo } from "react";
+import useUserProfile from "@/hooks/user-profile.hook";
+import { type Collaborator, userRoles } from "@/types/folder";
+import { objectPick } from "@/utils";
+import UserCard from "./user-card";
 
 interface PropsType {
   users: Collaborator[];
@@ -14,11 +14,11 @@ export default function UserCards({ users, folderId }: PropsType) {
 
   const isUserAuthorized = useMemo((): boolean => {
     const selectedUser = users?.find(
-      ({ username }) => username === profile.data?.username
+      ({ username }) => username === profile.data?.username,
     );
 
     return [userRoles.OWNER, userRoles.ADMIN].includes(
-      selectedUser?.permissionLevel ?? ""
+      selectedUser?.permissionLevel ?? "",
     );
   }, [profile.data?.username, users]);
 

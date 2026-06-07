@@ -8,9 +8,8 @@
     "dev": "vite",
     "dev:tunnel": "vite --mode tunnel",
     "build": "vite build",
-    "format": "prettier --write 'src/**/*.{ts,tsx}' --plugin=prettier-plugin-tailwindcss",
-    "lint": "eslint ./src/**/*.{ts,tsx}",
-    "lint:commit": "commitlint --edit",
+    "format": "biome format --write ./src",
+    "lint": "biome check --write ./src",
     "serve": "vite preview",
     "deploy": "vercel build --prod && vercel deploy --prebuilt --prod"
   },

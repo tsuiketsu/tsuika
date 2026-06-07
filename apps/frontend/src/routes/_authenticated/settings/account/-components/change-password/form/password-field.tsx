@@ -1,14 +1,14 @@
-import type { PasswordFormType as FormSchema } from "../schema";
+import type { Control } from "react-hook-form";
 import {
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { NestedPathsOnly } from "@/types";
-import type { Control } from "react-hook-form";
+import type { PasswordFormType as FormSchema } from "../schema";
 
 interface PropsType {
   control: Control<FormSchema>;

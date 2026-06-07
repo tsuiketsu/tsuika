@@ -1,9 +1,9 @@
+import { useRef } from "react";
+import { type Control, Controller, useWatch } from "react-hook-form";
 import AITextWriter from "@/features/genai/components/text";
 import type { BookmarkFormSchemaType } from "@/types/bookmark";
 import type { Tag } from "@/types/tag";
 import { isValidURL } from "@/utils";
-import { useRef } from "react";
-import { Controller, useWatch, type Control } from "react-hook-form";
 
 interface PropsType {
   tags: Tag[];
@@ -43,7 +43,7 @@ export default function AIAutoTagger({ control, tags }: PropsType) {
                 const tagIds = value.split("|");
                 if (tagIds.length > 0) {
                   const suggestedTags = tags.filter((tag) =>
-                    tagIds.includes(tag.id)
+                    tagIds.includes(tag.id),
                   );
 
                   if (suggestedTags.length > 0) {

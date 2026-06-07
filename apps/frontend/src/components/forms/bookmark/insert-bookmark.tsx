@@ -1,16 +1,16 @@
-import BookmarkForm from "./form";
-import useMutationSubmit from "./hooks/use-mutation-submit";
-import { useBookmarPathSlug } from "./use-slug.hook";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
+import { BookmarkPlus } from "lucide-react";
+import { type RefObject, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import { insertInfQueryData, mutationError } from "@/lib/query.utils";
 import { addBookmark } from "@/queries/bookmark.queries";
 import type { Bookmark } from "@/types/bookmark";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import clsx from "clsx";
-import { BookmarkPlus } from "lucide-react";
-import { useState, type RefObject } from "react";
+import BookmarkForm from "./form";
+import useMutationSubmit from "./hooks/use-mutation-submit";
+import { useBookmarPathSlug } from "./use-slug.hook";
 
 interface PropsType {
   triggerRef?: RefObject<HTMLButtonElement | null>;
@@ -46,7 +46,7 @@ export default function InsertBookmark({ triggerRef }: PropsType) {
 
         queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
           queryKey,
-          (old) => insertInfQueryData(old, data)
+          (old) => insertInfQueryData(old, data),
         );
       }
 

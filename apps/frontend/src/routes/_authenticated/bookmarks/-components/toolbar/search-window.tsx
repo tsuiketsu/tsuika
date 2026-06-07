@@ -1,18 +1,18 @@
-import {
-  CommandDialog,
-  CommandList,
-  CommandItem,
-  CommandGroup,
-  CommandEmpty,
-} from "@/components/ui/command";
-import { Input } from "@/components/ui/input";
-import type { Setter } from "@/lib/utils";
-import { searchBookmarks } from "@/queries/bookmark.queries";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useDebounce } from "@uidotdev/usehooks";
 import { LoaderCircle, SearchIcon } from "lucide-react";
 import { useState } from "react";
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
+import type { Setter } from "@/lib/utils";
+import { searchBookmarks } from "@/queries/bookmark.queries";
 
 interface PropsType {
   open: boolean;
@@ -62,7 +62,7 @@ export default function SearchWindow({ open, setOpen }: PropsType) {
                   navigate({
                     to: "/bookmarks/b/$id",
                     params: { id: b.publicId },
-                  })
+                  }),
                 )}
               >
                 <div className="aspect-video w-24 shrink-0 overflow-hidden rounded-sm">

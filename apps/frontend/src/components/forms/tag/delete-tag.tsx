@@ -1,20 +1,20 @@
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { type RefObject, useState } from "react";
+import { toast } from "sonner";
 import {
   AlertDialog,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogContent,
-  AlertDialogTitle,
-  AlertDialogDescription,
   AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { mutationError } from "@/lib/query.utils";
 import { deleteTag } from "@/queries/tags.queries";
 import type { Tag } from "@/types/tag";
-import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState, type RefObject } from "react";
-import { toast } from "sonner";
 
 interface PropsType {
   ref: RefObject<HTMLButtonElement | null>;
@@ -31,7 +31,7 @@ export default function Deletetag({ id, ref }: PropsType) {
     mutationFn: async ({ id }: Pick<Tag, "id">) => await deleteTag(id),
     onSuccess: ({ data: { message } }, { id }) => {
       queryClient.setQueryData<Tag[]>(["tags"], (old) =>
-        old?.filter((t) => t.id !== id)
+        old?.filter((t) => t.id !== id),
       );
 
       toast.success(message || "Successfully deleted tag");

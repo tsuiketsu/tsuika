@@ -1,6 +1,6 @@
-import type { AITextWriterProps } from "./types";
-import { options } from "@/constants";
 import { lazy, Suspense } from "react";
+import { options } from "@/constants";
+import type { AITextWriterProps } from "./types";
 
 const Component = lazy(() => import("./ai-text-writer"));
 

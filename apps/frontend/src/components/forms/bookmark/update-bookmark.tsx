@@ -1,5 +1,5 @@
-import BookmarkForm from "./form";
-import useMutationSubmit from "./hooks/use-mutation-submit";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import Modal from "@/components/ui/modal";
 import { useSecuredFolders } from "@/hooks/secured-folder.hook";
 import {
@@ -12,8 +12,8 @@ import { editBookmark } from "@/queries/bookmark.queries";
 import BookmarkThumbnail from "@/routes/_authenticated/bookmarks/-components/bookmark-cards/thumbnail";
 import useBookmarkContext from "@/routes/_authenticated/bookmarks/-components/context/use-context";
 import type { Bookmark } from "@/types/bookmark";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import BookmarkForm from "./form";
+import useMutationSubmit from "./hooks/use-mutation-submit";
 
 interface PropsType {
   bookmark: Bookmark;
@@ -48,7 +48,7 @@ export default function UpdateBookmark({
       if (payload.folderId && folderId !== payload.folderId) {
         queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
           queryKey,
-          (old) => deleteInfQueryData(old, bookmark.id, (old) => old.id)
+          (old) => deleteInfQueryData(old, bookmark.id, (old) => old.id),
         );
 
         return;
@@ -56,12 +56,12 @@ export default function UpdateBookmark({
 
       queryClient.setQueryData<{ pages: { data: Bookmark[] }[] }>(
         queryKey,
-        (old) => updateInfQueryData(old, data, (old) => old.id)
+        (old) => updateInfQueryData(old, data, (old) => old.id),
       );
 
       // Update dedicated bookmark pages information
       queryClient.setQueryData<Bookmark>(["bookmark", bookmark.id], (old) =>
-        !old ? old : Object.assign({}, old, data)
+        !old ? old : Object.assign({}, old, data),
       );
 
       toast.success(message || "Successfully updated bookmark");
@@ -71,7 +71,7 @@ export default function UpdateBookmark({
   });
 
   const onSubmit = useMutationSubmit((payload) =>
-    mutation.mutate({ id: bookmark.id, payload })
+    mutation.mutate({ id: bookmark.id, payload }),
   );
 
   return (

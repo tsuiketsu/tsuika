@@ -1,22 +1,22 @@
-import { type FolderInsertSchemaType, folderInsertSchema } from "../types";
-import EncryptionOptions from "./encryption-options";
-import GenaiFolderInfoSkeletion from "./genai-folder-info/skeletion";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { lazy, Suspense, useState } from "react";
+import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import type { Folder } from "@/types/folder";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { lazy, Suspense, useState } from "react";
-import { useForm } from "react-hook-form";
+import { type FolderInsertSchemaType, folderInsertSchema } from "../types";
+import EncryptionOptions from "./encryption-options";
+import GenaiFolderInfoSkeletion from "./genai-folder-info/skeletion";
 
 // Lazy Imports
 const GenaiFolderInfo = lazy(() => import("./genai-folder-info"));

@@ -1,6 +1,6 @@
+import axios from "axios";
 import { options } from "@/constants";
 import type { Session } from "@/lib/auth-client";
-import axios from "axios";
 
 export const fetchUserSession = async (): Promise<Session | null> => {
   try {

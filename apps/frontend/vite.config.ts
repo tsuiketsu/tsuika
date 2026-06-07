@@ -62,7 +62,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
 export default defineConfig({
   server: {
     allowedHosts: ["app.tsuika.space"],
-    port: 3000
+    port: 3000,
   },
   plugins: [
     tanstackRouter({ target: "react", autoCodeSplitting: true }),

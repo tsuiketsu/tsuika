@@ -1,6 +1,6 @@
-import type { LucideIconElement } from "@/types";
 import type { LinkProps } from "@tanstack/react-router";
-import { Star, Inbox, Archive, LibraryBig } from "lucide-react";
+import { Archive, Inbox, LibraryBig, Star } from "lucide-react";
+import type { LucideIconElement } from "@/types";
 
 type Folder = {
   title: string;
@@ -38,6 +38,5 @@ export const defaultFolders: Folder[] = [
 ];
 
 export const getDefaultFoldersSlug = (): string[] => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return defaultFolders.map((f: any) => f.link.params.slug) ?? [];
 };

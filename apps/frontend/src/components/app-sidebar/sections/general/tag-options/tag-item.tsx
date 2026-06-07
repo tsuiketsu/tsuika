@@ -1,11 +1,11 @@
+import { Link } from "@tanstack/react-router";
+import { Hash } from "lucide-react";
 import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import type { Tag } from "@/types/tag";
-import { Link } from "@tanstack/react-router";
-import { Hash } from "lucide-react";
 
 const TagItem = ({ tag }: { tag: Tag }) => {
   return (

@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
-import type { WorkerRequest, WorkerResponse } from "./types";
+
 import { Noble } from "@/utils/noble";
+import type { WorkerRequest, WorkerResponse } from "./types";
 
 self.onmessage = (e: MessageEvent<WorkerRequest>) => {
   const crypto = new Noble({ kdfOptions: e.data?.encryptionMethod });
@@ -9,7 +10,7 @@ self.onmessage = (e: MessageEvent<WorkerRequest>) => {
   const meta = Object.assign(
     {},
     { mac: crypto.toBase64(secret.mac), salt: crypto.toBase64(secret.salt) },
-    secret.opts
+    secret.opts,
   );
 
   const response: WorkerResponse = secret
@@ -18,5 +19,3 @@ self.onmessage = (e: MessageEvent<WorkerRequest>) => {
 
   self.postMessage(response);
 };
-
-export {};

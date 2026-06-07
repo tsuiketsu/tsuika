@@ -1,6 +1,6 @@
+import type { VariantProps } from "class-variance-authority";
 import type { buttonVariants } from "../ui/button";
 import FilePicker from "./file-picker";
-import type { VariantProps } from "class-variance-authority";
 
 interface ReturnType {
   file: File;

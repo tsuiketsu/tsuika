@@ -1,13 +1,13 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import { options, type Alphabet } from "@/constants";
-import { cn } from "@/lib/utils";
-import useLayoutStore, {
-  cardLayout,
-  type CardsLayoutKey,
-} from "@/stores/layout.store";
-import { firstAlpha, getAspectRatio, getRandomAspectRatio } from "@/utils";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { type Alphabet, options } from "@/constants";
+import { cn } from "@/lib/utils";
+import useLayoutStore, {
+  type CardsLayoutKey,
+  cardLayout,
+} from "@/stores/layout.store";
+import { firstAlpha, getAspectRatio, getRandomAspectRatio } from "@/utils";
 
 const BookmarkImageFallback = ({ char }: { char: Alphabet }) => (
   <div className="@container">
@@ -84,7 +84,7 @@ export default function BookmarkThumbnail({
       <div
         className={clsx(
           "bg-background absolute inset-0 z-10 flex size-full items-center justify-center",
-          { hidden: !loading }
+          { hidden: !loading },
         )}
       >
         <Skeleton className="size-full" />

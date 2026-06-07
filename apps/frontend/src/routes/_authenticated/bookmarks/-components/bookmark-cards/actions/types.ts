@@ -1,7 +1,7 @@
+import type React from "react";
 import type { cn } from "@/lib/utils";
 import type { LucideIconElement } from "@/types";
 import type { Bookmark } from "@/types/bookmark";
-import type React from "react";
 
 export type BookmarkFlagKey = keyof Pick<
   Bookmark,

@@ -1,5 +1,5 @@
-import { encryptionPresets } from "@/utils/noble/methods.list";
 import { z } from "zod";
+import { encryptionPresets } from "@/utils/noble/methods.list";
 
 export const folderInsertSchema = z
   .object({
@@ -9,7 +9,7 @@ export const folderInsertSchema = z
     password: z.string().optional(),
     isLinkPreview: z.boolean().optional(),
     encryptionPreset: z.enum(
-      Object.keys(encryptionPresets) as [keyof typeof encryptionPresets]
+      Object.keys(encryptionPresets) as [keyof typeof encryptionPresets],
     ),
   })
   .superRefine((data, ctx) => {
