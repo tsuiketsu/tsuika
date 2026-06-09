@@ -58,7 +58,7 @@
   "scripts": {
     "type-check": "tsc --noEmit",
     "start": "bun src/index.js",
-    "dev": "NODE_ENV=development bun --hot src/index.ts",
+    "dev": "bash ./scripts/run-compose.sh",
     "build": "bun build src/index.ts --outdir ./dist --target bun",
     "serve": "bun dist/index.js",
     "format": "biome format --write ./src",

@@ -23,7 +23,7 @@
   "scripts": {
     "postinstall": "bun lefthook install",
     "build": "turbo run build",
-    "dev": "bash ./scripts/run-compose.sh",
+    "dev": "turbo run dev",
     "lint": "turbo run lint",
     "lint:commit": "commitlint --edit",
     "format": "bunx --bun @biomejs/biome format --write",
