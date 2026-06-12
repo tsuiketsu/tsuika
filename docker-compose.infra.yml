@@ -21,7 +21,7 @@ services:
       RESEND_API_KEY: ${RESEND_API_KEY}
       JWT_SECRET: ${JWT_SECRET}
 
-      MEILI_HOST: ${MEILI_HOST:-http://imrayy-meilisearch:7701}
+      MEILI_HOST: ${MEILI_HOST}
       MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
     volumes:
       - api_data:/app/data
