@@ -18,7 +18,7 @@ import {
 } from "@/utils/storage";
 
 const router = createRouter();
-const BUCKET = "user-profile";
+const FOLDER = "user-profile";
 
 // -----------------------------------------
 // GET USER SESSION
@@ -128,7 +128,7 @@ router.openapi(updateAuthDateUser, async (c) => {
     cloudImage = await saveObject({
       origin: "local",
       fileUri: image,
-      bucket: BUCKET,
+      folder: `users/${userId}/${FOLDER}`,
     });
   }
 
@@ -165,7 +165,7 @@ router.openapi(updateAuthDateUser, async (c) => {
 
   if (oldImageUri && oldImageUri !== newImageUri) {
     const fileId = oldImageUri.split("|")[0];
-    fileId && deleteObject(BUCKET, fileId);
+    fileId && deleteObject(`users/${userId}/${FOLDER}`, fileId);
   }
 
   return c.json(

@@ -79,12 +79,12 @@ export const hasHttpPrefix = (str: string | undefined | null): boolean => {
 
 export const createThumbnailURL = (
   thumbnail: string | null,
-  bucket: string,
+  folder: string,
 ) => {
   if (thumbnail) {
     return hasHttpPrefix(thumbnail)
       ? thumbnail
-      : createObjectStoreURL(bucket, thumbnail);
+      : createObjectStoreURL(folder, thumbnail);
   }
 
   return null;

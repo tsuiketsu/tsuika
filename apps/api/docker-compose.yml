@@ -31,6 +31,20 @@ services:
     ports:
       - 7700:7700
 
+  rustfs:
+    image: rustfs/rustfs:latest
+    environment:
+      RUSTFS_ACCESS_KEY: ${S3_ACCESS_KEY_ID:-rustfsadmin}
+      RUSTFS_SECRET_KEY: ${S3_SECRET_ACCESS_KEY:-rustfsadmin}
+      RUSTFS_CONSOLE_ENABLE: true
+      RUSTFS_SERVER_DOMAINS: localhost
+    volumes:
+      - rustfs_data:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+
 volumes:
   db_data:
   meili_data:
+  rustfs_data:

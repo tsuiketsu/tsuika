@@ -4,4 +4,4 @@ trap "docker compose down" EXIT
 
 docker compose up -d --wait
 
-NODE_ENV=development bun --hot src/index.ts
+NODE_ENV=development bun --watch src/index.ts

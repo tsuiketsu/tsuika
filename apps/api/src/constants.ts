@@ -2,6 +2,7 @@ export const DEFAULT_QUERY_LIMIT = 10;
 export const MAX_QUERY_LIMIT = 100;
 export const INVALID_CHARS = /[/\\?%*:|"<>.]/;
 export const UPLOADS_DIR = "./data/uploads";
+export const PUBLIC_BUCKET = "tsuika";
 export const trustedOrigins = [
   process.env.FRONTEND_ORIGIN,
   process.env.CORS_ORIGIN_BROWSER_EXTENSION,
@@ -40,7 +41,7 @@ export const RESERVED_USERNAMES = [
   "superuser",
   "team",
 
-  // 🛡️ Security & Email-like Names
+  // 🛡 Security & Email-like Names
   "contact",
   "help",
   "info",
@@ -79,7 +80,7 @@ export const RESERVED_USERNAMES = [
   "upload",
   "verify",
 
-  // ⚙️ HTTP/CRUD Terms
+  // ⚙ HTTP/CRUD Terms
   "create",
   "delete",
   "edit",
@@ -99,7 +100,7 @@ export const RESERVED_USERNAMES = [
   "status",
   "terms",
 
-  // 🧑‍💻 Generic / System Terms
+  // 🧑 Generic / System Terms
   "anonymous",
   "config",
   "console",
@@ -119,7 +120,7 @@ export const RESERVED_USERNAMES = [
   "true",
   "undefined",
 
-  // 🏷️ Brand Terms (customize for your app)
+  // 🏷 Brand Terms (customize for your app)
   "enterprise",
   "free",
   "premium",

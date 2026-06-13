@@ -54,7 +54,7 @@ router.openapi(createAsset, async (c) => {
 
   const file = await saveObject({
     ...(body as z.infer<typeof objectInsertSchema>),
-    bucket: BUCKET,
+    folder: BUCKET,
   });
 
   if (!file || !file.fileId) {

@@ -55,7 +55,7 @@ import { getFolder as getFolderInfo } from "./folder.routes";
 
 const router = createRouter();
 const sources = createSources("bookmarks");
-const BUCKET = "thumbnails";
+const FOLDER = "thumbnails";
 const MEIL_INDEX = "bookmarks";
 
 const getFavIcon = (url: string) => {
@@ -264,7 +264,7 @@ router.openapi(createBookmark, async (c) => {
     attachment = await saveObject({
       origin: "remote",
       fileUri: siteMetaImage,
-      bucket: BUCKET,
+      folder: `users/${userId}/${FOLDER}`,
     });
   }
 
@@ -544,7 +544,7 @@ router.openapi(getBookmarks, async (c) => {
           id: publicId,
           folderId: bookmarkFolder?.publicId,
           thumbnail: !rest.isEncrypted
-            ? createThumbnailURL(thumbnail, BUCKET)
+            ? createThumbnailURL(thumbnail, `users/${userId}/${FOLDER}`)
             : thumbnail || null,
           tags: bookmarkTag.map(({ tag, appliedAt }) => ({
             ...tag,
@@ -676,7 +676,7 @@ router.openapi(getBookmarkByTagId, async (c) => {
       data: data.map((b) =>
         Object.assign({}, b, {
           thumbnail: !b.isEncrypted
-            ? createThumbnailURL(b.thumbnail, BUCKET)
+            ? createThumbnailURL(b.thumbnail, `users/${userId}/${FOLDER}`)
             : b.thumbnail || null,
         }),
       ) as BookmarkType[],
@@ -801,7 +801,7 @@ router.openapi(getBookmarksByFolderId, async (c) => {
           id: publicId,
           folderId: bookmarkFolder?.publicId,
           thumbnail: !rest.isEncrypted
-            ? createThumbnailURL(thumbnail, BUCKET)
+            ? createThumbnailURL(thumbnail, `users/${userId}/${FOLDER}`)
             : thumbnail || null,
           tags: bookmarkTag.map(({ tag, appliedAt }) => ({
             ...tag,
@@ -869,7 +869,7 @@ router.openapi(getBookmarkById, async (c) => {
         id: publicId,
         folderId: bookmarkFolder?.publicId,
         thumbnail: !rest.isEncrypted
-          ? createThumbnailURL(thumbnail, BUCKET)
+          ? createThumbnailURL(thumbnail, `users/${userId}/${FOLDER}`)
           : thumbnail || null,
         tags: rest.tags.map((tag) => ({ ...tag, id: tag.publicId })),
       },
@@ -938,13 +938,13 @@ router.openapi(updateBookmark, async (c) => {
     // Cleanup previous thumbnail from object store
 
     if (prev.thumbnail && !hasHttpPrefix(prev.thumbnail)) {
-      await deleteObject(BUCKET, prev.thumbnail);
+      await deleteObject(`users/${userId}/${FOLDER}`, prev.thumbnail);
     }
 
     attachment = await saveObject({
       origin: "remote",
       fileUri: newThumbnail,
-      bucket: BUCKET,
+      folder: `users/${userId}/${FOLDER}`,
     });
   }
 
@@ -1045,7 +1045,7 @@ router.openapi(updateBookmark, async (c) => {
   // Update search index
   const bmark = data.bookmark;
   const bmarkThumbnail = !isEncrypted
-    ? createThumbnailURL(bmark?.thumbnail, BUCKET)
+    ? createThumbnailURL(bmark?.thumbnail, `users/${userId}/${FOLDER}`)
     : thumbnail || null;
 
   if (!isEncrypted) {
@@ -1112,7 +1112,7 @@ router.openapi(deleteBookmarkInBulk, async (c) => {
     .filter((t) => t !== null);
 
   if (objectIds.length > 0) {
-    await deleteObjectInBulk(BUCKET, objectIds);
+    await deleteObjectInBulk(`users/${userId}/${FOLDER}`, objectIds);
   }
 
   // Delete bookmarks search index
@@ -1154,7 +1154,7 @@ router.openapi(deleteBookmarkById, async (c) => {
 
   // Delete objectStore thumbnail
   if (data[0]?.thumbnail && !hasHttpPrefix(data[0].thumbnail)) {
-    await deleteObject(BUCKET, data[0].thumbnail);
+    await deleteObject(`users/${userId}/${FOLDER}`, data[0].thumbnail);
   }
 
   // Delete search index
@@ -1195,7 +1195,7 @@ router.openapi(updateBookmarkThumbnail, async (c) => {
   const thumbnail = await saveObject({
     origin: "local",
     fileUri: localThumbnailUrl,
-    bucket: BUCKET,
+    folder: `users/${userId}/${FOLDER}`,
   });
 
   if (!thumbnail || !thumbnail.fileId) {
@@ -1243,7 +1243,7 @@ router.openapi(updateBookmarkThumbnail, async (c) => {
 
   // Delete & purge old thumbnail
   if (response.prev?.thumbnail) {
-    await deleteObject(BUCKET, response.prev.thumbnail);
+    await deleteObject(`users/${userId}/${FOLDER}`, response.prev.thumbnail);
   }
 
   // Update bookmarks search index

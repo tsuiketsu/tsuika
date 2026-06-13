@@ -1,7 +1,6 @@
-import { mkdir, rm } from "node:fs/promises";
-import { dirname } from "node:path";
 import { z } from "@hono/zod-openapi";
-import { UPLOADS_DIR } from "@/constants";
+import { PUBLIC_BUCKET } from "@/constants";
+import { s3 } from "@/lib/s3";
 import { generatePublicId } from "./nanoid";
 
 // -----------------------------------------
@@ -13,12 +12,12 @@ export const objectInsertSchema = z.discriminatedUnion("origin", [
 ]);
 
 type CreateObjectArgs = {
-  bucket: string;
+  folder: string;
   objectId?: string;
 } & z.infer<typeof objectInsertSchema>;
 
-export const createObjectStoreURL = (bucket: string, objectId: string) => {
-  return `http://localhost:8000/${UPLOADS_DIR}/${bucket}/${objectId}`;
+export const createObjectStoreURL = (folder: string, filename: string) => {
+  return `${process.env.S3_ENDPOINT}/${PUBLIC_BUCKET}/${folder}/${filename}`;
 };
 
 export type CreateObjectResponse = {
@@ -37,50 +36,44 @@ const defaultValue = {
   mimeType: null,
 };
 
-async function saveFileLocally(filePath: string, buffer: Buffer<ArrayBuffer>) {
-  await mkdir(dirname(filePath), { recursive: true });
-  await Bun.write(filePath, buffer);
-}
-
 export async function saveObject(
   args: CreateObjectArgs,
 ): Promise<CreateObjectResponse> {
   const objectId = args.objectId ?? generatePublicId();
 
+  const buildStoragePath = (contentType: string) => {
+    const ext = contentType.split("/").at(-1);
+    const fileName = `${objectId}.${ext}`;
+    return { fileName, filePath: `${args.folder}/${fileName}` };
+  };
+
   if (args.origin === "remote") {
     try {
       const response = await fetch(args.fileUri);
 
-      if (!response.ok || !response.body) {
-        return defaultValue;
-      }
+      if (!response.ok || !response.body) return defaultValue;
 
       const contentType = response.headers.get("content-type");
+      if (!contentType) return defaultValue;
 
       if (!contentType) {
         return defaultValue;
       }
 
-      // Create buffer
-      const arrayBuffer = await response.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
+      const { fileName, filePath } = buildStoragePath(contentType);
 
-      const fileExt = contentType.split("/").slice(-1)[0];
-      const fileName = `${objectId}.${fileExt}`;
-      const filePath = `${UPLOADS_DIR}/${args.bucket}/${fileName}`;
-
-      await saveFileLocally(filePath, buffer);
+      await s3.write(filePath, response, { type: contentType });
 
       return {
         fileId: fileName,
-        url: createObjectStoreURL(args.bucket, fileName),
+        url: createObjectStoreURL(args.folder, fileName),
         mimeType: contentType,
         name: args.fileUri,
-        size: buffer.length,
+        size: Number(response.headers.get("content-length") ?? 0),
       };
     } catch (error) {
       console.error(
-        `Failed to upload file: "${args.fileUri}" to bucket ${args.bucket}`,
+        `Failed to upload file: "${args.fileUri}" to folder ${args.folder}`,
         error,
       );
 
@@ -88,24 +81,22 @@ export async function saveObject(
     }
   } else if (args.origin === "local") {
     try {
-      const bytes = await args.fileUri.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const fileExt = args.fileUri.type.split("/").slice(-1)[0];
-      const fileName = `${objectId}.${fileExt}`;
-      const filePath = `${UPLOADS_DIR}/${args.bucket}/${fileName}`;
+      const { filePath, fileName } = buildStoragePath(args.fileUri.type);
 
-      await saveFileLocally(filePath, buffer);
+      await s3.write(filePath, args.fileUri, {
+        type: args.fileUri.type,
+      });
 
       return {
         fileId: fileName,
-        url: createObjectStoreURL(args.bucket, fileName),
-        size: buffer.length,
+        url: createObjectStoreURL(args.folder, fileName),
+        size: Number(args.fileUri.size ?? 0),
         name: args.fileUri.name,
         mimeType: args.fileUri.type,
       };
     } catch (error) {
       console.error(
-        `Failed to upload file: "${args.fileUri.name}" to bucket ${args.bucket}`,
+        `Failed to upload file: "${args.fileUri.name}" to folder ${args.folder}`,
         error,
       );
 
@@ -119,9 +110,13 @@ export async function saveObject(
 // -----------------------------------------
 // DELETE IMAGE HANDLER
 // -----------------------------------------
-export async function deleteObject(bucket: string, fileId: string) {
+export async function deleteObject(folder: string, fileId: string) {
   try {
-    await rm(`${UPLOADS_DIR}/${bucket}/${fileId}`);
+    const exists = await s3.exists(`${folder}/${fileId}`);
+
+    if (exists) {
+      await s3.delete(`${folder}/${fileId}`);
+    }
   } catch (error) {
     console.error(`Failed to delete file ${fileId}`, error);
   }
@@ -130,12 +125,6 @@ export async function deleteObject(bucket: string, fileId: string) {
 // -----------------------------------------
 // DELETE IMAGES HANDLER
 // -----------------------------------------
-export async function deleteObjectInBulk(bucket: string, fileIds: string[]) {
-  try {
-    for (const fileId of fileIds) {
-      await rm(`${UPLOADS_DIR}/${bucket}/${fileId}`);
-    }
-  } catch (error) {
-    console.error(`Failed to delete file ${fileIds}`, error);
-  }
+export async function deleteObjectInBulk(folder: string, fileIds: string[]) {
+  await Promise.all(fileIds.map((fileId) => deleteObject(folder, fileId)));
 }

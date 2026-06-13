@@ -12,7 +12,7 @@ import { profile } from "../db/schema/profile.schema";
 import { createRouter } from "../lib/create-app";
 
 const router = createRouter();
-const BUCKET = "user-profile";
+const FOLDER = "user-profile";
 
 const whereUserId = (userId: string) => {
   return eq(profile.userId, userId);
@@ -42,9 +42,10 @@ router.openapi(getProfile, async (c) => {
       data: {
         ...data,
         preferencesJson: Object.assign({}, data.preferencesJson, {
-          dashboardThumbnail: thumbnail
-            ? createThumbnailURL(thumbnail, BUCKET)
-            : null,
+          dashboardThumbnail:
+            typeof thumbnail === "string"
+              ? createThumbnailURL(thumbnail, `users/${userId}/${FOLDER}`)
+              : null,
         }),
       },
       message: "Successfully fetched user's profile",
@@ -68,7 +69,7 @@ router.openapi(updateUserPreferences, async (c) => {
     cloudImage = await saveObject({
       origin: "local",
       fileUri: image,
-      bucket: BUCKET,
+      folder: `users/${userId}/${FOLDER}`,
     });
   }
 
@@ -122,8 +123,7 @@ router.openapi(updateUserPreferences, async (c) => {
 
   // Clean up previous dashboardThumbnail
   if (prevThumbnailFileId) {
-    console.log(prevThumbnailFileId);
-    await deleteObject(BUCKET, prevThumbnailFileId);
+    await deleteObject(`users/${userId}/${FOLDER}`, prevThumbnailFileId);
   }
 
   return c.json(
@@ -137,7 +137,7 @@ router.openapi(updateUserPreferences, async (c) => {
           (cloudImage?.fileId || prevThumbnailFileId) && {
             dashboardThumbnail: createThumbnailURL(
               cloudImage?.fileId ?? prevThumbnailFileId,
-              BUCKET,
+              `users/${userId}/${FOLDER}`,
             ),
           },
         ),
