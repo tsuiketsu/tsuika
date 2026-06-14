@@ -1,5 +1,4 @@
 import { z } from "@hono/zod-openapi";
-import { PUBLIC_BUCKET } from "@/constants";
 import { s3 } from "@/lib/s3";
 import { generatePublicId } from "./nanoid";
 
@@ -16,8 +15,10 @@ type CreateObjectArgs = {
   objectId?: string;
 } & z.infer<typeof objectInsertSchema>;
 
-export const createObjectStoreURL = (folder: string, filename: string) => {
-  return `${process.env.S3_ENDPOINT}/${PUBLIC_BUCKET}/${folder}/${filename}`;
+export const createObjectStoreURL = (filePath: string): string => {
+  return s3.presign(filePath, {
+    expiresIn: 60 * 15,
+  });
 };
 
 export type CreateObjectResponse = {
@@ -66,7 +67,7 @@ export async function saveObject(
 
       return {
         fileId: fileName,
-        url: createObjectStoreURL(args.folder, fileName),
+        url: createObjectStoreURL(filePath),
         mimeType: contentType,
         name: args.fileUri,
         size: Number(response.headers.get("content-length") ?? 0),
@@ -89,7 +90,7 @@ export async function saveObject(
 
       return {
         fileId: fileName,
-        url: createObjectStoreURL(args.folder, fileName),
+        url: createObjectStoreURL(filePath),
         size: Number(args.fileUri.size ?? 0),
         name: args.fileUri.name,
         mimeType: args.fileUri.type,

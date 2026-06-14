@@ -84,7 +84,7 @@ export const createThumbnailURL = (
   if (thumbnail) {
     return hasHttpPrefix(thumbnail)
       ? thumbnail
-      : createObjectStoreURL(folder, thumbnail);
+      : createObjectStoreURL(`${folder}/${thumbnail}`);
   }
 
   return null;
