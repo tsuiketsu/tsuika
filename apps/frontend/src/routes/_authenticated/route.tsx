@@ -14,10 +14,6 @@ const VerificationReminder = lazy(
   () => import("./-components/verification-reminder"),
 );
 
-function parseImage(img: string | undefined) {
-  return img?.split("|")[1];
-}
-
 export const Route = createFileRoute("/_authenticated")({
   component: DashboardLayout,
   beforeLoad: async () => {
@@ -28,7 +24,6 @@ export const Route = createFileRoute("/_authenticated")({
         session: {
           user: {
             ...session,
-            image: parseImage(session?.user?.image ?? undefined),
           },
         },
       };
@@ -55,7 +50,6 @@ export const Route = createFileRoute("/_authenticated")({
       ...session,
       user: {
         ...session.user,
-        image: parseImage(session.user.image ?? undefined),
       },
     };
   },

@@ -1,3 +1,4 @@
+import type { User } from "better-auth";
 import { and, eq, ne, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { user } from "@/db/schema/auth.schema";
@@ -13,12 +14,18 @@ import type { SuccessResponse } from "@/types";
 import { getUserId } from "@/utils";
 import {
   type CreateObjectResponse,
+  createObjectStoreURL,
   deleteObject,
   saveObject,
 } from "@/utils/storage";
 
 const router = createRouter();
 const FOLDER = "user-profile";
+
+const createImageURL = (userId: string, fileId: User["image"]): string => {
+  if (!fileId) return "";
+  return createObjectStoreURL(`users/${userId}/${FOLDER}/${fileId}`);
+};
 
 // -----------------------------------------
 // GET USER SESSION
@@ -32,7 +39,10 @@ router.openapi(getAuthDataSession, async (c) => {
   return c.json(
     {
       session,
-      user,
+      user: {
+        ...user,
+        image: createImageURL(user.id, user.image),
+      },
     },
     200,
   );
@@ -91,7 +101,10 @@ router.openapi(getAuthDataUser, async (c) => {
   return c.json(
     {
       success: true,
-      data: { ...response, image: response.image?.split("|")[1] },
+      data: {
+        ...response,
+        image: createImageURL(userId, response.image),
+      },
       message: "Successfully fetched profile",
     },
     200,
@@ -132,7 +145,7 @@ router.openapi(updateAuthDateUser, async (c) => {
     });
   }
 
-  const newImage = cloudImage ? `${cloudImage.fileId}|${cloudImage.url}` : null;
+  const newImage = cloudImage ? cloudImage.fileId : null;
 
   const response = await db.execute(sql`
     WITH old_data AS (
@@ -164,8 +177,7 @@ router.openapi(updateAuthDateUser, async (c) => {
   const oldImageUri = response.rows[0]["old_image_url"] as string;
 
   if (oldImageUri && oldImageUri !== newImageUri) {
-    const fileId = oldImageUri.split("|")[0];
-    fileId && deleteObject(`users/${userId}/${FOLDER}`, fileId);
+    oldImageUri && deleteObject(`users/${userId}/${FOLDER}`, oldImageUri);
   }
 
   return c.json(
@@ -173,7 +185,7 @@ router.openapi(updateAuthDateUser, async (c) => {
       success: true,
       data: UserEditableSchema.parse({
         ...response.rows[0],
-        image: newImageUri.split("|")[1],
+        image: createImageURL(userId, newImageUri),
       }),
       message: "Successfully updated profile",
     },

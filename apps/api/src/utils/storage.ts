@@ -17,6 +17,7 @@ type CreateObjectArgs = {
 
 export const createObjectStoreURL = (filePath: string): string => {
   return s3.presign(filePath, {
+    endpoint: process.env.S3_PUBLIC_ENDPOINT || process.env.S3_ENDPOINT,
     expiresIn: 60 * 15,
   });
 };
