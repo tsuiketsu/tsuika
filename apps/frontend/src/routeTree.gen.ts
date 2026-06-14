@@ -122,30 +122,30 @@ const AuthenticatedBookmarksFolderFolderSIdRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof AuthenticatedHomeIndexRoute
   '/save-bookmark': typeof AuthenticatedSaveBookmarkRouteRoute
   '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
-  '/email-verification': typeof AuthEmailVerificationIndexRoute
-  '/verify-2fa': typeof AuthVerify2faIndexRoute
-  '/': typeof AuthenticatedHomeIndexRoute
+  '/email-verification/': typeof AuthEmailVerificationIndexRoute
+  '/verify-2fa/': typeof AuthVerify2faIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/$uname/folder/$id': typeof PublicUnameFolderIdRoute
-  '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
-  '/settings/appearance': typeof AuthenticatedSettingsAppearanceIndexRoute
-  '/settings/profile': typeof AuthenticatedSettingsProfileIndexRoute
+  '/settings/account/': typeof AuthenticatedSettingsAccountIndexRoute
+  '/settings/appearance/': typeof AuthenticatedSettingsAppearanceIndexRoute
+  '/settings/profile/': typeof AuthenticatedSettingsProfileIndexRoute
   '/bookmarks/b/$id': typeof AuthenticatedBookmarksBookmarkBIdRoute
   '/bookmarks/folder/s/$id': typeof AuthenticatedBookmarksFolderFolderSIdRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof AuthenticatedHomeIndexRoute
   '/save-bookmark': typeof AuthenticatedSaveBookmarkRouteRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/bookmarks/$slug': typeof AuthenticatedBookmarksSlugRoute
   '/email-verification': typeof AuthEmailVerificationIndexRoute
   '/verify-2fa': typeof AuthVerify2faIndexRoute
-  '/': typeof AuthenticatedHomeIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/$uname/folder/$id': typeof PublicUnameFolderIdRoute
   '/settings/account': typeof AuthenticatedSettingsAccountIndexRoute
@@ -177,30 +177,30 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/save-bookmark'
     | '/settings'
     | '/login'
     | '/register'
     | '/bookmarks/$slug'
-    | '/email-verification'
-    | '/verify-2fa'
-    | '/'
+    | '/email-verification/'
+    | '/verify-2fa/'
     | '/settings/'
     | '/$uname/folder/$id'
-    | '/settings/account'
-    | '/settings/appearance'
-    | '/settings/profile'
+    | '/settings/account/'
+    | '/settings/appearance/'
+    | '/settings/profile/'
     | '/bookmarks/b/$id'
     | '/bookmarks/folder/s/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/save-bookmark'
     | '/login'
     | '/register'
     | '/bookmarks/$slug'
     | '/email-verification'
     | '/verify-2fa'
-    | '/'
     | '/settings'
     | '/$uname/folder/$id'
     | '/settings/account'
@@ -240,14 +240,14 @@ declare module '@tanstack/react-router' {
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth': {
       id: '/_auth'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -296,14 +296,14 @@ declare module '@tanstack/react-router' {
     '/_auth/verify-2fa/': {
       id: '/_auth/verify-2fa/'
       path: '/verify-2fa'
-      fullPath: '/verify-2fa'
+      fullPath: '/verify-2fa/'
       preLoaderRoute: typeof AuthVerify2faIndexRouteImport
       parentRoute: typeof AuthRouteRoute
     }
     '/_auth/email-verification/': {
       id: '/_auth/email-verification/'
       path: '/email-verification'
-      fullPath: '/email-verification'
+      fullPath: '/email-verification/'
       preLoaderRoute: typeof AuthEmailVerificationIndexRouteImport
       parentRoute: typeof AuthRouteRoute
     }
@@ -317,21 +317,21 @@ declare module '@tanstack/react-router' {
     '/_authenticated/settings/profile/': {
       id: '/_authenticated/settings/profile/'
       path: '/profile'
-      fullPath: '/settings/profile'
+      fullPath: '/settings/profile/'
       preLoaderRoute: typeof AuthenticatedSettingsProfileIndexRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
     '/_authenticated/settings/appearance/': {
       id: '/_authenticated/settings/appearance/'
       path: '/appearance'
-      fullPath: '/settings/appearance'
+      fullPath: '/settings/appearance/'
       preLoaderRoute: typeof AuthenticatedSettingsAppearanceIndexRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
     '/_authenticated/settings/account/': {
       id: '/_authenticated/settings/account/'
       path: '/account'
-      fullPath: '/settings/account'
+      fullPath: '/settings/account/'
       preLoaderRoute: typeof AuthenticatedSettingsAccountIndexRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
