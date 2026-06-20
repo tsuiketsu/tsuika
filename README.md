@@ -1,3 +1,21 @@
+## ⚠️ Project Status
+
+This project started as a **learning/experimentation project** focused on working with **API callbacks** (webhooks, async responses, etc.).
+
+Over time, as more features were added and the scope expanded, the project structure became quite **convoluted and difficult to maintain**.
+
+### Rewrite in Progress
+
+A complete rewrite is currently **Work In Progress (WIP)** with a much cleaner architecture, better separation of concerns, and improved maintainability.
+
+You can find the new version here: https://github.com/ImRayy/tsuika
+
+---
+
+**Note**: This original repository is kept mainly for historical and reference purposes. It may still work for basic callback handling, but it is no longer actively developed. For the latest and recommended version, please check the rewrite.
+
+---
+
 <div align="center">
   <h1>Tsuika</h1>
   <p>Capture what's valuable, keep it encrypted or share it freely and then collaborate to make something big.</p>
